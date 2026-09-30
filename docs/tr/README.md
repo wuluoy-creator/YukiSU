@@ -32,7 +32,7 @@
 ## Uyumluluk Durumu
 
 - YukiSU şu anda yalnızca yüklenebilir çekirdek modülünü (`CONFIG_KSU=m`) destekler ve artık yerleşik `CONFIG_KSU=y` seçeneğini desteklemez.
-- YukiSU, Android GKI 2.0 cihazlarında (çekirdek 5.10+) LKM modunu destekler. GKI 1.0 ve non-GKI çekirdekleri desteklenmez.
+- YukiSU, Android GKI 2.0 cihazlarında (çekirdek 6.1+) LKM modunu destekler. GKI 1.0 ve non-GKI çekirdekleri desteklenmez.
 - YukiSU yalnızca `arm64-v8a` cihazlarını destekler.
 - YukiZygisk, hem `arm64-v8a` hem de `armeabi-v7a` ABI'leri için derleme ve enjeksiyonu destekler.
 

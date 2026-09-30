@@ -83,7 +83,6 @@ fail:
 	return 0;
 }
 
-#ifdef KSU_HAS_NEW_DCACHE_FLUSH
 #define ksu_flush_dcache(start, sz)                                            \
 	({                                                                     \
 		unsigned long __start = (start);                               \
@@ -91,10 +90,6 @@ fail:
 		dcache_clean_inval_poc(__start, __end);                        \
 	})
 #define ksu_flush_icache(start, end) caches_clean_inval_pou(start, end)
-#else
-#define ksu_flush_dcache(start, sz) __flush_dcache_area((void *)start, sz)
-#define ksu_flush_icache(start, end) __flush_icache_range(start, end)
-#endif // #ifdef KSU_HAS_NEW_DCACHE_FLUSH
 
 struct patch_text_info {
 	void *dst;

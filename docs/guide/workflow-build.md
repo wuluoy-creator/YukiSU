@@ -22,7 +22,7 @@ The standalone **YukiZygisk** selection (`build_yukizygisk`) requests payload ar
 
 ## Select a kernel version
 
-The default `kmi: all` builds all eight supported versions for a general-purpose package. Select a specific version, such as `android15-6.6`, from the dropdown to reduce the number of build jobs.
+The default `kmi: all` builds all four supported versions for a general-purpose package: `android14-6.1`, `android15-6.6`, `android16-6.12`, and `android17-6.18`. Linux 6.1 is the minimum supported kernel version. Select a specific version, such as `android15-6.6`, from the dropdown to reduce the number of build jobs.
 
 With a specific KMI selected, the resulting **Manager APK and ksud embed only that kernel module version**. Keep `all` when you need a package covering every supported version. KMI selection does not affect a standalone ksuinit or YukiZygisk build.
 

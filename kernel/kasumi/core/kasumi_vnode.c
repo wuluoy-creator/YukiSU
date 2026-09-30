@@ -24,26 +24,20 @@
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0)
 #define KVN_IDMAP_ARG struct mnt_idmap *idmap,
 #define KVN_IDMAP_CALL idmap,
-#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
+#else
 #define KVN_IDMAP_ARG struct user_namespace *userns,
 #define KVN_IDMAP_CALL userns,
-#else
-#define KVN_IDMAP_ARG
-#define KVN_IDMAP_CALL
 #endif
 
 /*
  * Idmap of the *source* mount for a delegated create/mkdir/... — the redirect
  * writes through the source's own mount, so the source idmap governs uid/gid
- * mapping, not the visible idmap the VFS handed our op.  Trailing comma so it
- * drops cleanly on pre-5.12 kernels that took no idmap argument.
+ * mapping, not the visible idmap the VFS handed our op.
  */
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0)
 #define KVN_SRC_IDMAP(mnt) mnt_idmap(mnt),
-#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
-#define KVN_SRC_IDMAP(mnt) mnt_user_ns(mnt),
 #else
-#define KVN_SRC_IDMAP(mnt)
+#define KVN_SRC_IDMAP(mnt) mnt_user_ns(mnt),
 #endif
 
 static const struct inode_operations kasumi_vnode_file_iops;
@@ -65,13 +59,6 @@ static const struct file_operations kasumi_vnode_file_fops_mmap_prepare;
  * Compiles out entirely without CONFIG_LOCKDEP.
  */
 static struct lock_class_key kasumi_vnode_i_mutex_key;
-
-/* dir_context actor (filldir_t) returns int pre-6.1, bool since 6.1. */
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 1, 0)
-#define KVN_DIR_ACTOR_RET bool
-#else
-#define KVN_DIR_ACTOR_RET int
-#endif
 
 bool kasumi_vnode_is_ours(const struct inode *inode)
 {
@@ -139,10 +126,8 @@ kasumi_vnode_getattr(KVN_IDMAP_ARG const struct path *path, struct kstat *stat,
 	if (!info->source.dentry) {
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0)
 		generic_fillattr(KVN_IDMAP_CALL request_mask, vi, stat);
-#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
-		generic_fillattr(KVN_IDMAP_CALL vi, stat);
 #else
-		generic_fillattr(vi, stat);
+		generic_fillattr(KVN_IDMAP_CALL vi, stat);
 #endif
 		stat->ino = info->v_ino;
 		stat->dev = vi->i_sb->s_dev;
@@ -484,13 +469,7 @@ static int KASUMI_NOCFI kasumi_vnode_special_mmap(struct file *file,
 	/* Redirect the vma onto the real device file (drops the ref on our
 	 * outer file, takes one on the real file), then run the device's own
 	 * mmap. */
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 13, 0)
 	vma_set_file(vma, real);
-#else
-	get_file(real);
-	fput(vma->vm_file);
-	vma->vm_file = real;
-#endif
 	return real->f_op->mmap(real, vma);
 }
 
@@ -554,13 +533,14 @@ struct kasumi_vnode_dir_ctx {
 	unsigned long self_ino;
 };
 
-static KVN_DIR_ACTOR_RET KASUMI_NOCFI
-kasumi_vnode_dir_actor(struct dir_context *ctx, const char *name, int namlen,
-		       loff_t offset, u64 ino, unsigned int d_type)
+static bool KASUMI_NOCFI kasumi_vnode_dir_actor(struct dir_context *ctx,
+						const char *name, int namlen,
+						loff_t offset, u64 ino,
+						unsigned int d_type)
 {
 	struct kasumi_vnode_dir_ctx *dc =
 	    container_of(ctx, struct kasumi_vnode_dir_ctx, ctx);
-	KVN_DIR_ACTOR_RET ret;
+	bool ret;
 	u64 proj;
 
 	/* Project each child's identity so getdents d_ino matches a later stat.
@@ -1212,7 +1192,6 @@ static int KASUMI_NOCFI kasumi_vnode_do_src_rename(
     struct inode *sodir, struct dentry *src_old, struct inode *sndir,
     struct dentry *src_new, unsigned int flags)
 {
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
 	struct renamedata rd = {};
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 18, 0)
@@ -1243,9 +1222,6 @@ static int KASUMI_NOCFI kasumi_vnode_do_src_rename(
 	rd.delegated_inode = NULL;
 	rd.flags = flags;
 	return kasumi_vfs_rename(&rd);
-#else
-	return kasumi_vfs_rename(sodir, src_old, sndir, src_new, NULL, flags);
-#endif
 }
 
 static int KASUMI_NOCFI kasumi_vnode_dir_rename(

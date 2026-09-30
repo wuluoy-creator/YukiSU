@@ -26,6 +26,23 @@ def extract_array(source: str, name: str) -> bytes:
 
 
 class EmbedAssetsTest(unittest.TestCase):
+    def test_unsupported_lkms_are_rejected(self) -> None:
+        for kmi in ("android12-5.10", "android14-5.15", "6.0", "unknown"):
+            with self.subTest(kmi=kmi), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                assets = root / "assets"
+                assets.mkdir()
+                (assets / f"{kmi}_kernelsu.ko").write_bytes(b"old module")
+                generated = root / "assets_data.cpp"
+                result = subprocess.run(
+                    [sys.executable, str(SCRIPT), str(assets), str(generated)],
+                    capture_output=True,
+                    text=True,
+                )
+                self.assertNotEqual(0, result.returncode)
+                self.assertIn("requires Linux 6.1 or newer", result.stderr)
+                self.assertFalse(generated.exists())
+
     def test_assets_without_lkms_remain_zlib_only(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

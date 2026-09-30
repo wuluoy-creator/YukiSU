@@ -32,7 +32,7 @@
 ## 兼容状态
 
 - YukiSU 当前仅支持可加载内核模块（`CONFIG_KSU=m`），不再支持内置 `CONFIG_KSU=y`。
-- YukiSU 支持 Android GKI 2.0 设备（内核 5.10+）的 LKM 模式。GKI 1.0 内核与 non-GKI 内核不被支持。
+- YukiSU 支持 Android GKI 2.0 设备（内核 6.1+）的 LKM 模式。GKI 1.0 内核与 non-GKI 内核不被支持。
 - YukiSU 仅支持 `arm64-v8a` 的设备。
 - YukiZygisk 支持 `arm64-v8a` 与 `armeabi-v7a` 两种 ABI 的构建与注入。
 

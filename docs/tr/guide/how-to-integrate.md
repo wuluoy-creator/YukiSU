@@ -6,7 +6,7 @@ YukiSU şu anda yalnızca yüklenebilir çekirdek modülünü (`CONFIG_KSU=m`) d
 
 **TSR hook:**
 
-- Yüklenebilir çekirdek modülü (LKM) için varsayılan yöntemdir. GKI 2.0 çekirdekleri (`5.10+`) ve kaynak koddan entegre edilmiş uyumlu çekirdekler için uygundur.
+- Yüklenebilir çekirdek modülü (LKM) için varsayılan yöntemdir. Linux `6.1+` gerektirir; GKI 2.0 çekirdekleri ve kaynak koddan entegre edilmiş uyumlu çekirdekler için uygundur.
 - `CONFIG_KPROBES=y`, `CONFIG_KRETPROBES=y` ve `CONFIG_HAVE_SYSCALL_TRACEPOINTS=y` gerektirir.
 
 ### Özel Bir Çekirdek Kaynak Ağacı Kullanarak YukiSU LKM Nasıl Derlenir

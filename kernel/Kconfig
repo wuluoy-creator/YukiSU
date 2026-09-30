@@ -6,6 +6,7 @@ config KSU
 	  default m
 	  help
 		Enable kernel-level root privileges on Android System.
+		Requires Linux 6.1 or newer.
 		YukiSU only supports loadable kernel module (LKM). Choose M.
 		Built-in (=y) is no longer supported.
 		The module will be called kernelsu.

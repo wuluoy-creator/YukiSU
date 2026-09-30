@@ -6,7 +6,7 @@ YukiSU 当前仅支持可加载内核模块（`CONFIG_KSU=m`），不再支持�
 
 **TSR hook:**
 
-- 可加载内核模块 (LKM) 的默认路径。适用于 GKI 2.0 内核（`5.10+`）以及兼容的源码集成内核。
+- 可加载内核模块 (LKM) 的默认路径。要求 Linux `6.1+`，适用于 GKI 2.0 内核以及兼容的源码集成内核。
 - 需要 `CONFIG_KPROBES=y`、`CONFIG_KRETPROBES=y` 与 `CONFIG_HAVE_SYSCALL_TRACEPOINTS=y`。
 
 ### 如何使用自定义内核源码树编译 YukiSU LKM

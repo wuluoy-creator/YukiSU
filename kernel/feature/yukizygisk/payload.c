@@ -7,7 +7,6 @@
 #include <linux/slab.h>
 #include <linux/string.h>
 #include <linux/syscalls.h>
-#include <linux/version.h>
 
 #include "internal.h"
 #include "ksu.h"
@@ -16,11 +15,7 @@
 
 void yz_close_current_fd(int fd)
 {
-#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 11, 0)
-	ksys_close(fd);
-#else
 	close_fd(fd);
-#endif
 }
 
 void yz_cache_name(char *buf, size_t len)

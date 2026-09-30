@@ -601,8 +601,7 @@ Result<std::pair<std::string, GkiAbiInfo>> recover_gki_abi(const std::vector<std
             std::string_view(release).substr(first_dot + 1, second_dot - first_dot - 1), &minor))
         return failure<std::pair<std::string, GkiAbiInfo>>(ErrorCode::kUnsupported,
                                                            "kernel release is malformed");
-    const bool supported_series = (major == 5 && (minor == 10 || minor == 15)) ||
-                                  (major == 6 && (minor == 1 || minor == 6 || minor == 12));
+    const bool supported_series = major == 6 && (minor == 1 || minor == 6 || minor == 12);
     if (!supported_series)
         return failure<std::pair<std::string, GkiAbiInfo>>(ErrorCode::kUnsupported,
                                                            "unsupported GKI kernel series");

@@ -417,11 +417,7 @@ int ksu_sucompat_exec_init(void)
 {
 	int ret;
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 1, 0)
-	ksu_su_ptracer_capable = ksu_lookup_symbol("ptracer_capable.cfi_jt");
-#else
 	ksu_su_ptracer_capable = ksu_lookup_symbol("ptracer_capable");
-#endif
 	ret = ksu_register_lsm_hook(&ksu_su_creds_hook);
 	if (ret)
 		return ret;

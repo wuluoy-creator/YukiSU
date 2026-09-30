@@ -33,9 +33,6 @@
 #include <linux/xattr.h>
 #include <linux/seq_file.h>
 #include <uapi/linux/magic.h>
-#ifndef EROFS_SUPER_MAGIC
-#define EROFS_SUPER_MAGIC 0xe0f5e1e2
-#endif
 #include <asm/unistd.h>
 #include "kasumi_runtime.h"
 #include "kasumi_dirhijack.h"
@@ -51,13 +48,14 @@
 
 #define KASUMI_MAGIC_POS 0x1000000000000000ULL
 
-KASUMI_NOCFI KASUMI_FILLDIR_RET_TYPE
-kasumi_filldir_filter(struct dir_context *ctx, const char *name, int namlen,
-		      loff_t offset, u64 ino, unsigned int d_type)
+KASUMI_NOCFI bool kasumi_filldir_filter(struct dir_context *ctx,
+					const char *name, int namlen,
+					loff_t offset, u64 ino,
+					unsigned int d_type)
 {
 	struct kasumi_filldir_wrapper *w =
 	    container_of(ctx, struct kasumi_filldir_wrapper, wrap_ctx);
-	KASUMI_FILLDIR_RET_TYPE ret;
+	bool ret;
 	struct inode *parent =
 	    w->parent_dentry ? d_inode(w->parent_dentry) : NULL;
 
@@ -92,7 +90,7 @@ kasumi_filldir_filter(struct dir_context *ctx, const char *name, int namlen,
 			list_del(&item->list);
 			kfree(item->name);
 			kfree(item);
-			if (ret != KASUMI_FILLDIR_CONTINUE) {
+			if (!ret) {
 				list_for_each_entry_safe (item, tmp, &head,
 							  list) {
 					list_del(&item->list);
@@ -106,7 +104,7 @@ kasumi_filldir_filter(struct dir_context *ctx, const char *name, int namlen,
 	}
 
 	if (parent && kasumi_dirhijack_hidden(parent, name, namlen))
-		return KASUMI_FILLDIR_CONTINUE;
+		return true;
 
 	if (unlikely(namlen <= 2 && name[0] == '.')) {
 		if (namlen == 1 || (namlen == 2 && name[1] == '.'))
@@ -137,7 +135,7 @@ kasumi_filldir_filter(struct dir_context *ctx, const char *name, int namlen,
 					dput(child);
 					atomic64_inc(
 					    &kasumi_hook_stats.filldir_hidden);
-					return KASUMI_FILLDIR_CONTINUE;
+					return true;
 				}
 			}
 		}
@@ -155,7 +153,7 @@ kasumi_filldir_filter(struct dir_context *ctx, const char *name, int namlen,
 				     &cinode->i_mapping->flags)) {
 				dput(child);
 				atomic64_inc(&kasumi_hook_stats.filldir_hidden);
-				return KASUMI_FILLDIR_CONTINUE;
+				return true;
 			}
 			dput(child);
 		}
@@ -163,7 +161,7 @@ kasumi_filldir_filter(struct dir_context *ctx, const char *name, int namlen,
 
 passthrough:
 	if (unlikely(!w->orig_ctx || !w->orig_ctx->actor))
-		return KASUMI_FILLDIR_CONTINUE;
+		return true;
 	return w->orig_ctx->actor(w->orig_ctx, name, namlen, offset, ino,
 				  d_type);
 }

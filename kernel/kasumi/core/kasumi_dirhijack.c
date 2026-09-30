@@ -47,15 +47,6 @@ static inline u32 kasumi_dh_unpack_pos(loff_t pos)
 	return (u32)(pos & 0xFFFFFFFFULL);
 }
 
-/* dir_context actor (filldir_t) returns int pre-6.1, bool since 6.1. */
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 1, 0)
-#define KASUMI_DH_ACTOR_RET bool
-#define KASUMI_DH_ACTOR_OK true
-#else
-#define KASUMI_DH_ACTOR_RET int
-#define KASUMI_DH_ACTOR_OK 0
-#endif
-
 struct kasumi_dh_iop {
 	struct inode_operations fake_iop; /* must stay first */
 	const struct inode_operations *orig_iop;
@@ -472,13 +463,14 @@ struct kasumi_dh_proxy {
 	bool stopped;
 };
 
-static KASUMI_DH_ACTOR_RET KASUMI_NOCFI
-kasumi_dh_proxy_actor(struct dir_context *ctx, const char *name, int namelen,
-		      loff_t offset, u64 ino, unsigned int d_type)
+static bool KASUMI_NOCFI kasumi_dh_proxy_actor(struct dir_context *ctx,
+					       const char *name, int namelen,
+					       loff_t offset, u64 ino,
+					       unsigned int d_type)
 {
 	struct kasumi_dh_proxy *p =
 	    container_of(ctx, struct kasumi_dh_proxy, ctx);
-	KASUMI_DH_ACTOR_RET ret;
+	bool ret;
 	bool injected = false;
 
 	if (p->dir) {
@@ -498,11 +490,11 @@ kasumi_dh_proxy_actor(struct dir_context *ctx, const char *name, int namelen,
 		rcu_read_unlock();
 	}
 	if (injected)
-		return KASUMI_DH_ACTOR_OK;
+		return true;
 	p->orig->pos = p->ctx.pos;
 	ret = p->orig->actor(p->orig, name, namelen, offset, ino, d_type);
 	p->ctx.pos = p->orig->pos;
-	if (ret == KASUMI_DH_ACTOR_OK)
+	if (ret)
 		p->emitted++;
 	else
 		p->stopped = true;

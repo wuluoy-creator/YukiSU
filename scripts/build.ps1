@@ -225,10 +225,6 @@ try {
     $script:RepoRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
     # Keep this list in sync with build-lkm.yml and ksud.yml.
     $supportedKmis = @(
-        'android12-5.10',
-        'android13-5.10',
-        'android13-5.15',
-        'android14-5.15',
         'android14-6.1',
         'android15-6.6',
         'android16-6.12',
@@ -262,8 +258,8 @@ try {
     }
 
     foreach ($kmi in $kmiTargets) {
-        if ($kmi -notmatch '^[A-Za-z0-9._-]+$') {
-            throw "Invalid KMI/DDK target: $kmi"
+        if ($kmi -cnotin $supportedKmis) {
+            throw "Unsupported KMI/DDK target: $kmi (requires Linux 6.1 or newer). Supported targets: $($supportedKmis -join ', ')"
         }
     }
 

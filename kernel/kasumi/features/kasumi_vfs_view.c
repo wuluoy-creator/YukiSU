@@ -52,12 +52,9 @@ static ssize_t (*kasumi_view_listxattr_orig)(struct dentry *, char *, size_t);
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0)
 static ssize_t (*kasumi_view_getxattr_orig)(struct mnt_idmap *, struct dentry *,
 					    const char *, void *, size_t);
-#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
+#else
 static ssize_t (*kasumi_view_getxattr_orig)(struct user_namespace *,
 					    struct dentry *, const char *,
-					    void *, size_t);
-#else
-static ssize_t (*kasumi_view_getxattr_orig)(struct dentry *, const char *,
 					    void *, size_t);
 #endif
 static struct kprobe kasumi_view_get_probe;
@@ -133,13 +130,9 @@ static KASUMI_NOCFI ssize_t kasumi_view_getxattr(struct mnt_idmap *idmap,
 						 struct dentry *dentry,
 						 const char *name, void *value,
 						 size_t size)
-#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
+#else
 static KASUMI_NOCFI ssize_t kasumi_view_getxattr(struct user_namespace *idmap,
 						 struct dentry *dentry,
-						 const char *name, void *value,
-						 size_t size)
-#else
-static KASUMI_NOCFI ssize_t kasumi_view_getxattr(struct dentry *dentry,
 						 const char *name, void *value,
 						 size_t size)
 #endif
@@ -148,11 +141,7 @@ static KASUMI_NOCFI ssize_t kasumi_view_getxattr(struct dentry *dentry,
 	ssize_t ret;
 
 	kasumi_view_enter(&guard);
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
 	ret = kasumi_view_getxattr_orig(idmap, dentry, name, value, size);
-#else
-	ret = kasumi_view_getxattr_orig(dentry, name, value, size);
-#endif
 	if ((ret >= 0 || ret == -ERANGE) && kasumi_overlay_name(name) &&
 	    kasumi_xattr_target(dentry))
 		ret = -ENODATA;
@@ -579,13 +568,8 @@ static int kasumi_view_pre(struct kprobe *probe, struct pt_regs *regs)
 			return 0;
 		target = (unsigned long)kasumi_view_listxattr;
 	} else {
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
 		dentry = (void *)regs->regs[1];
 		name = (void *)regs->regs[2];
-#else
-		dentry = (void *)regs->regs[0];
-		name = (void *)regs->regs[1];
-#endif
 		if (!kasumi_overlay_name(name) || !kasumi_xattr_target(dentry))
 			return 0;
 		target = (unsigned long)kasumi_view_getxattr;

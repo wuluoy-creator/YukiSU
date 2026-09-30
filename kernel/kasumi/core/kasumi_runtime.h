@@ -8,7 +8,7 @@
 #include <linux/string.h>
 #include <linux/security.h>
 
-/* Older GKI exports this without a public namei.h declaration. */
+/* GKI exports this without a public namei.h declaration. */
 int vfs_path_lookup(struct dentry *dentry, struct vfsmount *mnt,
 		    const char *name, unsigned int flags, struct path *path);
 
@@ -98,12 +98,9 @@ extern dev_t kasumi_system_dev;
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0)
 extern int (*kasumi_notify_change)(struct mnt_idmap *, struct dentry *,
 				   struct iattr *, struct inode **);
-#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
+#else
 extern int (*kasumi_notify_change)(struct user_namespace *, struct dentry *,
 				   struct iattr *, struct inode **);
-#else
-extern int (*kasumi_notify_change)(struct dentry *, struct iattr *,
-				   struct inode **);
 #endif
 int kasumi_vfs_getattr_unprojected(const struct path *path, struct kstat *stat,
 				   u32 request_mask, unsigned int query_flags);
@@ -118,12 +115,9 @@ bool kasumi_vfs_internal_current(void);
 extern int (*kasumi_get_vfs_caps_from_disk)(struct mnt_idmap *,
 					    const struct dentry *,
 					    struct cpu_vfs_cap_data *);
-#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
+#else
 extern int (*kasumi_get_vfs_caps_from_disk)(struct user_namespace *,
 					    const struct dentry *,
-					    struct cpu_vfs_cap_data *);
-#else
-extern int (*kasumi_get_vfs_caps_from_disk)(const struct dentry *,
 					    struct cpu_vfs_cap_data *);
 #endif
 int kasumi_source_vfs_caps(const struct path *src,
@@ -175,7 +169,7 @@ extern int (*kasumi_vfs_rmdir)(struct mnt_idmap *, struct inode *,
 			       struct dentry *);
 extern int (*kasumi_vfs_link)(struct dentry *, struct mnt_idmap *,
 			      struct inode *, struct dentry *, struct inode **);
-#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
+#else
 extern int (*kasumi_vfs_create)(struct user_namespace *, struct inode *,
 				struct dentry *, umode_t, bool);
 extern int (*kasumi_vfs_mkdir)(struct user_namespace *, struct inode *,
@@ -190,29 +184,12 @@ extern int (*kasumi_vfs_rmdir)(struct user_namespace *, struct inode *,
 			       struct dentry *);
 extern int (*kasumi_vfs_link)(struct dentry *, struct user_namespace *,
 			      struct inode *, struct dentry *, struct inode **);
-#else
-extern int (*kasumi_vfs_create)(struct inode *, struct dentry *, umode_t, bool);
-extern int (*kasumi_vfs_mkdir)(struct inode *, struct dentry *, umode_t);
-extern int (*kasumi_vfs_mknod)(struct inode *, struct dentry *, umode_t, dev_t);
-extern int (*kasumi_vfs_symlink)(struct inode *, struct dentry *, const char *);
-extern int (*kasumi_vfs_unlink)(struct inode *, struct dentry *,
-				struct inode **);
-extern int (*kasumi_vfs_rmdir)(struct inode *, struct dentry *);
-extern int (*kasumi_vfs_link)(struct dentry *, struct inode *, struct dentry *,
-			      struct inode **);
 #endif
 /*
- * vfs_rename took a flat argument list before 5.12 and a struct renamedata
- * (from the kernel's fs.h; the idmap/userns member differs by era but is set by
- * name) from 5.12 on.  Only the pointer shape is version-guarded here (Final
- * 1c).
+ * vfs_rename uses struct renamedata from the kernel's fs.h. Its idmap/userns
+ * members vary across supported kernels and are set by name at the call site.
  */
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
 extern int (*kasumi_vfs_rename)(struct renamedata *);
-#else
-extern int (*kasumi_vfs_rename)(struct inode *, struct dentry *, struct inode *,
-				struct dentry *, struct inode **, unsigned int);
-#endif
 /* Public LSM secctx round-trip: copy a source inode's security context onto a
  * synthetic vnode's in-core SID without touching SELinux blob internals.  Both
  * may be NULL when the LSM/symbols are unavailable — callers must check. */
@@ -221,9 +198,4 @@ extern typeof(security_inode_notifysecctx) *kasumi_security_inode_notifysecctx;
 extern typeof(security_release_secctx) *kasumi_security_release_secctx;
 extern void (*kasumi_free_inode_nonrcu_ptr)(struct inode *);
 
-/* KASUMI_NOCFI: these call kallsyms-resolved pointers (path_get/path_put).
- * Whether a kernel build emits a .cfi_jt thunk for those symbols varies per
- * build (e.g. present on some Qualcomm 5.15, absent on some Meizu), so
- * kasumi_lookup_callable may hand back the RAW body address. Calling it from
- * CFI-instrumented code is a fatal CFI violation; disable the check here. */
 #endif /* _KASUMI_RUNTIME_H */

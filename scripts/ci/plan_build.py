@@ -7,10 +7,6 @@ from pathlib import Path
 
 
 SUPPORTED_KMIS = (
-    "android12-5.10",
-    "android13-5.10",
-    "android13-5.15",
-    "android14-5.15",
     "android14-6.1",
     "android15-6.6",
     "android16-6.12",

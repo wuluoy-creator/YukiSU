@@ -6,7 +6,7 @@ YukiSU は現在、ロード可能カーネルモジュール（`CONFIG_KSU=m`�
 
 **TSR hook:**
 
-- ロード可能カーネルモジュール（LKM）のデフォルト方式です。GKI 2.0 カーネル（`5.10+`）および互換性のあるソース統合カーネルに適しています。
+- ロード可能カーネルモジュール（LKM）のデフォルト方式です。Linux `6.1+` が必須で、GKI 2.0 カーネルおよび互換性のあるソース統合カーネルに適しています。
 - `CONFIG_KPROBES=y`、`CONFIG_KRETPROBES=y`、`CONFIG_HAVE_SYSCALL_TRACEPOINTS=y` が必要です。
 
 ### カスタムカーネルソースツリーを使用して YukiSU LKM をビルドする方法

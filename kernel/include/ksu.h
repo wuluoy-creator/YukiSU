@@ -5,6 +5,10 @@
 #include <linux/types.h>
 #include <linux/version.h>
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 1, 0)
+#error "YukiSU requires Linux 6.1 or newer"
+#endif
+
 // Fallback KSU_VERSION if not defined by Kbuild (e.g. when building as LKM)
 #ifndef KSU_VERSION
 #define KSU_VERSION 12000

@@ -117,11 +117,9 @@ int KASUMI_NOCFI kasumi_source_vfs_caps(const struct path *src,
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0)
 	return kasumi_get_vfs_caps_from_disk(mnt_idmap(src->mnt), src->dentry,
 					     out);
-#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
+#else
 	return kasumi_get_vfs_caps_from_disk(mnt_user_ns(src->mnt), src->dentry,
 					     out);
-#else
-	return kasumi_get_vfs_caps_from_disk(src->dentry, out);
 #endif
 }
 
@@ -358,11 +356,9 @@ dev_t kasumi_system_dev;
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0)
 int (*kasumi_notify_change)(struct mnt_idmap *, struct dentry *, struct iattr *,
 			    struct inode **);
-#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
+#else
 int (*kasumi_notify_change)(struct user_namespace *, struct dentry *,
 			    struct iattr *, struct inode **);
-#else
-int (*kasumi_notify_change)(struct dentry *, struct iattr *, struct inode **);
 #endif
 ssize_t (*kasumi_vfs_read)(struct file *, char __user *, size_t, loff_t *);
 ssize_t (*kasumi_vfs_write)(struct file *, const char __user *, size_t,
@@ -370,12 +366,9 @@ ssize_t (*kasumi_vfs_write)(struct file *, const char __user *, size_t,
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0)
 int (*kasumi_get_vfs_caps_from_disk)(struct mnt_idmap *, const struct dentry *,
 				     struct cpu_vfs_cap_data *);
-#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
+#else
 int (*kasumi_get_vfs_caps_from_disk)(struct user_namespace *,
 				     const struct dentry *,
-				     struct cpu_vfs_cap_data *);
-#else
-int (*kasumi_get_vfs_caps_from_disk)(const struct dentry *,
 				     struct cpu_vfs_cap_data *);
 #endif
 typeof(security_inode_getsecctx) *kasumi_security_inode_getsecctx;
@@ -410,7 +403,7 @@ int (*kasumi_vfs_unlink)(struct mnt_idmap *, struct inode *, struct dentry *,
 int (*kasumi_vfs_rmdir)(struct mnt_idmap *, struct inode *, struct dentry *);
 int (*kasumi_vfs_link)(struct dentry *, struct mnt_idmap *, struct inode *,
 		       struct dentry *, struct inode **);
-#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
+#else
 int (*kasumi_vfs_create)(struct user_namespace *, struct inode *,
 			 struct dentry *, umode_t, bool);
 int (*kasumi_vfs_mkdir)(struct user_namespace *, struct inode *,
@@ -425,22 +418,8 @@ int (*kasumi_vfs_rmdir)(struct user_namespace *, struct inode *,
 			struct dentry *);
 int (*kasumi_vfs_link)(struct dentry *, struct user_namespace *, struct inode *,
 		       struct dentry *, struct inode **);
-#else
-int (*kasumi_vfs_create)(struct inode *, struct dentry *, umode_t, bool);
-int (*kasumi_vfs_mkdir)(struct inode *, struct dentry *, umode_t);
-int (*kasumi_vfs_mknod)(struct inode *, struct dentry *, umode_t, dev_t);
-int (*kasumi_vfs_symlink)(struct inode *, struct dentry *, const char *);
-int (*kasumi_vfs_unlink)(struct inode *, struct dentry *, struct inode **);
-int (*kasumi_vfs_rmdir)(struct inode *, struct dentry *);
-int (*kasumi_vfs_link)(struct dentry *, struct inode *, struct dentry *,
-		       struct inode **);
 #endif
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
 int (*kasumi_vfs_rename)(struct renamedata *);
-#else
-int (*kasumi_vfs_rename)(struct inode *, struct dentry *, struct inode *,
-			 struct dentry *, struct inode **, unsigned int);
-#endif
 void (*kasumi_free_inode_nonrcu_ptr)(struct inode *);
 
 bool kasumi_valid_kernel_addr(unsigned long addr)

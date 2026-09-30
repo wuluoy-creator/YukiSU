@@ -4,16 +4,11 @@
 #include <linux/kernel.h>
 #include <linux/limits.h>
 #include <linux/slab.h>
-#include <linux/version.h>
 #ifdef CONFIG_KSU_DEBUG
 #include <linux/moduleparam.h>
 #endif // #ifdef CONFIG_KSU_DEBUG
 #include <crypto/hash.h>
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 11, 0)
 #include <crypto/sha2.h>
-#else
-#include <crypto/sha.h>
-#endif // #if LINUX_VERSION_CODE >= KERNEL_VERSIO...
 
 #include "manager/apk_sign.h"
 #include "util.h"

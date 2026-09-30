@@ -6,7 +6,7 @@ Nasıl kurulacağı hakkında bilgi için [KernelSU Belgeleri - Kurulum](https:/
 
 Lütfen [KernelSU Belgeleri - LKM Kurulumu](https://kernelsu.org/guide/installation.html#lkm-installation) bölümüne bakın.
 
-Android 12'den itibaren, çekirdek sürümü 5.10 veya üzeri olan cihazların GKI çekirdeği kullanması gerekir. Bu nedenle LKM modunu kullanmanız mümkün olabilir.
+YukiSU LKM modu için Linux 6.1 veya daha yeni bir sürümü çalıştıran Android GKI 2.0 cihazı gerekir. 6.1'den eski çekirdekler desteklenmez.
 
 ## Çekirdek Kurarak Kurulum
 

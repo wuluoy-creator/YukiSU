@@ -113,9 +113,7 @@ static atomic_t kasumi_proxy_live = ATOMIC_INIT(0);
 static atomic_long_t kasumi_stream_memory_used = ATOMIC_LONG_INIT(0);
 
 static struct kprobe kasumi_kp_fd_install;
-static struct kprobe kasumi_kp_internal_fd_install;
 static bool kasumi_fd_install_registered;
-static bool kasumi_internal_fd_install_registered;
 static DEFINE_MUTEX(kasumi_proxy_hooks_lock);
 static unsigned int kasumi_proxy_hook_users;
 static bool kasumi_view_proxy_held;
@@ -337,26 +335,6 @@ static int kasumi_fd_install_pre(struct kprobe *kp, struct pt_regs *regs)
 	return 0;
 }
 
-/* Android 12/13 5.10 LTO calls __fd_install(files, fd, file) directly from
- * do_sys_openat2(), bypassing the public fd_install() wrapper entirely.
- */
-static int kasumi_internal_fd_install_pre(struct kprobe *kp,
-					  struct pt_regs *regs)
-{
-	struct file *file;
-
-	(void)kp;
-#if defined(__aarch64__)
-	file = (struct file *)regs->regs[2];
-#elif defined(__x86_64__)
-	file = (struct file *)regs->dx;
-#else
-	return 0;
-#endif
-	kasumi_fd_install_file(file);
-	return 0;
-}
-
 /* __fput() dereferences file->f_op after ->release returns. The live proxy's
  * owner reference is transferred to this permanent fops object while the
  * per-file proxy is reclaimed.
@@ -393,7 +371,7 @@ kasumi_mount_proxy_orig_read_iter(struct kasumi_mount_file_proxy *proxy,
 	if (proxy->orig_fops->read_iter)
 		return proxy->orig_fops->read_iter(iocb, to);
 
-	/* maps/smaps used ->read = seq_read on older kernels. All proc views
+	/* maps/smaps use ->read = seq_read on Linux 6.1. All proc views
 	 * proxied here are seq_files, so seq_read_iter is the safe
 	 * kernel-buffer equivalent and avoids ever placing unfiltered bytes in
 	 * userspace.
@@ -1473,9 +1451,8 @@ static int kasumi_filter_maps_lines(const char *src, size_t len, char *dst,
  * The source's caps were parsed and stashed on the vnode at create time; here
  * we simply replay them (atomic-safe: pure copy) and report success.
  *
- * Argument layout follows get_vfs_caps_from_disk():
- *   < 5.12: (dentry, cpu_caps)              -> reg0, reg1
- *  >= 5.12: (idmap/userns, dentry, cpu_caps)-> reg1, reg2
+ * get_vfs_caps_from_disk(idmap/userns, dentry, cpu_caps) places the
+ * dentry and output buffer in the second and third argument registers.
  */
 static int kasumi_get_vfs_caps_entry(struct kretprobe_instance *ri,
 				     struct pt_regs *regs)
@@ -1488,21 +1465,11 @@ static int kasumi_get_vfs_caps_entry(struct kretprobe_instance *ri,
 	if (!READ_ONCE(kasumi_fscaps_enabled))
 		return 0;
 #if defined(__aarch64__)
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
 	dentry = (const struct dentry *)regs->regs[1];
 	d->out = (struct cpu_vfs_cap_data *)regs->regs[2];
-#else
-	dentry = (const struct dentry *)regs->regs[0];
-	d->out = (struct cpu_vfs_cap_data *)regs->regs[1];
-#endif
 #elif defined(__x86_64__)
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
 	dentry = (const struct dentry *)regs->si;
 	d->out = (struct cpu_vfs_cap_data *)regs->dx;
-#else
-	dentry = (const struct dentry *)regs->di;
-	d->out = (struct cpu_vfs_cap_data *)regs->si;
-#endif
 #else
 	dentry = NULL;
 	d->out = NULL;
@@ -1541,7 +1508,7 @@ static struct kretprobe kasumi_krp_get_vfs_caps = {
 
 int kasumi_proc_proxy_get(void)
 {
-	unsigned long fd_install_addr, internal_fd_install_addr;
+	unsigned long fd_install_addr;
 	bool use_proxy_filter = false;
 	int ret = 0;
 
@@ -1549,21 +1516,7 @@ int kasumi_proc_proxy_get(void)
 	if (kasumi_proxy_hook_users)
 		goto acquired;
 	fd_install_addr = kasumi_lookup_name_quiet("fd_install");
-	internal_fd_install_addr = kasumi_lookup_name_quiet("__fd_install");
 	atomic_set(&kasumi_proxy_shutdown, 0);
-	if (internal_fd_install_addr) {
-		kasumi_kp_internal_fd_install.addr =
-		    (kprobe_opcode_t *)internal_fd_install_addr;
-		kasumi_kp_internal_fd_install.pre_handler =
-		    kasumi_internal_fd_install_pre;
-		if (!register_kprobe(&kasumi_kp_internal_fd_install)) {
-			kasumi_internal_fd_install_registered = true;
-			use_proxy_filter = true;
-		} else {
-			pr_warn("kasumi: register_kprobe(__fd_install) "
-				"failed\n");
-		}
-	}
 	if (fd_install_addr) {
 		kasumi_kp_fd_install.addr = (kprobe_opcode_t *)fd_install_addr;
 		kasumi_kp_fd_install.pre_handler = kasumi_fd_install_pre;
@@ -1575,21 +1528,13 @@ int kasumi_proc_proxy_get(void)
 				"failed\n");
 		}
 	}
-	if (!internal_fd_install_addr && !fd_install_addr)
+	if (!fd_install_addr)
 		pr_warn("kasumi: no fd-install ingress found\n");
 
 	if (use_proxy_filter) {
 		kasumi_proc_proxy_registered = 1;
-		if (kasumi_internal_fd_install_registered &&
-		    kasumi_fd_install_registered)
-			pr_info("kasumi: proc views filtered by "
-				"__fd_install+fd_install fop proxy\n");
-		else if (kasumi_internal_fd_install_registered)
-			pr_info("kasumi: proc views filtered by __fd_install "
-				"fop proxy\n");
-		else
-			pr_info("kasumi: proc views filtered by fd_install fop "
-				"proxy\n");
+		pr_info(
+		    "kasumi: proc views filtered by fd_install fop proxy\n");
 	}
 	if (!use_proxy_filter) {
 		ret = -ENOSYS;
@@ -1610,10 +1555,6 @@ void kasumi_proc_proxy_put(void)
 	if (--kasumi_proxy_hook_users)
 		goto unlock;
 	atomic_set(&kasumi_proxy_shutdown, 1);
-	if (kasumi_internal_fd_install_registered) {
-		unregister_kprobe(&kasumi_kp_internal_fd_install);
-		kasumi_internal_fd_install_registered = false;
-	}
 	if (kasumi_fd_install_registered) {
 		unregister_kprobe(&kasumi_kp_fd_install);
 		kasumi_fd_install_registered = false;

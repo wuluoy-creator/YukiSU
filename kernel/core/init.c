@@ -13,39 +13,6 @@
 #include <linux/sched.h>
 #include <linux/version.h>
 
-// workaround for A12-5.10 kernels with mismatched stack protector toolchain
-#if defined(CONFIG_STACKPROTECTOR) && !defined(CONFIG_STACKPROTECTOR_PER_TASK)
-#include <linux/random.h>
-#include <linux/stackprotector.h>
-unsigned long __stack_chk_guard __ro_after_init
-    __attribute__((visibility("hidden")));
-
-void ksu_setup_stack_chk_guard(void);
-
-__attribute__((no_stack_protector)) void ksu_setup_stack_chk_guard(void)
-{
-	unsigned long canary;
-
-	get_random_bytes(&canary, sizeof(canary));
-	canary ^= LINUX_VERSION_CODE;
-	canary &= CANARY_MASK;
-	__stack_chk_guard = canary;
-}
-
-static __attribute__((naked)) int __init kernelsu_init_early(void)
-{
-	asm("mov x19, x30;\n"
-	    "bl ksu_setup_stack_chk_guard;\n"
-	    "mov x30, x19;\n"
-	    "b kernelsu_init;\n");
-}
-#define NEED_OWN_STACKPROTECTOR 1
-#else
-#define NEED_OWN_STACKPROTECTOR 0
-#endif // #if defined(CONFIG_STACKPROTECTOR) && !...
-
-int kernelsu_init(void);
-
 #include "policy/allowlist.h"
 #include "policy/feature.h"
 #include "core/imgpatch_config.h"
@@ -56,7 +23,6 @@ int kernelsu_init(void);
 #ifdef CONFIG_KSU_YUKIZYGISK
 #include "feature/yukizygisk/api.h"
 #endif // #ifdef CONFIG_KSU_YUKIZYGISK
-#include "infra/file_wrapper.h"
 #include "kasumi_bootstrap.h"
 #include "hook/lsm_hook.h"
 #include "infra/symbol_resolver.h"
@@ -133,7 +99,7 @@ static void ksu_hook_exit(void)
 	ksu_hooks_started = false;
 }
 
-int __init kernelsu_init(void)
+static int __init kernelsu_init(void)
 {
 	bool uts_boot_requested;
 	int ret;
@@ -251,14 +217,12 @@ int __init kernelsu_init(void)
 	if (ksu_late_loaded) {
 		ksu_throne_tracker_init();
 		ksu_observer_init();
-		ksu_file_wrapper_init();
 
 		ksu_boot_completed = true;
 		track_throne(false);
 	} else {
 		ksu_throne_tracker_init();
 		ksu_ksud_init();
-		ksu_file_wrapper_init();
 	}
 
 #ifndef CONFIG_KSU_DEBUG
@@ -308,19 +272,12 @@ static void kernelsu_exit(void)
 	}
 }
 
-#if NEED_OWN_STACKPROTECTOR
-module_init(kernelsu_init_early);
-#else
 module_init(kernelsu_init);
-#endif // #if NEED_OWN_STACKPROTECTOR
 module_exit(kernelsu_exit);
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("weishu");
 MODULE_DESCRIPTION("Android KernelSU");
-#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 0, 0)
-MODULE_IMPORT_NS(ANDROID_GKI_VFS_EXPORT_ONLY);
-#endif // #if LINUX_VERSION_CODE < KERNEL_VERSION...
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 13, 0)
 MODULE_IMPORT_NS("VFS_internal_I_am_really_a_filesystem_and_am_NOT_a_driver");
 #else

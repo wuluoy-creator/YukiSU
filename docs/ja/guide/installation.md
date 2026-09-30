@@ -6,7 +6,7 @@
 
 [KernelSU ドキュメント - LKM インストール](https://kernelsu.org/guide/installation.html#lkm-installation) を参照してください。
 
-Android 12 以降、カーネルバージョン 5.10 以上を搭載するデバイスは GKI カーネルを使用する必要があります。そのため、LKM モードを使用できる可能性があります。
+YukiSU の LKM モードには、Linux 6.1 以降を搭載した Android GKI 2.0 デバイスが必要です。6.1 未満のカーネルはサポートされません。
 
 ## カーネルのインストールによる導入
 

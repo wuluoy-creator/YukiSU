@@ -100,8 +100,7 @@ static int disable_seccomp(void)
 	// during the operation.
 	spin_lock_irq(&current->sighand->siglock);
 	// disable seccomp
-#if defined(CONFIG_GENERIC_ENTRY) &&                                           \
-    LINUX_VERSION_CODE >= KERNEL_VERSION(5, 11, 0)
+#ifdef CONFIG_GENERIC_ENTRY
 	clear_syscall_work(SECCOMP);
 #else
 	clear_thread_flag(TIF_SECCOMP);
@@ -123,7 +122,7 @@ static int disable_seccomp(void)
 	} else {
 		fake->sighand = NULL;
 	}
-#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 11, 0)
+#else
 	// https://github.com/torvalds/linux/commit/0d8315dddd2899f519fe1ca3d4d5cdaf44ea421e#diff-45eb79a57536d8eccfc1436932f093eb5c0b60d9361c39edb46581ad313e8987R556-R558
 	fake->sighand = NULL;
 #endif
@@ -202,10 +201,8 @@ static int ksu_apply_root_profile_state_cred_common(
 	free_uid(cred->user);
 	cred->user = new_user;
 
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 14, 0)
 	if (set_cred_ucounts(cred))
 		return -EAGAIN;
-#endif // #if LINUX_VERSION_CODE >= KERNEL_VERSIO...
 
 	ksu_restore_root_profile_caps(cred, state);
 	ret = setup_groups(profile, cred);

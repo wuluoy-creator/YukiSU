@@ -3,6 +3,7 @@
 
 import hashlib
 import lzma
+import re
 import sys
 import zlib
 from pathlib import Path
@@ -65,6 +66,12 @@ def main() -> None:
         data = normalize_asset_data(filepath, filepath.read_bytes())
         identifier = to_c_identifier(filepath.name)
         if filepath.name.endswith(LKM_SUFFIX):
+            kmi = filepath.name.removesuffix(LKM_SUFFIX)
+            version = re.fullmatch(r"(?:android\d+-)?(\d+)\.(\d+)", kmi)
+            if version is None or tuple(map(int, version.groups())) < (6, 1):
+                raise SystemExit(
+                    f"Unsupported LKM asset {filepath.name}: YukiSU requires Linux 6.1 or newer"
+                )
             offset = len(lkm_raw)
             lkm_raw.extend(data)
             lkm_assets.append(

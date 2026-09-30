@@ -259,12 +259,7 @@ static struct file *KASUMI_NOCFI kasumi_owner_open(const char *path, int flags)
 	const struct cred *old = override_creds(kasumi_owner_cred);
 	struct file *file;
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 12, 0)
-	file = owner_file_open_root(kasumi_owner_root.dentry,
-				    kasumi_owner_root.mnt, path, flags, 0);
-#else
 	file = owner_file_open_root(&kasumi_owner_root, path, flags, 0);
-#endif
 	revert_creds(old);
 	return file;
 }
@@ -300,13 +295,7 @@ static int KASUMI_NOCFI kasumi_owner_watch(void)
 	    owner_add_mark(mark, file_inode(file), FSNOTIFY_OBJ_TYPE_INODE, 0);
 #else
 	ret = owner_add_mark(mark, &file_inode(file)->i_fsnotify_marks,
-			     FSNOTIFY_OBJ_TYPE_INODE,
-#ifdef FSNOTIFY_GROUP_DUPS
-			     0,
-#else
-			     1,
-#endif
-			     NULL);
+			     FSNOTIFY_OBJ_TYPE_INODE, 0, NULL);
 #endif
 	owner_fput_sync(file);
 	if (ret)
@@ -680,12 +669,8 @@ int KASUMI_NOCFI kasumi_owner_init(void)
 		tracepoint_synchronize_unregister();
 		return ret;
 	}
-#ifdef FSNOTIFY_GROUP_DUPS
 	kasumi_owner_group =
 	    owner_alloc_group(&kasumi_owner_notify_ops, FSNOTIFY_GROUP_DUPS);
-#else
-	kasumi_owner_group = owner_alloc_group(&kasumi_owner_notify_ops);
-#endif
 	if (IS_ERR(kasumi_owner_group)) {
 		ret = (int)PTR_ERR(kasumi_owner_group);
 		kasumi_owner_group = NULL;

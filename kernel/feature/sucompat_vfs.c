@@ -90,11 +90,9 @@ bool ksu_sucompat_vfs_is_file(const struct file *file)
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0)
 static int su_permission(struct mnt_idmap *idmap, struct inode *inode, int mask)
-#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
+#else
 static int su_permission(struct user_namespace *userns, struct inode *inode,
 			 int mask)
-#else
-static int su_permission(struct inode *inode, int mask)
 #endif
 {
 	if (!ksu_sucompat_vfs_visible() ||

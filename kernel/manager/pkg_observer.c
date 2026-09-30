@@ -8,7 +8,6 @@
 #include <linux/namei.h>
 #include <linux/rculist.h>
 #include <linux/slab.h>
-#include <linux/version.h>
 #include <linux/fsnotify_backend.h>
 
 #define MASK_SYSTEM (FS_CREATE | FS_MOVE | FS_EVENT_ON_CHILD)
@@ -108,11 +107,7 @@ int ksu_observer_init(void)
 {
 	int ret = 0;
 
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 0, 0)
 	g = fsnotify_alloc_group(&ksu_ops, 0);
-#else
-	g = fsnotify_alloc_group(&ksu_ops);
-#endif // #if LINUX_VERSION_CODE >= KERNEL_VERSIO...
 	if (IS_ERR(g))
 		return PTR_ERR(g);
 

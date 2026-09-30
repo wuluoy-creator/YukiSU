@@ -33,9 +33,6 @@
 #include <linux/xattr.h>
 #include <linux/seq_file.h>
 #include <uapi/linux/magic.h>
-#ifndef EROFS_SUPER_MAGIC
-#define EROFS_SUPER_MAGIC 0xe0f5e1e2
-#endif
 #include <asm/unistd.h>
 #include "kasumi_runtime.h"
 #include "kasumi_store.h"
@@ -113,20 +110,21 @@ static const char *kasumi_direct_child_name(const char *path, const char *dir,
 	return strchr(name, '/') ? NULL : name;
 }
 
-static KASUMI_NOCFI KASUMI_FILLDIR_RET_TYPE
-kasumi_merge_filldir(struct dir_context *ctx, const char *name, int namlen,
-		     loff_t offset, u64 ino, unsigned int d_type)
+static KASUMI_NOCFI bool kasumi_merge_filldir(struct dir_context *ctx,
+					      const char *name, int namlen,
+					      loff_t offset, u64 ino,
+					      unsigned int d_type)
 {
 	struct kasumi_merge_ctx *mctx =
 	    container_of(ctx, struct kasumi_merge_ctx, ctx);
 	struct kasumi_name_list *item;
 
 	if (namlen == 1 && name[0] == '.')
-		return KASUMI_FILLDIR_CONTINUE;
+		return true;
 	if (namlen == 2 && name[0] == '.' && name[1] == '.')
-		return KASUMI_FILLDIR_CONTINUE;
+		return true;
 	if (namlen == 8 && strncmp(name, ".replace", 8) == 0)
-		return KASUMI_FILLDIR_CONTINUE;
+		return true;
 
 	/* Skip whiteout (char dev 0:0) */
 	if (d_type == DT_CHR && mctx->dir_path) {
@@ -142,7 +140,7 @@ kasumi_merge_filldir(struct dir_context *ctx, const char *name, int namlen,
 				    S_ISCHR(stat.mode) && stat.rdev == 0) {
 					path_put(&p);
 					kfree(path);
-					return KASUMI_FILLDIR_CONTINUE;
+					return true;
 				}
 				path_put(&p);
 			}
@@ -156,7 +154,7 @@ kasumi_merge_filldir(struct dir_context *ctx, const char *name, int namlen,
 		list_for_each_entry (pos, mctx->head, list) {
 			if ((size_t)namlen == strlen(pos->name) &&
 			    strncmp(pos->name, name, namlen) == 0)
-				return KASUMI_FILLDIR_CONTINUE;
+				return true;
 		}
 	}
 
@@ -176,7 +174,7 @@ kasumi_merge_filldir(struct dir_context *ctx, const char *name, int namlen,
 		else
 			kfree(item);
 	}
-	return KASUMI_FILLDIR_CONTINUE;
+	return true;
 }
 
 KASUMI_NOCFI void kasumi_populate_injected_list(const char *dir_path,
@@ -554,9 +552,10 @@ struct kasumi_mat_ctx {
 	int error;
 };
 
-static KASUMI_NOCFI KASUMI_FILLDIR_RET_TYPE
-kasumi_mat_filldir(struct dir_context *ctx, const char *name, int namlen,
-		   loff_t offset, u64 ino, unsigned int d_type)
+static KASUMI_NOCFI bool kasumi_mat_filldir(struct dir_context *ctx,
+					    const char *name, int namlen,
+					    loff_t offset, u64 ino,
+					    unsigned int d_type)
 {
 	struct kasumi_mat_ctx *mc =
 	    container_of(ctx, struct kasumi_mat_ctx, ctx);
@@ -567,11 +566,11 @@ kasumi_mat_filldir(struct dir_context *ctx, const char *name, int namlen,
 
 	if (namlen <= 2 && name[0] == '.') {
 		if (namlen == 1 || (namlen == 2 && name[1] == '.'))
-			return KASUMI_FILLDIR_CONTINUE;
+			return true;
 	}
 	if (namlen == 8 && memcmp(name, ".replace", 8) == 0) {
 		mc->error = -EOPNOTSUPP;
-		return KASUMI_FILLDIR_STOP;
+		return false;
 	}
 
 	src_path =
@@ -582,7 +581,7 @@ kasumi_mat_filldir(struct dir_context *ctx, const char *name, int namlen,
 		kfree(src_path);
 		kfree(tgt_path);
 		mc->error = -ENOMEM;
-		return KASUMI_FILLDIR_STOP;
+		return false;
 	}
 
 	/* For DT_DIR: register a nested merge_entry and recurse. Do NOT add a
@@ -634,7 +633,7 @@ kasumi_mat_filldir(struct dir_context *ctx, const char *name, int namlen,
 
 	kfree(src_path);
 	kfree(tgt_path);
-	return mc->error ? KASUMI_FILLDIR_STOP : KASUMI_FILLDIR_CONTINUE;
+	return !mc->error;
 }
 
 KASUMI_NOCFI int kasumi_materialize_merge(const char *src_prefix,

@@ -32,7 +32,7 @@
 ## 互換性
 
 - YukiSU は現在、ロード可能カーネルモジュール（`CONFIG_KSU=m`）のみをサポートしており、built-in の `CONFIG_KSU=y` はサポートしていません。
-- YukiSU は Android GKI 2.0 デバイス（カーネル 5.10+）の LKM モードをサポートします。GKI 1.0 カーネルおよび non-GKI カーネルはサポートされません。
+- YukiSU は Android GKI 2.0 デバイス（カーネル 6.1+）の LKM モードをサポートします。GKI 1.0 カーネルおよび non-GKI カーネルはサポートされません。
 - YukiSU は `arm64-v8a` デバイスのみをサポートします。
 - YukiZygisk は `arm64-v8a` と `armeabi-v7a` の両 ABI のビルドと注入をサポートします。
 

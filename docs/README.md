@@ -32,7 +32,7 @@ A kernel-based root solution for Android devices, forked from [`SukiSU-Ultra`](h
 ## Compatibility Status
 
 - YukiSU currently supports only loadable kernel modules (`CONFIG_KSU=m`) and no longer supports built-in `CONFIG_KSU=y`.
-- YukiSU supports LKM mode on Android GKI 2.0 devices (kernel 5.10+). GKI 1.0 kernels and non-GKI kernels are not supported.
+- YukiSU supports LKM mode on Android GKI 2.0 devices (kernel 6.1+). GKI 1.0 kernels and non-GKI kernels are not supported.
 - YukiSU supports only `arm64-v8a` devices.
 - YukiZygisk supports building and injection for both the `arm64-v8a` and `armeabi-v7a` ABIs.
 

@@ -77,13 +77,7 @@ static int KASUMI_NOCFI hide_watch_add(struct kasumi_hide_events *events,
 	ret = hide_add_mark(&watch->mark, inode, FSNOTIFY_OBJ_TYPE_INODE, 0);
 #else
 	ret = hide_add_mark(&watch->mark, &inode->i_fsnotify_marks,
-			    FSNOTIFY_OBJ_TYPE_INODE,
-#ifdef FSNOTIFY_GROUP_DUPS
-			    0,
-#else
-			    1,
-#endif
-			    NULL);
+			    FSNOTIFY_OBJ_TYPE_INODE, 0, NULL);
 #endif
 	if (ret) {
 		hide_put_mark(&watch->mark);
@@ -111,12 +105,7 @@ hide_open_root(struct kasumi_hide_events *events, const char *name, int flags)
 	const struct cred *old = override_creds(events->cred);
 	struct file *file;
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 12, 0)
-	file = hide_file_open_root(events->root.dentry, events->root.mnt, name,
-				   flags, 0);
-#else
 	file = hide_file_open_root(&events->root, name, flags, 0);
-#endif
 	revert_creds(old);
 	return file;
 }
@@ -326,12 +315,8 @@ int KASUMI_NOCFI kasumi_hide_events_open(struct kasumi_hide_events *events,
 	}
 	events->notify = notify;
 	events->data = data;
-#ifdef FSNOTIFY_GROUP_DUPS
 	events->directories =
 	    hide_alloc_group(&hide_directory_ops, FSNOTIFY_GROUP_DUPS);
-#else
-	events->directories = hide_alloc_group(&hide_directory_ops);
-#endif
 	if (IS_ERR(events->directories)) {
 		ret = PTR_ERR(events->directories);
 		events->directories = NULL;

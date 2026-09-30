@@ -41,11 +41,7 @@ typedef const struct linux_binprm yz_bprm_arg_t;
 typedef struct linux_binprm yz_bprm_arg_t;
 #endif
 
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 1, 0)
 #define YZ_BPRM_HOOK_CFI "kcfi"
-#else
-#define YZ_BPRM_HOOK_CFI "clang-cfi/.cfi_jt"
-#endif
 
 static void yz_bprm_committed_creds(yz_bprm_arg_t *bprm);
 static struct ksu_lsm_hook yz_exec_hook = KSU_LSM_HOOK_INIT(

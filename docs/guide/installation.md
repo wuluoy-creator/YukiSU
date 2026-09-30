@@ -6,7 +6,7 @@ You can refer to the [KernelSU Documentation - Installation](https://kernelsu.or
 
 Please refer to the [KernelSU Documentation - LKM Installation](https://kernelsu.org/guide/installation.html#lkm-installation).
 
-Starting from Android 12, devices with kernel version 5.10 or higher must use a GKI kernel. Therefore, you may be able to use LKM mode.
+YukiSU requires an Android GKI 2.0 device running Linux 6.1 or newer to use LKM mode. Kernels older than 6.1 are not supported.
 
 ## Installation via Kernel Installation
 

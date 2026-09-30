@@ -1,10 +1,8 @@
 // Minimum Android API floor for every YukiSU userspace component.
 //
-// This is a deliberate compatibility floor, not a technical minimum: it stops a
-// third party from building YukiSU with builtin support stripped out and running
-// it against an old kernel. Android 12 (API 31) is the oldest release YukiSU
-// supports, so anything below it must fail to compile rather than silently
-// produce a binary that runs somewhere unsupported.
+// Android 12 (API 31) is the minimum supported userspace API. The Linux 6.1
+// kernel requirement is enforced separately; Android API levels do not identify
+// the device's kernel version.
 //
 // The check lives here because the build plumbing alone is not trustworthy:
 // __ANDROID_API__ is set by the versioned compiler wrapper

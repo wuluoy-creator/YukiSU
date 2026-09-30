@@ -2,6 +2,7 @@
 #include "../assets.hpp"
 #include "../core/uts_view.hpp"
 #include "../defs.hpp"
+#include "../kernel_version.hpp"
 #include "../log.hpp"
 #include "../utils.hpp"
 #include "boot_backup.hpp"
@@ -863,31 +864,29 @@ int boot_patch_impl(const std::vector<std::string>& args) {
 
     // Get or detect KMI
     std::string kmi = parsed.kmi;
-    const bool needs_automatic_lkm = parsed.module.empty();
-    const bool needs_automatic_partition = parsed.boot_image.empty() && parsed.partition.empty();
-    if (kmi.empty() && parsed.ota && (needs_automatic_lkm || needs_automatic_partition)) {
+    if (kmi.empty() && parsed.ota) {
         const std::string target_boot = "/dev/block/by-name/boot" + ota_slot;
         printf("- Trying to auto detect KMI version from %s\n", target_boot.c_str());
         kmi = parse_kmi_from_boot(magiskboot, workdir, target_boot);
         if (kmi.empty()) {
             printf("! Failed to detect KMI from inactive slot boot image\n");
-            printf("! Please select an LKM file manually or specify --kmi\n");
+            printf("! Please specify the target kernel with --kmi\n");
             cleanup();
             return 1;
         }
     }
     if (kmi.empty()) {
         kmi = get_current_kmi();
-        if (kmi.empty() && (needs_automatic_lkm || needs_automatic_partition)) {
-            printf("- Failed to obtain trusted KMI for automatic LKM/partition selection\n");
-            printf("- Select both the LKM and boot image/partition manually\n");
-            cleanup();
-            return 1;
-        }
     }
-    if (!kmi.empty()) {
-        printf("- KMI: %s\n", kmi.c_str());
+    if (!is_supported_kmi(kmi)) {
+        printf("! YukiSU requires Linux 6.1 or newer (target KMI: %s)\n",
+               kmi.empty() ? "unknown" : kmi.c_str());
+        if (kmi.empty())
+            printf("! Specify the target kernel with --kmi\n");
+        cleanup();
+        return 1;
     }
+    printf("- KMI: %s\n", kmi.c_str());
 
     // Determine boot image path
     std::string bootimage;
@@ -912,10 +911,10 @@ int boot_patch_impl(const std::vector<std::string>& args) {
         if (!parsed.partition.empty()) {
             // User specified partition name (e.g., "init_boot" or "boot")
             partition_name =
-                choose_boot_partition(kmi, parsed.ota, &parsed.partition, is_replace_kernel);
+                choose_boot_partition(parsed.ota, &parsed.partition, is_replace_kernel);
         } else {
             // Auto-detect: choose_boot_partition returns full path with slot
-            partition_name = choose_boot_partition(kmi, parsed.ota, nullptr, is_replace_kernel);
+            partition_name = choose_boot_partition(parsed.ota, nullptr, is_replace_kernel);
         }
 
         if (partition_name.empty()) {
@@ -1554,14 +1553,6 @@ int boot_restore(const std::vector<std::string>& args) {
         prefer_boot_partition = status == DirectLkmImageStatus::kContainsCapsule;
     }
 
-    // Get KMI for partition detection
-    const std::string kmi = get_current_kmi();
-    if (kmi.empty() && parsed.boot_image.empty() && !prefer_boot_partition) {
-        LOGE("Trusted KMI is unavailable; refusing automatic restore partition selection");
-        cleanup();
-        return 1;
-    }
-
     // Determine boot image path
     std::string bootimage;
     std::string bootdevice;
@@ -1577,7 +1568,7 @@ int boot_restore(const std::vector<std::string>& args) {
         // Auto-detect boot partition (restore doesn't replace kernel)
         const std::string partition_name = prefer_boot_partition
                                                ? "/dev/block/by-name/boot" + restore_slot
-                                               : choose_boot_partition(kmi, false, nullptr, false);
+                                               : choose_boot_partition(false, nullptr, false);
         if (partition_name.empty()) {
             LOGE("Failed to resolve a safe boot partition");
             cleanup();
@@ -1979,8 +1970,8 @@ int boot_info_slot_suffix(bool ota) {
     return 0;
 }
 
-std::string choose_boot_partition(const std::string& kmi, bool ota,
-                                  const std::string* override_partition, bool is_replace_kernel) {
+std::string choose_boot_partition(bool ota, const std::string* override_partition,
+                                  bool is_replace_kernel) {
     const std::string slot = get_slot_suffix(ota);
     if (ota && slot.empty())
         return "";
@@ -1995,9 +1986,6 @@ std::string choose_boot_partition(const std::string& kmi, bool ota,
         // Invalid partition name, fallback to auto-detect
     }
 
-    // Android 12 GKI doesn't have init_boot
-    const bool skip_init_boot = kmi.find("android12-") == 0;
-
     // Check if init_boot exists
     std::string init_boot = "/dev/block/by-name/init_boot" + slot;
     struct stat st{};
@@ -2006,8 +1994,7 @@ std::string choose_boot_partition(const std::string& kmi, bool ota,
     // Use init_boot if:
     // - Not replacing kernel (LKM mode)
     // - init_boot partition exists
-    // - Not android12 (which doesn't have init_boot)
-    if (!is_replace_kernel && init_boot_exist && !skip_init_boot) {
+    if (!is_replace_kernel && init_boot_exist) {
         return init_boot;
     }
 
@@ -2017,11 +2004,8 @@ std::string choose_boot_partition(const std::string& kmi, bool ota,
 
 // Return partition name only (without path and slot suffix)
 // Used by boot-info default-partition command for manager
-std::string get_default_partition_name(const std::string& kmi, bool is_replace_kernel) {
+std::string get_default_partition_name(bool is_replace_kernel) {
     const std::string slot = get_slot_suffix(false);
-
-    // Android 12 GKI doesn't have init_boot
-    const bool skip_init_boot = kmi.find("android12-") == 0;
 
     // Check if init_boot exists
     const std::string init_boot = "/dev/block/by-name/init_boot" + slot;
@@ -2031,8 +2015,7 @@ std::string get_default_partition_name(const std::string& kmi, bool is_replace_k
     // Use init_boot if:
     // - Not replacing kernel (LKM mode)
     // - init_boot partition exists
-    // - Not android12 (which doesn't have init_boot)
-    if (!is_replace_kernel && init_boot_exist && !skip_init_boot) {
+    if (!is_replace_kernel && init_boot_exist) {
         return "init_boot";
     }
 
@@ -2040,13 +2023,8 @@ std::string get_default_partition_name(const std::string& kmi, bool is_replace_k
 }
 
 int boot_info_default_partition() {
-    const std::string kmi = get_current_kmi();
-    if (kmi.empty()) {
-        printf("Failed to obtain trusted KMI for partition selection\n");
-        return 1;
-    }
     // Return partition name only, not full path.
-    const std::string partition = get_default_partition_name(kmi, false);
+    const std::string partition = get_default_partition_name(false);
     printf("%s\n", partition.c_str());
     return 0;
 }

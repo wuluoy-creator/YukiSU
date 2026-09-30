@@ -12,10 +12,6 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 OUT_DIR="$REPO_ROOT/out"
 # Keep this list in sync with build-lkm.yml and ksud.yml.
 SUPPORTED_KMIS=(
-	android12-5.10
-	android13-5.10
-	android13-5.15
-	android14-5.15
 	android14-6.1
 	android15-6.6
 	android16-6.12
@@ -67,8 +63,9 @@ while [[ $# -gt 0 ]]; do
 done
 
 for kmi in "${KMI_TARGETS[@]}"; do
-	if [[ ! "$kmi" =~ ^[A-Za-z0-9._-]+$ ]]; then
-		echo "Invalid KMI/DDK target: $kmi"
+	if [[ ! "$kmi" =~ ^[A-Za-z0-9._-]+$ || " ${SUPPORTED_KMIS[*]} " != *" $kmi "* ]]; then
+		echo "Unsupported KMI/DDK target: $kmi (requires Linux 6.1 or newer)"
+		echo "Supported targets: ${SUPPORTED_KMIS[*]}"
 		exit 1
 	fi
 done

@@ -1514,7 +1514,7 @@ private fun StatusCardPreview() {
             HomeViewModel.SystemStatus(
                 isManager = true,
                 ksuVersion = 1,
-                kernelVersion = KernelVersion(5, 10, 101),
+                kernelVersion = KernelVersion(6, 1, 101),
                 isRootAvailable = true
             )
         )
@@ -1523,7 +1523,7 @@ private fun StatusCardPreview() {
             HomeViewModel.SystemStatus(
                 isManager = true,
                 ksuVersion = 10000,
-                kernelVersion = KernelVersion(5, 10, 101),
+                kernelVersion = KernelVersion(6, 1, 101),
                 isRootAvailable = true
             )
         )
@@ -1532,7 +1532,7 @@ private fun StatusCardPreview() {
             HomeViewModel.SystemStatus(
                 isManager = false,
                 ksuVersion = null,
-                kernelVersion = KernelVersion(5, 10, 101),
+                kernelVersion = KernelVersion(6, 1, 101),
                 isRootAvailable = false
             )
         )

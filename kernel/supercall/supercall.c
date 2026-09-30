@@ -15,7 +15,6 @@
 #include <linux/syscalls.h>
 #include <linux/task_work.h>
 #include <linux/uaccess.h>
-#include <linux/version.h>
 
 #include "policy/allowlist.h"
 #include "arch.h"
@@ -59,11 +58,7 @@ static void ksu_install_fd_tw_func(struct callback_head *cb)
 
 	if (copy_to_user(tw->outp, &fd, sizeof(fd))) {
 		pr_err("install ksu fd reply err\n");
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 11, 0)
 		close_fd(fd);
-#else
-		ksys_close(fd);
-#endif // #if LINUX_VERSION_CODE >= KERNEL_VERSIO...
 	}
 
 	kfree(tw);
@@ -124,11 +119,7 @@ static void ksu_superkey_auth_tw_func(struct callback_head *cb)
 	if (copy_to_user(tw->cmd_user, &cmd, sizeof(cmd))) {
 		pr_err("superkey auth: copy_to_user failed\n");
 		if (fd >= 0) {
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 11, 0)
 			close_fd(fd);
-#else
-			ksys_close(fd);
-#endif // #if LINUX_VERSION_CODE >= KERNEL_VERSIO...
 		}
 	}
 
@@ -294,11 +285,7 @@ static void ksu_superkey_prctl_tw_func(struct callback_head *cb)
 	if (copy_to_user(tw->cmd_user, &cmd, sizeof(cmd))) {
 		pr_err("superkey prctl auth: copy_to_user failed\n");
 		if (fd >= 0) {
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 11, 0)
 			close_fd(fd);
-#else
-			ksys_close(fd);
-#endif // #if LINUX_VERSION_CODE >= KERNEL_VERSIO...
 		}
 	}
 
@@ -347,11 +334,7 @@ static int ksu_handle_prctl_superkey(int option, unsigned long arg2)
 				pr_err("prctl get_fd: copy_to_user failed, "
 				       "closing fd=%d\n",
 				       cmd.fd);
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 11, 0)
 				close_fd(cmd.fd);
-#else
-				ksys_close(cmd.fd);
-#endif // #if LINUX_VERSION_CODE >= KERNEL_VERSIO...
 			}
 			return 0;
 		}
@@ -385,8 +368,7 @@ static int ksu_handle_prctl_superkey(int option, unsigned long arg2)
  * a kprobe. It runs in the sleepable dispatcher context (not the atomic kprobe
  * breakpoint handler) and avoids planting a breakpoint on the hot __NR_prctl
  * path. Must be __nocfi: it tail-calls the original syscall through
- * ksu_syscall_table[orig_nr], a kallsyms-resolved pointer with no .cfi_jt on
- * some kernels.
+ * ksu_syscall_table[orig_nr], a kallsyms-resolved function pointer.
  */
 static long __nocfi ksu_hook_prctl(int orig_nr, const struct pt_regs *regs)
 {

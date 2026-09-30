@@ -55,7 +55,11 @@ class BuildPlanTests(unittest.TestCase):
             resolve({"kmi": " android14-6.1, android15-6.6,android14-6.1 "})[1]["kmi"],
             "android14-6.1,android15-6.6",
         )
-        for invalid in ("", "all,android14-6.1", "android99-9.9", "android14-6.1,", "$(id)"):
+        for invalid in (
+            "", "all,android14-6.1", "android99-9.9", "android14-6.1,", "$(id)",
+            "android12-5.10", "android13-5.10", "android13-5.15", "android14-5.15",
+            "android14-6.1,android14-5.15",
+        ):
             with self.subTest(kmi=invalid), self.assertRaises(ValueError):
                 resolve({"kmi": invalid})
 

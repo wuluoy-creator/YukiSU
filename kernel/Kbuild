@@ -1,5 +1,14 @@
 MDIR := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
+# Reject unsupported kernels before compiling against incompatible APIs.
+ifneq ($(filter y m,$(CONFIG_KSU)),)
+ifeq ($(filter clean mrproper distclean,$(MAKECMDGOALS)),)
+ifneq ($(shell test "$(VERSION)" -gt 6 -o \( "$(VERSION)" -eq 6 -a "$(PATCHLEVEL)" -ge 1 \) && echo supported),supported)
+$(error YukiSU requires Linux 6.1 or newer)
+endif
+endif
+endif
+
 kernelsu-objs := core/init.o
 kernelsu-objs += core/imgpatch_config.o
 kernelsu-objs += policy/allowlist.o
@@ -185,61 +194,12 @@ ccflags-y += -DKSU_VERSION_FULL=\"$(KSU_VERSION_FULL)\"
 
 $(info -- YukiSU: SuperKey allows the manager app to authenticate using a password instead of APK signature verification. Use Superkey instead of custom signature verification.)
 
-# SELinux drivers check
-ifeq ($(shell grep -q "current_sid(void)" $(srctree)/security/selinux/include/objsec.h; echo $$?),0)
-ccflags-y += -DKSU_COMPAT_HAS_CURRENT_SID
-endif
-ifeq ($(shell grep -q "struct selinux_state " $(srctree)/security/selinux/include/security.h; echo $$?),0)
-ccflags-y += -DKSU_COMPAT_HAS_SELINUX_STATE
-endif
-
-# Handle optional backports
-ifeq ($(shell grep -q "strncpy_from_user_nofault" $(srctree)/include/linux/uaccess.h; echo $$?),0)
-ccflags-y += -DKSU_OPTIONAL_STRNCPY
-endif
-ifeq ($(shell grep -q "ssize_t kernel_read" $(srctree)/fs/read_write.c; echo $$?),0)
-ccflags-y += -DKSU_OPTIONAL_KERNEL_READ
-endif
-ifeq ($(shell grep "ssize_t kernel_write" $(srctree)/fs/read_write.c | grep -q "const void" ; echo $$?),0)
-ccflags-y += -DKSU_OPTIONAL_KERNEL_WRITE
-endif
-ifeq ($(shell grep -q "int\s\+path_umount" $(srctree)/fs/namespace.c; echo $$?),0)
-ccflags-y += -DKSU_HAS_PATH_UMOUNT
-endif
-ifeq ($(shell grep -q "inode_security_struct\s\+\*selinux_inode" $(srctree)/security/selinux/include/objsec.h; echo $$?),0)
-ccflags-y += -DKSU_OPTIONAL_SELINUX_INODE
-endif
-ifeq ($(shell grep -q "task_security_struct\s\+\*selinux_cred" $(srctree)/security/selinux/include/objsec.h; echo $$?),0)
-ccflags-y += -DKSU_OPTIONAL_SELINUX_CRED
-endif
-# seccomp_types.h were added on 6.7
-ifeq ($(shell grep -q "atomic_t\s\+filter_count" $(srctree)/include/linux/seccomp.h $(srctree)/include/linux/seccomp_types.h; echo $$?),0)
-ccflags-y += -DKSU_OPTIONAL_SECCOMP_FILTER_CNT
-endif
-# some old kernel backport this, let's check if put_seccomp_filter still exist
-ifneq ($(shell grep -wq "put_seccomp_filter" $(srctree)/kernel/seccomp.c $(srctree)/include/linux/seccomp.h; echo $$?),0)
-ccflags-y += -DKSU_OPTIONAL_SECCOMP_FILTER_RELEASE
-endif
-ifeq ($(shell grep -q "anon_inode_getfd_secure" $(srctree)/fs/anon_inodes.c; echo $$?),0)
-ccflags-y += -DKSU_HAS_GETFD_SECURE
-endif
-ifeq ($(shell grep -A1 "^int vfs_getattr" $(srctree)/fs/stat.c | grep -q "query_flags"; echo $$?),0)
-ccflags-y += -DKSU_HAS_NEW_VFS_GETATTR
-endif
-ifneq ($(shell grep -q __flush_dcache_area $(srctree)/arch/arm64/include/asm/cacheflush.h; echo $$?),0)
-ccflags-y += -DKSU_HAS_NEW_DCACHE_FLUSH
-endif
-
 # Checks Samsung
 ifeq ($(shell grep -q "CONFIG_KDP_CRED" $(srctree)/kernel/cred.c; echo $$?),0)
 ccflags-y += -DSAMSUNG_UH_DRIVER_EXIST
 endif
 ifeq ($(shell grep -q "SEC_SELINUX_PORTING_COMMON" $(srctree)/security/selinux/avc.c; echo $$?),0)
 ccflags-y += -DSAMSUNG_SELINUX_PORTING
-endif
-# Function proc_ops check
-ifeq ($(shell grep -q "struct proc_ops " $(srctree)/include/linux/proc_fs.h; echo $$?),0)
-ccflags-y += -DKSU_COMPAT_HAS_PROC_OPS
 endif
 ifdef KSU_MANAGER_PACKAGE
 ccflags-y += -DKSU_MANAGER_PACKAGE=\"$(KSU_MANAGER_PACKAGE)\"

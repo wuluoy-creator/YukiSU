@@ -6,7 +6,7 @@ YukiSU currently supports loadable kernel modules only (`CONFIG_KSU=m`) and no l
 
 **TSR hook:**
 
-- The default path for loadable kernel modules (LKM). Suitable for GKI 2.0 kernels (`5.10+`) and compatible kernels integrated from source.
+- The default path for loadable kernel modules (LKM). Requires Linux `6.1+`, including GKI 2.0 kernels and compatible kernels integrated from source.
 - Requires `CONFIG_KPROBES=y`, `CONFIG_KRETPROBES=y`, and `CONFIG_HAVE_SYSCALL_TRACEPOINTS=y`.
 
 ### How to Build the YukiSU LKM Using a Custom Kernel Source Tree

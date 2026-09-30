@@ -7,10 +7,6 @@
 #include <linux/types.h>
 #include <uapi/linux/magic.h>
 
-#ifndef FUSE_SUPER_MAGIC
-#define FUSE_SUPER_MAGIC 0x65735546
-#endif
-
 struct kasumi_entry;
 struct inode;
 

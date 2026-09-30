@@ -74,22 +74,8 @@ static bool add_typeattribute(struct policydb *db, const char *type,
 	for (i = 0; i < n_slot; ++i)                                           \
 		for (cur = node_ptr[i]; cur; cur = cur->next)
 
-// htable is a struct instead of pointer above 5.8.0:
-// https://elixir.bootlin.com/linux/v5.8-rc1/source/security/selinux/ss/symtab.h
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 8, 0)
 #define ksu_hashtab_for_each(htab, cur)                                        \
 	ksu_hash_for_each(htab.htable, htab.size, cur)
-#else
-#define ksu_hashtab_for_each(htab, cur)                                        \
-	ksu_hash_for_each(htab->htable, htab->size, cur)
-#endif // #if LINUX_VERSION_CODE >= KERNEL_VERSIO...
-
-// symtab_search is introduced on 5.9.0:
-// https://elixir.bootlin.com/linux/v5.9-rc1/source/security/selinux/ss/symtab.h
-#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 9, 0)
-#define symtab_search(s, name) hashtab_search((s)->table, name)
-#define symtab_insert(s, name, datum) hashtab_insert((s)->table, name, datum)
-#endif // #if LINUX_VERSION_CODE < KERNEL_VERSION...
 
 #define avtab_for_each(avtab, cur)                                             \
 	ksu_hash_for_each(avtab.htable, avtab.nslot, cur)
@@ -563,10 +549,6 @@ static bool add_type_rule(struct policydb *db, const char *s, const char *t,
 	return true;
 }
 
-// 5.9.0 : static inline int hashtab_insert(struct hashtab *h, void *key, void
-// *datum, struct hashtab_key_params key_params) 5.8.0: int
-// hashtab_insert(struct hashtab *h, void *k, void *d);
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 9, 0)
 static u32 filenametr_hash(const void *k)
 {
 	const struct filename_trans_key *ft = k;
@@ -603,7 +585,6 @@ static const struct hashtab_key_params filenametr_key_params = {
     .hash = filenametr_hash,
     .cmp = filenametr_cmp,
 };
-#endif // #if LINUX_VERSION_CODE >= KERNEL_VERSIO...
 
 static bool add_filename_trans(struct policydb *db, const char *s,
 			       const char *t, const char *c, const char *d,
@@ -682,28 +663,9 @@ static bool add_genfscon(struct policydb *db, const char *fs_name,
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 12, 0)
 #define ksu_kvrealloc(p, new_size, _old_size) kvrealloc(p, new_size, GFP_KERNEL)
 // https://github.com/torvalds/linux/commit/de2860f4636256836450c6543be744a50118fc66#diff-fa19cdd9c3369d7f59aa2e8404628109408dbf8e1b568d1157a27328f75b8410R638-R652
-#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 0)
+#else
 #define ksu_kvrealloc(p, new_size, old_size)                                   \
 	kvrealloc(p, old_size, new_size, GFP_KERNEL)
-#else
-// https://cs.android.com/android/_/android/kernel/common/+/f5f3e54f811679761c33526e695bd296190faade
-// Some 5.10 kernel don't have this backport, so copy one.
-void *ksu_kvrealloc_compat(const void *p, size_t oldsize, size_t newsize,
-			   gfp_t flags)
-{
-	void *newp;
-
-	if (oldsize >= newsize)
-		return (void *)p;
-	newp = kvmalloc(newsize, flags);
-	if (!newp)
-		return NULL;
-	memcpy(newp, p, oldsize);
-	kvfree(p);
-	return newp;
-}
-#define ksu_kvrealloc(p, new_size, old_size)                                   \
-	ksu_kvrealloc_compat(p, old_size, new_size, GFP_KERNEL)
 #endif // #if LINUX_VERSION_CODE >= KERNEL_VERSIO...
 
 static bool add_type(struct policydb *db, const char *type_name, bool attr)

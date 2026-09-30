@@ -34,9 +34,6 @@
 #include <linux/xattr.h>
 #include <linux/seq_file.h>
 #include <uapi/linux/magic.h>
-#ifndef EROFS_SUPER_MAGIC
-#define EROFS_SUPER_MAGIC 0xe0f5e1e2
-#endif
 #include <asm/unistd.h>
 #include "kasumi_runtime.h"
 #include "kasumi_dirhijack.h"

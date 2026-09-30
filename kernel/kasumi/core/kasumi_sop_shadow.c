@@ -208,7 +208,7 @@ int kasumi_sop_shadow_register_dh(struct super_block *sb)
 		ret = -EOPNOTSUPP;
 		goto out_s_umount;
 	}
-	/* Since Linux 5.10, VFS invokes ->destroy_inode synchronously and, when
+	/* VFS invokes ->destroy_inode synchronously and, when
 	 * ->free_inode is also present, records that callback in the inode
 	 * before queueing its own RCU callback.  Always use the synchronous
 	 * stage for the sleepable vnode cleanup, while leaving a filesystem's

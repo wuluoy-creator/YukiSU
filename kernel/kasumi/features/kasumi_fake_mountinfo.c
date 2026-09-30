@@ -66,7 +66,7 @@ bool kasumi_fake_mi_native_view(struct file *file)
 	return native_view;
 }
 
-/* Module-owned callbacks preserve old Clang CFI jump-table types. */
+/* Module-owned callbacks provide typed entry points for indirect calls. */
 static KASUMI_NOCFI int kasumi_mi_show_mountinfo(struct seq_file *seq,
 						 struct vfsmount *mnt)
 {

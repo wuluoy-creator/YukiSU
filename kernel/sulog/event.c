@@ -47,15 +47,9 @@ struct ksu_sulog_identity {
 static long ksu_sulog_copy_user_string(char *dst, const char __user *src,
 				       size_t dst_len)
 {
-#ifdef KSU_OPTIONAL_STRNCPY
 	return strncpy_from_user_nofault(
 	    dst, (const void __user *)untagged_addr((unsigned long)src),
 	    dst_len);
-#else
-	return strncpy_from_user(
-	    dst, (const char __user *)untagged_addr((unsigned long)src),
-	    dst_len);
-#endif // #ifdef KSU_OPTIONAL_STRNCPY
 }
 
 static struct user_arg_ptr

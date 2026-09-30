@@ -86,11 +86,9 @@ static int remove_initramfs_file(const char *name)
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0)
 		ret =
 		    vfs_unlink(mnt_idmap(root->f_path.mnt), dir, dentry, NULL);
-#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
+#else
 		ret = vfs_unlink(mnt_user_ns(root->f_path.mnt), dir, dentry,
 				 NULL);
-#else
-		ret = vfs_unlink(dir, dentry, NULL);
 #endif // #if LINUX_VERSION_CODE >= KERNEL_VERSIO...
 	}
 	dput(dentry);

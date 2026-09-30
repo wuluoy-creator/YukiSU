@@ -16,7 +16,6 @@
 #include <linux/syscalls.h>
 #include <linux/types.h>
 #include <linux/uaccess.h>
-#include <linux/version.h>
 
 #include "policy/allowlist.h"
 #include "policy/app_profile.h"
@@ -399,11 +398,7 @@ long ksu_handle_stat_sucompat(int orig_nr, const struct pt_regs *regs)
 
 static void close_tmp_fd(unsigned int fd)
 {
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 11, 0)
 	close_fd(fd);
-#else
-	ksys_close(fd);
-#endif // #if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 11, 0)
 }
 
 static bool prompt_grant_still_valid(uid_t uid, u32 choice, u64 generation)

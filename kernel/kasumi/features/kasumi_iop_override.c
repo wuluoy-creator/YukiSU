@@ -92,7 +92,7 @@ KASUMI_NOCFI static int kasumi_shadow_getattr(struct mnt_idmap *idmap,
 		wake_up_all(&kasumi_iop_quiesce_wait);
 	return ret;
 }
-#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0))
+#else
 KASUMI_NOCFI static int kasumi_shadow_getattr(struct user_namespace *userns,
 					      const struct path *path,
 					      struct kstat *stat,
@@ -117,41 +117,6 @@ KASUMI_NOCFI static int kasumi_shadow_getattr(struct user_namespace *userns,
 				    query_flags);
 	else {
 		generic_fillattr(userns, inode, stat);
-		ret = 0;
-	}
-
-	if (ret == 0 && inode && inode->i_mapping &&
-	    test_bit(AS_FLAGS_KASUMI_SPOOF_KSTAT, &inode->i_mapping->flags)) {
-		kasumi_apply_kstat_spoof(inode, stat);
-		atomic64_inc(&kasumi_hook_stats.iop_getattr_spoofs);
-	}
-	if (atomic_dec_and_test(&kasumi_iop_active_callbacks))
-		wake_up_all(&kasumi_iop_quiesce_wait);
-	return ret;
-}
-#else
-KASUMI_NOCFI static int kasumi_shadow_getattr(const struct path *path,
-					      struct kstat *stat,
-					      u32 request_mask,
-					      unsigned int query_flags)
-{
-	struct inode *inode = d_inode(path->dentry);
-	struct kasumi_iop_meta *m;
-	const struct inode_operations *orig = NULL;
-	int ret;
-
-	atomic_inc(&kasumi_iop_active_callbacks);
-	atomic64_inc(&kasumi_hook_stats.iop_getattr_entries);
-	rcu_read_lock();
-	m = kasumi_iop_lookup_rcu(inode);
-	if (m)
-		orig = m->orig_iop;
-	rcu_read_unlock();
-
-	if (orig && orig->getattr)
-		ret = orig->getattr(path, stat, request_mask, query_flags);
-	else {
-		generic_fillattr(inode, stat);
 		ret = 0;
 	}
 
