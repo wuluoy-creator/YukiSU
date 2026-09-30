@@ -9,7 +9,6 @@
 #include "core/ksucalls.hpp"
 #include "core/restorecon.hpp"
 #include "core/su_path.hpp"
-#include "core/uts_view.hpp"
 #include "debug.hpp"
 #include "defs.hpp"
 #include "dynamic_manager.hpp"
@@ -92,7 +91,7 @@ int check_input_files(const CliArguments& cli) {
     if (cli.command == "boot-patch" || cli.command == "boot-patch-v2" ||
         cli.command == "boot-restore" || path == "boot-info target-kmi") {
         for (const auto* option :
-             {"--boot", "--module", "--kernel", "--init", "--uts-config", "--adb-debug-prop"}) {
+             {"--boot", "--module", "--kernel", "--init", "--adb-debug-prop"}) {
             if (!cli.has(option))
                 continue;
             const int result =
@@ -736,8 +735,6 @@ int cli_run(int argc, char** argv) {
         return kagami::embedded_command(args);
     } else if (cmd == "su-path") {
         return su_path_command(args);
-    } else if (cmd == "uts-view") {
-        return uts_view_command(args);
     } else if (cmd == "yzctl" || cmd == "yukizygisk") {
         return cmd_yzctl(args);
     } else if (cmd == "dynamic") {

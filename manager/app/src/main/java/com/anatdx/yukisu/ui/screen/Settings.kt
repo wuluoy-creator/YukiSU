@@ -45,7 +45,6 @@ import com.ramcosta.composedestinations.generated.destinations.FeatureControlScr
 import com.anatdx.yukisu.ui.kasumi.util.KasumiManager
 import com.ramcosta.composedestinations.generated.destinations.LogViewerScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.UmountManagerScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.UtsViewScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.MoreSettingsScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.anatdx.yukisu.BuildConfig
@@ -247,31 +246,12 @@ fun SettingScreen(navigator: DestinationsNavigator) {
                         SwitchItem(
                             icon = Icons.Rounded.FolderDelete,
                             title = stringResource(id = R.string.settings_umount_modules_default),
+                            groupPosition = SettingsItemPosition.Last,
                             summary = stringResource(id = R.string.settings_umount_modules_default_summary),
                             checked = umountChecked,
                             onCheckedChange = {
                                 if (Natives.setDefaultUmountModules(it)) {
                                     umountChecked = it
-                                }
-                            }
-                        )
-
-                        val utsViewSupported by produceState<Boolean?>(initialValue = null) {
-                            value = isUtsViewSupported()
-                        }
-                        SettingItem(
-                            icon = Icons.Filled.Language,
-                            title = stringResource(R.string.settings_uts_view),
-                            groupPosition = SettingsItemPosition.Last,
-                            summary = if (utsViewSupported == false) {
-                                stringResource(R.string.feature_status_unsupported_summary)
-                            } else {
-                                stringResource(R.string.settings_uts_view_summary)
-                            },
-                            enabled = utsViewSupported == true,
-                            onClick = {
-                                if (utsViewSupported == true) {
-                                    navigator.navigate(UtsViewScreenDestination)
                                 }
                             }
                         )

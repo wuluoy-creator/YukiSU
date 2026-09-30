@@ -2,7 +2,6 @@
 #include "boot_backup.hpp"
 
 #include "../assets.hpp"
-#include "../core/uts_view.hpp"
 #include "../log.hpp"
 #include "../utils.hpp"
 #include "boot_patch.hpp"
@@ -36,7 +35,6 @@ struct BootPatchV2Args {
     std::string output;
     std::string magiskboot;
     std::string superkey;
-    std::string uts_config;
     bool force = false;
     bool flash = false;
     bool ota = false;
@@ -70,8 +68,6 @@ BootPatchV2Args parse_args(const std::vector<std::string>& args) {
             take_value(result.magiskboot);
         } else if (argument == "--superkey") {
             take_value(result.superkey);
-        } else if (argument == "--uts-config") {
-            take_value(result.uts_config);
         } else if (argument == "--force") {
             result.force = true;
         } else if (argument == "--flash") {
@@ -455,21 +451,11 @@ int boot_patch_v2(const std::vector<std::string>& args) {
         (device_mode && (!parsed.boot.empty() || !parsed.output.empty()))) {
         LOGE("Usage: ksud boot-patch-v2 --boot <boot.img> [--module <kernelsu.ko>] "
              "--output <patched.img> [--superkey <key>] [--signature-bypass] "
-             "[--allow-shell] [--enable-adbd] [--uts-config <file>] [--force]\n"
+             "[--allow-shell] [--enable-adbd] [--force]\n"
              "       ksud boot-patch-v2 --flash [--ota] [--module <kernelsu.ko>] "
              "[--superkey <key>] [--signature-bypass] [--allow-shell] "
-             "[--enable-adbd] [--uts-config <file>]");
+             "[--enable-adbd]");
         return 1;
-    }
-    ksu_uts_template boot_uts_config{};
-    const bool have_boot_uts_config = !parsed.uts_config.empty();
-    if (have_boot_uts_config) {
-        std::string config_error;
-        if (!load_uts_boot_config(parsed.uts_config, &boot_uts_config, &config_error)) {
-            LOGE("boot-patch-v2: invalid UTS boot config: %s", config_error.c_str());
-            return 1;
-        }
-        printf("- UTS boot-global config validated (mask=0x%02x)\n", boot_uts_config.field_mask);
     }
     const fs::path module_path(parsed.module);
     std::error_code error;
@@ -723,7 +709,7 @@ int boot_patch_v2(const std::vector<std::string>& args) {
     }
     if (!inject_imgpatch_config_into_lkm(
             module_for_injection.string(), parsed.allow_shell, parsed.enable_adbd,
-            have_boot_uts_config ? &boot_uts_config : nullptr, bundled_lkm)) {
+            bundled_lkm)) {
         LOGE("boot-patch-v2: failed to inject ImgPatch configuration into LKM");
         cleanup();
         return 1;

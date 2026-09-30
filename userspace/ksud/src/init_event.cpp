@@ -6,7 +6,6 @@
 #include "core/hide_bootloader.hpp"
 #include "core/ksucalls.hpp"
 #include "core/restorecon.hpp"
-#include "core/uts_view.hpp"
 #include "defs.hpp"
 #include "dynamic_manager.hpp"
 #include "integrity_monitor.hpp"
@@ -493,11 +492,6 @@ int on_post_data_fs() {
 
     // Apply profile sepolicies
     apply_profile_sepolies();
-
-    // Restore the independent UTS extension before generic feature handling.
-    if (apply_uts_view_config() != 0) {
-        LOGW("apply persisted UTS View configuration failed");
-    }
 
     // Load feature config (with init_features handling managed features)
     init_features();

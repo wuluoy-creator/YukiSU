@@ -34,7 +34,6 @@
 #include "feature/sucompat_vfs.h"
 #include "infra/file_wrapper.h"
 #include "feature/kernel_umount.h"
-#include "extension/uts_view.h"
 #include "klog.h" // IWYU pragma: keep
 #include "ksu.h"
 #include "manager/apk_sign.h"
@@ -604,41 +603,6 @@ static int do_set_su_path(void __user *arg)
 	ret = ksu_sucompat_vfs_set_config(config);
 	kfree(config);
 	return ret;
-}
-
-static int do_get_uts_view_config(void __user *arg)
-{
-	struct ksu_uts_view_config config = {};
-	int ret;
-
-	ret = ksu_uts_view_get_config(&config);
-	if (ret)
-		return ret;
-	if (copy_to_user(arg, &config, sizeof(config)))
-		return -EFAULT;
-	return 0;
-}
-
-static int do_set_uts_view_config(void __user *arg)
-{
-	struct ksu_uts_view_config config = {};
-
-	if (copy_from_user(&config, arg, sizeof(config)))
-		return -EFAULT;
-	return ksu_uts_view_set_config(&config);
-}
-
-static int do_get_uts_view_status(void __user *arg)
-{
-	struct ksu_uts_view_status status = {};
-	int ret;
-
-	ret = ksu_uts_view_get_status(&status);
-	if (ret)
-		return ret;
-	if (copy_to_user(arg, &status, sizeof(status)))
-		return -EFAULT;
-	return 0;
 }
 
 static int do_get_wrapper_fd(void __user *arg)
@@ -1617,18 +1581,6 @@ static const struct ksu_ioctl_cmd_map ksu_ioctl_handlers[] = {
     {.cmd = KSU_IOCTL_SET_SU_PATH,
      .name = "SET_SU_PATH",
      .handler = do_set_su_path,
-     .perm_check = manager_or_root},
-    {.cmd = KSU_IOCTL_GET_UTS_VIEW_CONFIG,
-     .name = "GET_UTS_VIEW_CONFIG",
-     .handler = do_get_uts_view_config,
-     .perm_check = manager_or_root},
-    {.cmd = KSU_IOCTL_SET_UTS_VIEW_CONFIG,
-     .name = "SET_UTS_VIEW_CONFIG",
-     .handler = do_set_uts_view_config,
-     .perm_check = manager_or_root},
-    {.cmd = KSU_IOCTL_GET_UTS_VIEW_STATUS,
-     .name = "GET_UTS_VIEW_STATUS",
-     .handler = do_get_uts_view_status,
      .perm_check = manager_or_root},
     {.cmd = KSU_IOCTL_GET_FULL_VERSION,
      .name = "GET_FULL_VERSION",

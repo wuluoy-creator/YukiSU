@@ -3,10 +3,6 @@
 #include <string>
 #include <vector>
 
-extern "C" {
-#include "uapi/uts_view.h"
-}
-
 namespace ksud {
 
 // Boot patch functions
@@ -24,9 +20,6 @@ int boot_info_slot_suffix(bool ota);
 
 // Internal functions
 std::string get_current_kmi();
-// Use only while bootstrapping late-load before a KernelSU module exists.
-// This deliberately avoids all KernelSU/UTS ioctls.
-std::string get_bootstrap_kmi();
 std::string choose_boot_partition(bool ota, const std::string* override_partition,
                                   bool is_replace_kernel = false);
 std::string get_slot_suffix(bool ota);
@@ -37,7 +30,6 @@ bool inject_superkey_into_lkm(const std::string& lkm_path, const std::string& su
 
 // Patch early-boot ImgPatch options into the LKM's fixed configuration block.
 bool inject_imgpatch_config_into_lkm(const std::string& lkm_path, bool allow_shell,
-                                     bool enable_adbd, const ksu_uts_template* uts_config,
-                                     bool bundled_lkm);
+                                     bool enable_adbd, bool bundled_lkm);
 
 }  // namespace ksud

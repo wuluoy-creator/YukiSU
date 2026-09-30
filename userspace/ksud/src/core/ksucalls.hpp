@@ -32,12 +32,6 @@ using AddTryUmountCmd = ksu_add_try_umount_cmd;
 using DynamicManagerSign = ksu_dynamic_manager_sign;
 using DynamicManagerCmd = ksu_dynamic_manager_cmd;
 
-static_assert(sizeof(ksu_uts_template) == 400, "ksu_uts_template ABI drift");
-static_assert(sizeof(ksu_uts_view_config) == 816, "ksu_uts_view_config ABI drift");
-static_assert(sizeof(ksu_uts_view_status) == 832, "ksu_uts_view_status ABI drift");
-static_assert(offsetof(ksu_uts_view_config, global) == 16, "UTS config ABI drift");
-static_assert(offsetof(ksu_uts_view_status, original) == 32, "UTS status ABI drift");
-
 // YukiSU-only: list umount ioctl (not in upstream uapi)
 struct ListTryUmountCmd {
     uint64_t arg;
@@ -81,11 +75,8 @@ int set_sepolicy(const void* payload, uint64_t payload_len);
 // Returns: pair<value, supported>
 std::pair<uint64_t, bool> get_feature(uint32_t feature_id);
 int set_feature(uint32_t feature_id, uint64_t value);
-int get_uts_view_config(ksu_uts_view_config* config);
 int get_su_path_config(ksu_su_path_config* config);
 int set_su_path_config(const ksu_su_path_config& config);
-int set_uts_view_config(const ksu_uts_view_config& config);
-int get_uts_view_status(ksu_uts_view_status* status);
 
 int get_wrapped_fd(int fd);
 int get_sulog_fd();

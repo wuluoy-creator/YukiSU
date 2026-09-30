@@ -384,7 +384,6 @@ set(KSUD_OUR_SOURCES
     src/core/ksucalls.cpp
     src/core/feature.cpp
     src/core/su_path.cpp
-    src/core/uts_view.cpp
     src/core/restorecon.cpp
     src/core/assets.cpp
     src/module/module.cpp

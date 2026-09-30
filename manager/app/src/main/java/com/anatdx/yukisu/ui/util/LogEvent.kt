@@ -363,10 +363,7 @@ private fun buildBugreportFile(context: Context, bugreportDir: File, shell: Shel
         pw.println("SELinux: $selinux")
 
         val uname = Os.uname()
-        pw.println("EffectiveKernelRelease: ${uname.release}")
-        getUtsViewOriginalReleaseForLog()?.takeIf { it.isNotBlank() }?.let {
-            pw.println("OriginalKernelRelease: $it")
-        }
+        pw.println("KernelRelease: ${uname.release}")
         pw.println("KernelVersion: ${uname.version}")
         pw.println("Machine: ${uname.machine}")
         pw.println("Nodename: ${uname.nodename}")

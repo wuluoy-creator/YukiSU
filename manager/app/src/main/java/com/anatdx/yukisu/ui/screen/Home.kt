@@ -25,14 +25,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Engineering
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.AutoFixHigh
 import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.TaskAlt
 import androidx.compose.material.icons.outlined.Warning
@@ -300,7 +298,7 @@ fun HomeScreen(navigator: DestinationsNavigator) {
                         isSuperKeyMode = isSuperKeyConfigured || superKeyAuthSuccess,
                         needsSuperKeyAuth = needsSuperKeyAuth,
                         onClickInstall = {
-                            navigator.navigate(InstallScreenDestination())
+                            navigator.navigate(InstallScreenDestination)
                         },
                         onSuperKeyAuth = {
                             superKeyDialog.show()
@@ -332,7 +330,7 @@ fun HomeScreen(navigator: DestinationsNavigator) {
                     if (viewModel.systemStatus.requireNewKernel) {
                         WarningCard(
                             message = stringResource(R.string.require_kernel_version),
-                            onClick = { navigator.navigate(InstallScreenDestination()) },
+                            onClick = { navigator.navigate(InstallScreenDestination) },
                         )
                     }
                     if (viewModel.systemStatus.requireNewManager) {
@@ -342,7 +340,7 @@ fun HomeScreen(navigator: DestinationsNavigator) {
                         WarningCard(
                             message = stringResource(R.string.home_lkm_update_available),
                             color = MaterialTheme.colorScheme.primary,
-                            onClick = { navigator.navigate(InstallScreenDestination()) },
+                            onClick = { navigator.navigate(InstallScreenDestination) },
                         )
                     }
 
@@ -1176,9 +1174,6 @@ private fun InfoCard(
     var showKsudDialog by remember { mutableStateOf(false) }
     var ksudApkVersion by remember { mutableStateOf<String?>(null) }
     var ksudInstalledVersion by remember { mutableStateOf<String?>(null) }
-    var showOriginalKernelRelease by remember(systemInfo.originalKernelRelease) {
-        mutableStateOf(false)
-    }
 
     LaunchedEffect(ksudIntegrityStatus) {
         val (apk, installed) = withContext(Dispatchers.IO) {
@@ -1229,53 +1224,12 @@ private fun InfoCard(
     val workingMode = hookType?.let { hook ->
         patchType?.let { patch -> "$hook | $patch" } ?: hook
     }
-    val originalKernelRelease = systemInfo.originalKernelRelease
-    val displayedKernelRelease = if (showOriginalKernelRelease && originalKernelRelease != null) {
-        originalKernelRelease
-    } else {
-        systemInfo.kernelRelease
-    }
     val entries = buildList {
         add(HomeInfoEntry(
             label = stringResource(R.string.home_kernel),
-            content = displayedKernelRelease,
+            content = systemInfo.kernelRelease,
             icon = Icons.Default.Memory,
             contentScrollable = true,
-            trailing = originalKernelRelease?.let {
-                {
-                    YukiIcon(
-                        imageVector = if (showOriginalKernelRelease) {
-                            Icons.Outlined.AutoFixHigh
-                        } else {
-                            Icons.Filled.AutoFixHigh
-                        },
-                        contentDescription = stringResource(
-                            if (showOriginalKernelRelease) {
-                                R.string.home_kernel_show_effective
-                            } else {
-                                R.string.home_kernel_show_original
-                            }
-                        ),
-                        modifier = if (isExpressiveUi) {
-                            Modifier
-                                .size(32.dp)
-                                .clip(CircleShape)
-                                .clickable {
-                                    showOriginalKernelRelease = !showOriginalKernelRelease
-                                }
-                                .padding(4.dp)
-                        } else {
-                            Modifier
-                                .size(28.dp)
-                                .clip(CircleShape)
-                                .clickable {
-                                    showOriginalKernelRelease = !showOriginalKernelRelease
-                                }
-                                .padding(vertical = 4.dp)
-                        },
-                    )
-                }
-            },
         ))
         if (!isSimpleMode) {
             add(HomeInfoEntry(

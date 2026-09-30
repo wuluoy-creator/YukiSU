@@ -3,23 +3,21 @@
 
 #include <linux/types.h>
 
-#include "uapi/uts_view.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif // #ifdef __cplusplus
 
 /* "KSUICFG1" in little-endian byte order. */
 #define KSU_IMGPATCH_CONFIG_MAGIC 0x314746434955534bULL
-#define KSU_IMGPATCH_CONFIG_VERSION 1U
+#define KSU_IMGPATCH_CONFIG_VERSION 2U
 
 #define KSU_IMGPATCH_CONFIG_ALLOW_SHELL (1ULL << 0)
 #define KSU_IMGPATCH_CONFIG_ENABLE_ADBD (1ULL << 1)
-#define KSU_IMGPATCH_CONFIG_UTS_BOOT (1ULL << 2)
+/* Bit 2 is retired; do not reuse it. */
 #define KSU_IMGPATCH_CONFIG_BUNDLED (1ULL << 3)
 #define KSU_IMGPATCH_CONFIG_VALID_FLAGS                                        \
   (KSU_IMGPATCH_CONFIG_ALLOW_SHELL | KSU_IMGPATCH_CONFIG_ENABLE_ADBD |         \
-   KSU_IMGPATCH_CONFIG_UTS_BOOT | KSU_IMGPATCH_CONFIG_BUNDLED)
+   KSU_IMGPATCH_CONFIG_BUNDLED)
 
 /*
  * Patchable, on-disk ABI stored in the LKM .data section. Keep this block at
@@ -31,8 +29,7 @@ struct ksu_imgpatch_config {
   __u32 version;
   __u32 size;
   __u64 flags;
-  struct ksu_uts_template uts;
-  __u64 reserved[11];
+  __u64 reserved[61];
 };
 
 #ifdef __cplusplus

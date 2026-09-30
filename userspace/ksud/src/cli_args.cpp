@@ -9,7 +9,6 @@
 #include <cstdio>
 #include <limits>
 #include <numeric>
-#include <set>
 #include <string_view>
 #include <utility>
 #include "core/json.hpp"
@@ -23,8 +22,6 @@ struct Option {
     std::string_view value;
     std::string_view default_value;
     std::string_view description;
-    bool repeatable = false;
-    bool allow_empty = false;
 };
 
 struct Command {
@@ -44,20 +41,6 @@ const Option kFlags{"--flags", "-f", "UINT32", ""};
 const Option kJson{"--json", "", "", ""};
 const Option kOta{"--ota", "-u", "", ""};
 const Option kMagiskboot{"--magiskboot", "", "PATH", ""};
-
-std::vector<Option> uts_options() {
-    static constexpr std::array<std::string_view, 6> names = {
-        "--sysname", "--nodename", "--release", "--version", "--machine", "--domainname"};
-    std::vector<Option> result;
-    result.reserve(names.size() + 1);
-    for (const auto name : names)
-        result.push_back(
-            {name, "", "TEXT", "", "Override this UTS field (at most 64 bytes)", false, true});
-    result.push_back({"--inherit", "", "FIELD", "",
-                      "Restore a field: sysname, nodename, release, version, machine, domainname",
-                      true});
-    return result;
-}
 
 const std::vector<Command>& commands() {
     static const std::vector<Command> specs = {
@@ -218,7 +201,6 @@ const std::vector<Command>& commands() {
           {"--no-custom-rc", "", "", "", "Skip custom init.rc injection"},
           {"--enable-adbd", "", "", "", "Run adbd as root"},
           {"--adb-debug-prop", "", "FILE", "", "Embed adb debug properties from this file"},
-          {"--uts-config", "", "FILE", "", "Embed a UTS template"},
           kMagiskboot},
          true},
         {"boot-restore",
@@ -242,7 +224,6 @@ const std::vector<Command>& commands() {
           {"--out", "", "IMAGE", ""},
           kMagiskboot,
           {"--superkey", "", "KEY", ""},
-          {"--uts-config", "", "FILE", ""},
           {"--force", "", "", ""},
           {"--flash", "", "", ""},
           {"--ota", "", "", ""},
@@ -364,18 +345,6 @@ const std::vector<Command>& commands() {
         {"kagami recovery", "Manage mount recovery state", "<COMMAND>"},
         {"kagami recovery status", "Read recovery state", ""},
         {"kagami recovery reset", "Reset recovery state", ""},
-        {"uts-view", "Manage UTS identity views", "<COMMAND>"},
-        {"uts-view status", "Read UTS view status", ""},
-        {"uts-view release-snapshot", "Read the release snapshot", ""},
-        {"uts-view get", "Read configured UTS templates", ""},
-        {"uts-view original", "Read the original UTS identity", ""},
-        {"uts-view effective", "Read the effective UTS identity", ""},
-        {"uts-view enable-global", "Enable the global UTS view", ""},
-        {"uts-view disable-global", "Disable the global UTS view", ""},
-        {"uts-view enable-scoped", "Enable the scoped UTS view", ""},
-        {"uts-view disable-scoped", "Disable the scoped UTS view", ""},
-        {"uts-view set-global", "Set the global UTS template", "", 0, 0, uts_options(), true},
-        {"uts-view set-deny", "Set the scoped UTS template", "", 0, 0, uts_options(), true},
         {"dynamic", "Manage dynamic manager signatures", "<COMMAND>"},
         {"dynamic get-sign",
          "Read the signature of an APK or UID",
@@ -472,8 +441,6 @@ std::string_view option_description(const Option& option, std::string_view path)
         return "Write the patched boot image to this path";
     if (option.name == "--superkey")
         return "Set the SuperKey";
-    if (option.name == "--uts-config")
-        return "Embed a UTS template from this file";
     if (option.name == "--force")
         return "Allow replacement of an existing direct LKM capsule";
     if (option.name == "--flash")
@@ -516,9 +483,6 @@ std::string_view example(std::string_view path) {
         return "ksud boot-restore --boot /sdcard/patched.img";
     if (path == "flash" || path == "flash image")
         return "ksud flash image /sdcard/boot.img boot --slot a";
-    if (path == "uts-view" || path.substr(0, 12) == "uts-view set")
-        return "ksud uts-view set-global --release '6.12.0' --inherit version\n  ksud uts-view "
-               "status";
     if (path == "kagami" || path == "kagami module" || path == "kagami module set-mode")
         return "ksud kagami module list\n  ksud kagami module set-mode example kasumi";
     if (path == "kagami config" || path == "kagami config merge-json")
@@ -683,7 +647,7 @@ int read_option(const Command& command, const std::vector<std::string>& input, s
         return fail(command, "unknown option '" + name + "'" + suggestion(name, names));
     }
     const bool global = option->name == "--color" || option->name == "--verbose";
-    if (!global && !option->repeatable && parsed.has(std::string(option->name)))
+    if (!global && parsed.has(std::string(option->name)))
         return fail(command, "option '" + name + "' was specified more than once");
     std::string value;
     if (option->value.empty()) {
@@ -697,7 +661,7 @@ int read_option(const Command& command, const std::vector<std::string>& input, s
         value = option->default_value;
     else
         return fail(command, "option '" + name + "' requires <" + std::string(option->value) + ">");
-    if (!option->value.empty() && value.empty() && !option->allow_empty)
+    if (!option->value.empty() && value.empty())
         return fail(command, "option '" + name + "' requires a non-empty value");
     if (option->value.find('|') != std::string_view::npos && !one_of(value, option->value))
         return fail(command, "invalid value '" + value + "' for " + name + "; expected " +
@@ -790,20 +754,6 @@ int validate(const Command& command, const std::vector<std::string>& operands,
             return bad("invalid interval; expected 1 through 2147483647");
         if (unsigned_value(parsed.value("--ready-fd"), 2))
             return bad("readiness descriptor must be greater than 2");
-    }
-    if (path == "uts-view set-global" || path == "uts-view set-deny") {
-        std::set<std::string> fields;
-        for (size_t i = 0; i < parsed.option_args.size(); i += 2) {
-            const auto& name = parsed.option_args[i];
-            const auto& value = parsed.option_args[i + 1];
-            const std::string field = name == "--inherit" ? value : name.substr(2);
-            if (!one_of(field, "sysname|nodename|release|version|machine|domainname"))
-                return bad("unknown UTS field '" + field + "'");
-            if (!fields.insert(field).second)
-                return bad("UTS field '" + field + "' was specified more than once");
-            if (name != "--inherit" && value.size() > 64)
-                return bad("UTS field '" + field + "' exceeds 64 bytes");
-        }
     }
     if (path.substr(0, 7) == "kagami ") {
         if (path == "kagami config merge-json") {

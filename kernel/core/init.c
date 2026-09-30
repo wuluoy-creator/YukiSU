@@ -19,7 +19,6 @@
 #include "feature/adb_root.h"
 #include "feature/hide_bootloader.h"
 #include "feature/selinux_hide.h"
-#include "extension/uts_view.h"
 #ifdef CONFIG_KSU_YUKIZYGISK
 #include "feature/yukizygisk/api.h"
 #endif // #ifdef CONFIG_KSU_YUKIZYGISK
@@ -101,7 +100,6 @@ static void ksu_hook_exit(void)
 
 static int __init kernelsu_init(void)
 {
-	bool uts_boot_requested;
 	int ret;
 
 	pr_info("KernelSU LKM initializing, version: %u\n", KSU_VERSION);
@@ -145,22 +143,6 @@ static int __init kernelsu_init(void)
 		return -ENOMEM;
 	}
 
-	uts_boot_requested = ksu_uts_view_boot_requested();
-	ret = ksu_uts_view_init();
-	if (ret) {
-		if (uts_boot_requested) {
-			pr_err(
-			    "uts_view: boot-global initialization failed: %d\n",
-			    ret);
-			ksu_uts_view_exit();
-			if (ksu_cred) {
-				put_cred(ksu_cred);
-				ksu_cred = NULL;
-			}
-			return ret;
-		}
-		pr_warn("uts_view: unavailable: %d\n", ret);
-	}
 	ksu_feature_init();
 	ksu_hide_bootloader_init();
 	ksu_lsm_hook_init();
@@ -263,7 +245,6 @@ static void kernelsu_exit(void)
 #endif // #ifdef CONFIG_KSU_YUKIZYGISK
 	ksu_adb_root_exit();
 	ksu_lsm_hook_exit();
-	ksu_uts_view_exit();
 	ksu_feature_exit();
 
 	if (ksu_cred) {

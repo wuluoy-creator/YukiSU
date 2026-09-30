@@ -8,8 +8,6 @@
     <string name="home_working">Working</string>
     <string name="home_working_version">Version: %s</string>
     <string name="home_kernel">Kernel version</string>
-    <string name="home_kernel_show_original" tools:ignore="MissingTranslation">Show real kernel version</string>
-    <string name="home_kernel_show_effective" tools:ignore="MissingTranslation">Show spoofed kernel version</string>
     <string name="home_manager_version">Manager version</string>
     <string name="home_selinux_status">SELinux status</string>
     <string name="home_seccomp_status" tools:ignore="MissingTranslation">Seccomp status</string>
@@ -154,53 +152,6 @@
     <string name="su_compact_off" tools:ignore="MissingTranslation">Off</string>
     <string name="su_compact_traditional" tools:ignore="MissingTranslation">Traditional</string>
     <string name="su_compact_magisk_summary" tools:ignore="MissingTranslation">Authorization prompt</string>
-    <string name="settings_uts_view" tools:ignore="MissingTranslation">UTS View</string>
-    <string name="settings_uts_view_summary" tools:ignore="MissingTranslation">Manage boot, runtime-global, and denylist-scoped kernel identities.</string>
-    <string name="uts_view_title" tools:ignore="MissingTranslation">UTS View</string>
-    <string name="uts_view_unavailable" tools:ignore="MissingTranslation">UTS View unavailable</string>
-    <string name="uts_view_current_status" tools:ignore="MissingTranslation">Current status</string>
-    <string name="uts_view_identity_group" tools:ignore="MissingTranslation">Identity snapshots</string>
-    <string name="uts_view_status_source" tools:ignore="MissingTranslation">Configuration source</string>
-    <string name="uts_view_status_mode" tools:ignore="MissingTranslation">Active mode</string>
-    <string name="uts_view_status_boot_locked" tools:ignore="MissingTranslation">Boot locked</string>
-    <string name="uts_view_status_original_valid" tools:ignore="MissingTranslation">Original identity valid</string>
-    <string name="uts_view_source_boot" tools:ignore="MissingTranslation">Early boot</string>
-    <string name="uts_view_source_runtime" tools:ignore="MissingTranslation">Runtime</string>
-    <string name="uts_view_source_none" tools:ignore="MissingTranslation">Not configured</string>
-    <string name="uts_view_mode_disabled" tools:ignore="MissingTranslation">Disabled</string>
-    <string name="uts_view_mode_global" tools:ignore="MissingTranslation">Global</string>
-    <string name="uts_view_mode_scoped" tools:ignore="MissingTranslation">Denylist scoped</string>
-    <string name="uts_view_mode_global_scoped" tools:ignore="MissingTranslation">Global + denylist scoped</string>
-    <string name="uts_view_value_yes" tools:ignore="MissingTranslation">Yes</string>
-    <string name="uts_view_value_no" tools:ignore="MissingTranslation">No</string>
-    <string name="uts_view_value_empty" tools:ignore="MissingTranslation">(empty)</string>
-    <string name="uts_view_enable" tools:ignore="MissingTranslation">Enable</string>
-    <string name="uts_view_refresh" tools:ignore="MissingTranslation">Refresh</string>
-    <string name="uts_view_original_identity" tools:ignore="MissingTranslation">Original kernel identity</string>
-    <string name="uts_view_effective_identity" tools:ignore="MissingTranslation">Effective global identity</string>
-    <string name="uts_view_configuration_group" tools:ignore="MissingTranslation">Identity configuration</string>
-    <string name="uts_view_runtime_global" tools:ignore="MissingTranslation">Runtime global</string>
-    <string name="uts_view_deny_scoped" tools:ignore="MissingTranslation">Denylist scoped</string>
-    <string name="uts_view_boot_global" tools:ignore="MissingTranslation">Boot global</string>
-    <string name="uts_view_runtime_warning" tools:ignore="MissingTranslation">Applies immediately to tasks still sharing the initial UTS namespace. Existing private namespaces keep their old identity.</string>
-    <string name="uts_view_deny_warning" tools:ignore="MissingTranslation">Only future denylisted app specializations are affected. Restart target apps after changing this template.</string>
-    <string name="uts_view_boot_warning" tools:ignore="MissingTranslation">Stages an early identity for the next boot patch. Flash the correct boot/init_boot slot and reboot to apply it.</string>
-    <string name="uts_view_boot_invalid_warning" tools:ignore="MissingTranslation">The staged file is invalid and will not be included in a patch. Turn this switch off to remove it, or save a valid template to replace it.</string>
-    <string name="uts_view_boot_invalid_patch_blocked" tools:ignore="MissingTranslation">Boot patch blocked: the staged UTS configuration is invalid. Remove it or save a valid template first.</string>
-    <string name="uts_view_boot_locked_warning" tools:ignore="MissingTranslation">The global identity is locked by this boot. Repatch and reboot to change or disable it.</string>
-    <string name="uts_view_late_gaps_warning" tools:ignore="MissingTranslation">Some tasks already own private UTS namespaces and cannot receive runtime-global updates.</string>
-    <string name="uts_view_late_capture_warning" tools:ignore="MissingTranslation">The original identity was captured after early boot; early coverage cannot be guaranteed.</string>
-    <string name="uts_view_runtime_enabled" tools:ignore="MissingTranslation">Runtime-global identity enabled</string>
-    <string name="uts_view_runtime_disabled" tools:ignore="MissingTranslation">Runtime-global identity disabled</string>
-    <string name="uts_view_scoped_changed" tools:ignore="MissingTranslation">Scoped mode updated; restart target apps</string>
-    <string name="uts_view_repatch" tools:ignore="MissingTranslation">Repatch</string>
-    <string name="uts_field_sysname" tools:ignore="MissingTranslation">System name</string>
-    <string name="uts_field_nodename" tools:ignore="MissingTranslation">Node name</string>
-    <string name="uts_field_release" tools:ignore="MissingTranslation">Release</string>
-    <string name="uts_field_version" tools:ignore="MissingTranslation">Version</string>
-    <string name="uts_field_machine" tools:ignore="MissingTranslation">Machine</string>
-    <string name="uts_field_domainname" tools:ignore="MissingTranslation">Domain name</string>
-    <string name="uts_field_byte_count" tools:ignore="MissingTranslation">%1$d / 64 bytes</string>
     <string name="profile_umount_modules_summary">Enabling this option will allow KernelSU to restore any modified files by the modules for this app</string>
     <string name="profile_selinux_domain">Domain</string>
     <string name="profile_selinux_rules">Rules</string>
@@ -291,7 +242,7 @@
     <string name="install_direct_lkm_title" tools:ignore="MissingTranslation">Embed LKM directly into boot kernel</string>
     <string name="install_direct_lkm_summary" tools:ignore="MissingTranslation">Use boot instead of init_boot for selected-image, direct, and inactive-slot installs. Legacy KernelSU ramdisk payloads are removed first.</string>
     <string name="install_direct_lkm_warning_title" tools:ignore="MissingTranslation">Direct-kernel mode enabled</string>
-    <string name="install_direct_lkm_warning_summary" tools:ignore="MissingTranslation">This mode patches boot only and clears known KernelSU ramdisk files from boot and init_boot during device installs. SuperKey, Shell Root, USB debugging, and UTS boot options are embedded into the LKM.</string>
+    <string name="install_direct_lkm_warning_summary" tools:ignore="MissingTranslation">This mode patches boot only and clears known KernelSU ramdisk files from boot and init_boot during device installs. SuperKey, Shell Root, and USB debugging settings are embedded into the LKM.</string>
     <string name="download_file" tools:ignore="MissingTranslation">Download an image</string>
     <string name="download_file_summary" tools:ignore="MissingTranslation">Download and patch an OTA or factory image from a URL.</string>
     <string name="download_dialog_title" tools:ignore="MissingTranslation">Download image</string>
@@ -312,8 +263,6 @@
     <string name="allow_shell_summary">Always allow adb shell to call su. Do not enable this unless absolutely necessary.</string>
     <string name="enable_adb">Force enable adb on boot</string>
     <string name="enable_adb_summary">Force enable USB debugging and disable adb authentication. Do not enable this unless absolutely necessary.</string>
-    <string name="uts_boot_repatch_option" tools:ignore="MissingTranslation">UTS View boot-global patch</string>
-    <string name="uts_boot_repatch_changed" tools:ignore="MissingTranslation">Changed</string>
     <string name="install_force_backup" tools:ignore="MissingTranslation">Back up as stock image</string>
     <string name="install_force_backup_summary" tools:ignore="MissingTranslation">Make sure the selected boot image is an unmodified stock image.</string>
     <string name="install_upload_lkm_file">Use local LKM file</string>
@@ -940,8 +889,6 @@
     <string name="repository_mmrl_added" tools:ignore="MissingTranslation">Added</string>
     <string name="repository_mmrl_added_disabled" tools:ignore="MissingTranslation">Added · disabled</string>
     <string name="repository_retry" tools:ignore="MissingTranslation">Retry</string>
-    <string name="uts_view_unpatched_boot_title" tools:ignore="MissingTranslation">Boot-global configuration not patched</string>
-    <string name="uts_view_unpatched_boot_message" tools:ignore="MissingTranslation">You changed the boot-global configuration, but have not patched the LKM yet. Patch it now?</string>
     <string name="home_lkm_update_available">A newer bundled LKM is available. Tap to update.</string>
     <string name="home_lkm_custom">Custom</string>
     <string name="require_manager_version">Manager update required</string>

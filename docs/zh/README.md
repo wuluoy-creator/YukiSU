@@ -26,8 +26,7 @@
 6. ADB root、sulog、SELinux hide、模块 `init.rc` 注入等上游特性
 7. 内置 YukiZygisk，基于内核的 Zygisk 实现，全面兼容 [Zygisk Next](https://github.com/Dr-TSNG/ZygiskNext) 模块
 8. 基于 TSR 的 sucompat/syscall hook 基础设施
-9. UTS 视图功能，支持通过修改 `uts_ns` 来进行 uname 伪装，无需编译内核
-10. 更多功能等您发现…
+9. 更多功能等您发现…
 
 ## 兼容状态
 

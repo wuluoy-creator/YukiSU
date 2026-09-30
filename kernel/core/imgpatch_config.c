@@ -8,7 +8,6 @@
 #include <linux/version.h>
 
 #include "core/imgpatch_config.h"
-#include "extension/uts_view.h"
 #include "klog.h" // IWYU pragma: keep
 #include "ksu.h"
 #include "policy/allowlist.h"
@@ -16,8 +15,8 @@
 
 static_assert(sizeof(struct ksu_imgpatch_config) == 512,
 	      "ImgPatch config ABI drift");
-static_assert(offsetof(struct ksu_imgpatch_config, uts) == 24,
-	      "ImgPatch UTS config ABI drift");
+static_assert(offsetof(struct ksu_imgpatch_config, reserved) == 24,
+	      "ImgPatch reserved config ABI drift");
 
 static volatile struct ksu_imgpatch_config
     __attribute__((used, section(".data"))) imgpatch_config_store = {
@@ -152,16 +151,6 @@ int ksu_imgpatch_config_apply(void)
 
 	ksu_bundled = !!(config.flags & KSU_IMGPATCH_CONFIG_BUNDLED);
 	allow_shell = !!(config.flags & KSU_IMGPATCH_CONFIG_ALLOW_SHELL);
-	if (config.flags & KSU_IMGPATCH_CONFIG_UTS_BOOT) {
-		ret = ksu_uts_view_set_imgpatch_boot_template(&config.uts);
-	} else {
-		ret = ksu_uts_view_set_imgpatch_boot_template(NULL);
-	}
-	if (ret) {
-		pr_err("imgpatch UTS boot config is invalid: %d\n", ret);
-		return ret;
-	}
-
 	ret = configure_adbd_from_imgpatch(
 	    !!(config.flags & KSU_IMGPATCH_CONFIG_ENABLE_ADBD));
 	if (ret) {
@@ -169,10 +158,8 @@ int ksu_imgpatch_config_apply(void)
 		return ret;
 	}
 
-	pr_info(
-	    "imgpatch config applied: allow_shell=%d enable_adbd=%d uts=%d\n",
-	    allow_shell, !!(config.flags & KSU_IMGPATCH_CONFIG_ENABLE_ADBD),
-	    !!(config.flags & KSU_IMGPATCH_CONFIG_UTS_BOOT));
+	pr_info("imgpatch config applied: allow_shell=%d enable_adbd=%d\n",
+		allow_shell, !!(config.flags & KSU_IMGPATCH_CONFIG_ENABLE_ADBD));
 	memzero_explicit(&config, sizeof(config));
 	return 0;
 }

@@ -23,7 +23,7 @@ Interactive diagnostics omit routine internal logs unless `--verbose` is used.
 Core argument errors exit with status 2; help exits with status 0. Command-specific
 runtime statuses and the existing `su` error status remain unchanged. Embedded
 third-party tools retain their own argument grammars. First-party commands,
-including boot patching, plugin configuration, UTS templates, and Kagami, use the
+including boot patching, plugin configuration, and Kagami, use the
 shared help and validation layer. Kagami arguments are checked before contacting
 or starting its daemon; `daemon call` also validates the nested command. New
 configuration patches validate field names, JSON types, enum values, paths, and
@@ -32,15 +32,13 @@ keeps its legacy loading behavior.
 
 Arguments after the module path in `ksud insmod` are passed to the loader verbatim;
 use `ksud insmod --help` to inspect that command. Use `--option=-value` when an
-option's value starts with a dash. Empty UTS field values are accepted and restore
-that field; repeated `--inherit` options may restore several distinct fields.
+option's value starts with a dash.
 Module configuration uses a single-line key/value format: keys cannot contain
 `=` or line breaks, and values cannot contain line breaks. Plugin configuration
 uses JSON and continues to support multiline values.
 
 ```sh
 ksud plugin config --id example set -- key --literal-value
-ksud uts-view set-global --release=-custom --inherit version --inherit nodename
 ```
 
 Missing or unsuitable input files are rejected before module installation or

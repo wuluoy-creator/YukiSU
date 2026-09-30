@@ -26,8 +26,7 @@ A kernel-based root solution for Android devices, forked from [`SukiSU-Ultra`](h
 6. ADB root, sulog, SELinux hide, module `init.rc` injection, and other upstream features
 7. Built-in YukiZygisk, a kernel-based Zygisk implementation, fully compatible with [Zygisk Next](https://github.com/Dr-TSNG/ZygiskNext) modules
 8. TSR-based sucompat/syscall hook infrastructure
-9. UTS view functionality, supporting `uname` spoofing by modifying `uts_ns` without rebuilding the kernel
-10. More features for you to discover...
+9. More features for you to discover...
 
 ## Compatibility Status
 

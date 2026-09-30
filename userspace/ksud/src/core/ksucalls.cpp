@@ -242,20 +242,6 @@ int ksuctl(int request, void* arg) {
 
 namespace {
 
-int uts_ksuctl(int request, void* arg) {
-    const int fd = get_driver_fd();
-    if (fd < 0)
-        return -ENODEV;
-
-    const int ret = ioctl(fd, request, arg);
-    if (ret < 0) {
-        const int error = errno;
-        LOGE("UTS ioctl failed: request=0x%x, errno=%d (%s)", request, error, strerror(error));
-        return -error;
-    }
-    return ret;
-}
-
 const GetInfoCmd& get_info() {
     if (!g_info_cached) {
         GetInfoCmd cmd{};
@@ -371,13 +357,6 @@ int set_feature(uint32_t feature_id, uint64_t value) {
     return ksuctl(KSU_IOCTL_SET_FEATURE, &cmd);
 }
 
-int get_uts_view_config(ksu_uts_view_config* config) {
-    if (config == nullptr)
-        return -EINVAL;
-    memset(config, 0, sizeof(*config));
-    return uts_ksuctl(KSU_IOCTL_GET_UTS_VIEW_CONFIG, config);
-}
-
 int get_su_path_config(ksu_su_path_config* config) {
     if (config == nullptr)
         return -EINVAL;
@@ -394,18 +373,6 @@ int set_su_path_config(const ksu_su_path_config& config) {
     if (fd < 0)
         return -ENODEV;
     return ioctl(fd, KSU_IOCTL_SET_SU_PATH, &request) < 0 ? -errno : 0;
-}
-
-int set_uts_view_config(const ksu_uts_view_config& config) {
-    ksu_uts_view_config request = config;
-    return uts_ksuctl(KSU_IOCTL_SET_UTS_VIEW_CONFIG, &request);
-}
-
-int get_uts_view_status(ksu_uts_view_status* status) {
-    if (status == nullptr)
-        return -EINVAL;
-    memset(status, 0, sizeof(*status));
-    return uts_ksuctl(KSU_IOCTL_GET_UTS_VIEW_STATUS, status);
 }
 
 int get_manager_uid() {

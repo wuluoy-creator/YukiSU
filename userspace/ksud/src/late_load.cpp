@@ -5,7 +5,6 @@
 #include "core/feature.hpp"
 #include "core/ksucalls.hpp"
 #include "core/restorecon.hpp"
-#include "core/uts_view.hpp"
 #include "defs.hpp"
 #include "init_event.hpp"
 #include "kernelsu_loader.hpp"
@@ -65,10 +64,7 @@ std::string get_kernelsu_load_params(bool allow_shell) {
 }
 
 bool extract_and_load_kernelsu(bool allow_shell) {
-    // The driver and its UTS extension do not exist yet. Probing the private
-    // status ioctl here would both fail closed and poison the process-wide
-    // driver-fd cache before the module can be loaded.
-    const std::string kmi = get_bootstrap_kmi();
+    const std::string kmi = get_current_kmi();
     if (kmi.empty()) {
         LOGE("late-load: failed to detect current KMI");
         return false;
@@ -211,10 +207,6 @@ int run(bool post_magica, bool allow_shell) {
 
         if (apply_profile_sepolies() != 0) {
             LOGW("late-load: apply_profile_sepolies failed");
-        }
-
-        if (apply_uts_view_config() != 0) {
-            LOGW("late-load: apply persisted UTS View configuration failed");
         }
 
         if (init_features() != 0) {

@@ -1,6 +1,5 @@
 #include "boot_patch.hpp"
 #include "../assets.hpp"
-#include "../core/uts_view.hpp"
 #include "../defs.hpp"
 #include "../kernel_version.hpp"
 #include "../log.hpp"
@@ -107,13 +106,6 @@ bool has_lz4_legacy_magic(const std::string& path) {
            memcmp(magic.data(), LZ4_LEGACY_MAGIC.data(), magic.size()) == 0;
 }
 
-std::optional<bool> lkm_supports_uts_boot_params(const std::string& lkm_path) {
-    const auto content = read_file(lkm_path);
-    if (!content)
-        return std::nullopt;
-    return content->find("parmtype=uts_boot_global:bool") != std::string::npos;
-}
-
 // Inject superkey salt+hash and verification mode into LKM file.
 // Layout in the LKM .data section (matches struct superkey_data in kernel):
 //   [+0]  u64 magic   (SUPERKEY_MAGIC)
@@ -188,9 +180,9 @@ bool inject_superkey_to_lkm(const std::string& lkm_path, const std::string& supe
 }
 
 bool inject_imgpatch_config_to_lkm(const std::string& lkm_path, bool allow_shell, bool enable_adbd,
-                                   const ksu_uts_template* uts_config, bool bundled_lkm) {
+                                   bool bundled_lkm) {
     static_assert(sizeof(ksu_imgpatch_config) == 512, "ImgPatch config ABI drift");
-    static_assert(offsetof(ksu_imgpatch_config, uts) == 24, "ImgPatch UTS config ABI drift");
+    static_assert(offsetof(ksu_imgpatch_config, reserved) == 24, "ImgPatch config ABI drift");
 
     ksu_imgpatch_config config{};
     config.magic = KSU_IMGPATCH_CONFIG_MAGIC;
@@ -202,10 +194,6 @@ bool inject_imgpatch_config_to_lkm(const std::string& lkm_path, bool allow_shell
         config.flags |= KSU_IMGPATCH_CONFIG_ALLOW_SHELL;
     if (enable_adbd)
         config.flags |= KSU_IMGPATCH_CONFIG_ENABLE_ADBD;
-    if (uts_config != nullptr) {
-        config.flags |= KSU_IMGPATCH_CONFIG_UTS_BOOT;
-        config.uts = *uts_config;
-    }
 
     std::vector<uint8_t> content;
     if (!read_file_bytes(lkm_path, &content)) {
@@ -236,7 +224,7 @@ bool inject_imgpatch_config_to_lkm(const std::string& lkm_path, bool allow_shell
     }
 
     if (!config_offset.has_value()) {
-        if (config.flags != 0) {
+        if (incompatible_marker || config.flags != 0) {
             LOGE("Selected LKM does not support embedded ImgPatch configuration%s",
                  incompatible_marker ? " (incompatible marker version)" : "");
             return false;
@@ -249,8 +237,8 @@ bool inject_imgpatch_config_to_lkm(const std::string& lkm_path, bool allow_shell
         LOGE("Failed to write ImgPatch configuration to LKM: %s", lkm_path.c_str());
         return false;
     }
-    printf("- Injected ImgPatch config at offset 0x%zx: allow_shell=%d enable_adbd=%d uts=%d\n",
-           *config_offset, allow_shell, enable_adbd, uts_config != nullptr);
+    printf("- Injected ImgPatch config at offset 0x%zx: allow_shell=%d enable_adbd=%d\n",
+           *config_offset, allow_shell, enable_adbd);
     return true;
 }
 
@@ -410,10 +398,8 @@ bool inject_superkey_into_lkm(const std::string& lkm_path, const std::string& su
 }
 
 bool inject_imgpatch_config_into_lkm(const std::string& lkm_path, bool allow_shell,
-                                     bool enable_adbd, const ksu_uts_template* uts_config,
-                                     bool bundled_lkm) {
-    return inject_imgpatch_config_to_lkm(lkm_path, allow_shell, enable_adbd, uts_config,
-                                         bundled_lkm);
+                                     bool enable_adbd, bool bundled_lkm) {
+    return inject_imgpatch_config_to_lkm(lkm_path, allow_shell, enable_adbd, bundled_lkm);
 }
 
 // Parse boot patch arguments
@@ -436,8 +422,6 @@ struct BootPatchArgs {
     bool no_custom_rc = false;      // --no-custom-rc
     bool enable_adbd = false;       // --enable-adbd
     std::string adb_debug_prop;     // --adb-debug-prop
-    std::string uts_config;         // --uts-config
-    bool uts_config_seen = false;
     bool help = false;  // -h, --help
     bool valid = true;
     std::string invalid_reason;  // names the offending argument when valid is false
@@ -473,7 +457,6 @@ void print_boot_patch_usage() {
            "      --no-custom-rc     skip the custom init.rc injection\n"
            "      --enable-adbd      run adbd as root\n"
            "      --adb-debug-prop <file>  adb debug properties to embed\n"
-           "      --uts-config <file>      UTS template to embed (at most once)\n"
            "      --magiskboot <path>      accepted for compatibility; ignored\n"
            "  -h, --help             show this message\n");
 }
@@ -543,13 +526,6 @@ BootPatchArgs parse_boot_patch_args(const std::vector<std::string>& args) {
             result.enable_adbd = true;
         } else if (arg == "--adb-debug-prop") {
             take_value(result.adb_debug_prop);
-        } else if (arg == "--uts-config") {
-            if (result.uts_config_seen) {
-                reject("--uts-config may only be given once");
-            } else {
-                take_value(result.uts_config);
-                result.uts_config_seen = true;
-            }
         } else {
             reject("unknown argument: " + arg);
         }
@@ -768,9 +744,6 @@ int boot_patch_impl(const std::vector<std::string>& args) {
         LOGE("Inactive-slot install requires a valid current slot suffix (_a or _b)");
         return 1;
     }
-    ksu_uts_template boot_uts_config{};
-    const bool have_boot_uts_config = !parsed.uts_config.empty();
-
     (void)setvbuf(stdout, nullptr, _IONBF, 0);
     (void)setvbuf(stderr, nullptr, _IONBF, 0);
     printf("\n");
@@ -780,16 +753,6 @@ int boot_patch_impl(const std::vector<std::string>& args) {
     printf("  | |  | |_| || . \\  | |  ___) || |_| |\n");
     printf("  |_|   \\___/ |_|\\_\\|___||____/  \\___/ \n");
     printf("\n");
-
-    if (have_boot_uts_config) {
-        std::string error;
-        if (!load_uts_boot_config(parsed.uts_config, &boot_uts_config, &error)) {
-            LOGE("Invalid UTS boot config: %s", error.c_str());
-            return 1;
-        }
-        printf("- UTS boot-global config validated (mask=0x%02x)\n", boot_uts_config.field_mask);
-        printf("- This identity takes effect after flashing the patched image and rebooting\n");
-    }
 
     // Create temp working directory
     // Try multiple locations in order of preference:
@@ -999,23 +962,6 @@ int boot_patch_impl(const std::vector<std::string>& args) {
         }
     }
 
-    if (have_boot_uts_config) {
-        const auto supports_uts_boot = lkm_supports_uts_boot_params(kmod_file);
-        if (!supports_uts_boot.has_value()) {
-            LOGE("Failed to inspect selected LKM for UTS boot parameter support");
-            cleanup();
-            return 1;
-        }
-        if (!*supports_uts_boot) {
-            LOGE("Selected LKM does not support boot-global UTS configuration");
-            LOGE("Missing required module parameter marker: parmtype=uts_boot_global:bool");
-            LOGE("Select a UTS-capable YukiSU LKM or remove --uts-config");
-            cleanup();
-            return 1;
-        }
-        printf("- Selected LKM supports UTS boot-global parameters\n");
-    }
-
     // Always inject verification mode (and SuperKey hash if set).
     // Pure signature mode (no superkey) still needs flags=0 to be explicitly written,
     // otherwise the LKM may have stale/wrong values and signature verification fails.
@@ -1204,11 +1150,6 @@ int boot_patch_impl(const std::vector<std::string>& args) {
     if (parsed.no_custom_rc) {
         printf("- Adding no custom rc config\n");
         ksu_config.emplace_back("norc=1");
-    }
-    if (have_boot_uts_config) {
-        auto uts_params = encode_uts_boot_module_params(boot_uts_config);
-        ksu_config.insert(ksu_config.end(), uts_params.begin(), uts_params.end());
-        printf("- Adding encoded UTS boot-global config\n");
     }
 
     if (!ksu_config.empty()) {
@@ -1803,8 +1744,6 @@ int boot_restore(const std::vector<std::string>& args) {
 
 namespace {
 
-// Old kernels without UTS View may use the effective release. New kernels must
-// use the immutable original identity and fail closed if it is unavailable.
 std::string read_kernel_release_from_sysfs() {
     const auto release = read_file("/proc/sys/kernel/osrelease");
     return release ? std::string(trim_view(*release)) : std::string{};
@@ -1836,7 +1775,7 @@ std::string parse_kmi_from_release(const std::string& full_version) {
     return major_minor;
 }
 
-std::string read_effective_kernel_release() {
+std::string read_kernel_release() {
     std::string full_version = read_kernel_release_from_sysfs();
     if (!full_version.empty())
         return full_version;
@@ -1851,20 +1790,8 @@ std::string read_effective_kernel_release() {
 
 }  // namespace
 
-std::string get_bootstrap_kmi() {
-    return parse_kmi_from_release(read_effective_kernel_release());
-}
-
 std::string get_current_kmi() {
-    std::string full_version;
-    bool uts_view_supported = false;
-    if (!get_uts_view_original_release(&full_version, &uts_view_supported)) {
-        LOGE("UTS View original kernel identity is unavailable; refusing KMI auto-detection");
-        return "";
-    }
-    if (!uts_view_supported)
-        full_version = read_effective_kernel_release();
-    return parse_kmi_from_release(full_version);
+    return parse_kmi_from_release(read_kernel_release());
 }
 
 int boot_info_current_kmi() {

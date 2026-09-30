@@ -26,8 +26,7 @@
 6. ADB root、sulog、SELinux hide、モジュールの `init.rc` 注入などの上流機能
 7. YukiZygisk を内蔵。カーネルベースの Zygisk 実装で、[Zygisk Next](https://github.com/Dr-TSNG/ZygiskNext) モジュールと完全互換
 8. TSR ベースの sucompat/syscall hook 基盤
-9. UTS ビュー機能。カーネルを再ビルドせずに `uts_ns` を変更して `uname` を偽装可能
-10. その他の機能もぜひ見つけてください…
+9. その他の機能もぜひ見つけてください…
 
 ## 互換性
 

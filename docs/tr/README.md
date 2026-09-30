@@ -26,8 +26,7 @@
 6. ADB root, sulog, SELinux hide, modül `init.rc` enjeksiyonu ve diğer upstream özellikleri
 7. Yerleşik YukiZygisk; çekirdek tabanlı bir Zygisk uygulamasıdır ve [Zygisk Next](https://github.com/Dr-TSNG/ZygiskNext) modülleriyle tamamen uyumludur
 8. TSR tabanlı sucompat/syscall hook altyapısı
-9. UTS view özelliği; çekirdeği yeniden derlemeden `uts_ns` değiştirilerek `uname` taklit edilebilir
-10. Keşfetmenizi bekleyen daha fazla özellik…
+9. Keşfetmenizi bekleyen daha fazla özellik…
 
 ## Uyumluluk Durumu
 
