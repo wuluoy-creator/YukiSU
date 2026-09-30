@@ -509,7 +509,6 @@
     <string name="plugin_version">v%1$s</string>
     <string name="plugin_repository_update">업데이트</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
-    <string name="su_compact_off">닫기</string>
     <string name="download_dialog_msg">HTTPS URL</string>
     <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="ramdisk_editor_title">%s Ramdisk</string>
@@ -595,8 +594,6 @@
     <string name="settings_yukizygisk_toast_on">활성화했습니다. 재부팅 후 적용됩니다</string>
     <string name="settings_yukizygisk_toast_off">비활성화했습니다. 재부팅 후 적용됩니다</string>
     <string name="settings_yukizygisk_toast_failed">전환 실패</string>
-    <string name="su_compact_traditional">기존 방식</string>
-    <string name="su_compact_ksm">Kasumi(실험적 기능)</string>
     <string name="su_compact_magisk_summary">권한 승인 팝업</string>
     <string name="settings_check_ci_update">CI 업데이트 확인</string>
     <string name="settings_check_ci_update_summary">앱 실행 시 서명된 nightly 관리자 버전을 확인합니다. 기본값은 꺼짐입니다</string>

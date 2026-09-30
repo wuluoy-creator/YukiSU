@@ -575,9 +575,6 @@ A</string>
     <string name="settings_yukizygisk_toast_on">Bekapcsolva. Újraindítás után lép életbe</string>
     <string name="settings_yukizygisk_toast_off">Kikapcsolva. Újraindítás után lép életbe</string>
     <string name="settings_yukizygisk_toast_failed">Az átváltás sikertelen</string>
-    <string name="su_compact_off">Bezárás</string>
-    <string name="su_compact_traditional">Hagyományos</string>
-    <string name="su_compact_ksm">Kasumi (kísérleti)</string>
     <string name="su_compact_magisk_summary">Engedélyezési párbeszédablak</string>
     <string name="settings_check_ci_update">CI frissítések keresése</string>
     <string name="settings_check_ci_update_summary">Alkalmazásindításkor aláírt éjszakai kezelőverziókat keres. Alapértelmezés szerint kikapcsolva</string>

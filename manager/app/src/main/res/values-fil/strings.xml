@@ -509,7 +509,6 @@
     <string name="plugin_version">v%1$s</string>
     <string name="plugin_repository_update">Update</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
-    <string name="su_compact_off">Isara</string>
     <string name="download_dialog_msg">HTTPS URL</string>
     <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="ramdisk_editor_title">%s Ramdisk</string>
@@ -595,8 +594,6 @@
     <string name="settings_yukizygisk_toast_on">Pinagana, magkakabisa pagkatapos mag-restart</string>
     <string name="settings_yukizygisk_toast_off">Hindi pinagana, magkakabisa pagkatapos mag-restart</string>
     <string name="settings_yukizygisk_toast_failed">Hindi napalitan</string>
-    <string name="su_compact_traditional">Tradisyonal</string>
-    <string name="su_compact_ksm">Kasumi (eksperimental)</string>
     <string name="su_compact_magisk_summary">Dialog ng pagbibigay ng pahintulot</string>
     <string name="settings_check_ci_update">Suriin ang mga update sa CI</string>
     <string name="settings_check_ci_update_summary">Suriin ang nilagdaang nightly na bersyon ng manager sa pagbukas ng app. Naka-off bilang default</string>

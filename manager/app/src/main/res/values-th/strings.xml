@@ -511,7 +511,6 @@
     <string name="plugin_version">v%1$s</string>
     <string name="plugin_repository_update">อัปเดต</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
-    <string name="su_compact_off">ปิด</string>
     <string name="download_dialog_msg">HTTPS URL</string>
     <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="ramdisk_editor_title">%s Ramdisk</string>
@@ -597,8 +596,6 @@
     <string name="settings_yukizygisk_toast_on">เปิดแล้ว มีผลหลังรีสตาร์ต</string>
     <string name="settings_yukizygisk_toast_off">ปิดแล้ว มีผลหลังรีสตาร์ต</string>
     <string name="settings_yukizygisk_toast_failed">สลับไม่สำเร็จ</string>
-    <string name="su_compact_traditional">แบบดั้งเดิม</string>
-    <string name="su_compact_ksm">Kasumi (ฟีเจอร์ทดลอง)</string>
     <string name="su_compact_magisk_summary">กล่องโต้ตอบอนุญาตสิทธิ์</string>
     <string name="settings_check_ci_update">ตรวจสอบการอัปเดต CI</string>
     <string name="settings_check_ci_update_summary">ตรวจสอบตัวจัดการรุ่น nightly ที่ลงลายเซ็นเมื่อเปิดแอป ปิดไว้โดยค่าเริ่มต้น</string>

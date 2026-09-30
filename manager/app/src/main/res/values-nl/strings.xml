@@ -576,9 +576,6 @@
     <string name="settings_yukizygisk_toast_on">Ingeschakeld. Wordt actief na opnieuw opstarten.</string>
     <string name="settings_yukizygisk_toast_off">Uitgeschakeld. Wordt actief na opnieuw opstarten.</string>
     <string name="settings_yukizygisk_toast_failed">Omschakelen mislukt</string>
-    <string name="su_compact_off">Sluiten</string>
-    <string name="su_compact_traditional">Traditioneel</string>
-    <string name="su_compact_ksm">Kasumi (experimenteel)</string>
     <string name="su_compact_magisk_summary">Toestemmingsvenster</string>
     <string name="settings_check_ci_update">Controleren op CI-updates</string>
     <string name="settings_check_ci_update_summary">Bij het openen van de app controleren op ondertekende nachtelijke beheerdersversies. Standaard uitgeschakeld.</string>

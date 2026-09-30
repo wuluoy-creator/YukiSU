@@ -574,9 +574,6 @@
     <string name="settings_yukizygisk_toast_on">Uključeno. Primjenjuje se nakon ponovnog pokretanja</string>
     <string name="settings_yukizygisk_toast_off">Isključeno. Primjenjuje se nakon ponovnog pokretanja</string>
     <string name="settings_yukizygisk_toast_failed">Prebacivanje nije uspjelo</string>
-    <string name="su_compact_off">Zatvori</string>
-    <string name="su_compact_traditional">Tradicionalno</string>
-    <string name="su_compact_ksm">Kasumi (eksperimentalno)</string>
     <string name="su_compact_magisk_summary">Dijalog za dodjelu ovlasti</string>
     <string name="settings_check_ci_update">Provjeravaj CI ažuriranja</string>
     <string name="settings_check_ci_update_summary">Provjerava potpisane noćne verzije upravitelja pri otvaranju aplikacije. Zadano je isključeno</string>

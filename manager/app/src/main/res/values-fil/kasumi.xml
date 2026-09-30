@@ -3,7 +3,6 @@
     <string name="kasumi_advanced">Advanced</string>
     <string name="kasumi_builtin_mount">Built-in na Mount</string>
     <string name="kasumi_debug">Debug logging</string>
-    <string name="kasumi_enable_title">I-enable ang Kasumi</string>
     <string name="kasumi_filter_all">Lahat</string>
     <string name="kasumi_fs_type_erofs">EROFS image</string>
     <string name="kasumi_fs_type_ext4">EXT4 image</string>
@@ -93,7 +92,6 @@
     <string name="kasumi_verbose_desc">I-enable ang detalyadong daemon log</string>
     <string name="kasumi_version_label">Bersyon: %s</string>
     <string name="kasumi_views_on">Naka-enable</string>
-    <string name="kasumi_feature_summary">Paganahin ang Kasumi. Magkakabisa pagkatapos mag-restart.</string>
     <string name="kasumi_absolute_path">Maglagay ng ganap na path</string>
     <string name="kasumi_apply_failed">Hindi pa nailalapat sa kernel ang na-save na configuration</string>
     <string name="kasumi_backend_enable_desc">Payagang gamitin ng tagaplano ng mount ang backend na ito</string>
@@ -101,7 +99,6 @@
     <string name="kasumi_check_conflicts">Suriin ang mga salungatan sa mount</string>
     <string name="kasumi_debug_desc">Maglabas ng karagdagang impormasyon sa pag-debug ng Kagami</string>
     <string name="kasumi_edit_rule">I-edit ang panuntunan</string>
-    <string name="kasumi_enable_desc">Kontrolin ang virtual na view ng Kasumi at ilapat sa kernel pagkatapos i-save</string>
     <string name="kasumi_external_mount">Pinamamahalaan ng %1$s ang pag-mount. Hindi magkakabisa ang mga built-in na opsyon sa mount.</string>
     <string name="kasumi_filter_active">Nakalapat na ang Kasumi</string>
     <string name="kasumi_fs_type_auto">Awtomatiko</string>

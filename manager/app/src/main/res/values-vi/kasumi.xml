@@ -3,7 +3,6 @@
     <string name="kasumi_advanced">Nâng cao</string>
     <string name="kasumi_builtin_mount">Gắn kết tích hợp</string>
     <string name="kasumi_debug">Nhật ký gỡ lỗi</string>
-    <string name="kasumi_enable_title">Bật Kasumi</string>
     <string name="kasumi_filter_all">Tất cả</string>
     <string name="kasumi_fs_type_erofs">Ảnh EROFS</string>
     <string name="kasumi_fs_type_ext4">Ảnh EXT4</string>
@@ -93,7 +92,6 @@
     <string name="kasumi_verbose_desc">Bật nhật ký chi tiết của daemon</string>
     <string name="kasumi_version_label">Phiên bản: %s</string>
     <string name="kasumi_views_on">Đã bật</string>
-    <string name="kasumi_feature_summary">Bật Kasumi. Có hiệu lực sau khi khởi động lại.</string>
     <string name="kasumi_absolute_path">Nhập đường dẫn tuyệt đối</string>
     <string name="kasumi_apply_failed">Cấu hình đã lưu chưa được áp dụng vào nhân</string>
     <string name="kasumi_backend_enable_desc">Cho phép bộ lập kế hoạch gắn kết sử dụng backend này</string>
@@ -101,7 +99,6 @@
     <string name="kasumi_check_conflicts">Kiểm tra xung đột gắn kết</string>
     <string name="kasumi_debug_desc">Xuất thêm thông tin gỡ lỗi Kagami</string>
     <string name="kasumi_edit_rule">Sửa quy tắc</string>
-    <string name="kasumi_enable_desc">Điều khiển khung nhìn ảo Kasumi và áp dụng vào nhân sau khi lưu</string>
     <string name="kasumi_external_mount">%1$s đang quản lý gắn kết. Các tùy chọn gắn kết tích hợp không có hiệu lực.</string>
     <string name="kasumi_filter_active">Kasumi đã có hiệu lực</string>
     <string name="kasumi_fs_type_auto">Tự động</string>

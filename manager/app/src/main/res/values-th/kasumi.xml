@@ -3,7 +3,6 @@
     <string name="kasumi_advanced">ขั้นสูง</string>
     <string name="kasumi_builtin_mount">การเมานต์แบบฝังในตัว</string>
     <string name="kasumi_debug">การบันทึกการดีบัก</string>
-    <string name="kasumi_enable_title">เปิดใช้งาน Kasumi</string>
     <string name="kasumi_filter_all">ทั้งหมด</string>
     <string name="kasumi_fs_type_erofs">อิมเมจ EROFS</string>
     <string name="kasumi_fs_type_ext4">อิมเมจ EXT4</string>
@@ -93,7 +92,6 @@
     <string name="kasumi_verbose_desc">เปิดใช้งานบันทึกเดมอนแบบละเอียด</string>
     <string name="kasumi_version_label">เวอร์ชัน: %s</string>
     <string name="kasumi_views_on">เปิดใช้งาน</string>
-    <string name="kasumi_feature_summary">เปิดใช้ Kasumi มีผลหลังรีสตาร์ต</string>
     <string name="kasumi_absolute_path">ป้อนพาธแบบสัมบูรณ์</string>
     <string name="kasumi_apply_failed">การกำหนดค่าที่บันทึกยังไม่ได้ใช้กับเคอร์เนล</string>
     <string name="kasumi_backend_enable_desc">อนุญาตให้ตัววางแผนเมานต์ใช้แบ็กเอนด์นี้</string>
@@ -101,7 +99,6 @@
     <string name="kasumi_check_conflicts">ตรวจสอบความขัดแย้งในการเมานต์</string>
     <string name="kasumi_debug_desc">แสดงข้อมูลดีบัก Kagami เพิ่มเติม</string>
     <string name="kasumi_edit_rule">แก้ไขกฎ</string>
-    <string name="kasumi_enable_desc">ควบคุมมุมมองเสมือนของ Kasumi และใช้กับเคอร์เนลหลังบันทึก</string>
     <string name="kasumi_external_mount">%1$s กำลังจัดการการเมานต์ ตัวเลือกเมานต์ในตัวจะไม่มีผล</string>
     <string name="kasumi_filter_active">Kasumi มีผลแล้ว</string>
     <string name="kasumi_fs_type_auto">อัตโนมัติ</string>

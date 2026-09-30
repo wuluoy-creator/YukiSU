@@ -574,9 +574,6 @@
     <string name="settings_yukizygisk_toast_on">Įjungta; įsigalios paleidus iš naujo</string>
     <string name="settings_yukizygisk_toast_off">Išjungta; įsigalios paleidus iš naujo</string>
     <string name="settings_yukizygisk_toast_failed">Nepavyko perjungti</string>
-    <string name="su_compact_off">Uždaryti</string>
-    <string name="su_compact_traditional">Tradicinis</string>
-    <string name="su_compact_ksm">Kasumi (eksperimentinis)</string>
     <string name="su_compact_magisk_summary">Leidimo suteikimo iškylantysis langas</string>
     <string name="settings_check_ci_update">Tikrinti CI atnaujinimus</string>
     <string name="settings_check_ci_update_summary">Atidarant programėlę tikrinti pasirašytas naktines tvarkytuvės versijas. Pagal numatymą išjungta.</string>

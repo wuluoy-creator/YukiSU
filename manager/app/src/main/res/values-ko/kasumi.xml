@@ -3,7 +3,6 @@
     <string name="kasumi_advanced">고급</string>
     <string name="kasumi_builtin_mount">내장 마운트</string>
     <string name="kasumi_debug">디버그 로깅</string>
-    <string name="kasumi_enable_title">Kasumi 활성화</string>
     <string name="kasumi_filter_all">전체</string>
     <string name="kasumi_fs_type_erofs">EROFS 이미지</string>
     <string name="kasumi_fs_type_ext4">EXT4 이미지</string>
@@ -93,7 +92,6 @@
     <string name="kasumi_verbose_desc">상세 데몬 로그를 활성화합니다</string>
     <string name="kasumi_version_label">버전: %s</string>
     <string name="kasumi_views_on">활성화됨</string>
-    <string name="kasumi_feature_summary">Kasumi를 활성화합니다. 재부팅 후 적용됩니다.</string>
     <string name="kasumi_absolute_path">절대 경로를 입력하세요</string>
     <string name="kasumi_apply_failed">저장한 설정이 아직 커널에 적용되지 않았습니다</string>
     <string name="kasumi_backend_enable_desc">마운트 계획기가 이 백엔드를 사용하도록 허용</string>
@@ -101,7 +99,6 @@
     <string name="kasumi_check_conflicts">마운트 충돌 확인</string>
     <string name="kasumi_debug_desc">추가 Kagami 디버그 정보 출력</string>
     <string name="kasumi_edit_rule">규칙 편집</string>
-    <string name="kasumi_enable_desc">Kasumi 가상 보기를 제어하고 저장 후 커널에 적용</string>
     <string name="kasumi_external_mount">%1$s에서 마운트를 관리하므로 내장 마운트 옵션은 적용되지 않습니다.</string>
     <string name="kasumi_filter_active">Kasumi 적용됨</string>
     <string name="kasumi_fs_type_auto">자동</string>

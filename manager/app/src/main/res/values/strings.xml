@@ -146,11 +146,7 @@
     <string name="settings_yukizygisk_toast_on" tools:ignore="MissingTranslation">Enabled; reboot required</string>
     <string name="settings_yukizygisk_toast_off" tools:ignore="MissingTranslation">Disabled; reboot required</string>
     <string name="settings_yukizygisk_toast_failed" tools:ignore="MissingTranslation">Toggle failed</string>
-    <string name="su_compact_title" translatable="false">su compact</string>
-    <string name="su_compact_ksm" tools:ignore="MissingTranslation">Kasumi (experimental)</string>
     <string name="su_compact_magisk_title" translatable="false">Magisk su compact</string>
-    <string name="su_compact_off" tools:ignore="MissingTranslation">Off</string>
-    <string name="su_compact_traditional" tools:ignore="MissingTranslation">Traditional</string>
     <string name="su_compact_magisk_summary" tools:ignore="MissingTranslation">Authorization prompt</string>
     <string name="profile_umount_modules_summary">Enabling this option will allow KernelSU to restore any modified files by the modules for this app</string>
     <string name="profile_selinux_domain">Domain</string>

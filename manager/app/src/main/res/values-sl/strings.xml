@@ -574,9 +574,6 @@
     <string name="settings_yukizygisk_toast_on">Omogočeno; začne veljati po ponovnem zagonu</string>
     <string name="settings_yukizygisk_toast_off">Onemogočeno; začne veljati po ponovnem zagonu</string>
     <string name="settings_yukizygisk_toast_failed">Preklop ni uspel</string>
-    <string name="su_compact_off">Zapri</string>
-    <string name="su_compact_traditional">Tradicionalno</string>
-    <string name="su_compact_ksm">Kasumi (poskusno)</string>
     <string name="su_compact_magisk_summary">Pojavno okno za dodelitev pravic</string>
     <string name="settings_check_ci_update">Preverjaj posodobitve CI</string>
     <string name="settings_check_ci_update_summary">Ob odpiranju aplikacije preveri podpisane nočne različice upravitelja. Privzeto izklopljeno.</string>

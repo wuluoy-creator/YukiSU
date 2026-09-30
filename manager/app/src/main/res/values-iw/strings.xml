@@ -574,9 +574,6 @@
     <string name="settings_yukizygisk_toast_on">הופעל. ייכנס לתוקף לאחר הפעלה מחדש</string>
     <string name="settings_yukizygisk_toast_off">כובה. ייכנס לתוקף לאחר הפעלה מחדש</string>
     <string name="settings_yukizygisk_toast_failed">ההחלפה נכשלה</string>
-    <string name="su_compact_off">סגור</string>
-    <string name="su_compact_traditional">מסורתי</string>
-    <string name="su_compact_ksm">Kasumi (ניסיוני)</string>
     <string name="su_compact_magisk_summary">חלון בקשת הרשאה</string>
     <string name="settings_check_ci_update">בדיקת עדכוני CI</string>
     <string name="settings_check_ci_update_summary">בדיקת גרסאות לילה חתומות של המנהל בעת פתיחת היישום. כבוי כברירת מחדל</string>

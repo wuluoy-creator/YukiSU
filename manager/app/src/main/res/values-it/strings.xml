@@ -576,9 +576,6 @@
     <string name="settings_yukizygisk_toast_on">Attivato. Ha effetto dopo il riavvio.</string>
     <string name="settings_yukizygisk_toast_off">Disattivato. Ha effetto dopo il riavvio.</string>
     <string name="settings_yukizygisk_toast_failed">Cambio non riuscito</string>
-    <string name="su_compact_off">Chiudi</string>
-    <string name="su_compact_traditional">Tradizionale</string>
-    <string name="su_compact_ksm">Kasumi (sperimentale)</string>
     <string name="su_compact_magisk_summary">Finestra di autorizzazione</string>
     <string name="settings_check_ci_update">Cerca aggiornamenti CI</string>
     <string name="settings_check_ci_update_summary">Cerca versioni notturne firmate del gestore all’apertura dell’app. Disattivato per impostazione predefinita.</string>

@@ -574,9 +574,6 @@
     <string name="settings_yukizygisk_toast_on">Açıldı. Yeniden başlatınca uygulanır</string>
     <string name="settings_yukizygisk_toast_off">Kapatıldı. Yeniden başlatınca uygulanır</string>
     <string name="settings_yukizygisk_toast_failed">Değiştirilemedi</string>
-    <string name="su_compact_off">Kapat</string>
-    <string name="su_compact_traditional">Geleneksel</string>
-    <string name="su_compact_ksm">Kasumi (deneysel)</string>
     <string name="su_compact_magisk_summary">Yetkilendirme iletişim kutusu</string>
     <string name="settings_check_ci_update">CI güncellemelerini denetle</string>
     <string name="settings_check_ci_update_summary">Uygulama açıldığında imzalı gecelik yönetici sürümlerini denetler. Varsayılan olarak kapalıdır</string>

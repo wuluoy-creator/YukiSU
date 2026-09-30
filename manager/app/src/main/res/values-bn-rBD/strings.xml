@@ -505,7 +505,6 @@
     <string name="plugin_version">v%1$s</string>
     <string name="plugin_repository_update">আপডেট</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
-    <string name="su_compact_off">বন্ধ করুন</string>
     <string name="download_dialog_msg">HTTPS URL</string>
     <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="ramdisk_editor_title">%s Ramdisk</string>
@@ -591,8 +590,6 @@
     <string name="settings_yukizygisk_toast_on">চালু হয়েছে, পুনরায় চালুর পর কার্যকর হবে</string>
     <string name="settings_yukizygisk_toast_off">বন্ধ হয়েছে, পুনরায় চালুর পর কার্যকর হবে</string>
     <string name="settings_yukizygisk_toast_failed">পরিবর্তন ব্যর্থ</string>
-    <string name="su_compact_traditional">প্রচলিত</string>
-    <string name="su_compact_ksm">Kasumi (পরীক্ষামূলক)</string>
     <string name="su_compact_magisk_summary">অনুমতি দেওয়ার ডায়ালগ</string>
     <string name="settings_check_ci_update">CI আপডেট পরীক্ষা করুন</string>
     <string name="settings_check_ci_update_summary">অ্যাপ খোলার সময় স্বাক্ষরিত nightly ম্যানেজার সংস্করণ পরীক্ষা করুন। ডিফল্টভাবে বন্ধ</string>

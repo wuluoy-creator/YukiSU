@@ -422,7 +422,7 @@ struct BootPatchArgs {
     bool no_custom_rc = false;      // --no-custom-rc
     bool enable_adbd = false;       // --enable-adbd
     std::string adb_debug_prop;     // --adb-debug-prop
-    bool help = false;  // -h, --help
+    bool help = false;              // -h, --help
     bool valid = true;
     std::string invalid_reason;  // names the offending argument when valid is false
 };

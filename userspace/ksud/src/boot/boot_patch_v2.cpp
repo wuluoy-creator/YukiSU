@@ -707,9 +707,8 @@ int boot_patch_v2(const std::vector<std::string>& args) {
         cleanup();
         return 1;
     }
-    if (!inject_imgpatch_config_into_lkm(
-            module_for_injection.string(), parsed.allow_shell, parsed.enable_adbd,
-            bundled_lkm)) {
+    if (!inject_imgpatch_config_into_lkm(module_for_injection.string(), parsed.allow_shell,
+                                         parsed.enable_adbd, bundled_lkm)) {
         LOGE("boot-patch-v2: failed to inject ImgPatch configuration into LKM");
         cleanup();
         return 1;

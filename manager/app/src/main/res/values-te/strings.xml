@@ -509,7 +509,6 @@
     <string name="plugin_version">v%1$s</string>
     <string name="plugin_repository_update">అప్‌డేట్</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
-    <string name="su_compact_off">మూసివేయండి</string>
     <string name="download_dialog_msg">HTTPS URL</string>
     <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="ramdisk_editor_title">%s Ramdisk</string>
@@ -595,8 +594,6 @@
     <string name="settings_yukizygisk_toast_on">ప్రారంభించబడింది, పునఃప్రారంభం తర్వాత అమలవుతుంది</string>
     <string name="settings_yukizygisk_toast_off">నిలిపివేయబడింది, పునఃప్రారంభం తర్వాత అమలవుతుంది</string>
     <string name="settings_yukizygisk_toast_failed">మార్చడం విఫలమైంది</string>
-    <string name="su_compact_traditional">సాంప్రదాయ</string>
-    <string name="su_compact_ksm">Kasumi (ప్రయోగాత్మక)</string>
     <string name="su_compact_magisk_summary">అనుమతి మంజూరు డైలాగ్</string>
     <string name="settings_check_ci_update">CI నవీకరణలను తనిఖీ చేయండి</string>
     <string name="settings_check_ci_update_summary">యాప్ తెరిచినప్పుడు సంతకం చేసిన nightly మేనేజర్ వెర్షన్‌ను తనిఖీ చేయండి. డిఫాల్ట్‌గా ఆఫ్</string>

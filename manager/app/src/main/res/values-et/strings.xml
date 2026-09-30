@@ -574,9 +574,6 @@
     <string name="settings_yukizygisk_toast_on">Lubatud; jõustub pärast taaskäivitust</string>
     <string name="settings_yukizygisk_toast_off">Keelatud; jõustub pärast taaskäivitust</string>
     <string name="settings_yukizygisk_toast_failed">Lülitamine nurjus</string>
-    <string name="su_compact_off">Sulge</string>
-    <string name="su_compact_traditional">Traditsiooniline</string>
-    <string name="su_compact_ksm">Kasumi (eksperimentaalne)</string>
     <string name="su_compact_magisk_summary">Õiguste andmise hüpikaken</string>
     <string name="settings_check_ci_update">Otsi CI-uuendusi</string>
     <string name="settings_check_ci_update_summary">Otsi rakenduse avamisel allkirjastatud öiseid halduriversioone. Vaikimisi väljas.</string>

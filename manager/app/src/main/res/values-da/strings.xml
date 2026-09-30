@@ -574,9 +574,6 @@
     <string name="settings_yukizygisk_toast_on">Aktiveret. Træder i kraft efter genstart.</string>
     <string name="settings_yukizygisk_toast_off">Deaktiveret. Træder i kraft efter genstart.</string>
     <string name="settings_yukizygisk_toast_failed">Kunne ikke skifte</string>
-    <string name="su_compact_off">Luk</string>
-    <string name="su_compact_traditional">Traditionel</string>
-    <string name="su_compact_ksm">Kasumi (eksperimentel)</string>
     <string name="su_compact_magisk_summary">Godkendelsesdialog</string>
     <string name="settings_check_ci_update">Søg efter CI-opdateringer</string>
     <string name="settings_check_ci_update_summary">Søg efter signerede natlige versioner af administratoren, når appen åbnes. Deaktiveret som standard.</string>

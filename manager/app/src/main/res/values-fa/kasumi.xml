@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kasumi_feature_summary">فعال‌سازی Kasumi؛ پس از راه‌اندازی مجدد اعمال می‌شود.</string>
     <string name="kasumi_absolute_path">یک مسیر مطلق وارد کنید</string>
     <string name="kasumi_advanced">پیشرفته</string>
     <string name="kasumi_apply_failed">پیکربندی ذخیره‌شده هنوز روی هسته اعمال نشده است</string>
@@ -11,8 +10,6 @@
     <string name="kasumi_debug">ثبت لاگ اشکال‌زدایی</string>
     <string name="kasumi_debug_desc">نمایش اطلاعات اشکال‌زدایی بیشتر Kagami</string>
     <string name="kasumi_edit_rule">ویرایش قانون</string>
-    <string name="kasumi_enable_desc">کنترل نمای مجازی Kasumi؛ پس از ذخیره روی هسته اعمال می‌شود</string>
-    <string name="kasumi_enable_title">فعال‌سازی Kasumi</string>
     <string name="kasumi_external_mount">اتصال‌ها توسط %1$s مدیریت می‌شوند. گزینه‌های اتصال داخلی اثری ندارند.</string>
     <string name="kasumi_filter_active">Kasumi فعال است</string>
     <string name="kasumi_filter_all">همه</string>

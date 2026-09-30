@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kasumi_feature_summary">Kasumi-ni aktivləşdir. Yenidən başladıqdan sonra qüvvəyə minir.</string>
     <string name="kasumi_absolute_path">Mütləq yol daxil edin</string>
     <string name="kasumi_advanced">Qabaqcıl</string>
     <string name="kasumi_apply_failed">Saxlanmış konfiqurasiya hələ nüvəyə tətbiq edilməyib</string>
@@ -11,8 +10,6 @@
     <string name="kasumi_debug">Sazlama jurnalı</string>
     <string name="kasumi_debug_desc">Əlavə Kagami sazlama məlumatları çıxar</string>
     <string name="kasumi_edit_rule">Qaydanı redaktə et</string>
-    <string name="kasumi_enable_desc">Kasumi virtual görünüşünü idarə edir; saxlandıqdan sonra nüvəyə tətbiq edilir</string>
-    <string name="kasumi_enable_title">Kasumi-ni aktivləşdir</string>
     <string name="kasumi_external_mount">Qoşmanı %1$s idarə edir. Daxili qoşma seçimləri təsirsizdir.</string>
     <string name="kasumi_filter_active">Kasumi aktivdir</string>
     <string name="kasumi_filter_all">Hamısı</string>

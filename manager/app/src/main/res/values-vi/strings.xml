@@ -509,7 +509,6 @@
     <string name="plugin_version">v%1$s</string>
     <string name="plugin_repository_update">Cập nhật</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
-    <string name="su_compact_off">Đóng</string>
     <string name="download_dialog_msg">HTTPS URL</string>
     <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="ramdisk_editor_title">%s Ramdisk</string>
@@ -595,8 +594,6 @@
     <string name="settings_yukizygisk_toast_on">Đã bật, có hiệu lực sau khi khởi động lại</string>
     <string name="settings_yukizygisk_toast_off">Đã tắt, có hiệu lực sau khi khởi động lại</string>
     <string name="settings_yukizygisk_toast_failed">Không thể chuyển đổi</string>
-    <string name="su_compact_traditional">Truyền thống</string>
-    <string name="su_compact_ksm">Kasumi (thử nghiệm)</string>
     <string name="su_compact_magisk_summary">Hộp thoại cấp quyền</string>
     <string name="settings_check_ci_update">Kiểm tra cập nhật CI</string>
     <string name="settings_check_ci_update_summary">Kiểm tra bản nightly của trình quản lý đã được ký khi mở ứng dụng. Mặc định tắt</string>

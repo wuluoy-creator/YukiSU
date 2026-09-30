@@ -576,9 +576,6 @@
     <string name="settings_yukizygisk_toast_on">Activat. Se aplică după repornire.</string>
     <string name="settings_yukizygisk_toast_off">Dezactivat. Se aplică după repornire.</string>
     <string name="settings_yukizygisk_toast_failed">Comutarea a eșuat</string>
-    <string name="su_compact_off">Închide</string>
-    <string name="su_compact_traditional">Tradițional</string>
-    <string name="su_compact_ksm">Kasumi (experimental)</string>
     <string name="su_compact_magisk_summary">Fereastră de autorizare</string>
     <string name="settings_check_ci_update">Caută actualizări CI</string>
     <string name="settings_check_ci_update_summary">Caută versiuni nocturne semnate ale administratorului la deschiderea aplicației. Dezactivat implicit.</string>

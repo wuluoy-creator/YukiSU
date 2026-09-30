@@ -511,7 +511,6 @@
     <string name="plugin_version">v%1$s</string>
     <string name="plugin_repository_update">更新</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
-    <string name="su_compact_off">閉じる</string>
     <string name="download_dialog_msg">HTTPS URL</string>
     <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="ramdisk_editor_title">%s Ramdisk</string>
@@ -597,8 +596,6 @@
     <string name="settings_yukizygisk_toast_on">有効にしました。再起動後に反映されます</string>
     <string name="settings_yukizygisk_toast_off">無効にしました。再起動後に反映されます</string>
     <string name="settings_yukizygisk_toast_failed">切り替えに失敗しました</string>
-    <string name="su_compact_traditional">従来方式</string>
-    <string name="su_compact_ksm">Kasumi（実験的な機能）</string>
     <string name="su_compact_magisk_summary">権限許可ダイアログ</string>
     <string name="settings_check_ci_update">CI 更新を確認</string>
     <string name="settings_check_ci_update_summary">アプリ起動時に署名済みの nightly マネージャーを確認します。デフォルトではオフです</string>

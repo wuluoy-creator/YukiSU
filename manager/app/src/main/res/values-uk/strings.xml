@@ -576,9 +576,6 @@
     <string name="settings_yukizygisk_toast_on">Увімкнено. Набуде чинності після перезавантаження</string>
     <string name="settings_yukizygisk_toast_off">Вимкнено. Набуде чинності після перезавантаження</string>
     <string name="settings_yukizygisk_toast_failed">Не вдалося перемкнути</string>
-    <string name="su_compact_off">Закрити</string>
-    <string name="su_compact_traditional">Традиційний</string>
-    <string name="su_compact_ksm">Kasumi (експериментально)</string>
     <string name="su_compact_magisk_summary">Діалог надання прав</string>
     <string name="settings_check_ci_update">Перевіряти оновлення CI</string>
     <string name="settings_check_ci_update_summary">Перевіряти підписані нічні збірки менеджера при відкритті застосунку. Типово вимкнено</string>

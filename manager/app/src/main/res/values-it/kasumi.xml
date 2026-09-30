@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kasumi_feature_summary">Attiva Kasumi. Ha effetto dopo il riavvio.</string>
     <string name="kasumi_absolute_path">Inserisci un percorso assoluto</string>
     <string name="kasumi_advanced">Avanzate</string>
     <string name="kasumi_apply_failed">La configurazione salvata non è ancora stata applicata al kernel</string>
@@ -11,8 +10,6 @@
     <string name="kasumi_debug">Registrazione di debug</string>
     <string name="kasumi_debug_desc">Genera informazioni aggiuntive di debug di Kagami</string>
     <string name="kasumi_edit_rule">Modifica regola</string>
-    <string name="kasumi_enable_desc">Controlla le viste virtuali di Kasumi e applicale al kernel dopo il salvataggio</string>
-    <string name="kasumi_enable_title">Abilita Kasumi</string>
     <string name="kasumi_external_mount">I montaggi sono gestiti da %1$s. Le opzioni di montaggio integrate non hanno effetto.</string>
     <string name="kasumi_filter_active">Kasumi è attivo</string>
     <string name="kasumi_filter_all">Tutte</string>

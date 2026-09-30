@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kasumi_feature_summary">Activează Kasumi. Se aplică după repornire.</string>
     <string name="kasumi_absolute_path">Introduceți o cale absolută</string>
     <string name="kasumi_advanced">Avansat</string>
     <string name="kasumi_apply_failed">Configurația salvată nu a fost încă aplicată nucleului</string>
@@ -11,8 +10,6 @@
     <string name="kasumi_debug">Jurnalizare depanare</string>
     <string name="kasumi_debug_desc">Generează informații suplimentare de depanare Kagami</string>
     <string name="kasumi_edit_rule">Editează regula</string>
-    <string name="kasumi_enable_desc">Controlează vizualizările virtuale Kasumi și le aplică nucleului după salvare</string>
-    <string name="kasumi_enable_title">Activează Kasumi</string>
     <string name="kasumi_external_mount">Montările sunt gestionate de %1$s. Opțiunile de montare integrate nu au efect.</string>
     <string name="kasumi_filter_active">Kasumi este activ</string>
     <string name="kasumi_filter_all">Toate</string>

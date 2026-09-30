@@ -3,7 +3,6 @@
     <string name="kasumi_advanced">উন্নত</string>
     <string name="kasumi_builtin_mount">অন্তর্নির্মিত মাউন্ট</string>
     <string name="kasumi_debug">ডিবাগ লগিং</string>
-    <string name="kasumi_enable_title">Kasumi সক্রিয় করুন</string>
     <string name="kasumi_filter_all">সব</string>
     <string name="kasumi_fs_type_erofs">EROFS ইমেজ</string>
     <string name="kasumi_fs_type_ext4">EXT4 ইমেজ</string>
@@ -93,7 +92,6 @@
     <string name="kasumi_verbose_desc">বিস্তারিত daemon লগ সক্রিয় করুন</string>
     <string name="kasumi_version_label">সংস্করণ: %s</string>
     <string name="kasumi_views_on">সক্রিয়</string>
-    <string name="kasumi_feature_summary">Kasumi চালু করুন। পুনরায় চালুর পর কার্যকর হবে।</string>
     <string name="kasumi_absolute_path">একটি পরম পাথ লিখুন</string>
     <string name="kasumi_apply_failed">সংরক্ষিত কনফিগারেশন এখনও কার্নেলে প্রয়োগ করা হয়নি</string>
     <string name="kasumi_backend_enable_desc">মাউন্ট পরিকল্পনাকারীকে এই ব্যাকএন্ড ব্যবহারের অনুমতি দিন</string>
@@ -101,7 +99,6 @@
     <string name="kasumi_check_conflicts">মাউন্টের দ্বন্দ্ব পরীক্ষা করুন</string>
     <string name="kasumi_debug_desc">অতিরিক্ত Kagami ডিবাগ তথ্য দেখান</string>
     <string name="kasumi_edit_rule">নিয়ম সম্পাদনা করুন</string>
-    <string name="kasumi_enable_desc">Kasumi ভার্চুয়াল ভিউ নিয়ন্ত্রণ করুন এবং সংরক্ষণের পর কার্নেলে প্রয়োগ করুন</string>
     <string name="kasumi_external_mount">%1$s মাউন্ট পরিচালনা করছে। অন্তর্নির্মিত মাউন্টের বিকল্পগুলি কার্যকর হবে না।</string>
     <string name="kasumi_filter_active">Kasumi কার্যকর হয়েছে</string>
     <string name="kasumi_fs_type_auto">স্বয়ংক্রিয়</string>

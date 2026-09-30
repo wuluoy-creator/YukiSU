@@ -576,9 +576,6 @@
     <string name="settings_yukizygisk_toast_on">Iespējots; stājas spēkā pēc restartēšanas</string>
     <string name="settings_yukizygisk_toast_off">Atspējots; stājas spēkā pēc restartēšanas</string>
     <string name="settings_yukizygisk_toast_failed">Pārslēgšana neizdevās</string>
-    <string name="su_compact_off">Aizvērt</string>
-    <string name="su_compact_traditional">Tradicionāls</string>
-    <string name="su_compact_ksm">Kasumi (eksperimentāls)</string>
     <string name="su_compact_magisk_summary">Atļaujas pieprasījuma uznirstošais logs</string>
     <string name="settings_check_ci_update">Pārbaudīt CI atjauninājumus</string>
     <string name="settings_check_ci_update_summary">Atverot lietotni, meklēt parakstītas pārvaldnieka nakts versijas. Pēc noklusējuma izslēgts.</string>

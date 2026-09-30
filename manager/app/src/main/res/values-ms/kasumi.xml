@@ -3,7 +3,6 @@
     <string name="kasumi_advanced">Lanjutan</string>
     <string name="kasumi_builtin_mount">Lekapan Terbina Dalam</string>
     <string name="kasumi_debug">Pengelogan nyahpepijat</string>
-    <string name="kasumi_enable_title">Dayakan Kasumi</string>
     <string name="kasumi_filter_all">Semua</string>
     <string name="kasumi_fs_type_erofs">Imej EROFS</string>
     <string name="kasumi_fs_type_ext4">Imej EXT4</string>
@@ -93,7 +92,6 @@
     <string name="kasumi_verbose_desc">Dayakan log daemon terperinci</string>
     <string name="kasumi_version_label">Versi: %s</string>
     <string name="kasumi_views_on">Didayakan</string>
-    <string name="kasumi_feature_summary">Dayakan Kasumi. Berkuat kuasa selepas but semula.</string>
     <string name="kasumi_absolute_path">Masukkan laluan mutlak</string>
     <string name="kasumi_apply_failed">Konfigurasi yang disimpan belum digunakan pada kernel</string>
     <string name="kasumi_backend_enable_desc">Benarkan perancang lekapan menggunakan backend ini</string>
@@ -101,7 +99,6 @@
     <string name="kasumi_check_conflicts">Semak konflik lekapan</string>
     <string name="kasumi_debug_desc">Keluarkan maklumat nyahpepijat Kagami tambahan</string>
     <string name="kasumi_edit_rule">Sunting peraturan</string>
-    <string name="kasumi_enable_desc">Kawal paparan maya Kasumi dan gunakan pada kernel selepas disimpan</string>
     <string name="kasumi_external_mount">Lekapan diurus oleh %1$s. Pilihan lekapan terbina dalam tidak berkuat kuasa.</string>
     <string name="kasumi_filter_active">Kasumi telah berkuat kuasa</string>
     <string name="kasumi_fs_type_auto">Automatik</string>

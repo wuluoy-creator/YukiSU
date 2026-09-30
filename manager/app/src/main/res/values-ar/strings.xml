@@ -576,9 +576,6 @@
     <string name="settings_yukizygisk_toast_on">فُعّل. يسري بعد إعادة التشغيل</string>
     <string name="settings_yukizygisk_toast_off">أُوقف. يسري بعد إعادة التشغيل</string>
     <string name="settings_yukizygisk_toast_failed">فشل التبديل</string>
-    <string name="su_compact_off">إغلاق</string>
-    <string name="su_compact_traditional">تقليدي</string>
-    <string name="su_compact_ksm">Kasumi (تجريبي)</string>
     <string name="su_compact_magisk_summary">نافذة منح الصلاحيات</string>
     <string name="settings_check_ci_update">التحقق من تحديثات CI</string>
     <string name="settings_check_ci_update_summary">التحقق من إصدارات المدير الليلية الموقّعة عند فتح التطبيق. معطّل افتراضيًا</string>

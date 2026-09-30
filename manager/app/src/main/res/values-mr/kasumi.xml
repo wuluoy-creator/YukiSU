@@ -3,7 +3,6 @@
     <string name="kasumi_advanced">प्रगत</string>
     <string name="kasumi_builtin_mount">अंगभूत माउंट</string>
     <string name="kasumi_debug">डीबग लॉगिंग</string>
-    <string name="kasumi_enable_title">Kasumi सक्षम करा</string>
     <string name="kasumi_filter_all">सर्व</string>
     <string name="kasumi_fs_type_erofs">EROFS प्रतिमा</string>
     <string name="kasumi_fs_type_ext4">EXT4 प्रतिमा</string>
@@ -93,7 +92,6 @@
     <string name="kasumi_verbose_desc">तपशीलवार daemon लॉग सक्षम करा</string>
     <string name="kasumi_version_label">आवृत्ती: %s</string>
     <string name="kasumi_views_on">सक्षम</string>
-    <string name="kasumi_feature_summary">Kasumi सक्षम करा. रीस्टार्टनंतर लागू होईल.</string>
     <string name="kasumi_absolute_path">पूर्ण पथ प्रविष्ट करा</string>
     <string name="kasumi_apply_failed">जतन केलेले कॉन्फिगरेशन अद्याप कर्नलवर लागू झालेले नाही</string>
     <string name="kasumi_backend_enable_desc">माउंट नियोजकाला हा बॅकएंड वापरण्याची परवानगी द्या</string>
@@ -101,7 +99,6 @@
     <string name="kasumi_check_conflicts">माउंट संघर्ष तपासा</string>
     <string name="kasumi_debug_desc">अतिरिक्त Kagami डीबग माहिती लिहा</string>
     <string name="kasumi_edit_rule">नियम संपादित करा</string>
-    <string name="kasumi_enable_desc">Kasumi ची आभासी दृश्ये नियंत्रित करा आणि जतन केल्यानंतर कर्नलवर लागू करा</string>
     <string name="kasumi_external_mount">माउंटचे व्यवस्थापन %1$s करते. अंगभूत माउंट पर्याय प्रभावी होणार नाहीत.</string>
     <string name="kasumi_filter_active">Kasumi सक्रिय आहे</string>
     <string name="kasumi_fs_type_auto">स्वयंचलित</string>

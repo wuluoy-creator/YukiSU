@@ -574,9 +574,6 @@
     <string name="settings_yukizygisk_toast_on">روشن شد؛ پس از راه‌اندازی مجدد اعمال می‌شود</string>
     <string name="settings_yukizygisk_toast_off">خاموش شد؛ پس از راه‌اندازی مجدد اعمال می‌شود</string>
     <string name="settings_yukizygisk_toast_failed">تغییر ناموفق بود</string>
-    <string name="su_compact_off">بستن</string>
-    <string name="su_compact_traditional">سنتی</string>
-    <string name="su_compact_ksm">Kasumi (آزمایشی)</string>
     <string name="su_compact_magisk_summary">پنجره اعطای دسترسی</string>
     <string name="settings_check_ci_update">بررسی به‌روزرسانی‌های CI</string>
     <string name="settings_check_ci_update_summary">هنگام باز شدن برنامه، نسخه‌های شبانه امضاشده مدیر را بررسی می‌کند. به‌طور پیش‌فرض خاموش است</string>

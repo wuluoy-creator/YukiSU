@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kasumi_feature_summary">Iespējot Kasumi; stājas spēkā pēc restartēšanas</string>
     <string name="kasumi_absolute_path">Ievadiet absolūto ceļu</string>
     <string name="kasumi_advanced">Papildu</string>
     <string name="kasumi_apply_failed">Saglabātā konfigurācija vēl nav piemērota kodolam</string>
@@ -11,8 +10,6 @@
     <string name="kasumi_debug">Atkļūdošanas reģistrēšana</string>
     <string name="kasumi_debug_desc">Izvadīt papildu Kagami atkļūdošanas informāciju</string>
     <string name="kasumi_edit_rule">Rediģēt noteikumu</string>
-    <string name="kasumi_enable_desc">Pārvaldīt Kasumi virtuālo skatu; pēc saglabāšanas piemērot kodolam</string>
-    <string name="kasumi_enable_title">Iespējot Kasumi</string>
     <string name="kasumi_external_mount">Montēšanu pārvalda %1$s; iebūvētās montēšanas opcijas nav spēkā.</string>
     <string name="kasumi_filter_active">Kasumi ir aktīvs</string>
     <string name="kasumi_filter_all">Visas</string>

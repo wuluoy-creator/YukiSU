@@ -509,7 +509,6 @@
     <string name="plugin_version">v%1$s</string>
     <string name="plugin_repository_update">ಅಪ್‌ಡೇಟ್</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
-    <string name="su_compact_off">ಮುಚ್ಚಿ</string>
     <string name="download_dialog_msg">HTTPS URL</string>
     <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="ramdisk_editor_title">%s Ramdisk</string>
@@ -595,8 +594,6 @@
     <string name="settings_yukizygisk_toast_on">ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ, ಮರುಪ್ರಾರಂಭದ ನಂತರ ಜಾರಿಗೆ ಬರುತ್ತದೆ</string>
     <string name="settings_yukizygisk_toast_off">ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ, ಮರುಪ್ರಾರಂಭದ ನಂತರ ಜಾರಿಗೆ ಬರುತ್ತದೆ</string>
     <string name="settings_yukizygisk_toast_failed">ಬದಲಾಯಿಸಲು ವಿಫಲವಾಗಿದೆ</string>
-    <string name="su_compact_traditional">ಸಾಂಪ್ರದಾಯಿಕ</string>
-    <string name="su_compact_ksm">Kasumi (ಪ್ರಾಯೋಗಿಕ)</string>
     <string name="su_compact_magisk_summary">ಅನುಮತಿ ನೀಡುವ ಸಂವಾದ</string>
     <string name="settings_check_ci_update">CI ನವೀಕರಣ ಪರಿಶೀಲಿಸಿ</string>
     <string name="settings_check_ci_update_summary">ಆ್ಯಪ್ ತೆರೆಯುವಾಗ ಸಹಿ ಮಾಡಿದ nightly ಮ್ಯಾನೇಜರ್ ಆವೃತ್ತಿಯನ್ನು ಪರಿಶೀಲಿಸಿ. ಪೂರ್ವನಿಯೋಜಿತವಾಗಿ ಆಫ್</string>

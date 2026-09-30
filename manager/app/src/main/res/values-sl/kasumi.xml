@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kasumi_feature_summary">Omogoči Kasumi; začne veljati po ponovnem zagonu</string>
     <string name="kasumi_absolute_path">Vnesite absolutno pot</string>
     <string name="kasumi_advanced">Napredno</string>
     <string name="kasumi_apply_failed">Shranjena konfiguracija še ni uporabljena v jedru</string>
@@ -11,8 +10,6 @@
     <string name="kasumi_debug">Beleženje razhroščevanja</string>
     <string name="kasumi_debug_desc">Izpisuj dodatne razhroščevalne podatke Kagami</string>
     <string name="kasumi_edit_rule">Uredi pravilo</string>
-    <string name="kasumi_enable_desc">Upravljaj navidezni pogled Kasumi; po shranjevanju uporabi konfiguracijo v jedru</string>
-    <string name="kasumi_enable_title">Omogoči Kasumi</string>
     <string name="kasumi_external_mount">Priklope upravlja %1$s; možnosti vgrajenega priklopa ne veljajo.</string>
     <string name="kasumi_filter_active">Kasumi je aktiven</string>
     <string name="kasumi_filter_all">Vsi</string>

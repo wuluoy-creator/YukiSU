@@ -144,9 +144,6 @@
     <string name="settings_yukizygisk_toast_on">已开启，重启生效</string>
     <string name="settings_yukizygisk_toast_off">已关闭，重启生效</string>
     <string name="settings_yukizygisk_toast_failed">切换失败</string>
-    <string name="su_compact_off">关闭</string>
-    <string name="su_compact_traditional">传统</string>
-    <string name="su_compact_ksm">Kasumi（实验性功能）</string>
     <string name="su_compact_magisk_summary">授权弹窗</string>
     <string name="profile_umount_modules_summary">启用该选项后将允许 KernelSU 为本应用还原被模块修改过的文件。</string>
     <string name="profile_selinux_domain">域</string>

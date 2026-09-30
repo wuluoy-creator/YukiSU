@@ -576,9 +576,6 @@
     <string name="settings_yukizygisk_toast_on">Activé. Prend effet après redémarrage.</string>
     <string name="settings_yukizygisk_toast_off">Désactivé. Prend effet après redémarrage.</string>
     <string name="settings_yukizygisk_toast_failed">Échec du changement</string>
-    <string name="su_compact_off">Fermer</string>
-    <string name="su_compact_traditional">Traditionnel</string>
-    <string name="su_compact_ksm">Kasumi (expérimental)</string>
     <string name="su_compact_magisk_summary">Fenêtre d’autorisation</string>
     <string name="settings_check_ci_update">Rechercher les mises à jour CI</string>
     <string name="settings_check_ci_update_summary">Rechercher une version nocturne signée du gestionnaire à l’ouverture de l’application. Désactivé par défaut.</string>

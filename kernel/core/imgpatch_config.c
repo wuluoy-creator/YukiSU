@@ -159,7 +159,8 @@ int ksu_imgpatch_config_apply(void)
 	}
 
 	pr_info("imgpatch config applied: allow_shell=%d enable_adbd=%d\n",
-		allow_shell, !!(config.flags & KSU_IMGPATCH_CONFIG_ENABLE_ADBD));
+		allow_shell,
+		!!(config.flags & KSU_IMGPATCH_CONFIG_ENABLE_ADBD));
 	memzero_explicit(&config, sizeof(config));
 	return 0;
 }

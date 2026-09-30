@@ -513,7 +513,6 @@
     <string name="plugin_version">v%1$s</string>
     <string name="plugin_repository_update">Membarui</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
-    <string name="su_compact_off">Tutup</string>
     <string name="download_dialog_msg">HTTPS URL</string>
     <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="ramdisk_editor_title">%s Ramdisk</string>
@@ -599,8 +598,6 @@
     <string name="settings_yukizygisk_toast_on">Diaktifkan, berlaku setelah mulai ulang</string>
     <string name="settings_yukizygisk_toast_off">Dinonaktifkan, berlaku setelah mulai ulang</string>
     <string name="settings_yukizygisk_toast_failed">Gagal beralih</string>
-    <string name="su_compact_traditional">Tradisional</string>
-    <string name="su_compact_ksm">Kasumi (eksperimental)</string>
     <string name="su_compact_magisk_summary">Dialog pemberian izin</string>
     <string name="settings_check_ci_update">Periksa pembaruan CI</string>
     <string name="settings_check_ci_update_summary">Periksa versi nightly pengelola yang ditandatangani saat membuka aplikasi. Nonaktif secara bawaan</string>

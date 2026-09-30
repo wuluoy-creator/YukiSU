@@ -3,7 +3,6 @@
     <string name="kasumi_advanced">అధునాతన</string>
     <string name="kasumi_builtin_mount">అంతర్నిర్మిత మౌంట్</string>
     <string name="kasumi_debug">డీబగ్ లాగింగ్</string>
-    <string name="kasumi_enable_title">Kasumiను ప్రారంభించండి</string>
     <string name="kasumi_filter_all">అన్నీ</string>
     <string name="kasumi_fs_type_erofs">EROFS చిత్రం</string>
     <string name="kasumi_fs_type_ext4">EXT4 చిత్రం</string>
@@ -93,7 +92,6 @@
     <string name="kasumi_verbose_desc">వివరణాత్మక daemon లాగ్‌లను ప్రారంభించండి</string>
     <string name="kasumi_version_label">వెర్షన్: %s</string>
     <string name="kasumi_views_on">ప్రారంభించబడింది</string>
-    <string name="kasumi_feature_summary">Kasumiని ప్రారంభించండి. పునఃప్రారంభం తర్వాత అమలవుతుంది.</string>
     <string name="kasumi_absolute_path">సంపూర్ణ పాత్‌ను నమోదు చేయండి</string>
     <string name="kasumi_apply_failed">సేవ్ చేసిన కాన్ఫిగరేషన్ ఇంకా కెర్నల్‌కు వర్తించలేదు</string>
     <string name="kasumi_backend_enable_desc">ఈ బ్యాకెండ్‌ను ఉపయోగించడానికి మౌంట్ ప్లానర్‌ను అనుమతించండి</string>
@@ -101,7 +99,6 @@
     <string name="kasumi_check_conflicts">మౌంట్ వైరుధ్యాలను తనిఖీ చేయండి</string>
     <string name="kasumi_debug_desc">అదనపు Kagami డీబగ్ సమాచారాన్ని చూపండి</string>
     <string name="kasumi_edit_rule">నియమాన్ని సవరించండి</string>
-    <string name="kasumi_enable_desc">Kasumi వర్చువల్ వీక్షణలను నియంత్రించి, సేవ్ చేసిన తర్వాత కెర్నల్‌కు వర్తింపజేయండి</string>
     <string name="kasumi_external_mount">మౌంట్‌ను %1$s నిర్వహిస్తోంది. అంతర్నిర్మిత మౌంట్ ఎంపికలు అమలు కావు.</string>
     <string name="kasumi_filter_active">Kasumi అమలులో ఉంది</string>
     <string name="kasumi_fs_type_auto">స్వయంచాలకం</string>

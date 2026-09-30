@@ -574,9 +574,6 @@
     <string name="settings_yukizygisk_toast_on">Укључено. Примењује се након поновног покретања</string>
     <string name="settings_yukizygisk_toast_off">Искључено. Примењује се након поновног покретања</string>
     <string name="settings_yukizygisk_toast_failed">Пребацивање није успело</string>
-    <string name="su_compact_off">Затвори</string>
-    <string name="su_compact_traditional">Традиционално</string>
-    <string name="su_compact_ksm">Kasumi (експериментално)</string>
     <string name="su_compact_magisk_summary">Дијалог за доделу привилегије</string>
     <string name="settings_check_ci_update">Проверавај CI ажурирања</string>
     <string name="settings_check_ci_update_summary">Проверава потписане ноћне верзије менаџера при отварању апликације. Подразумевано је искључено</string>

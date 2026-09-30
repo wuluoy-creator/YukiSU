@@ -509,7 +509,6 @@
     <string name="plugin_version">v%1$s</string>
     <string name="plugin_repository_update">अपडेट</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
-    <string name="su_compact_off">बंद करें</string>
     <string name="download_dialog_msg">HTTPS URL</string>
     <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="ramdisk_editor_title">%s Ramdisk</string>
@@ -595,8 +594,6 @@
     <string name="settings_yukizygisk_toast_on">चालू किया गया। रीस्टार्ट के बाद लागू होगा।</string>
     <string name="settings_yukizygisk_toast_off">बंद किया गया। रीस्टार्ट के बाद लागू होगा।</string>
     <string name="settings_yukizygisk_toast_failed">बदलना विफल रहा</string>
-    <string name="su_compact_traditional">पारंपरिक</string>
-    <string name="su_compact_ksm">Kasumi (प्रयोगात्मक)</string>
     <string name="su_compact_magisk_summary">अनुमति पॉपअप</string>
     <string name="settings_check_ci_update">CI अपडेट जाँचें</string>
     <string name="settings_check_ci_update_summary">ऐप खोलते समय प्रबंधक के हस्ताक्षरित नाइटली संस्करण जाँचें। डिफ़ॉल्ट रूप से बंद है।</string>

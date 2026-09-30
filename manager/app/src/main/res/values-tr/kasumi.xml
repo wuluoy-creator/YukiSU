@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kasumi_feature_summary">Kasumi\'yi etkinleştir. Yeniden başlatınca uygulanır.</string>
     <string name="kasumi_absolute_path">Mutlak bir yol girin</string>
     <string name="kasumi_advanced">Gelişmiş</string>
     <string name="kasumi_apply_failed">Kaydedilen yapılandırma henüz çekirdeğe uygulanmadı</string>
@@ -11,8 +10,6 @@
     <string name="kasumi_debug">Hata ayıklama günlüğü</string>
     <string name="kasumi_debug_desc">Ek Kagami hata ayıklama bilgileri üret</string>
     <string name="kasumi_edit_rule">Kuralı düzenle</string>
-    <string name="kasumi_enable_desc">Kasumi sanal görünümünü yönetir; kaydedilince çekirdeğe uygulanır</string>
-    <string name="kasumi_enable_title">Kasumi\'yi etkinleştir</string>
     <string name="kasumi_external_mount">Bağlamayı %1$s yönetiyor. Yerleşik bağlama seçenekleri etkisizdir.</string>
     <string name="kasumi_filter_active">Kasumi etkin</string>
     <string name="kasumi_filter_all">Tümü</string>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kasumi_feature_summary">Увімкнути Kasumi. Набуде чинності після перезавантаження.</string>
     <string name="kasumi_absolute_path">Введіть абсолютний шлях</string>
     <string name="kasumi_advanced">Додатково</string>
     <string name="kasumi_apply_failed">Збережену конфігурацію ще не застосовано до ядра</string>
@@ -11,8 +10,6 @@
     <string name="kasumi_debug">Журнал налагодження</string>
     <string name="kasumi_debug_desc">Виводити додаткові відомості налагодження Kagami</string>
     <string name="kasumi_edit_rule">Редагувати правило</string>
-    <string name="kasumi_enable_desc">Керування віртуальним поданням Kasumi; застосовується до ядра після збереження</string>
-    <string name="kasumi_enable_title">Увімкнути Kasumi</string>
     <string name="kasumi_external_mount">Монтуванням керує %1$s. Налаштування вбудованого монтування не діють.</string>
     <string name="kasumi_filter_active">Kasumi діє</string>
     <string name="kasumi_filter_all">Усі</string>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kasumi_feature_summary">Включить Kasumi. Вступит в силу после перезагрузки.</string>
     <string name="kasumi_absolute_path">Введите абсолютный путь</string>
     <string name="kasumi_advanced">Дополнительно</string>
     <string name="kasumi_apply_failed">Сохранённая конфигурация ещё не применена к ядру</string>
@@ -11,8 +10,6 @@
     <string name="kasumi_debug">Журнал отладки</string>
     <string name="kasumi_debug_desc">Выводить дополнительные отладочные сведения Kagami</string>
     <string name="kasumi_edit_rule">Изменить правило</string>
-    <string name="kasumi_enable_desc">Управление виртуальным представлением Kasumi; применяется к ядру после сохранения</string>
-    <string name="kasumi_enable_title">Включить Kasumi</string>
     <string name="kasumi_external_mount">Монтированием управляет %1$s. Настройки встроенного монтирования не действуют.</string>
     <string name="kasumi_filter_active">Kasumi действует</string>
     <string name="kasumi_filter_all">Все</string>

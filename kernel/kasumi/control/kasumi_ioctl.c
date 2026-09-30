@@ -216,8 +216,8 @@ static KASUMI_NOCFI int kasumi_dispatch_cmd(unsigned int cmd, void __user *arg)
 			return -EPERM;
 		if (val != 1)
 			return -EINVAL;
-		/* Retain the ioctl for old clients, but Kasumi is always enabled once
-		 * its bootstrap completed. */
+		/* Retain the ioctl for old clients, but Kasumi is always
+		 * enabled once its bootstrap completed. */
 		return kasumi_is_ready() ? 0 : -EOPNOTSUPP;
 	}
 

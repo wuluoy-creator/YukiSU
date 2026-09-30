@@ -574,9 +574,6 @@
     <string name="settings_yukizygisk_toast_on">Açıldı. Yenidən başladıqdan sonra qüvvəyə minir</string>
     <string name="settings_yukizygisk_toast_off">Söndürüldü. Yenidən başladıqdan sonra qüvvəyə minir</string>
     <string name="settings_yukizygisk_toast_failed">Dəyişdirilə bilmədi</string>
-    <string name="su_compact_off">Bağla</string>
-    <string name="su_compact_traditional">Ənənəvi</string>
-    <string name="su_compact_ksm">Kasumi (təcrübi)</string>
     <string name="su_compact_magisk_summary">İcazə dialoqu</string>
     <string name="settings_check_ci_update">CI yeniləmələrini yoxla</string>
     <string name="settings_check_ci_update_summary">Tətbiq açıldıqda imzalanmış gecə menecer versiyalarını yoxlayır. Standart olaraq söndürülüb</string>

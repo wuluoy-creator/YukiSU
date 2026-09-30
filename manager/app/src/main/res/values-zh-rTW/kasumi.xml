@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kasumi_feature_summary">啟用 Kasumi，重新啟動後生效</string>
     <string name="kasumi_absolute_path">請輸入絕對路徑</string>
     <string name="kasumi_advanced">進階</string>
     <string name="kasumi_apply_failed">已儲存的設定尚未套用至核心</string>
@@ -11,8 +10,6 @@
     <string name="kasumi_debug">偵錯日誌</string>
     <string name="kasumi_debug_desc">輸出額外的 Kagami 除錯資訊</string>
     <string name="kasumi_edit_rule">編輯規則</string>
-    <string name="kasumi_enable_desc">控制 Kasumi 虛擬檢視，儲存後套用至核心</string>
-    <string name="kasumi_enable_title">啟用 Kasumi</string>
     <string name="kasumi_external_mount">掛載由 %1$s 接管，內建掛載選項不生效。</string>
     <string name="kasumi_filter_active">Kasumi 已生效</string>
     <string name="kasumi_filter_all">全部</string>

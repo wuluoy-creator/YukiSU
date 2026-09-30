@@ -576,9 +576,6 @@
     <string name="settings_yukizygisk_toast_on">Włączono; zmiana wymaga ponownego uruchomienia</string>
     <string name="settings_yukizygisk_toast_off">Wyłączono; zmiana wymaga ponownego uruchomienia</string>
     <string name="settings_yukizygisk_toast_failed">Nie udało się przełączyć</string>
-    <string name="su_compact_off">Zamknij</string>
-    <string name="su_compact_traditional">Tradycyjny</string>
-    <string name="su_compact_ksm">Kasumi (eksperymentalny)</string>
     <string name="su_compact_magisk_summary">Okno przyznawania uprawnień</string>
     <string name="settings_check_ci_update">Sprawdzaj aktualizacje CI</string>
     <string name="settings_check_ci_update_summary">Przy otwieraniu aplikacji sprawdzaj podpisane nocne wersje menedżera. Domyślnie wyłączone.</string>
