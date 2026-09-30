@@ -29,16 +29,29 @@ env:
 jobs:
   build:
     runs-on: ${{ inputs.os }}
+    defaults:
+      run:
+        shell: bash
+    env:
+      BUILD_TARGET: ${{ inputs.target }}
     steps:
       - uses: actions/checkout@v7
+
+      - name: Initialize payload dependencies
+        run: |
+          git submodule update --init --depth 1 --jobs "$(nproc)" \
+            userspace/zygisk/third_party/lsplt \
+            userspace/ksud/third_party/ndk-busybox
+
+      - name: Set up native build cache
+        uses: ./.github/actions/setup-native-build
         with:
-          fetch-depth: 0
-          submodules: recursive
+          component: yukizygisk-${{ inputs.target }}
 
       - name: Determine target settings
         id: target
         run: |
-          case "${{ inputs.target }}" in
+          case "$BUILD_TARGET" in
             aarch64-linux-android|aarch64)
               echo "abi=arm64-v8a" >> "$GITHUB_OUTPUT"
               echo "android_target=aarch64-linux-android31" >> "$GITHUB_OUTPUT"
@@ -48,7 +61,7 @@ jobs:
               echo "daemon_target32=armv7a-linux-androideabi31" >> "$GITHUB_OUTPUT"
               ;;
             *)
-              echo "YukiZygisk workflow supports aarch64 only, got: ${{ inputs.target }}"
+              echo "YukiZygisk workflow supports aarch64 only, got: $BUILD_TARGET"
               exit 1
               ;;
           esac
@@ -62,6 +75,9 @@ jobs:
           export AR="$TOOLCHAIN/bin/llvm-ar"
           export RANLIB="$TOOLCHAIN/bin/llvm-ranlib"
           export STRIP="$TOOLCHAIN/bin/llvm-strip"
+          # Build both ABIs concurrently without oversubscribing the runner.
+          parallel_jobs=$(( $(nproc) / 2 ))
+          if [ "$parallel_jobs" -lt 1 ]; then parallel_jobs=1; fi
 
           build_payload() {
             local source_dir="$1"
@@ -78,19 +94,34 @@ jobs:
               -DCMAKE_SYSTEM_VERSION=31 \
               -DCMAKE_C_COMPILER="$CC" \
               -DCMAKE_CXX_COMPILER="$CXX" \
+              -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+              -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
               -DCMAKE_BUILD_TYPE=Release \
               -DYUKISU_ENABLE_CLANG_TIDY=OFF
-            cmake --build "$build_dir"
+            cmake --build "$build_dir" --parallel "$parallel_jobs"
           }
 
-          build_payload "$core_dir" "${{ steps.target.outputs.abi }}" \
-            "${{ steps.target.outputs.android_target }}" "$core_dir/build"
-          build_payload "$daemon_dir" "${{ steps.target.outputs.abi }}" \
-            "${{ steps.target.outputs.daemon_target }}" "$daemon_dir/build"
-          build_payload "$core_dir" "${{ steps.target.outputs.abi32 }}" \
-            "${{ steps.target.outputs.android_target32 }}" "$core_dir/build-armv7"
-          build_payload "$daemon_dir" "${{ steps.target.outputs.abi32 }}" \
-            "${{ steps.target.outputs.daemon_target32 }}" "$daemon_dir/build-armv7"
+          (
+            build_payload "$core_dir" "${{ steps.target.outputs.abi }}" \
+              "${{ steps.target.outputs.android_target }}" "$core_dir/build"
+            build_payload "$daemon_dir" "${{ steps.target.outputs.abi }}" \
+              "${{ steps.target.outputs.daemon_target }}" "$daemon_dir/build"
+          ) &
+          arm64_pid=$!
+          (
+            build_payload "$core_dir" "${{ steps.target.outputs.abi32 }}" \
+              "${{ steps.target.outputs.android_target32 }}" "$core_dir/build-armv7"
+            build_payload "$daemon_dir" "${{ steps.target.outputs.abi32 }}" \
+              "${{ steps.target.outputs.daemon_target32 }}" "$daemon_dir/build-armv7"
+          ) &
+          arm32_pid=$!
+          status=0
+          wait "$arm64_pid" || status=1
+          wait "$arm32_pid" || status=1
+          if [ "$status" -ne 0 ]; then
+            echo "::error::YukiZygisk payload build failed."
+            exit "$status"
+          fi
 
           dist="$core_dir/dist"
           rm -rf "$dist"
@@ -111,6 +142,9 @@ jobs:
           done
           ls -lh "$dist"/*
           file "$dist"/*
+
+      - name: Show compiler cache statistics
+        run: ccache --show-stats
 
       - name: Upload YukiZygisk artifact
         uses: actions/upload-artifact@v7

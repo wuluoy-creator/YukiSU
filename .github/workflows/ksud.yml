@@ -14,6 +14,11 @@ on:
         required: false
         type: boolean
         default: true
+      kmi:
+        description: 'Embedded KMI: all, a single KMI, or a comma-separated list'
+        required: false
+        type: string
+        default: all
       pack_ksuinit:
         required: false
         type: boolean
@@ -22,6 +27,11 @@ on:
         required: false
         type: boolean
         default: true
+    secrets:
+      GPG_PRIVATE_KEY:
+        required: false
+      GPG_PASSPHRASE:
+        required: false
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
@@ -29,62 +39,105 @@ env:
 jobs:
   build:
     runs-on: ${{ inputs.os }}
+    defaults:
+      run:
+        shell: bash
+    env:
+      BUILD_TARGET: ${{ inputs.target }}
     steps:
     - uses: actions/checkout@v7
       with:
+        # The generated version code depends on the complete main-repo history.
         fetch-depth: 0
-        submodules: recursive
 
-    - name: Download artifacts
+    - name: Initialize ksud dependencies
+      run: |
+        git submodule update --init --recursive --depth 1 --jobs "$(nproc)" \
+          userspace/ksud/third_party/MagiskbootAlone \
+          userspace/ksud/third_party/bootctlAlone \
+          userspace/ksud/third_party/resetpropAlone \
+          userspace/ksud/third_party/ndk-busybox \
+          userspace/ksud/third_party/mkbootfsAlone \
+          userspace/ksud/third_party/readelf_toyboxAlone
+
+    - name: Set up native build cache
+      uses: ./.github/actions/setup-native-build
+      with:
+        component: ksud-${{ inputs.target }}
+
+    - name: Download LKM artifacts
+      if: ${{ inputs.pack_lkm }}
       uses: actions/download-artifact@v8
+      with:
+        pattern: '*-lkm'
+
+    - name: Download ksuinit artifact
+      if: ${{ inputs.pack_ksuinit }}
+      uses: actions/download-artifact@v8
+      with:
+        name: ksuinit-${{ inputs.target }}
+        path: ksuinit-${{ inputs.target }}
+
+    - name: Download YukiZygisk artifact
+      if: ${{ inputs.pack_yukizygisk }}
+      uses: actions/download-artifact@v8
+      with:
+        name: yukizygisk-${{ inputs.target }}
+        path: yukizygisk-${{ inputs.target }}
     
     - name: Prepare LKM files
       if: ${{ inputs.pack_lkm }}
+      env:
+        SELECTED_KMI: ${{ inputs.kmi }}
       run: |
         set -euo pipefail
-        mkdir -p ./userspace/ksud/assets
-        rm -f ./userspace/ksud/assets/*_kernelsu.ko
+        python3 - <<'PY'
+        import os
+        from pathlib import Path
+        import shutil
+
         # Keep this list in sync with build-lkm.yml and scripts/build.*.
-        required_kmis=(
-          android12-5.10
-          android13-5.10
-          android13-5.15
-          android14-5.15
-          android14-6.1
-          android15-6.6
-          android16-6.12
-          android17-6.18
-        )
-        for kmi in "${required_kmis[@]}"; do
-          lkm="${kmi}-lkm/${kmi}_kernelsu.ko"
-          if [ ! -f "$lkm" ]; then
-            echo "::error::Required LKM artifact missing: $lkm"
-            exit 1
-          fi
-          cp "$lkm" ./userspace/ksud/assets/
-        done
+        supported = [
+            "android12-5.10", "android13-5.10", "android13-5.15",
+            "android14-5.15", "android14-6.1", "android15-6.6",
+            "android16-6.12", "android17-6.18",
+        ]
+        requested = os.environ["SELECTED_KMI"].strip()
+        selected = supported if requested == "all" else [item.strip() for item in requested.split(",")]
+        if any(kmi not in supported for kmi in selected):
+            raise SystemExit(f"::error::Unsupported KMI selection: {requested}")
+        assets = Path("userspace/ksud/assets")
+        assets.mkdir(parents=True, exist_ok=True)
+        for old_lkm in assets.glob("*_kernelsu.ko"):
+            old_lkm.unlink()
+        for kmi in dict.fromkeys(selected):
+            lkm = Path(f"{kmi}-lkm/{kmi}_kernelsu.ko")
+            if not lkm.is_file() or lkm.stat().st_size == 0:
+                raise SystemExit(f"::error::Required LKM artifact missing or empty: {lkm}")
+            shutil.copy2(lkm, assets)
+        PY
         echo "Embedded LKM assets:"
         ls -lh ./userspace/ksud/assets/*_kernelsu.ko
     
     - name: Prepare ksuinit
       if: ${{ inputs.pack_ksuinit }}
       run: |
+        set -euo pipefail
         mkdir -p ./userspace/ksud/assets
-        if [ -f ksuinit-${{ inputs.target }}/ksuinit ]; then
-          cp ksuinit-${{ inputs.target }}/ksuinit ./userspace/ksud/assets/
-        fi
+        test -s "ksuinit-$BUILD_TARGET/ksuinit"
+        cp "ksuinit-$BUILD_TARGET/ksuinit" ./userspace/ksud/assets/
 
     - name: Determine target settings
       id: target
       run: |
-        case "${{ inputs.target }}" in
+        case "$BUILD_TARGET" in
           aarch64-linux-android|aarch64)
             echo "arch=aarch64" >> "$GITHUB_OUTPUT"
             echo "abi=arm64-v8a" >> "$GITHUB_OUTPUT"
             echo "android_target=aarch64-linux-android31" >> "$GITHUB_OUTPUT"
             ;;
           *)
-            echo "YukiSU supports aarch64 only, got: ${{ inputs.target }}"
+            echo "YukiSU supports aarch64 only, got: $BUILD_TARGET"
             exit 1
             ;;
         esac
@@ -96,7 +149,7 @@ jobs:
           echo "YukiZygisk payload: disabled"
           exit 0
         fi
-        artifact="yukizygisk-aarch64-linux-android"
+        artifact="yukizygisk-$BUILD_TARGET"
         mkdir -p ./userspace/ksud/assets
         for asset in zygiskd64 zygiskd32 \
           libzygisk64.so libzygisk32.so \
@@ -119,17 +172,6 @@ jobs:
           ./userspace/ksud/assets/libyukizncore64.so \
           ./userspace/ksud/assets/libyukizncore32.so
 
-    # busybox is built into ksud (ndk-busybox multi-call); no standalone busybox in assets
-
-    # - name: Install UPX
-    #   run: |
-    #     UPX_VERSION="4.2.4"
-    #     wget -q "https://github.com/upx/upx/releases/download/v${UPX_VERSION}/upx-${UPX_VERSION}-amd64_linux.tar.xz"
-    #     tar -xf "upx-${UPX_VERSION}-amd64_linux.tar.xz"
-    #     sudo mv "upx-${UPX_VERSION}-amd64_linux/upx" /usr/local/bin/
-    #     rm -rf "upx-${UPX_VERSION}-amd64_linux" "upx-${UPX_VERSION}-amd64_linux.tar.xz"
-    #     upx --version | head -1
-
     - name: Build ksud
       run: |
         cd userspace/ksud
@@ -151,10 +193,12 @@ jobs:
           -DCMAKE_SYSTEM_VERSION=31 \
           -DCMAKE_C_COMPILER="$CC" \
           -DCMAKE_CXX_COMPILER="$CXX" \
+          -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+          -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
           -DCMAKE_BUILD_TYPE=Release \
           -DYUKISU_ENABLE_CLANG_TIDY=OFF
 
-        ninja
+        cmake --build . --target ksud --parallel "$(nproc)"
         
         # Show binary info
         ls -lh ksud
@@ -172,32 +216,29 @@ jobs:
             echo "  $asset"
           done
         fi
-    - name: Import GPG key
-      if: github.event_name != 'pull_request'
+    - name: Sign ksud when a GPG key is configured
+      if: ${{ github.event_name != 'pull_request' }}
       env:
         GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
         GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
       run: |
-        mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
-        echo "$GPG_PRIVATE_KEY" > key.asc
-        gpg --batch --yes --pinentry-mode loopback --passphrase "$GPG_PASSPHRASE" --import key.asc
-        rm -f key.asc
-
-    - name: Sign ksud with GPG
-      if: github.event_name != 'pull_request'
-      run: |
-        cd userspace/ksud/build
-        echo "Signing ksud..."
-        gpg --detach-sign --local-user an@anatdx.com --batch --yes --pinentry-mode loopback \
-          --passphrase "${{ secrets.GPG_PASSPHRASE }}" \
-          --output "ksud.sig" "ksud"
-        if [ -f "ksud.sig" ]; then
-          echo "Signature created successfully"
-          ls -lh ksud.sig
-        else
-          echo "Error: Signature file not created!"
-          exit 1
+        set -euo pipefail
+        if [ -z "$GPG_PRIVATE_KEY" ]; then
+          echo "No GPG key configured; uploading the unsigned ksud binary."
+          exit 0
         fi
+        export GNUPGHOME
+        GNUPGHOME=$(mktemp -d "$RUNNER_TEMP/ksud-gpg.XXXXXX")
+        trap 'gpgconf --kill gpg-agent; rm -rf "$GNUPGHOME"' EXIT
+        printf '%s' "$GPG_PRIVATE_KEY" | gpg --batch --yes --pinentry-mode loopback \
+          --passphrase "$GPG_PASSPHRASE" --import
+        gpg --detach-sign --batch --yes --pinentry-mode loopback \
+          --passphrase "$GPG_PASSPHRASE" \
+          --output userspace/ksud/build/ksud.sig userspace/ksud/build/ksud
+        gpg --verify userspace/ksud/build/ksud.sig userspace/ksud/build/ksud
+
+    - name: Show compiler cache statistics
+      run: ccache --show-stats
 
     - name: Upload ksud artifact
       uses: actions/upload-artifact@v7
@@ -206,4 +247,4 @@ jobs:
         path: |
           userspace/ksud/build/ksud
           userspace/ksud/build/ksud.sig
-        if-no-files-found: ignore
+        if-no-files-found: error

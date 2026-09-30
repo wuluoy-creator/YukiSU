@@ -1,0 +1,532 @@
+name: Build YukiSU / 自选编译
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_manager:
+        description: 'Manager APK（自动编译并嵌入全部必要依赖）'
+        type: boolean
+        default: true
+      build_lkm:
+        description: 'LKM 内核模块（可独立编译）'
+        type: boolean
+        default: false
+      build_ksud:
+        description: 'ksud 守护进程（自动嵌入 LKM、ksuinit 和可选 YukiZygisk）'
+        type: boolean
+        default: false
+      build_ksuinit:
+        description: 'ksuinit 初始进程（可独立编译）'
+        type: boolean
+        default: false
+      build_yukizygisk:
+        description: 'YukiZygisk 独立组件（同时包含 64/32 位）'
+        type: boolean
+        default: false
+      kmi:
+        description: '内核版本：all 通用；指定版本更快，APK/ksud 仅含该版本模块'
+        type: choice
+        default: all
+        options:
+          - all
+          - android12-5.10
+          - android13-5.10
+          - android13-5.15
+          - android14-5.15
+          - android14-6.1
+          - android15-6.6
+          - android16-6.12
+          - android17-6.18
+      enable_yukizygisk:
+        description: '在 Manager/ksud 中内置 YukiZygisk，并启用 LKM 注入支持'
+        type: boolean
+        default: true
+  workflow_call:
+    inputs:
+      build_manager:
+        description: 'Manager APK（自动编译并嵌入全部必要依赖）'
+        type: boolean
+        default: true
+      build_lkm:
+        description: 'LKM 内核模块（可独立编译）'
+        type: boolean
+        default: false
+      build_ksud:
+        description: 'ksud 守护进程（自动嵌入 LKM、ksuinit 和可选 YukiZygisk）'
+        type: boolean
+        default: false
+      build_ksuinit:
+        description: 'ksuinit 初始进程（可独立编译）'
+        type: boolean
+        default: false
+      build_yukizygisk:
+        description: 'YukiZygisk 独立组件（同时包含 64/32 位）'
+        type: boolean
+        default: false
+      kmi:
+        description: '内核版本：all 通用；指定版本更快，APK/ksud 仅含该版本模块'
+        type: string
+        default: all
+      enable_yukizygisk:
+        description: '在 Manager/ksud 中内置 YukiZygisk，并启用 LKM 注入支持'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+# Superseded push/PR builds can be cancelled; manual and tagged builds are independent.
+concurrency:
+  group: yukisu-build-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ (github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref_type == 'branch')) && 'ci' || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref_type == 'branch') }}
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  plan:
+    name: Resolve selections / 自动补齐依赖
+    runs-on: ubuntu-latest
+    outputs:
+      manager: ${{ steps.plan.outputs.manager }}
+      lkm: ${{ steps.plan.outputs.lkm }}
+      ksud: ${{ steps.plan.outputs.ksud }}
+      ksuinit: ${{ steps.plan.outputs.ksuinit }}
+      yukizygisk: ${{ steps.plan.outputs.yukizygisk }}
+      enable_yukizygisk: ${{ steps.plan.outputs.enable_yukizygisk }}
+      kmi: ${{ steps.plan.outputs.kmi }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Resolve build plan
+        id: plan
+        env:
+          BUILD_INPUTS: ${{ toJSON(inputs) }}
+        run: |
+          python3 -B -m unittest discover -s scripts/ci -p 'test_*.py'
+          python3 scripts/ci/plan_build.py
+
+  build-lkm:
+    needs: plan
+    if: needs.plan.outputs.lkm == 'true'
+    uses: ./.github/workflows/build-lkm.yml
+    secrets: inherit
+    with:
+      yukizygisk: ${{ needs.plan.outputs.enable_yukizygisk == 'true' }}
+      kmi: ${{ needs.plan.outputs.kmi }}
+
+  build-ksuinit:
+    needs: plan
+    if: needs.plan.outputs.ksuinit == 'true'
+    uses: ./.github/workflows/ksuinit.yml
+    secrets: inherit
+    with:
+      target: aarch64-linux-android
+
+  build-yukizygisk:
+    needs: plan
+    if: needs.plan.outputs.yukizygisk == 'true'
+    uses: ./.github/workflows/yukizygisk.yml
+    with:
+      target: aarch64-linux-android
+
+  build-ksud:
+    needs: [plan, build-lkm, build-ksuinit, build-yukizygisk]
+    # An intentionally skipped optional payload must not skip ksud.
+    if: >-
+      ${{ !cancelled() && needs.plan.outputs.ksud == 'true' &&
+          needs.build-lkm.result == 'success' && needs.build-ksuinit.result == 'success' &&
+          (needs.plan.outputs.enable_yukizygisk != 'true' || needs.build-yukizygisk.result == 'success') }}
+    uses: ./.github/workflows/ksud.yml
+    secrets: inherit
+    with:
+      target: aarch64-linux-android
+      os: ubuntu-latest
+      pack_lkm: true
+      pack_yukizygisk: ${{ needs.plan.outputs.enable_yukizygisk == 'true' }}
+      kmi: ${{ needs.plan.outputs.kmi }}
+
+  build-manager:
+    needs: plan
+    if: needs.plan.outputs.manager == 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./manager
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Determine manager variant for telegram bot
+        id: determine
+        run: |
+          echo "title=Manager" >> "$GITHUB_OUTPUT"
+          echo "topicid=${{ vars.MESSAGE_THREAD_ID }}" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Java
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Prepare APK signing key
+        uses: ./.github/actions/setup-manager-signing
+        with:
+          keystore: ${{ github.event_name != 'pull_request' && secrets.KEYSTORE || '' }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          store-password: ${{ secrets.KEYSTORE_PASSWORD }}
+          key-password: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-read-only: ${{ github.event_name == 'pull_request' }}
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v4
+        with:
+          packages: platform-tools
+
+      - name: Build with Gradle
+        run: ./gradlew lintDebug lintRelease assembleRelease --build-cache --parallel --no-daemon -PABI=arm64-v8a
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: Manager-gradle-arm64-v8a
+          path: manager/app/build/outputs/renamed_apk/release/
+          if-no-files-found: error
+          compression-level: 0
+
+      - name: Upload mappings
+        uses: actions/upload-artifact@v7
+        with:
+          name: "${{ steps.determine.outputs.title }}-mappings-arm64-v8a"
+          path: "manager/app/build/outputs/mapping/release/"
+
+  repack-manager:
+    needs: [build-manager, build-ksud]
+    if: ${{ !cancelled() && needs.build-manager.result == 'success' && needs.build-ksud.result == 'success' }}
+    runs-on: ubuntu-latest
+    outputs:
+      artifact_url: ${{ steps.manager-artifact.outputs.artifact-url }}
+    env:
+      PUBLISH_NIGHTLY: ${{ github.repository == 'Anatdx/YukiSU' && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Setup need_upload
+        id: need_upload
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CAN_UPLOAD: ${{ github.event_name == 'push' && (github.ref_name == 'main' || startsWith(github.ref_name, 'feat/')) }}
+        run: |
+          if [ "$CAN_UPLOAD" = "true" ] && [ -n "$BOT_TOKEN" ]; then
+            echo "UPLOAD=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "UPLOAD=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Determine manager variant for telegram bot
+        id: determine
+        run: |
+          echo "title=Manager" >> "$GITHUB_OUTPUT"
+          echo "topicid=${{ vars.MESSAGE_THREAD_ID }}" >> "$GITHUB_OUTPUT"
+
+      - name: Check nightly signing available
+        id: gpg_check
+        env:
+          GPG_PRIVATE_KEY: ${{ github.event_name != 'pull_request' && secrets.GPG_PRIVATE_KEY || '' }}
+          PROD_KEYSTORE: ${{ github.event_name != 'pull_request' && secrets.KEYSTORE || '' }}
+        run: |
+          if [ -n "$GPG_PRIVATE_KEY" ] && [ -n "$PROD_KEYSTORE" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Require signing keys for main nightly
+        if: env.PUBLISH_NIGHTLY == 'true' && steps.gpg_check.outputs.available != 'true'
+        run: |
+          echo 'Production APK and GPG signing keys are required for main nightly builds.' >&2
+          exit 1
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v4
+        with:
+          packages: platform-tools
+
+      - name: Download manager APK
+        uses: actions/download-artifact@v8
+        with:
+          name: Manager-gradle-arm64-v8a
+          path: artifacts/manager-gradle
+
+      - name: Download ksud
+        uses: actions/download-artifact@v8
+        with:
+          name: ksud-aarch64-linux-android
+          path: artifacts/ksud-aarch64-linux-android
+
+      - name: Place manager APK and ksud
+        run: |
+          set -euo pipefail
+          mkdir -p manager/app/build/outputs/apk/release
+          APK=$(find artifacts/manager-gradle -type f -name "*.apk" | head -n 1)
+          test -n "$APK"
+          cp -f "$APK" manager/app/build/outputs/apk/release/
+
+          mkdir -p target/aarch64-linux-android/release
+          KSUD=$(find artifacts/ksud-aarch64-linux-android -type f -name "ksud" | head -n 1)
+          test -n "$KSUD"
+          cp -f "$KSUD" target/aarch64-linux-android/release/ksud
+
+      - name: Prepare APK signing key
+        uses: ./.github/actions/setup-manager-signing
+        with:
+          keystore: ${{ github.event_name != 'pull_request' && secrets.KEYSTORE || '' }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          store-password: ${{ secrets.KEYSTORE_PASSWORD }}
+          key-password: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Repack and resign
+        run: |
+          python3 repack_apk.py repack \
+            -b release \
+            -t release \
+            -a arm64-v8a \
+            -K "$SIGN_KEYSTORE_FILE" \
+            -A "$SIGN_KEY_ALIAS" \
+            -P "$SIGN_KEYSTORE_PASSWORD" \
+            -S "$SIGN_KEY_PASSWORD" \
+            --strip
+
+      - name: Import GPG key
+        if: steps.gpg_check.outputs.available == 'true'
+        env:
+          GPG_PRIVATE_KEY: ${{ github.event_name != 'pull_request' && secrets.GPG_PRIVATE_KEY || '' }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          export GNUPGHOME
+          GNUPGHOME=$(mktemp -d "$RUNNER_TEMP/manager-gpg.XXXXXX")
+          echo "GNUPGHOME=$GNUPGHOME" >> "$GITHUB_ENV"
+          printf '%s' "$GPG_PRIVATE_KEY" | gpg --batch --yes --pinentry-mode loopback \
+            --passphrase "$GPG_PASSPHRASE" --import
+
+      - name: Sign APK with GPG
+        if: steps.gpg_check.outputs.available == 'true'
+        env:
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          cd dist
+          mapfile -t APKS < <(find . -maxdepth 1 -type f -name '*.apk')
+          test "${#APKS[@]}" -eq 1
+          TG_APK_NAME=$(basename -- "${APKS[0]}")
+          echo "TG_APK_NAME=$TG_APK_NAME" >> "$GITHUB_ENV"
+          if [[ "${APKS[0]}" != './app-release.apk' ]]; then
+            mv -- "${APKS[0]}" app-release.apk
+          fi
+          signing_args=()
+          if [ "$PUBLISH_NIGHTLY" = "true" ]; then
+            signing_args+=(--local-user 'C09CE484EEA3F2D88E9CDCC8EBDB0D663D7AB2F6!')
+          fi
+          gpg --detach-sign "${signing_args[@]}" \
+            --digest-algo SHA512 \
+            --batch --yes --pinentry-mode loopback \
+            --passphrase "$GPG_PASSPHRASE" \
+            --output app-release.sig app-release.apk
+          test -s app-release.apk
+          test -s app-release.sig
+
+      - name: Upload final Manager APK
+        id: manager-artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: Manager-arm64-v8a
+          path: dist/
+          if-no-files-found: error
+          compression-level: 0
+
+      - name: Sign CI update metadata with GPG
+        if: steps.gpg_check.outputs.available == 'true' && env.PUBLISH_NIGHTLY == 'true'
+        env:
+          CI_BRANCH: ${{ github.ref_name }}
+          CI_COMMIT_SHA: ${{ github.sha }}
+          CI_RUN_ID: ${{ github.run_id }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          set -euo pipefail
+          mapfile -t MANAGER_APKS < <(find dist -maxdepth 1 -type f -name '*.apk')
+          test "${#MANAGER_APKS[@]}" -eq 1
+          MANAGER_APK=${MANAGER_APKS[0]}
+          mkdir -p update-metadata
+          if command -v apkanalyzer >/dev/null 2>&1; then
+            CI_VERSION_CODE=$(apkanalyzer manifest version-code "$MANAGER_APK")
+          else
+            SDK_ROOT=${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}
+            test -n "$SDK_ROOT"
+            CI_VERSION_CODE=$("$SDK_ROOT/cmdline-tools/latest/bin/apkanalyzer" \
+              manifest version-code "$MANAGER_APK")
+          fi
+          [[ "$CI_VERSION_CODE" =~ ^[0-9]+$ ]]
+          export CI_COMMIT_MESSAGE
+          export CI_VERSION_CODE
+          export MANAGER_APK
+          CI_COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+
+          apk_path = Path(os.environ["MANAGER_APK"])
+          metadata = {
+              "schema_version": 1,
+              "repository": "Anatdx/YukiSU",
+              "workflow": "build-manager.yml",
+              "branch": os.environ["CI_BRANCH"],
+              "run_id": int(os.environ["CI_RUN_ID"]),
+              "version_code": int(os.environ["CI_VERSION_CODE"]),
+              "commit_sha": os.environ["CI_COMMIT_SHA"],
+              "commit_message": os.environ["CI_COMMIT_MESSAGE"],
+              "apk_sha256": hashlib.sha256(apk_path.read_bytes()).hexdigest(),
+              "apk_size": apk_path.stat().st_size,
+          }
+          Path("update-metadata/ci-update.json").write_text(
+              json.dumps(metadata, ensure_ascii=False, separators=(",", ":"), sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          PY
+          gpg --detach-sign --local-user 'C09CE484EEA3F2D88E9CDCC8EBDB0D663D7AB2F6!' \
+            --digest-algo SHA512 \
+            --batch --yes --pinentry-mode loopback \
+            --passphrase "$GPG_PASSPHRASE" \
+            --output update-metadata/ci-update.sig update-metadata/ci-update.json
+          test -s update-metadata/ci-update.json
+          test -s update-metadata/ci-update.sig
+
+      - name: Upload CI update metadata
+        if: steps.gpg_check.outputs.available == 'true' && env.PUBLISH_NIGHTLY == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: Manager-update-metadata
+          path: update-metadata/
+
+      - name: Prepare Cloudflare Pages update payload
+        if: steps.gpg_check.outputs.available == 'true' && env.PUBLISH_NIGHTLY == 'true'
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import shutil
+          import zipfile
+          from pathlib import Path
+
+          manager_apks = list(Path("dist").glob("*.apk"))
+          if len(manager_apks) != 1:
+              raise SystemExit(f"Expected one Manager APK, found {len(manager_apks)}")
+
+          apk_signature = Path("dist/app-release.sig")
+          if not apk_signature.is_file():
+              raise SystemExit("Missing app-release.sig")
+
+          payload = Path("pages-payload")
+          payload.mkdir(exist_ok=True)
+          shutil.copy2("update-metadata/ci-update.json", payload / "ci-update.json")
+          shutil.copy2("update-metadata/ci-update.sig", payload / "ci-update.sig")
+          with zipfile.ZipFile(
+              payload / "Manager-arm64-v8a.zip",
+              mode="w",
+              compression=zipfile.ZIP_DEFLATED,
+              compresslevel=9,
+          ) as archive:
+              archive.write(manager_apks[0], arcname="app-release.apk")
+              archive.write(apk_signature, arcname="app-release.sig")
+          PY
+          mapfile -t PAGES_FILES < <(
+            find pages-payload -mindepth 1 -maxdepth 1 -type f -printf '%f\n' | LC_ALL=C sort
+          )
+          test "${#PAGES_FILES[@]}" -eq 3
+          test "${PAGES_FILES[0]}" = 'Manager-arm64-v8a.zip'
+          test "${PAGES_FILES[1]}" = 'ci-update.json'
+          test "${PAGES_FILES[2]}" = 'ci-update.sig'
+          mapfile -t ARCHIVE_FILES < <(
+            unzip -Z1 pages-payload/Manager-arm64-v8a.zip | LC_ALL=C sort
+          )
+          test "${#ARCHIVE_FILES[@]}" -eq 2
+          test "${ARCHIVE_FILES[0]}" = 'app-release.apk'
+          test "${ARCHIVE_FILES[1]}" = 'app-release.sig'
+          test -s pages-payload/ci-update.json
+          test -s pages-payload/ci-update.sig
+          test "$(stat -c '%s' pages-payload/Manager-arm64-v8a.zip)" \
+            -le $((25 * 1024 * 1024))
+
+      - name: Deploy CI update payload to Cloudflare Pages
+        if: steps.gpg_check.outputs.available == 'true' && env.PUBLISH_NIGHTLY == 'true'
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy pages-payload --project-name=yukisuupdates --branch=main
+
+      - name: Restore APK filename for Telegram
+        if: steps.gpg_check.outputs.available == 'true'
+        run: |
+          test -n "$TG_APK_NAME"
+          if [[ "$TG_APK_NAME" != 'app-release.apk' ]]; then
+            mv -- dist/app-release.apk "dist/$TG_APK_NAME"
+          fi
+
+      - name: Upload to telegram
+        if: github.event_name == 'push' && (github.ref_name == 'main' || startsWith(github.ref_name, 'feat/')) && steps.need_upload.outputs.UPLOAD == 'true'
+        env:
+          CHAT_ID: ${{ vars.CHAT_ID }}
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          MESSAGE_THREAD_ID: ${{ steps.determine.outputs.topicid }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          COMMIT_URL: ${{ github.event.head_commit.url }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          TITLE: ${{ steps.determine.outputs.title }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          if [ -n "$BOT_TOKEN" ]; then
+            export VERSION
+            VERSION=$(git rev-list --count HEAD)
+            mapfile -t APKS < <(find ./dist -name "*.apk")
+            pip3 install telethon
+            python3 "$GITHUB_WORKSPACE/scripts/ksubot.py" "${APKS[@]}"
+          fi
+
+  summary:
+    name: Build results / 下载说明
+    needs: [plan, build-lkm, build-ksuinit, build-yukizygisk, build-ksud, build-manager, repack-manager]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Summarize results
+        env:
+          BUILD_RESULTS: ${{ toJSON(needs) }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          MANAGER_ARTIFACT_URL: ${{ needs.repack-manager.outputs.artifact_url }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          results = json.loads(os.environ['BUILD_RESULTS'])
+          with Path(os.environ['GITHUB_STEP_SUMMARY']).open('a', encoding='utf-8') as summary:
+              summary.write('## 编译结果 / Build results\n\n| Job | Result |\n| --- | --- |\n')
+              for job, result in results.items():
+                  summary.write(f"| {job} | {result['result']} |\n")
+              summary.write(f"\n[下载产物 / Artifacts]({os.environ['RUN_URL']}#artifacts)\n")
+              if results['repack-manager']['result'] == 'success':
+                  summary.write(f"\n[下载完整 Manager APK]({os.environ['MANAGER_ARTIFACT_URL']})。请勿安装 Manager-gradle 中间产物。\n")
+                  summary.write('\n未配置正式签名时，APK 使用本次运行的临时签名；跨运行更新需要保持签名一致。\n')
+          PY

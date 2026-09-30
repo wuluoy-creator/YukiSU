@@ -40,6 +40,8 @@ A kernel-based root solution for Android devices, forked from [`SukiSU-Ultra`](h
 
 See [`guide/installation.md`](guide/installation.md)
 
+To build your own artifacts, see [Building with GitHub Actions](guide/workflow-build.md) for component selection and automatic dependencies.
+
 ## Integration
 
 See [`guide/how-to-integrate.md`](guide/how-to-integrate.md)

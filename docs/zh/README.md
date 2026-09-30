@@ -40,6 +40,8 @@
 
 参见 [`guide/installation.md`](guide/installation.md)
 
+自行编译请参见 [GitHub Actions 自选编译指南](guide/workflow-build.md)，可选择 Manager、LKM 等组件并自动补齐依赖。
+
 ## 集成
 
 参见 [`guide/how-to-integrate.md`](guide/how-to-integrate.md)

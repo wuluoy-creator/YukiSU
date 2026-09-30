@@ -1,0 +1,55 @@
+name: Set up Manager signing
+description: Prepare a configured APK keystore or generate a temporary CI key on this runner.
+inputs:
+  keystore:
+    description: Base64-encoded production keystore (empty for a temporary CI key).
+    required: false
+  alias:
+    description: Production key alias.
+    required: false
+  store-password:
+    description: Production keystore password.
+    required: false
+  key-password:
+    description: Production key password.
+    required: false
+runs:
+  using: composite
+  steps:
+    - name: Prepare APK signing key
+      shell: bash
+      env:
+        PROD_KEYSTORE: ${{ inputs.keystore }}
+        KEY_ALIAS: ${{ inputs.alias }}
+        KEYSTORE_PASSWORD: ${{ inputs.store-password }}
+        KEY_PASSWORD: ${{ inputs.key-password }}
+      run: |
+        set -euo pipefail
+        umask 077
+        keystore_file="$RUNNER_TEMP/manager-signing.jks"
+        if [ -n "$PROD_KEYSTORE" ]; then
+          test -n "$KEY_ALIAS"
+          test -n "$KEYSTORE_PASSWORD"
+          test -n "$KEY_PASSWORD"
+          printf '%s' "$PROD_KEYSTORE" | base64 -d > "$keystore_file"
+        else
+          KEY_ALIAS=ci-key
+          KEYSTORE_PASSWORD=$(openssl rand -hex 32)
+          KEY_PASSWORD=$(openssl rand -hex 32)
+          echo "::add-mask::$KEYSTORE_PASSWORD"
+          echo "::add-mask::$KEY_PASSWORD"
+          keytool -genkeypair -alias "$KEY_ALIAS" -keyalg RSA -keysize 2048 \
+            -validity 30 -storetype JKS -dname 'CN=YukiSU CI Build' \
+            -storepass "$KEYSTORE_PASSWORD" -keypass "$KEY_PASSWORD" \
+            -keystore "$keystore_file"
+        fi
+        {
+          echo "ORG_GRADLE_PROJECT_KEYSTORE_FILE=$keystore_file"
+          echo "ORG_GRADLE_PROJECT_KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD"
+          echo "ORG_GRADLE_PROJECT_KEY_ALIAS=$KEY_ALIAS"
+          echo "ORG_GRADLE_PROJECT_KEY_PASSWORD=$KEY_PASSWORD"
+          echo "SIGN_KEYSTORE_FILE=$keystore_file"
+          echo "SIGN_KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD"
+          echo "SIGN_KEY_ALIAS=$KEY_ALIAS"
+          echo "SIGN_KEY_PASSWORD=$KEY_PASSWORD"
+        } >> "$GITHUB_ENV"

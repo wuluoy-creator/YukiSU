@@ -25,85 +25,78 @@ jobs:
   build-kernelsu-ko:
     name: Build kernelsu.ko for ${{ inputs.kmi }}
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     container:
       image: ghcr.io/ylarod/ddk-min:${{ inputs.kmi }}-${{ inputs.ddk_release }}
       options: --privileged
+    defaults:
+      run:
+        shell: bash
+    env:
+      KMI: ${{ inputs.kmi }}
+      ENABLE_YUKIZYGISK: ${{ inputs.yukizygisk }}
 
     steps:
     - name: Checkout source code
       uses: actions/checkout@v7
       with:
+        # Kbuild derives the version number from the complete commit history.
         fetch-depth: 0
 
     - name: Build kernelsu.ko
       run: |
-        git config --global --add safe.directory /__w/YukiSU/YukiSU
+        set -euo pipefail
+        git config --global --add safe.directory "$GITHUB_WORKSPACE"
         cd kernel
         test -f include/uapi/supercall.h
 
-        echo "=== Building kernelsu.ko for KMI: ${{ inputs.kmi }} ==="
+        echo "Building kernelsu.ko for KMI: $KMI"
         make_args=(CONFIG_KSU=m CONFIG_KSU_SUPERKEY=y CC=clang)
-        if [ "${{ inputs.yukizygisk }}" = "true" ]; then
+        if [ "$ENABLE_YUKIZYGISK" = "true" ]; then
           make_args+=(CONFIG_KSU_YUKIZYGISK=y)
-          echo "YukiZygisk kernel hooks: enabled"
-        else
-          echo "YukiZygisk kernel hooks: disabled"
         fi
 
-        make clean
-        make "${make_args[@]}"
-        
-        echo "=== Build completed ==="
-        # Create output directory in GitHub workspace
-        mkdir -p /github/workspace/out
-        # Copy with KMI-specific naming
-        OUTPUT_NAME="${{ inputs.kmi }}_kernelsu.ko"
-        cp kernelsu.ko "/github/workspace/out/$OUTPUT_NAME"
-        
-        echo "Copied to: /github/workspace/out/$OUTPUT_NAME"
-        ls -la "/github/workspace/out/$OUTPUT_NAME"
-        echo "Size: $(du -h "/github/workspace/out/$OUTPUT_NAME" | cut -f1)"
-        llvm-strip -d "/github/workspace/out/$OUTPUT_NAME"
-        echo "Size after stripping: $(du -h "/github/workspace/out/$OUTPUT_NAME" | cut -f1)"
-        
-    - name: Install GPG
-      if: github.event_name != 'pull_request'
-      run: |
-        apt-get update && apt-get install -y gnupg
+        # The checkout is clean; let recursive Kbuild share make's jobserver.
+        make -j"$(nproc)" "${make_args[@]}"
 
-    - name: Import GPG key
+        output="$GITHUB_WORKSPACE/out/${KMI}_kernelsu.ko"
+        mkdir -p "$GITHUB_WORKSPACE/out"
+        cp kernelsu.ko "$output"
+        llvm-strip -d "$output"
+        test -s "$output"
+        ls -lh "$output"
+
+    - name: Sign kernelsu.ko when a GPG key is configured
       if: github.event_name != 'pull_request'
       env:
         GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
         GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
       run: |
-        mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
-        echo "$GPG_PRIVATE_KEY" > key.asc
-        gpg --batch --yes --pinentry-mode loopback --passphrase "$GPG_PASSPHRASE" --import key.asc
-        rm -f key.asc
-
-    - name: Sign kernelsu.ko with GPG
-      if: github.event_name != 'pull_request'
-      run: |
-        cd /github/workspace/out
-        KO_FILE="${{ inputs.kmi }}_kernelsu.ko"
-        echo "Signing $KO_FILE..."
-        gpg --detach-sign --local-user an@anatdx.com --batch --yes --pinentry-mode loopback \
-          --passphrase "${{ secrets.GPG_PASSPHRASE }}" \
-          --output "${KO_FILE}.sig" "$KO_FILE"
-        if [ -f "${KO_FILE}.sig" ]; then
-          echo "Signature created successfully"
-          ls -lh "${KO_FILE}.sig"
-        else
-          echo "Error: Signature file not created!"
-          exit 1
+        set -euo pipefail
+        if [ -z "$GPG_PRIVATE_KEY" ]; then
+          echo "No GPG key configured; uploading the unsigned kernel module."
+          exit 0
         fi
+        if ! command -v gpg >/dev/null 2>&1; then
+          apt-get update -qq
+          apt-get install -y --no-install-recommends gnupg
+        fi
+        export GNUPGHOME
+        GNUPGHOME=$(mktemp -d)
+        trap 'rm -rf "$GNUPGHOME"' EXIT
+        printf '%s\n' "$GPG_PRIVATE_KEY" | gpg --batch --yes \
+          --pinentry-mode loopback --passphrase "$GPG_PASSPHRASE" --import
+
+        output="$GITHUB_WORKSPACE/out/${KMI}_kernelsu.ko"
+        gpg --detach-sign --batch --yes --pinentry-mode loopback \
+          --passphrase "$GPG_PASSPHRASE" --output "${output}.sig" "$output"
+        test -s "${output}.sig"
 
     - name: Upload kernelsu.ko artifact
       uses: actions/upload-artifact@v7
       with:
         name: ${{ inputs.kmi }}-lkm
         path: |
-          /github/workspace/out/${{ inputs.kmi }}_kernelsu.ko
-          /github/workspace/out/${{ inputs.kmi }}_kernelsu.ko.sig
-        if-no-files-found: ignore
+          out/${{ inputs.kmi }}_kernelsu.ko
+          out/${{ inputs.kmi }}_kernelsu.ko.sig
+        if-no-files-found: error

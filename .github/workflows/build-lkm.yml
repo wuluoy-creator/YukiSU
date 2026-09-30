@@ -2,6 +2,11 @@ name: Build LKM for KernelSU
 on:
   workflow_call:
     inputs:
+      kmi:
+        description: 'KMI to build: all, one supported KMI, or a comma-separated list'
+        required: false
+        default: all
+        type: string
       yukizygisk:
         description: 'Enable YukiZygisk kernel hooks'
         required: false
@@ -9,6 +14,21 @@ on:
         type: boolean
   workflow_dispatch:
     inputs:
+      kmi:
+        description: 'Kernel version / 内核版本'
+        required: false
+        default: all
+        type: choice
+        options:
+          - all
+          - android12-5.10
+          - android13-5.10
+          - android13-5.15
+          - android14-5.15
+          - android14-6.1
+          - android15-6.6
+          - android16-6.12
+          - android17-6.18
       yukizygisk:
         description: 'Enable YukiZygisk kernel hooks'
         required: false
@@ -18,20 +38,48 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
+  prepare:
+    name: Select kernel modules
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.select.outputs.matrix }}
+    steps:
+      - name: Validate KMI selection
+        id: select
+        env:
+          SELECTED_KMI: ${{ inputs.kmi }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+
+          # Keep this list in sync with scripts/build.* and ksud.yml.
+          supported = [
+              "android12-5.10",
+              "android13-5.10",
+              "android13-5.15",
+              "android14-5.15",
+              "android14-6.1",
+              "android15-6.6",
+              "android16-6.12",
+              "android17-6.18",
+          ]
+          requested = os.environ["SELECTED_KMI"].strip()
+          selected = supported if requested == "all" else [item.strip() for item in requested.split(",")]
+          if not selected or any(item not in supported for item in selected):
+              raise SystemExit("::error::Invalid KMI selection. Use all or a comma-separated list of: " + ", ".join(supported))
+          selected = list(dict.fromkeys(selected))
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write("matrix=" + json.dumps({"kmi": selected}, separators=(",", ":")) + "\n")
+          print("Building kernel modules: " + ", ".join(selected))
+          PY
+
   build-lkm:
+    needs: prepare
     strategy:
       fail-fast: false
-      matrix:
-        # Keep this list in sync with scripts/build.* and ksud.yml.
-        kmi:
-          - android12-5.10
-          - android13-5.10
-          - android13-5.15
-          - android14-5.15
-          - android14-6.1
-          - android15-6.6
-          - android16-6.12
-          - android17-6.18
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
     uses: ./.github/workflows/ddk-lkm.yml
     secrets: inherit
     with:
