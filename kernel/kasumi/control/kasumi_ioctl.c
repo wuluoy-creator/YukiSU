@@ -212,27 +212,13 @@ static KASUMI_NOCFI int kasumi_dispatch_cmd(unsigned int cmd, void __user *arg)
 		int val;
 		if (copy_from_user(&val, arg, sizeof(val)))
 			return -EFAULT;
-		if (val) {
-			mutex_lock(&kasumi_config_mutex);
-			if (READ_ONCE(kasumi_enabled)) {
-				mutex_unlock(&kasumi_config_mutex);
-				return 0;
-			}
-			smp_store_release(&kasumi_enabled, true);
-			mutex_unlock(&kasumi_config_mutex);
-		} else {
-			mutex_lock(&kasumi_config_mutex);
-			if (!READ_ONCE(kasumi_enabled)) {
-				mutex_unlock(&kasumi_config_mutex);
-				return 0;
-			}
-			smp_store_release(&kasumi_enabled, false);
-			mutex_unlock(&kasumi_config_mutex);
-		}
-		kasumi_log("Kasumi %s\n",
-			   READ_ONCE(kasumi_enabled) ? "enabled" : "disabled");
-		kasumi_hide_rules_changed();
-		return 0;
+		if (!val)
+			return -EPERM;
+		if (val != 1)
+			return -EINVAL;
+		/* Retain the ioctl for old clients, but Kasumi is always enabled once
+		 * its bootstrap completed. */
+		return kasumi_is_ready() ? 0 : -EOPNOTSUPP;
 	}
 
 	if (cmd == KSM_IOC_REORDER_MNT_ID) {

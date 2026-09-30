@@ -293,17 +293,9 @@ bool apply_feature_config(const Config& config, std::string& error) {
     return ok;
 }
 
-bool disable_control_state(std::string& error) {
+bool reset_feature_state(std::string& error) {
     user_hide_restore_pending = false;
-    bool ok = true;
-    if (!::kagami::kasumi::set_enabled(false)) {
-        error = "failed to disable Kasumi";
-        ok = false;
-    }
-    if (!disable_kernel_features(&error)) {
-        ok = false;
-    }
-    return ok;
+    return disable_kernel_features(&error);
 }
 
 namespace {
@@ -395,15 +387,11 @@ void retry_pending_hide_rules() {
     std::string error;
     if (!read_config_file(config, error))
         return;
-    if (!config.kasumi_enabled) {
-        user_hide_restore_pending = false;
-        return;
-    }
     (void)restore_user_hide_rules(error, true);
 }
 
-bool deactivate(std::string& error) {
-    bool ok = disable_control_state(error);
+bool reset_runtime_state(std::string& error) {
+    bool ok = reset_feature_state(error);
     if (!::kagami::kasumi::clear_rules()) {
         if (error.empty()) {
             error = "failed to clear Kasumi rules";
@@ -492,7 +480,7 @@ bool unmount_all(const Config& config) {
     bool ok = true;
     if (::kagami::kasumi::is_available()) {
         std::string error;
-        ok = deactivate(error);
+        ok = reset_runtime_state(error);
         if (!ok) {
             mlog("kasumi: " + error);
         }

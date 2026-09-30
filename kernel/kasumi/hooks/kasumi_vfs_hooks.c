@@ -224,6 +224,8 @@ void kasumi_apply_kstat_spoof(struct inode *inode, struct kstat *stat)
 	}
 
 	if (!e) {
+		dev_t system_dev = READ_ONCE(kasumi_system_dev);
+
 		/* Generic fallback: add_rule redirect targets reaching the
 		 * getattr path.  Publish the SAME synthetic ino every other
 		 * surface emits: kasumi_vnode_source_ino() resolves the rule's
@@ -238,8 +240,8 @@ void kasumi_apply_kstat_spoof(struct inode *inode, struct kstat *stat)
 		 * for /system redirect targets where the visible dev already IS
 		 * the /system dev. */
 		stat->ino = kasumi_vnode_source_ino(stat->dev, (u64)stat->ino);
-		if (kasumi_system_dev)
-			stat->dev = kasumi_system_dev;
+		if (system_dev)
+			stat->dev = system_dev;
 		if (S_ISREG(stat->mode))
 			stat->nlink = 1;
 	}

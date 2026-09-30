@@ -317,8 +317,6 @@ const std::vector<Command>& commands() {
         {"kagami kasumi version", "Read the Kasumi version", ""},
         {"kagami kasumi list", "Read Kasumi rules", ""},
         {"kagami kasumi features", "Read supported Kasumi features", ""},
-        {"kagami kasumi enable", "Apply configuration and enable Kasumi", ""},
-        {"kagami kasumi disable", "Disable Kasumi", ""},
         {"kagami kasumi clear", "Clear Kasumi rules", ""},
         {"kagami kasumi hide-path", "Hide an absolute path", "<ABSOLUTE-PATH>", 1, 1},
         {"kagami kasumi delete-rule", "Delete a path rule", "<ABSOLUTE-PATH>", 1, 1},

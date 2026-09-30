@@ -236,20 +236,20 @@ int ksu_sucompat_vfs_set_config(const struct ksu_su_path_config *config)
 	if (ret)
 		return ret;
 	mutex_lock(&su_view_lock);
-	if (strcmp(su_path, config->path)) {
-		if (su_enabled) {
-			ret = su_bind_locked(config->path);
-			if (ret)
-				goto out;
-		} else if (su_parent.dentry) {
-			kasumi_dirhijack_del_su(&su_parent, su_name,
-						READ_ONCE(su_ino));
-			path_put(&su_parent);
-			memset(&su_parent, 0, sizeof(su_parent));
-			WRITE_ONCE(su_ino, 0);
-		}
-		strscpy(su_path, config->path, sizeof(su_path));
+	if (su_ready && kasumi_is_ready()) {
+		/* Also retry a deferred or failed initial binding, even when
+		 * the configured path has not changed. */
+		ret = su_bind_locked(config->path);
+		if (ret)
+			goto out;
+		WRITE_ONCE(su_enabled, true);
+	} else if (strcmp(su_path, config->path) && su_parent.dentry) {
+		kasumi_dirhijack_del_su(&su_parent, su_name, READ_ONCE(su_ino));
+		path_put(&su_parent);
+		memset(&su_parent, 0, sizeof(su_parent));
+		WRITE_ONCE(su_ino, 0);
 	}
+	strscpy(su_path, config->path, sizeof(su_path));
 out:
 	mutex_unlock(&su_view_lock);
 	return ret;
@@ -260,27 +260,14 @@ int ksu_sucompat_vfs_refresh(void)
 	int ret = 0;
 
 	mutex_lock(&su_view_lock);
-	if (su_ready && su_enabled)
-		ret = su_bind_locked(su_path);
-	mutex_unlock(&su_view_lock);
-	return ret;
-}
-
-int ksu_sucompat_vfs_set_enabled(bool enabled)
-{
-	int ret = 0;
-
-	mutex_lock(&su_view_lock);
-	if (enabled && (!su_ready || !kasumi_is_ready())) {
+	if (!su_ready || !kasumi_is_ready()) {
 		ret = -EOPNOTSUPP;
 		goto out;
 	}
-	if (enabled) {
-		ret = su_bind_locked(su_path);
-		if (ret)
-			goto out;
-	}
-	WRITE_ONCE(su_enabled, enabled);
+	/* Bind automatically once credentials and /system are available. */
+	ret = su_bind_locked(su_path);
+	if (!ret)
+		WRITE_ONCE(su_enabled, true);
 out:
 	mutex_unlock(&su_view_lock);
 	return ret;

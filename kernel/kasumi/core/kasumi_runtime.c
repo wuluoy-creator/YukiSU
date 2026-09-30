@@ -273,7 +273,7 @@ dev_t kasumi_vnode_device(void)
 KASUMI_NOCFI dev_t kasumi_vnode_visible_dev(const char *visible_path)
 {
 	struct path p;
-	dev_t dev = kasumi_system_dev;
+	dev_t dev = READ_ONCE(kasumi_system_dev);
 	char *parent;
 	char *slash;
 
@@ -850,8 +850,8 @@ void kasumi_cleanup_locked(void)
 	struct hlist_node *tmp;
 	int bkt;
 
-	/* Pair with policy readers before cleanup withdraws provider state. */
-	smp_store_release(&kasumi_enabled, false);
+	/* Rule cleanup is reusable while the always-on provider remains live.
+	 * Lifecycle shutdown withdraws kasumi_enabled before calling here. */
 	kasumi_stealth_enabled = false;
 	kasumi_feature_enabled_mask = 0;
 	kasumi_mount_hide_mode = KSM_MOUNT_HIDE_MODE_NORMAL;

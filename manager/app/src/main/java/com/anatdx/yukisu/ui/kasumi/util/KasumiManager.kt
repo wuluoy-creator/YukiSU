@@ -29,7 +29,6 @@ object KasumiManager {
     data class MountState(
         val modules: Map<String, ModuleInfo>,
         val available: Boolean,
-        val kasumiEnabled: Boolean,
         val globalMode: String,
         val externalOwner: String,
         val builtinEnabled: Boolean = true,
@@ -90,7 +89,7 @@ object KasumiManager {
         }
         return MountState(
             parseModules(objectResult("module", "list", "--all")), kernel.getBoolean("kasumi_available"),
-            config.optBoolean("kasumi_enabled", true), config.optString("mount_backend", "auto"),
+            config.optString("mount_backend", "auto"),
             meta.optString("external_mount_owner"),
             config.optBoolean("builtin_mount_enabled", true),
             if (kernel.optBoolean("enabled"))
@@ -138,13 +137,7 @@ object KasumiManager {
                 try {
                     command("config", "merge-json", updates.toString())
                     persisted = true
-                    if (applyRuntime) {
-                        try { command("config", "apply") }
-                        catch (error: Exception) {
-                            try { command("kasumi", "disable") } catch (cleanup: Exception) { error.addSuppressed(cleanup) }
-                            throw error
-                        }
-                    }
+                    if (applyRuntime) command("config", "apply")
                     ConfigSaveResult(persisted = true, applied = applyRuntime)
                 } catch (error: Exception) {
                     ConfigSaveResult(persisted, false, error.message ?: "Configuration operation failed")

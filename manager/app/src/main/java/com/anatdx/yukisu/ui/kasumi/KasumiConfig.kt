@@ -220,7 +220,7 @@ fun KasumiConfigScreen(
                             coroutineScope.launchUi(snackbarHostState) {
                                 if (KasumiManager.clearAllRules()) {
                                     publish(KasumiManager.load())
-                                    runtimeApplyPending = config.kasumiEnabled && systemInfo.viewsEnabled == false
+                                    runtimeApplyPending = true
                                     snackbarHostState.showSnackbar("All rules cleared")
                                 } else {
                                     snackbarHostState.showSnackbar("Failed to clear rules")

@@ -275,7 +275,7 @@ int serve_foreground(int ready_fd = -1) {
     if (mounts_fd < 0)
         append_log("cannot watch storage mounts: " + std::string(std::strerror(errno)),
                    logging::Level::Error);
-    if (config_error.empty() && log_config.kasumi_enabled) {
+    if (config_error.empty()) {
         std::string restore_error;
         if (!mount::kasumi::restore_persisted_hide_rules(restore_error))
             append_log(restore_error, logging::Level::Error);

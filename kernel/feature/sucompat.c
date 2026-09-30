@@ -22,7 +22,6 @@
 #include "arch.h"
 #include "policy/feature.h"
 #include "hook/syscall_hook.h"
-#include "hook/syscall_hook_manager.h"
 #include "klog.h" // IWYU pragma: keep
 #include "ksu.h"
 #include "runtime/ksud.h"
@@ -33,18 +32,16 @@
 #include "feature/sucompat_exec.h"
 #include "feature/sucompat_prompt.h"
 #include "feature/sucompat_vfs.h"
-#include "kasumi_bootstrap.h"
 
 #define SU_PATH "/system/bin/su"
 
-bool ksu_su_compat_enabled __read_mostly = true;
+/* Kasumi is the only sucompat provider; the legacy route stays disabled. */
+const bool ksu_su_compat_enabled = false;
 static bool magisk_compat_enabled __read_mostly;
 static const char su_path[] = SU_PATH;
 static bool kasumi_sucompat_feature_registered;
 static bool magisk_compat_feature_registered;
 static bool kasumi_sucompat_started;
-
-static int kasumi_sucompat_feature_set(u64 value);
 
 #ifndef fd_file
 #define fd_file(fd) ((fd).file)
@@ -59,56 +56,14 @@ static int magisk_compat_feature_get(u64 *value)
 static int magisk_compat_feature_set(u64 value)
 {
 	bool enable = value != 0;
-	bool was_enabled = READ_ONCE(magisk_compat_enabled);
-	bool was_prompt = ksu_sucompat_vfs_prompt_enabled();
 	int ret;
 
-	if (enable) {
-		if (!kasumi_is_ready())
-			return -EOPNOTSUPP;
-		ret = ksu_sucompat_prompt_set_gate(true);
-		if (ret)
-			return ret;
-		ret = kasumi_sucompat_feature_set(1);
-		if (ret) {
-			if (ksu_sucompat_vfs_enabled()) {
-				int rollback_ret =
-				    ksu_sucompat_prompt_set_gate(was_prompt);
-
-				if (rollback_ret) {
-					bool prompt_enabled =
-					    ksu_sucompat_vfs_prompt_enabled();
-
-					WRITE_ONCE(magisk_compat_enabled,
-						   prompt_enabled);
-					pr_warn(
-					    "magisk_compat: prompt rollback "
-					    "failed: %d\n",
-					    rollback_ret);
-				} else {
-					WRITE_ONCE(magisk_compat_enabled,
-						   was_enabled);
-				}
-			} else {
-				int rollback_ret =
-				    ksu_sucompat_prompt_set_gate(false);
-
-				WRITE_ONCE(magisk_compat_enabled, false);
-				if (rollback_ret)
-					pr_warn(
-					    "magisk_compat: failed to close "
-					    "prompt gate: %d\n",
-					    rollback_ret);
-			}
-			return ret;
-		}
-		WRITE_ONCE(magisk_compat_enabled, true);
-	} else {
-		ret = ksu_sucompat_prompt_set_gate(false);
-		if (ret)
-			return ret;
-		WRITE_ONCE(magisk_compat_enabled, false);
-	}
+	if (enable && !ksu_sucompat_vfs_enabled())
+		return -EOPNOTSUPP;
+	ret = ksu_sucompat_prompt_set_gate(enable);
+	if (ret)
+		return ret;
+	WRITE_ONCE(magisk_compat_enabled, enable);
 	pr_info("magisk_compat: set to %d\n", enable);
 	return 0;
 }
@@ -151,35 +106,9 @@ static int su_compat_feature_get(u64 *value)
 
 static int su_compat_feature_set(u64 value)
 {
-	bool enable = value != 0;
-	int ret;
-
-	if (enable) {
-		if (READ_ONCE(magisk_compat_enabled))
-			return -EBUSY;
-		ret = ksu_set_sucompat_legacy_path_hooks(true);
-		if (ret)
-			return ret;
-		WRITE_ONCE(ksu_su_compat_enabled, true);
-		ret = ksu_sucompat_vfs_set_enabled(false);
-		if (ret) {
-			/*
-			 * A failed retirement may already have closed vnode
-			 * lookup. Keep the classic route live unless the
-			 * provider rolled back.
-			 */
-			if (ksu_sucompat_vfs_enabled()) {
-				WRITE_ONCE(ksu_su_compat_enabled, false);
-				ksu_set_sucompat_legacy_path_hooks(false);
-			}
-			return ret;
-		}
-	} else {
-		WRITE_ONCE(ksu_su_compat_enabled, false);
-		ksu_set_sucompat_legacy_path_hooks(false);
-	}
-	pr_info("su_compat: set to %d\n", enable);
-	return 0;
+	if (value > 1)
+		return -EINVAL;
+	return value ? -EPERM : 0;
 }
 
 static const struct ksu_feature_handler su_compat_handler = {
@@ -197,29 +126,13 @@ static int kasumi_sucompat_feature_get(u64 *value)
 
 static int kasumi_sucompat_feature_set(u64 value)
 {
-	bool enable = value != 0;
-	int ret;
-
-	if (!enable) {
-		if (READ_ONCE(magisk_compat_enabled))
-			return -EBUSY;
-		return ksu_sucompat_vfs_set_enabled(false);
-	}
-
-	ret = ksu_sucompat_vfs_set_enabled(true);
-	if (ret) {
-		if (READ_ONCE(magisk_compat_enabled) &&
-		    !ksu_sucompat_vfs_enabled()) {
-			ksu_sucompat_prompt_set_gate(false);
-			WRITE_ONCE(magisk_compat_enabled, false);
-		}
-		return ret;
-	}
-
-	WRITE_ONCE(ksu_su_compat_enabled, false);
-	ksu_set_sucompat_legacy_path_hooks(false);
-	pr_info("kasumi: sucompat: enabled; classic sucompat disabled\n");
-	return 0;
+	if (value > 1)
+		return -EINVAL;
+	if (!value)
+		return -EPERM;
+	/* Preserve the post-mount rebind request without allowing mode changes.
+	 */
+	return ksu_sucompat_vfs_refresh();
 }
 
 static const struct ksu_feature_handler kasumi_sucompat_handler = {

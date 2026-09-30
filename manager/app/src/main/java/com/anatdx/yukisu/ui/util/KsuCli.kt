@@ -440,10 +440,13 @@ fun getFeatureValue(feature: Int): Boolean = Natives.isFeatureEnabled(feature)
 internal fun getFeatureValueOrNull(feature: Int): Boolean? =
     Natives.getFeature(feature).takeIf { it >= 0 }?.let { it > 0 }
 
-/** Atomically set and persist a feature value. ksud restores the previous
- *  runtime state if persistence fails and serializes coupled su mode changes. */
+/** Atomically set and persist a mutable feature value. ksud restores the previous
+ *  runtime state if persistence fails. Kasumi and the su mode are kernel-owned. */
 suspend fun setFeatureValue(feature: String, enabled: Boolean): Boolean =
     withContext(Dispatchers.IO) {
+        if (feature in setOf("kasumi", "su_compat", "kasumi_sucompat")) {
+            return@withContext false
+        }
         execKsud(
             "feature set-save ${shellArg(feature)} ${if (enabled) 1 else 0}",
             true

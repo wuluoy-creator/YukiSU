@@ -1,5 +1,6 @@
 #include "feature/sucompat_module_guard.h"
 #include "feature/sucompat.h"
+#include "feature/sucompat_vfs.h"
 #include "policy/feature.h"
 #include <linux/rwsem.h>
 #include "kasumi_proc_read_hooks.h"
@@ -66,7 +67,7 @@ static noinline KASUMI_NOCFI void kasumi_resolve_system_dev(void)
 		return;
 	}
 
-	kasumi_system_dev = sb->s_dev;
+	WRITE_ONCE(kasumi_system_dev, sb->s_dev);
 	pr_info("kasumi: /system dev=%u:%u\n", MAJOR(kasumi_system_dev),
 		MINOR(kasumi_system_dev));
 	path_put(&sys_path);
@@ -192,6 +193,10 @@ err_buffers:
 static void kasumi_stop_views(void)
 {
 	pr_info("kasumi: shutting down\n");
+	/* Stop policy readers before withdrawing the hooks and freeing their
+	 * backing state. Runtime CLEAR_ALL intentionally leaves this enabled.
+	 */
+	smp_store_release(&kasumi_enabled, false);
 	mutex_lock(&kasumi_mutation_mutex);
 	kasumi_hide_rules_stop();
 	mutex_unlock(&kasumi_mutation_mutex);
@@ -236,7 +241,6 @@ static void kasumi_stop_views(void)
 static DECLARE_RWSEM(kasumi_lifecycle_lock);
 static int kasumi_init_error = -EOPNOTSUPP;
 static bool kasumi_started;
-static bool kasumi_requested;
 
 bool kasumi_is_ready(void)
 {
@@ -282,6 +286,7 @@ static int kasumi_bootstrap_init(void)
 		goto release_guard;
 	ret = kasumi_start_views();
 	if (!ret) {
+		smp_store_release(&kasumi_enabled, true);
 		kasumi_started = true;
 		goto out;
 	}
@@ -298,24 +303,20 @@ out:
 
 static int kasumi_feature_get(u64 *value)
 {
-	*value = READ_ONCE(kasumi_requested);
+	*value = smp_load_acquire(&kasumi_enabled) ? 1 : 0;
 	return 0;
 }
 
 static int kasumi_feature_set(u64 value)
 {
-	int ret = 0;
-
 	if (value > 1)
 		return -EINVAL;
-	if (value) {
-		ret = kasumi_bootstrap_init();
-		if (ret)
-			return ret;
-	}
-	/* Disabling is for next boot; live views retain the module guard. */
-	WRITE_ONCE(kasumi_requested, value != 0);
-	return 0;
+	if (!value)
+		return -EPERM;
+
+	/* Preserve the ABI for old callers without exposing lifecycle control.
+	 */
+	return smp_load_acquire(&kasumi_init_error);
 }
 
 static const struct ksu_feature_handler kasumi_feature = {
@@ -327,10 +328,40 @@ static const struct ksu_feature_handler kasumi_feature = {
 
 void ksu_kasumi_init(void)
 {
-	int ret = ksu_register_feature_handler(&kasumi_feature);
+	int ret;
+
+	/* Start the provider independently of userspace feature configuration.
+	 */
+	ret = kasumi_bootstrap_init();
+	if (ret)
+		pr_err("kasumi: initialization failed: %d\n", ret);
+	else {
+		ret = ksu_sucompat_vfs_refresh();
+		if (ret)
+			pr_info("kasumi: sucompat binding deferred until "
+				"post-fs-data: %d\n",
+				ret);
+	}
+
+	ret = ksu_register_feature_handler(&kasumi_feature);
 
 	if (ret)
 		pr_err("kasumi: feature registration failed: %d\n", ret);
+}
+
+void ksu_kasumi_post_fs_data(void)
+{
+	int ret;
+
+	/* Early LKM loading may precede /system's final mount. Refresh its
+	 * metadata before userspace installs any module mappings. */
+	if (kasumi_control_begin())
+		return;
+	kasumi_resolve_system_dev();
+	ret = ksu_sucompat_vfs_refresh();
+	if (ret)
+		pr_err("kasumi: sucompat binding failed: %d\n", ret);
+	kasumi_control_end();
 }
 
 void ksu_kasumi_exit(void)

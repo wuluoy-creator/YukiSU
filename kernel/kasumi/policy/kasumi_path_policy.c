@@ -234,8 +234,9 @@ static bool kasumi_rule_source_from_path(struct path *resolved,
 	 * dev. Publish the captured /system dev — a real device and the correct
 	 * one for the common /system masquerade — rather than the anonymous
 	 * vnode minor. */
-	source->visible_dev =
-	    kasumi_system_dev ? kasumi_system_dev : kasumi_vnode_device();
+	source->visible_dev = READ_ONCE(kasumi_system_dev);
+	if (!source->visible_dev)
+		source->visible_dev = kasumi_vnode_device();
 	source->stat.ino = source->visible_ino;
 	source->stat.dev = source->visible_dev;
 	source->source_mode = stat.mode;

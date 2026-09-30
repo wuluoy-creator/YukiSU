@@ -10,7 +10,6 @@
 
 #include "linux/printk.h"
 #include <asm/syscall.h>
-#include <linux/mutex.h>
 #include <linux/ptrace.h>
 #include <linux/sched/task_stack.h>
 #include <linux/tracepoint.h>
@@ -56,43 +55,11 @@ static void ksu_sys_enter_handler(void *data, struct pt_regs *regs, long id)
 // Init / Exit
 // ---------------------------------------------------------------
 
-static DEFINE_MUTEX(sucompat_path_hooks_lock);
-static bool sucompat_path_hooks_registered;
-
-int ksu_set_sucompat_legacy_path_hooks(bool enabled)
-{
-	int ret = 0;
-
-	mutex_lock(&sucompat_path_hooks_lock);
-	if (enabled == sucompat_path_hooks_registered)
-		goto out;
-
-	if (enabled) {
-		ret = ksu_register_syscall_hook(__NR_newfstatat,
-						ksu_hook_newfstatat);
-		if (ret)
-			goto out;
-		ret = ksu_register_syscall_hook(__NR_faccessat,
-						ksu_hook_faccessat);
-		if (ret) {
-			ksu_unregister_syscall_hook(__NR_newfstatat);
-			goto out;
-		}
-		sucompat_path_hooks_registered = true;
-	} else {
-		ksu_unregister_syscall_hook(__NR_newfstatat);
-		ksu_unregister_syscall_hook(__NR_faccessat);
-		sucompat_path_hooks_registered = false;
-	}
-
-out:
-	mutex_unlock(&sucompat_path_hooks_lock);
-	return ret;
-}
-
 void ksu_syscall_hook_manager_init(void)
 {
+#ifdef CONFIG_HAVE_SYSCALL_TRACEPOINTS
 	int ret;
+#endif
 
 	pr_info("hook_manager: initializing TSR hook manager\n");
 
@@ -103,11 +70,7 @@ void ksu_syscall_hook_manager_init(void)
 	ksu_register_syscall_hook(__NR_setresuid, ksu_hook_setresuid);
 	ksu_register_syscall_hook(__NR_execve, ksu_hook_execve);
 	ksu_register_syscall_hook(__NR_execveat, ksu_hook_execveat);
-	ret = ksu_set_sucompat_legacy_path_hooks(true);
-	if (ret)
-		pr_err("hook_manager: failed to register legacy sucompat path "
-		       "hooks: %d\n",
-		       ret);
+	/* Kasumi serves su through VFS; legacy path hooks stay unregistered. */
 #ifdef CONFIG_HAVE_SYSCALL_TRACEPOINTS
 	ret =
 	    register_trace_prio_sys_enter(ksu_sys_enter_handler, NULL, INT_MIN);
@@ -143,7 +106,6 @@ void ksu_syscall_hook_manager_exit(void)
 	ksu_unregister_syscall_hook(__NR_setresuid);
 	ksu_unregister_syscall_hook(__NR_execve);
 	ksu_unregister_syscall_hook(__NR_execveat);
-	ksu_set_sucompat_legacy_path_hooks(false);
 	/* Restore the syscall table after every dispatcher route has drained.
 	 */
 	ksu_syscall_hook_exit();

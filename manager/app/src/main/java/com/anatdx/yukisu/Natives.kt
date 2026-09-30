@@ -107,15 +107,6 @@ object Natives {
     external fun readAppProfile(uid: Int): Profile?
     external fun getProtectedProfileAppIds(): IntArray
 
-    /**
-     * `su` compat mode can be disabled temporarily.
-     *  0: disabled
-     *  1: enabled
-     *  negative : error
-     */
-    external fun isSuEnabled(): Boolean
-    external fun setSuEnabled(enabled: Boolean): Boolean
-
     external fun isMagiskCompatEnabled(): Boolean
     external fun setMagiskCompatEnabled(enabled: Boolean): Boolean
     external fun submitSuPrompt(

@@ -58,7 +58,6 @@ int features();
 std::vector<std::string> feature_names(int bitmask);
 std::vector<std::string> active_modules_from_rules(const std::string& rules);
 
-bool set_enabled(bool enable);
 bool set_debug(bool enable);
 bool set_stealth(bool enable);
 bool fix_mounts();

@@ -281,11 +281,6 @@ std::vector<std::string> active_modules_from_rules(const std::string& rules) {
     return {modules.begin(), modules.end()};
 }
 
-bool set_enabled(bool enable) {
-    int value = enable ? 1 : 0;
-    return execute(KSM_IOC_SET_ENABLED, &value) == 0;
-}
-
 bool set_debug(bool enable) {
     int value = enable ? 1 : 0;
     return execute(KSM_IOC_SET_DEBUG, &value) == 0;

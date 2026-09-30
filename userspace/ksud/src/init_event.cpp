@@ -582,17 +582,15 @@ int soft_reboot() {
 
     const bool kasumi_available = kagami::kasumi::is_available();
     const int kasumi_runtime = kagami::kasumi::enabled_state();
-    const auto [kasumi_requested, kasumi_supported] = get_feature(KSU_FEATURE_KASUMI);
-    if (kasumi_runtime > 0 || (kasumi_supported && kasumi_requested != 0)) {
+    const auto [kasumi_enabled, kasumi_supported] = get_feature(KSU_FEATURE_KASUMI);
+    if (kasumi_runtime > 0 || (kasumi_supported && kasumi_enabled != 0)) {
         LOGE("Soft reboot is unavailable while Kasumi is active; use a full reboot");
         return 1;
     }
-    if (kasumi_runtime < 0 && kasumi_requested < 0 && (kasumi_supported || kasumi_available)) {
+    if (kasumi_runtime < 0 && kasumi_available) {
         LOGE("Cannot determine Kasumi runtime state; refusing soft reboot");
         return 1;
     }
-    if (kasumi_runtime < 0 && kasumi_requested == 0)
-        LOGW("Kasumi runtime state is unavailable while the feature is disabled; continuing");
 
     switch (daemonize_soft_reboot()) {
     case DaemonizeResult::Parent:

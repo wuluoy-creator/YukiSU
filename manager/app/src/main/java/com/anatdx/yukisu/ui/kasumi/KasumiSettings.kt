@@ -86,12 +86,9 @@ internal fun SettingsTab(
             }
         }
         ConfigSection(stringResource(R.string.kasumi_advanced), segmented = true) {
-            SettingSwitch(stringResource(R.string.kasumi_enable_title), stringResource(R.string.kasumi_enable_desc), config.kasumiEnabled,
-                { onConfigChanged(config.copy(kasumiEnabled = it)) }, kernelEnabled,
-                Icons.Filled.Memory, MoreSettingsItemPosition.First)
-            SettingsDivider()
             SettingSwitch(stringResource(R.string.kasumi_kernel_debug), stringResource(R.string.kasumi_kernel_debug_desc), config.enableKernelDebug,
-                { onConfigChanged(config.copy(enableKernelDebug = it)) }, kernelEnabled, Icons.Filled.BugReport)
+                { onConfigChanged(config.copy(enableKernelDebug = it)) }, kernelEnabled,
+                Icons.Filled.BugReport, MoreSettingsItemPosition.First)
             SettingsDivider()
             SettingSwitch(stringResource(R.string.kasumi_stealth), stringResource(R.string.kasumi_stealth_desc), config.enableStealth,
                 { onConfigChanged(config.copy(enableStealth = it)) }, kernelEnabled, Icons.Filled.VisibilityOff)

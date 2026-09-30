@@ -74,7 +74,6 @@ std::string default_config_json() {
   "mount_hide_mode": "normal",
   "enable_maps_spoof": false,
   "enable_statfs_spoof": false,
-  "kasumi_enabled": true,
   "overlayfs_enabled": true,
   "magic_mount_enabled": true,
   "mount_backend": "auto",
@@ -241,7 +240,6 @@ bool parse_config_json(const std::string& json, Config& config, std::string& err
     logging::set_debug_enabled(config.debug || config.verbose);
     config.builtin_mount_enabled =
         json_bool_or(&root, "builtin_mount_enabled", config.builtin_mount_enabled);
-    config.kasumi_enabled = json_bool_or(&root, "kasumi_enabled", config.kasumi_enabled);
     config.enable_kernel_debug =
         json_bool_or(&root, "enable_kernel_debug", config.enable_kernel_debug);
     config.enable_stealth = json_bool_or(&root, "enable_stealth", config.enable_stealth);

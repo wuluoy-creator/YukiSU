@@ -4,7 +4,7 @@
 
 struct pt_regs;
 
-extern bool ksu_su_compat_enabled;
+extern const bool ksu_su_compat_enabled;
 
 bool ksu_sucompat_exec_enabled(void);
 

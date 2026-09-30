@@ -70,7 +70,7 @@ void print_usage() {
               << "  ksud kagami recovery status|reset\n"
               << "  ksud kagami hide list|apply|add|remove\n"
               << "  ksud kagami kasumi "
-                 "version|list|enable|disable|clear|fix-mounts|hide-overlay-xattrs|mount-hide "
+                 "version|list|clear|fix-mounts|hide-overlay-xattrs|mount-hide "
                  "off|normal|aggressive|maps\n";
 }
 
@@ -340,22 +340,12 @@ int print_kasumi_snapshot_json() {
     return 0;
 }
 
-int apply_config_file(bool force_enable = false) {
+int apply_config_file() {
     Config config;
     std::string error;
     if (!read_config_file(config, error)) {
         std::cerr << error << "\n";
         return 1;
-    }
-    if (force_enable) {
-        config.kasumi_enabled = true;
-    }
-    if (!config.kasumi_enabled) {
-        if (kasumi::is_available() && !mount::kasumi::deactivate(error)) {
-            std::cerr << error << "\n";
-            return 1;
-        }
-        return 0;
     }
     if (!kasumi::is_available()) {
         std::cerr << "Kasumi is unavailable\n";
@@ -373,30 +363,17 @@ int apply_config_file(bool force_enable = false) {
         return print_kasumi_snapshot_json();
     }
 
-    if (!kasumi::set_enabled(false)) {
-        error = std::string("failed to disable Kasumi: ") + std::strerror(errno);
-        std::string cleanup_error;
-        (void)mount::kasumi::disable_control_state(cleanup_error);
-        std::cerr << error << "\n";
-        return 1;
-    }
     if (!mount::kasumi::apply_feature_config(config, error)) {
         std::string cleanup_error;
-        (void)mount::kasumi::disable_control_state(cleanup_error);
+        (void)mount::kasumi::reset_feature_state(cleanup_error);
         std::cerr << error << "\n";
         return 1;
     }
     if (!mount::fsutil::run_in_init_mount_ns(
             [&]() { return mount::overlay::restore_xattr_hiding(config); })) {
         std::string cleanup_error;
-        (void)mount::kasumi::disable_control_state(cleanup_error);
+        (void)mount::kasumi::reset_feature_state(cleanup_error);
         std::cerr << "failed to restore OverlayFS xattr hiding\n";
-        return 1;
-    }
-    if (!kasumi::set_enabled(true)) {
-        std::string cleanup_error;
-        (void)mount::kasumi::disable_control_state(cleanup_error);
-        std::cerr << "failed to enable Kasumi after config apply\n";
         return 1;
     }
     (void)mount::kasumi::restore_persisted_hide_rules(error);
@@ -764,10 +741,8 @@ int handle_module(const std::vector<std::string>& args) {
                 if (kasumi_boot_plan.count(id) != 0) {
                     strategy = "kasumi";
                 } else {
-                    Config fallback_config = cfg;
-                    fallback_config.kasumi_enabled = false;
                     strategy = mount::resolve_module_backend(mount::ModuleEntry{id, entry.path()},
-                                                             fallback_config, modes);
+                                                             cfg, modes, false);
                 }
                 std::cout << "{"
                           << "\"id\":" << json_quote(id) << ","
@@ -1044,16 +1019,6 @@ int handle_kasumi(const std::vector<std::string>& args) {
         std::cerr << "usage: ksud kagami kasumi maps clear|add ...\n";
         return 1;
     }
-    if (sub == "enable") {
-        return apply_config_file(true);
-    }
-    if (sub == "disable") {
-        if (!kasumi::set_enabled(false)) {
-            std::cerr << "failed to set Kasumi enabled state\n";
-            return 1;
-        }
-        return 0;
-    }
     if (sub == "clear") {
         if (!kasumi::clear_rules()) {
             std::cerr << "failed to clear Kasumi rules\n";
@@ -1130,7 +1095,7 @@ int handle_hide(const std::vector<std::string>& args) {
             std::cerr << error << "\n";
             return 1;
         }
-        if (config.kasumi_enabled && !mount::kasumi::restore_persisted_hide_rules(error)) {
+        if (!mount::kasumi::restore_persisted_hide_rules(error)) {
             std::cerr << error << "\n";
             return 1;
         }
@@ -1271,7 +1236,6 @@ std::string operation_description(const std::vector<std::string>& args) {
             result += " keys=";
             const std::set<std::string> public_values = {"debug",
                                                          "verbose",
-                                                         "kasumi_enabled",
                                                          "builtin_mount_enabled",
                                                          "enable_kernel_debug",
                                                          "enable_stealth",

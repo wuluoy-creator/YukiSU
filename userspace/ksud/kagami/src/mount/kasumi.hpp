@@ -8,22 +8,23 @@
 
 namespace kagami::mount::kasumi {
 
-// Apply each Kasumi runtime feature exactly as configured while the global
-// gate is disabled. No feature implicitly enables another one.
+// Apply each Kasumi runtime feature exactly as configured. Kasumi's kernel
+// engine is always on; individual features remain configurable.
 bool apply_feature_config(const Config& config, std::string& error);
 
-// Disable the global gate and runtime features without discarding path rules.
-bool disable_control_state(std::string& error);
+// Reset runtime features without discarding path rules. The Kasumi engine
+// remains enabled while this cleanup is performed.
+bool reset_feature_state(std::string& error);
 
 // Restore user HIDE rules in init's mount namespace after boot completion,
-// only while Kasumi is enabled. Failures must not roll back module mappings.
+// when Kasumi is available. Failures must not roll back module mappings.
 bool restore_persisted_hide_rules(std::string& error);
 bool has_pending_hide_rules();
 // Called by the daemon's event loop; reloads current rules before retrying.
 void retry_pending_hide_rules();
 
-// Disable Kasumi and clear path rules without requiring an active mirror.
-bool deactivate(std::string& error);
+// Reset runtime features and clear path rules without requiring an active mirror.
+bool reset_runtime_state(std::string& error);
 
 // Compiles each enabled module's /data/adb/modules tree into ADD/MERGE/HIDE
 // Kasumi rules that redirect straight to the source inode (no mirror; the vnode

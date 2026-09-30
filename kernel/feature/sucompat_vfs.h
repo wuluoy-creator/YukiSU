@@ -11,7 +11,6 @@ struct path;
 int ksu_sucompat_vfs_init(void);
 void ksu_sucompat_vfs_exit(void);
 
-int ksu_sucompat_vfs_set_enabled(bool enabled);
 int ksu_sucompat_vfs_get_config(struct ksu_su_path_config *config);
 int ksu_sucompat_vfs_set_config(const struct ksu_su_path_config *config);
 bool ksu_sucompat_vfs_current_ino(unsigned long ino);

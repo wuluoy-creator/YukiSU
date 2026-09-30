@@ -531,12 +531,6 @@ NativeBridgeNP(getDynamicManagers, jintArray) {
   return array;
 }
 
-NativeBridgeNP(isSuEnabled, jboolean) { return is_su_enabled(); }
-
-NativeBridge(setSuEnabled, jboolean, jboolean enabled) {
-  return set_su_enabled(enabled);
-}
-
 NativeBridgeNP(isMagiskCompatEnabled, jboolean) {
   return is_magisk_compat_enabled();
 }

@@ -194,6 +194,7 @@ struct kasumi_statfs_spoof_arg {
   _IOW(KSM_IOC_MAGIC, 16, struct kasumi_spoof_kstat)
 /* Command 18 remains reserved for the removed cmdline operation. */
 #define KSM_IOC_GET_FEATURES _IOR(KSM_IOC_MAGIC, 19, int)
+/* Legacy ABI: 1 is a no-op; 0 returns -EPERM. Kasumi is always enabled. */
 #define KSM_IOC_SET_ENABLED _IOW(KSM_IOC_MAGIC, 20, int)
 #define KSM_IOC_GET_HOOKS                                                      \
   _IOWR(KSM_IOC_MAGIC, 22, struct kasumi_syscall_list_arg)

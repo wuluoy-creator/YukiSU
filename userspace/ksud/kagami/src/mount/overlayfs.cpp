@@ -630,8 +630,8 @@ bool mount_modules(const std::vector<ModuleEntry>& modules, const Config& config
             ok = false;
             break;
         }
-        if (config.kasumi_enabled && config.enable_overlay_xattr_hide &&
-            ::kagami::kasumi::is_available() && !::kagami::kasumi::hide_overlay_xattrs(target)) {
+        if (config.enable_overlay_xattr_hide && ::kagami::kasumi::is_available() &&
+            !::kagami::kasumi::hide_overlay_xattrs(target)) {
             mlog("overlay: failed to hide xattrs for " + target, logging::Level::Error);
             ok = false;
             break;
@@ -695,7 +695,7 @@ bool restore_xattr_hiding(const Config& config) {
     if (!config.enable_overlay_xattr_hide) {
         return true;
     }
-    if (!config.kasumi_enabled || !::kagami::kasumi::is_available()) {
+    if (!::kagami::kasumi::is_available()) {
         return false;
     }
 

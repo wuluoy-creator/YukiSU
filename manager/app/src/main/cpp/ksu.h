@@ -57,10 +57,6 @@ int get_app_profile(struct app_profile *profile);
 
 void get_hook_type(char *buff);
 
-// Su compat
-bool set_su_enabled(bool enabled);
-bool is_su_enabled();
-
 bool set_magisk_compat_enabled(bool enabled);
 bool is_magisk_compat_enabled();
 bool submit_su_prompt(uint64_t request_id, uint64_t nonce, uint32_t choice,
