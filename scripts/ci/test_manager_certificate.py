@@ -125,13 +125,40 @@ class FinalApkCertificateTests(unittest.TestCase):
             f"Signer #1 certificate SHA-256 digest: {self.digest.upper()}\n"
         )
 
+    def test_build_tools_37_v2_certificate_is_accepted(self):
+        # Captured format from Build Tools 37 verifying a real v2-only APK.
+        self.verify(
+            "V2 Signer: certificate DN: CN=Random Signing Key\r\n"
+            f"V2 Signer: certificate SHA-256 digest: {self.digest}\r\n"
+            "V2 Signer: certificate SHA-1 digest: 536b1dd996c3a4acd21215883e497917282dbaaf\r\n"
+            "V2 Signer: certificate MD5 digest: 68484b1c8b9d489905163b2b8efb6452\r\n"
+        )
+
+    def test_build_tools_37_other_signing_key_is_rejected(self):
+        with self.assertRaisesRegex(RuntimeError, "does not match"):
+            self.verify(f"V2 Signer: certificate SHA-256 digest: {'cd' * 32}\n")
+
+    def test_build_tools_37_multiple_signers_are_rejected(self):
+        with self.assertRaisesRegex(RuntimeError, "does not match"):
+            self.verify(f"V2 Signer: certificate SHA-256 digest: {self.digest}\n" * 2)
+
+    def test_public_key_and_source_stamp_cannot_substitute_for_apk_signer(self):
+        with self.assertRaisesRegex(RuntimeError, "no recognized APK certificate digest"):
+            self.verify(
+                f"V2 Signer: public key SHA-256 digest: {self.digest}\n"
+                f"Source Stamp Signer certificate SHA-256 digest: {self.digest}\n"
+            )
+
     def test_other_signing_key_is_rejected(self):
         with self.assertRaises(RuntimeError):
             self.verify(f"Signer #1 certificate SHA-256 digest: {'cd' * 32}\n")
 
     def test_failed_apk_verification_rejects_matching_certificate(self):
-        with self.assertRaises(RuntimeError):
-            self.verify(f"Signer #1 certificate SHA-256 digest: {self.digest}\n", returncode=1)
+        with self.assertRaisesRegex(RuntimeError, r"(?s)exit code 1.*DOES NOT VERIFY"):
+            self.verify(
+                f"Signer #1 certificate SHA-256 digest: {self.digest}\nDOES NOT VERIFY\n",
+                returncode=1,
+            )
 
     def test_missing_or_multiple_signers_are_rejected(self):
         outputs = (

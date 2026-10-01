@@ -252,9 +252,28 @@ def verify_manager_certificate(apksigner: Path, apk: Path, expected: str) -> Non
         [str(apksigner), "verify", "--print-certs", str(apk)],
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
     )
-    digests = re.findall(r"^Signer #\d+ certificate SHA-256 digest: ([0-9a-fA-F]{64})$", proc.stdout, re.MULTILINE)
-    if proc.returncode != 0 or [digest.lower() for digest in digests] != [expected]:
-        raise RuntimeError("Final APK signing certificate does not match the certificate trusted by the kernel")
+    if proc.returncode != 0:
+        raise RuntimeError(
+            f"apksigner failed to verify the final APK (exit code {proc.returncode}):\n"
+            + proc.stdout.strip()
+        )
+    # Build Tools 37 names the signature scheme instead of numbering signers.
+    # Match certificate digests only, never public-key or source-stamp digests.
+    certificate_line = re.compile(
+        r"(?:Signer #\d+|V2 Signer:) certificate SHA-256 digest: ([0-9a-fA-F]{64})"
+    )
+    digests = [
+        match.group(1).lower()
+        for line in proc.stdout.splitlines()
+        if (match := certificate_line.fullmatch(line.strip()))
+    ]
+    if not digests:
+        raise RuntimeError("apksigner returned no recognized APK certificate digest:\n" + proc.stdout.strip())
+    if digests != [expected]:
+        raise RuntimeError(
+            "Final APK signing certificate does not match the certificate trusted by the kernel: "
+            f"expected {expected}, found {', '.join(digests)}"
+        )
 
 
 def do_repack(args: argparse.Namespace) -> int:
