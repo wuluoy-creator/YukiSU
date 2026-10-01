@@ -117,11 +117,6 @@ fun updateModuleInstallStatus(
 @Destination<RootGraph>
 fun FlashScreen(navigator: DestinationsNavigator, flashIt: FlashIt) {
     val context = LocalContext.current
-    val softReboot = remember(flashIt, context) {
-        (flashIt is FlashIt.FlashModule ||
-            flashIt is FlashIt.FlashModules ||
-            flashIt is FlashIt.FlashModuleUpdate) && isSoftRebootPreferred(context)
-    }
 
     val isExternalInstall = remember {
         when (flashIt) {
@@ -506,7 +501,7 @@ fun FlashScreen(navigator: DestinationsNavigator, flashIt: FlashIt) {
                     onClick = {
                         scope.launch {
                             withContext(Dispatchers.IO) {
-                                reboot(if (softReboot) "soft_reboot" else "")
+                                reboot()
                             }
                         }
                     },
@@ -514,14 +509,14 @@ fun FlashScreen(navigator: DestinationsNavigator, flashIt: FlashIt) {
                         YukiIcon(
                             Icons.Filled.Refresh,
                             contentDescription = stringResource(
-                                id = if (softReboot) R.string.reboot_soft else R.string.reboot
+                                id = R.string.reboot
                             )
                         )
                     },
                     text = {
                         Text(
                             text = stringResource(
-                                id = if (softReboot) R.string.reboot_soft else R.string.reboot
+                                id = R.string.reboot
                             )
                         )
                     },

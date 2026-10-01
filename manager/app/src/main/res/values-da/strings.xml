@@ -25,8 +25,6 @@
     <string name="install">Installer</string>
     <string name="reboot">Genstart</string>
     <string name="settings">Indstillinger</string>
-    <string name="reboot_soft">Blød genstart</string>
-    <string name="reboot_userspace">Blød Genstart</string>
     <string name="reboot_recovery">Genstart til gendannelse</string>
     <string name="reboot_bootloader">Genstart til Bootloader</string>
     <string name="reboot_download">Genstart for at downloade</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Gem system-apps</string>
     <string name="send_log">Send Log</string>
     <string name="safe_mode">Sikker tilstand</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Kunne ikke starte jailbreak-tjenesten</string>
-    <string name="jailbreak_timeout">Jailbreak kan være mislykkedes, tjek venligst loggene</string>
     <string name="reboot_to_apply">Genstart for at tage effekt</string>
     <string name="module_magisk_conflict">Moduler er deaktiveret, fordi der er konflikt med Magiskes!</string>
     <string name="home_support_title">Support Udvikling</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Kunne ikke hente ændringslog: %s</string>
     <string name="settings_check_update">Check update</string>
     <string name="settings_check_update_summary">Søg automatisk efter opdateringer, når appen åbnes</string>
-    <string name="settings_auto_jailbreak">Automatisk jailbreak</string>
-    <string name="settings_auto_jailbreak_summary">Brug automatisk Magica til at starte late-load, når Permissive SELinux registreres ved opstart. Kræver, at denne app får tilladelse til automatisk start.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">Kør adbd med root-rettigheder</string>
     <string name="grant_root_failed">Kunne ikke give root!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">Din enhed vil blive **TVUNGET** til at starte op fra den nuværende inaktive slot efter en genstart!\nBrug kun denne mulighed, efter OTA er færdig.\nFortsæt?</string>
     <string name="install_next">Næste</string>
     <string name="install_select_partition">Vælg partition</string>
-    <string name="install_jailbreak_title">Jailbreak-installation</string>
-    <string name="install_jailbreak_summary">Udløs late-load fra installationssiden på en permissive enhed. Hvis der endnu ikke er en root-shell tilgængelig, bruges Magica-bootstrap i stedet.</string>
-    <string name="install_jailbreak_requires_permissive">Denne handling er kun tilgængelig, mens SELinux er permissive.</string>
-    <string name="install_jailbreak_button">Udløs late-load</string>
-    <string name="install_jailbreak_failed">Kunne ikke udløse late-load</string>
     <string name="advanced_options">Avancerede indstillinger</string>
     <string name="allow_shell">Giv altid root til Shell</string>
     <string name="allow_shell_summary">Tillad altid adb shell at kalde su. Aktivér ikke dette, medmindre det er absolut nødvendigt.</string>
@@ -609,8 +597,6 @@
     <string name="ci_update_error_install_failed">Kunne ikke installere CI-opdateringen.</string>
     <string name="ci_update_error_install_status">Installation via PackageInstaller mislykkedes med statuskode %1$d.</string>
     <string name="ci_update_error_stream_failed">Overførsel af CI-opdateringens datastrøm mislykkedes.</string>
-    <string name="settings_soft_reboot">Brug blød genstart i stedet for genstart</string>
-    <string name="settings_soft_reboot_summary">Brug blød genstart efter installation, opdatering, aktivering, deaktivering eller fjernelse af moduler.</string>
     <string name="install_direct_lkm_title">Integrer LKM direkte i boot-kernen</string>
     <string name="install_direct_lkm_summary">Patch af image, direkte installation og installation i OTA-slot bruger boot i stedet for init_boot og fjerner først den gamle KernelSU-injektion i ramdisk.</string>
     <string name="install_direct_lkm_warning_title">Direkte integration i kernen er aktiveret</string>

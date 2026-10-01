@@ -25,8 +25,6 @@
     <string name="install">تثبيت</string>
     <string name="reboot">إعادة تشغيل</string>
     <string name="settings">الإعدادات</string>
-    <string name="reboot_soft">إعادة تشغيل ناعمة</string>
-    <string name="reboot_userspace">إعادة تشغيل سريعة</string>
     <string name="reboot_recovery">إعادة تشغيل إلى وضع Recovery</string>
     <string name="reboot_bootloader">إعادة تشغيل إلى وضع Bootloader</string>
     <string name="reboot_download">إعادة تشغيل إلى وضع Download</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">إخفاء تطبيقات النظام</string>
     <string name="send_log">إرسال السجلات</string>
     <string name="safe_mode">الوضع الآمن</string>
-    <string name="home_jailbreak">كسر الحماية</string>
-    <string name="home_jailbreak_failed">فشل بدء خدمة كسر الحماية</string>
-    <string name="jailbreak_timeout">ربما فشل كسر الحماية، يرجى التحقق من السجلات</string>
     <string name="reboot_to_apply">إعادة التشغيل لتطبيق التغييرات</string>
     <string name="module_magisk_conflict">الوحدات غير متاحة بسبب تعارضها مع Magisk!</string>
     <string name="home_support_title">دعم التطوير</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">فشل في جلب سجل التغيير: %s</string>
     <string name="settings_check_update">التحقق من التحديث</string>
     <string name="settings_check_update_summary">التحقق تلقائيًا من وجود تحديثات عند فتح التطبيق</string>
-    <string name="settings_auto_jailbreak">كسر الحماية التلقائي</string>
-    <string name="settings_auto_jailbreak_summary">استخدام Magica تلقائياً لبدء التحميل المتأخر عند اكتشاف SELinux متساهل (Permissive) أثناء الإقلاع. يتطلب منح إذن التشغيل التلقائي لهذا التطبيق.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">تشغيل adbd بصلاحيات الجذر</string>
     <string name="grant_root_failed">فشل في منح صلاحية الجذر!</string>
@@ -127,11 +120,6 @@
 \nأستمرار؟</string>
     <string name="install_next">التالي</string>
     <string name="install_select_partition">اختيار القسم</string>
-    <string name="install_jailbreak_title">التثبيت عبر كسر الحماية</string>
-    <string name="install_jailbreak_summary">تشغيل التحميل المتأخر مباشرة من صفحة التثبيت على جهاز متساهل (permissive). إذا لم تكن هناك صدفة جذر متاحة بعد، فسيُستخدم تشغيل Magica بدلاً من ذلك.</string>
-    <string name="install_jailbreak_requires_permissive">هذا الإجراء متاح فقط عندما يكون SELinux متساهلاً (permissive).</string>
-    <string name="install_jailbreak_button">تشغيل التحميل المتأخر</string>
-    <string name="install_jailbreak_failed">فشل تشغيل التحميل المتأخر</string>
     <string name="advanced_options">خيارات متقدمة</string>
     <string name="allow_shell">منح الجذر دائماً للصدفة (Shell)</string>
     <string name="allow_shell_summary">السماح دائماً لـ adb shell باستدعاء su. لا تفعّل هذا إلا عند الضرورة القصوى.</string>
@@ -611,8 +599,6 @@
     <string name="ci_update_error_install_failed">تعذر تثبيت تحديث CI.</string>
     <string name="ci_update_error_install_status">فشل التثبيت عبر PackageInstaller. رمز الحالة: %1$d.</string>
     <string name="ci_update_error_stream_failed">فشل نقل تدفق بيانات تحديث CI.</string>
-    <string name="settings_soft_reboot">استخدام إعادة التشغيل الناعمة بدلًا من إعادة التشغيل</string>
-    <string name="settings_soft_reboot_summary">استخدام إعادة التشغيل الناعمة بعد تثبيت الوحدات أو تحديثها أو تفعيلها أو تعطيلها أو إزالتها.</string>
     <string name="install_direct_lkm_title">تضمين LKM مباشرة في نواة boot</string>
     <string name="install_direct_lkm_summary">يستخدم ترقيع الصورة المختارة والتثبيت المباشر والتثبيت في فتحة OTA قسم boot بدلًا من init_boot، مع إزالة حقن KernelSU القديم في ramdisk أولًا.</string>
     <string name="install_direct_lkm_warning_title">وضع التضمين المباشر في النواة مفعّل</string>

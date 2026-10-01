@@ -5,9 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import android.os.PowerManager
 import android.system.Os
-import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -65,11 +63,9 @@ import com.anatdx.yukisu.Natives
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.integrity.KsudIntegrity
 import com.anatdx.yukisu.integrity.KsudIntegrityStatus
-import com.anatdx.yukisu.magica.MagicaHelper
 import com.anatdx.yukisu.superkey.SuperKeyHelper
 import com.anatdx.yukisu.ui.component.KsuIsValid
 import com.anatdx.yukisu.ui.component.rememberConfirmDialog
-import com.anatdx.yukisu.ui.component.rememberLoadingDialog
 import com.anatdx.yukisu.ui.component.YukiIcon
 import com.anatdx.yukisu.ui.component.YukiPullToRefreshBox
 import com.anatdx.yukisu.ui.component.YukiAlertDialog
@@ -81,7 +77,6 @@ import com.anatdx.yukisu.ui.theme.getCardElevation
 import com.anatdx.yukisu.ui.theme.isExpressiveUi
 import com.anatdx.yukisu.ui.util.LocalSnackbarHost
 import com.anatdx.yukisu.ui.util.checkNewVersion
-import com.anatdx.yukisu.ui.util.isSoftRebootBlockedByKasumi
 import com.anatdx.yukisu.ui.util.module.LatestVersionInfo
 import com.anatdx.yukisu.ui.util.reboot
 import com.anatdx.yukisu.ui.viewmodel.HomeViewModel
@@ -107,7 +102,6 @@ fun HomeScreen(navigator: DestinationsNavigator) {
     val context = LocalContext.current
     val viewModel = viewModel<HomeViewModel>()
     val coroutineScope = rememberCoroutineScope()
-    val loadingDialog = rememberLoadingDialog()
     val ksudIntegrityStatus by KsudIntegrity.status.collectAsState()
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission(),
@@ -304,21 +298,6 @@ fun HomeScreen(navigator: DestinationsNavigator) {
                             superKeyDialog.show()
                         },
                         isSignatureOk = isSignatureOk,
-                        canJailbreak = viewModel.systemStatus.ksuVersion == null &&
-                            viewModel.systemInfo.seLinuxStatus == stringResource(R.string.selinux_status_permissive),
-                        onJailbreak = {
-                            loadingDialog.show()
-                            if (!MagicaHelper.launch(context)) {
-                                loadingDialog.hide()
-                                Toast.makeText(context, R.string.home_jailbreak_failed, Toast.LENGTH_LONG).show()
-                            } else {
-                                coroutineScope.launch {
-                                    delay(30_000)
-                                    loadingDialog.hide()
-                                    Toast.makeText(context, R.string.jailbreak_timeout, Toast.LENGTH_LONG).show()
-                                }
-                            }
-                        }
                     )
 
                     CiUpdateCard()
@@ -541,10 +520,8 @@ private fun TopBar(
                     Icon(Icons.Filled.Tune, contentDescription = stringResource(R.string.kasumi_title))
                 }
                 var showDropdown by remember { mutableStateOf(false) }
-                var softRebootBlocked by remember { mutableStateOf(false) }
                 KsuIsValid {
                     IconButton(onClick = {
-                        softRebootBlocked = isSoftRebootBlockedByKasumi()
                         showDropdown = true
                     }) {
                         YukiIcon(
@@ -552,19 +529,8 @@ private fun TopBar(
                             contentDescription = stringResource(id = R.string.reboot)
                         )
 
-                        val pm = LocalContext.current.getSystemService(
-                            Context.POWER_SERVICE
-                        ) as PowerManager?
                         val rebootOptions = buildList {
                             add(RebootMenuOption(R.string.reboot))
-                            if (!softRebootBlocked)
-                                add(RebootMenuOption(R.string.reboot_soft, "soft_reboot"))
-                            @Suppress("DEPRECATION")
-                            if (
-                                pm?.isRebootingUserspaceSupported == true
-                            ) {
-                                add(RebootMenuOption(R.string.reboot_userspace, "userspace"))
-                            }
                             add(RebootMenuOption(R.string.reboot_recovery, "recovery"))
                             add(RebootMenuOption(R.string.reboot_bootloader, "bootloader"))
                             add(RebootMenuOption(R.string.reboot_fastbootd, "fastboot"))
@@ -601,10 +567,8 @@ private fun StatusCard(
     isSuperKeyMode: Boolean = false,
     needsSuperKeyAuth: Boolean = false,
     isSignatureOk: Boolean = false,
-    canJailbreak: Boolean = false,
     onClickInstall: () -> Unit = {},
     onSuperKeyAuth: () -> Unit = {},
-    onJailbreak: () -> Unit = {}
 ) {
     ElevatedCard(
         colors = getCardColors(
@@ -845,18 +809,6 @@ private fun StatusCard(
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onErrorContainer
                         )
-                    }
-
-                    if (canJailbreak) {
-                        Button(
-                            onClick = onJailbreak,
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.error,
-                                contentColor = MaterialTheme.colorScheme.onError
-                            )
-                        ) {
-                            Text(stringResource(R.string.home_jailbreak))
-                        }
                     }
                 }
 

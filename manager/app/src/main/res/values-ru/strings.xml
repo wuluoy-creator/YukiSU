@@ -25,8 +25,6 @@
     <string name="install">Установка</string>
     <string name="reboot">Перезагрузить</string>
     <string name="settings">Настройки</string>
-    <string name="reboot_soft">Мягкая перезагрузка</string>
-    <string name="reboot_userspace">Мягкая перезагрузка</string>
     <string name="reboot_recovery">Перезагрузить в Recovery</string>
     <string name="reboot_bootloader">Перезагрузить в Bootloader</string>
     <string name="reboot_download">Перезагрузить в Download</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Скрыть системные приложения</string>
     <string name="send_log">Отправить логи</string>
     <string name="safe_mode">Безопасный режим</string>
-    <string name="home_jailbreak">Джейлбрейк</string>
-    <string name="home_jailbreak_failed">Не удалось запустить службу джейлбрейка</string>
-    <string name="jailbreak_timeout">Джейлбрейк, возможно, не удался, проверьте журналы</string>
     <string name="reboot_to_apply">Перезагрузите, чтобы изменения вступили в силу</string>
     <string name="module_magisk_conflict">Модули недоступны из-за конфликта с Magisk!</string>
     <string name="home_support_title">Поддержка развития</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Не удалось получить список изменений: %s</string>
     <string name="settings_check_update">Проверка обновлений</string>
     <string name="settings_check_update_summary">Автоматически проверять обновления при открытии приложения</string>
-    <string name="settings_auto_jailbreak">Автоматический джейлбрейк</string>
-    <string name="settings_auto_jailbreak_summary">Автоматически использовать Magica для запуска поздней загрузки при обнаружении разрешающего (Permissive) SELinux при загрузке. Требуется разрешение на автозапуск для этого приложения.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">Запускать adbd с правами root</string>
     <string name="grant_root_failed">Не удалось выдать root!</string>
@@ -127,11 +120,6 @@
 \n Продолжить?</string>
     <string name="install_next">Далее</string>
     <string name="install_select_partition">Выбрать раздел</string>
-    <string name="install_jailbreak_title">Установка через джейлбрейк</string>
-    <string name="install_jailbreak_summary">Запустить позднюю загрузку прямо со страницы установки на разрешающем (Permissive) устройстве. Если root-оболочка ещё недоступна, будет использован запуск через Magica.</string>
-    <string name="install_jailbreak_requires_permissive">Это действие доступно только когда SELinux в режиме Permissive.</string>
-    <string name="install_jailbreak_button">Запустить позднюю загрузку</string>
-    <string name="install_jailbreak_failed">Не удалось запустить позднюю загрузку</string>
     <string name="advanced_options">Дополнительные параметры</string>
     <string name="allow_shell">Всегда предоставлять root оболочке Shell</string>
     <string name="allow_shell_summary">Всегда разрешать adb shell вызывать su. Не включайте без крайней необходимости.</string>
@@ -612,8 +600,6 @@
     <string name="ci_update_error_install_failed">Не удалось установить обновление CI.</string>
     <string name="ci_update_error_install_status">Установка через PackageInstaller не удалась. Код состояния: %1$d.</string>
     <string name="ci_update_error_stream_failed">Ошибка потоковой передачи данных обновления CI.</string>
-    <string name="settings_soft_reboot">Использовать мягкую перезагрузку вместо обычной</string>
-    <string name="settings_soft_reboot_summary">Использовать мягкую перезагрузку после установки, обновления, включения, отключения или удаления модулей.</string>
     <string name="install_direct_lkm_title">Встроить LKM непосредственно в ядро boot</string>
     <string name="install_direct_lkm_summary">Исправление выбранного образа, прямая установка и установка в слот OTA используют boot вместо init_boot, предварительно удаляя старое внедрение KernelSU в ramdisk.</string>
     <string name="install_direct_lkm_warning_title">Прямое встраивание в ядро включено</string>

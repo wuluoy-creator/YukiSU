@@ -25,8 +25,6 @@
     <string name="install">Instalează</string>
     <string name="reboot">Repornește</string>
     <string name="settings">Setări</string>
-    <string name="reboot_soft">Repornire ușoară</string>
-    <string name="reboot_userspace">Repornire rapidă</string>
     <string name="reboot_recovery">Repornire în Recuperare</string>
     <string name="reboot_bootloader">Repornire în Bootloader</string>
     <string name="reboot_download">Reporniți pentru a descărca</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Ascunde aplicațiile de sistem</string>
     <string name="send_log">Raportează jurnal</string>
     <string name="safe_mode">Mod sigur</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Pornirea serviciului de jailbreak a eșuat</string>
-    <string name="jailbreak_timeout">Este posibil ca jailbreak-ul să fi eșuat, vă rugăm să verificați jurnalele</string>
     <string name="reboot_to_apply">Repornește pentru ca modificările să intre în vigoare</string>
     <string name="module_magisk_conflict">Modulele sunt dezactivate deoarece sunt în conflict cu cele ale Magisk-ului!</string>
     <string name="home_support_title">Sprijin pentru dezvoltare</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Preluarea jurnalului de modificări a eșuat: %s</string>
     <string name="settings_check_update">Verifică actualizarea</string>
     <string name="settings_check_update_summary">Se verifică automat actualizările când deschizi aplicația</string>
-    <string name="settings_auto_jailbreak">Jailbreak automat</string>
-    <string name="settings_auto_jailbreak_summary">Folosește automat Magica pentru a porni încărcarea întârziată când la pornire este detectat un SELinux permisiv. Necesită acordarea permisiunii de pornire automată acestei aplicații.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">Rulează adbd cu privilegii de root</string>
     <string name="grant_root_failed">Nu s-a acordat acces root!</string>
@@ -127,11 +120,6 @@
 \nContinui?</string>
     <string name="install_next">Înainte</string>
     <string name="install_select_partition">Selectează partiția</string>
-    <string name="install_jailbreak_title">Instalare prin jailbreak</string>
-    <string name="install_jailbreak_summary">Declanșează încărcarea întârziată direct din pagina de instalare pe un dispozitiv permisiv. Dacă nu este încă disponibil un shell root, va fi folosit în schimb bootstrap-ul Magica.</string>
-    <string name="install_jailbreak_requires_permissive">Această acțiune este disponibilă doar când SELinux este permisiv.</string>
-    <string name="install_jailbreak_button">Declanșează încărcarea întârziată</string>
-    <string name="install_jailbreak_failed">Declanșarea încărcării întârziate a eșuat</string>
     <string name="advanced_options">Opțiuni avansate</string>
     <string name="allow_shell">Acordă întotdeauna root Shell-ului</string>
     <string name="allow_shell_summary">Permite întotdeauna adb shell să apeleze su. Nu activați decât dacă este absolut necesar.</string>
@@ -611,8 +599,6 @@
     <string name="ci_update_error_install_failed">Nu s-a putut instala actualizarea CI.</string>
     <string name="ci_update_error_install_status">Instalarea prin PackageInstaller a eșuat, cod de stare %1$d.</string>
     <string name="ci_update_error_stream_failed">Transmiterea fluxului de date al actualizării CI a eșuat.</string>
-    <string name="settings_soft_reboot">Folosește repornirea software în locul repornirii</string>
-    <string name="settings_soft_reboot_summary">Folosește repornirea software după instalarea, actualizarea, activarea, dezactivarea sau eliminarea modulelor.</string>
     <string name="install_direct_lkm_title">Integrează LKM direct în nucleul boot</string>
     <string name="install_direct_lkm_summary">Modificarea imaginilor, instalarea directă și instalarea în slotul OTA folosesc boot în loc de init_boot și elimină mai întâi vechea injecție KernelSU din ramdisk.</string>
     <string name="install_direct_lkm_warning_title">Integrarea directă în nucleu este activată</string>

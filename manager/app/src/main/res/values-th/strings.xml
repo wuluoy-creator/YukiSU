@@ -25,8 +25,6 @@
     <string name="install">ติดตั้ง</string>
     <string name="reboot">รีบูต</string>
     <string name="settings">ตั้งค่า</string>
-    <string name="reboot_soft">รีสตาร์ตแบบนุ่มนวล</string>
-    <string name="reboot_userspace">ซอฟต์รีบูต</string>
     <string name="reboot_recovery">รีบูตเข้าสู่โหมดกู้คืน</string>
     <string name="reboot_bootloader">รีบูตเข้าสู่โหมด Bootloader</string>
     <string name="reboot_download">รีบูตเข้าสู่โหมด Download</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">ซ่อนแอประบบ</string>
     <string name="send_log">ส่ง logs</string>
     <string name="safe_mode">โหมดปลอดภัย</string>
-    <string name="home_jailbreak">เจลเบรก</string>
-    <string name="home_jailbreak_failed">เริ่มบริการเจลเบรกไม่สำเร็จ</string>
-    <string name="jailbreak_timeout">เจลเบรกอาจล้มเหลว กรุณาตรวจสอบบันทึก</string>
     <string name="reboot_to_apply">รีบูตเพื่อให้มีผล</string>
     <string name="module_magisk_conflict">โมดูลไม่สามารถใช้งานได้ เนื่องจากขัดแย้งกับ Magisk!</string>
     <string name="home_support_title">สนับสนุนการพัฒนา</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">ดึงข้อมูลบันทึกการเปลี่ยนแปลงล้มเหลว: %s</string>
     <string name="settings_check_update">ตรวจสอบการอัปเดต</string>
     <string name="settings_check_update_summary">ตรวจสอบการอัปเดตโดยอัตโนมัติเมื่อเปิดแอป</string>
-    <string name="settings_auto_jailbreak">เจลเบรกอัตโนมัติ</string>
-    <string name="settings_auto_jailbreak_summary">ใช้ Magica โดยอัตโนมัติเพื่อเริ่ม late-load เมื่อตรวจพบ SELinux แบบ Permissive ตอนบูต ต้องอนุญาตให้แอปนี้เริ่มทำงานอัตโนมัติ</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">เรียกใช้ adbd ด้วยสิทธิ์ root</string>
     <string name="grant_root_failed">ไม่สามารถให้สิทธิ์รูทได้!</string>
@@ -127,11 +120,6 @@
 \nดำเนินการต่อหรือไม่?</string>
     <string name="install_next">ต่อไป</string>
     <string name="install_select_partition">เลือกพาร์ทิชัน</string>
-    <string name="install_jailbreak_title">ติดตั้งผ่านเจลเบรก</string>
-    <string name="install_jailbreak_summary">ทริกเกอร์ late-load โดยตรงจากหน้าติดตั้งบนอุปกรณ์ permissive หากยังไม่มี root shell จะใช้การบูตสแตรป Magica แทน</string>
-    <string name="install_jailbreak_requires_permissive">การกระทำนี้ใช้ได้เฉพาะเมื่อ SELinux อยู่ในโหมด permissive เท่านั้น</string>
-    <string name="install_jailbreak_button">ทริกเกอร์ late-load</string>
-    <string name="install_jailbreak_failed">ทริกเกอร์ late-load ไม่สำเร็จ</string>
     <string name="advanced_options">ตัวเลือกขั้นสูง</string>
     <string name="allow_shell">ให้สิทธิ์ root แก่ Shell เสมอ</string>
     <string name="allow_shell_summary">อนุญาตให้ adb shell เรียก su เสมอ อย่าเปิดใช้งานเว้นแต่จำเป็นจริง ๆ</string>
@@ -631,8 +619,6 @@
     <string name="ci_update_error_install_failed">ไม่สามารถติดตั้งการอัปเดต CI</string>
     <string name="ci_update_error_install_status">PackageInstaller ติดตั้งไม่สำเร็จ รหัสสถานะ %1$d</string>
     <string name="ci_update_error_stream_failed">ส่งสตรีมข้อมูลการอัปเดต CI ไม่สำเร็จ</string>
-    <string name="settings_soft_reboot">ใช้ซอฟต์รีสตาร์ตแทนรีสตาร์ต</string>
-    <string name="settings_soft_reboot_summary">ใช้ซอฟต์รีสตาร์ตหลังติดตั้ง อัปเดต เปิดใช้ ปิดใช้ หรือลบโมดูล</string>
     <string name="install_direct_lkm_title">ฝัง LKM ลงในเคอร์เนล boot โดยตรง</string>
     <string name="install_direct_lkm_summary">การแพตช์อิมเมจ การติดตั้งโดยตรง และการติดตั้งลงสล็อต OTA จะใช้ boot แทน init_boot พร้อมล้างการฉีด ramdisk ของ KernelSU เดิมก่อน</string>
     <string name="install_direct_lkm_warning_title">เปิดโหมดฝังลงเคอร์เนลโดยตรงแล้ว</string>

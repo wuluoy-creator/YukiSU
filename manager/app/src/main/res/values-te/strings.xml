@@ -25,8 +25,6 @@
     <string name="install">ఇన్‌స్టాల్ చేయండి</string>
     <string name="reboot">రీబూట్ చేయండి</string>
     <string name="settings">సెట్టింగ్‌లు</string>
-    <string name="reboot_soft">సాఫ్ట్ రీస్టార్ట్</string>
-    <string name="reboot_userspace">సాఫ్ట్ రీబూట్</string>
     <string name="reboot_recovery">రికవరీ మోడ్‌కు రీబూట్ చేయండి</string>
     <string name="reboot_bootloader">బూట్‌లోడర్ మోడ్‌కు రీబూట్ చేయండి</string>
     <string name="reboot_download">డౌన్‌లోడ్‌కు రీబూట్ చేయండి</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">సిస్టమ్ యాప్‌లను దాచు</string>
     <string name="send_log">లాగ్ పంపండి</string>
     <string name="safe_mode">సురక్షిత మోడ్</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">jailbreak సేవను ప్రారంభించడం విఫలమైంది</string>
-    <string name="jailbreak_timeout">Jailbreak బహుశా విఫలమై ఉండవచ్చు, దయచేసి లాగ్‌లను తనిఖీ చేయండి</string>
     <string name="reboot_to_apply">అమలులోకి రావడానికి రీబూట్ చేయండి</string>
     <string name="module_magisk_conflict">మాడ్యూల్‌లు Magisk వాటితో విభేదిస్తున్నందున నిలిపివేయబడ్డాయి!</string>
     <string name="home_support_title">మద్దతు అభివృద్ధి</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">మార్పు లాగ్‌ను పొందడం విఫలమైంది: %s</string>
     <string name="settings_check_update">అప్‌డేట్‌ను తనిఖీ చేయండి</string>
     <string name="settings_check_update_summary">యాప్‌ను తెరిచేటప్పుడు స్వయంచాలకంగా అప్‌డేట్‌ల కోసం తనిఖీ చేయండి</string>
-    <string name="settings_auto_jailbreak">స్వయంచాలక jailbreak</string>
-    <string name="settings_auto_jailbreak_summary">బూట్‌లో Permissive SELinux గుర్తించబడినప్పుడు late-loadను బూట్‌స్ట్రాప్ చేయడానికి స్వయంచాలకంగా Magicaను ఉపయోగించండి. ఈ యాప్‌కు ఆటోస్టార్ట్ అనుమతి ఇవ్వడం అవసరం.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">root అధికారాలతో adbdను అమలు చేయండి</string>
     <string name="grant_root_failed">root మంజూరు చేయడం విఫలమైంది!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">రీబూట్ తర్వాత మీ పరికరం ప్రస్తుత క్రియారహిత స్లాట్‌కు బూట్ అవ్వడానికి **బలవంతం చేయబడుతుంది**!\nఈ ఎంపికను OTA పూర్తయిన తర్వాత మాత్రమే ఉపయోగించండి.\nకొనసాగించాలా?</string>
     <string name="install_next">తదుపరి</string>
     <string name="install_select_partition">విభజనను ఎంచుకోండి</string>
-    <string name="install_jailbreak_title">Jailbreak ఇన్‌స్టాల్</string>
-    <string name="install_jailbreak_summary">permissive పరికరంలో ఇన్‌స్టాల్ పేజీ నుండి నేరుగా late-loadను ట్రిగ్గర్ చేయండి. ఇంకా root షెల్ అందుబాటులో లేకపోతే, బదులుగా Magica బూట్‌స్ట్రాప్ ఉపయోగించబడుతుంది.</string>
-    <string name="install_jailbreak_requires_permissive">ఈ చర్య SELinux permissiveగా ఉన్నప్పుడు మాత్రమే అందుబాటులో ఉంటుంది.</string>
-    <string name="install_jailbreak_button">late-loadను ట్రిగ్గర్ చేయండి</string>
-    <string name="install_jailbreak_failed">late-loadను ట్రిగ్గర్ చేయడం విఫలమైంది</string>
     <string name="advanced_options">అధునాతన ఎంపికలు</string>
     <string name="allow_shell">Shellకు ఎల్లప్పుడూ root ఇవ్వండి</string>
     <string name="allow_shell_summary">adb shellకు su కాల్ చేయడానికి ఎల్లప్పుడూ అనుమతించండి. పూర్తిగా అవసరమైతే తప్ప దీన్ని ప్రారంభించవద్దు.</string>
@@ -629,8 +617,6 @@
     <string name="ci_update_error_install_failed">CI నవీకరణను ఇన్‌స్టాల్ చేయలేకపోయింది.</string>
     <string name="ci_update_error_install_status">PackageInstaller ఇన్‌స్టాలేషన్ విఫలమైంది. స్థితి కోడ్ %1$d.</string>
     <string name="ci_update_error_stream_failed">CI నవీకరణ డేటా స్ట్రీమ్ బదిలీ విఫలమైంది.</string>
-    <string name="settings_soft_reboot">పునఃప్రారంభానికి బదులు సాఫ్ట్ పునఃప్రారంభాన్ని వాడండి</string>
-    <string name="settings_soft_reboot_summary">మాడ్యూల్ ఇన్‌స్టాల్, నవీకరణ, ప్రారంభించడం, నిలిపివేయడం లేదా తొలగించడం తర్వాత సాఫ్ట్ పునఃప్రారంభాన్ని వాడండి.</string>
     <string name="install_direct_lkm_title">LKMను నేరుగా boot కెర్నల్‌లో పొందుపరచండి</string>
     <string name="install_direct_lkm_summary">ఇమేజ్ ప్యాచ్, నేరుగా ఇన్‌స్టాలేషన్, OTA స్లాట్ ఇన్‌స్టాలేషన్ అన్నీ init_boot బదులు bootను ఉపయోగించి, ముందుగా పాత KernelSU ramdisk ఇంజెక్షన్‌ను తొలగిస్తాయి.</string>
     <string name="install_direct_lkm_warning_title">కెర్నల్‌లో నేరుగా పొందుపరిచే మోడ్ ప్రారంభించబడింది</string>

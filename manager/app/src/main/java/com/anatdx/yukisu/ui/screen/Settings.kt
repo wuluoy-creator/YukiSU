@@ -49,7 +49,6 @@ import com.ramcosta.composedestinations.generated.destinations.MoreSettingsScree
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.anatdx.yukisu.BuildConfig
 import com.anatdx.yukisu.Natives
-import com.anatdx.yukisu.magica.MagicaHelper
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.*
 import com.anatdx.yukisu.ui.theme.CardConfig
@@ -106,19 +105,6 @@ fun SettingScreen(navigator: DestinationsNavigator) {
         mutableStateOf(
             prefs.getString("webui_engine", "default") ?: "default"
         )
-    }
-    var autoJailbreak by rememberSaveable {
-        mutableStateOf(MagicaHelper.isAutoJailbreakEnabled(context))
-    }
-    var useSoftReboot by rememberSaveable {
-        mutableStateOf(isSoftRebootEnabled(context))
-    }
-    var softRebootBlocked by remember { mutableStateOf(isSoftRebootBlockedByKasumi()) }
-    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
-        softRebootBlocked = isSoftRebootBlockedByKasumi()
-    }
-    val isLateLoadMode = remember {
-        runCatching { Natives.isLateLoadMode }.getOrDefault(false)
     }
 
     Scaffold(
@@ -316,33 +302,6 @@ fun SettingScreen(navigator: DestinationsNavigator) {
                             }
                         )
                     }
-
-                    SwitchItem(
-                        icon = Icons.Filled.ElectricalServices,
-                        title = stringResource(R.string.settings_auto_jailbreak),
-                        summary = stringResource(R.string.settings_auto_jailbreak_summary),
-                        enabled = isLateLoadMode,
-                        checked = autoJailbreak,
-                        onCheckedChange = { enabled ->
-                            MagicaHelper.setAutoJailbreakEnabled(context, enabled)
-                            autoJailbreak = enabled
-                        }
-                    )
-
-                    SwitchItem(
-                        icon = Icons.Filled.RestartAlt,
-                        title = stringResource(R.string.settings_soft_reboot),
-                        summary = stringResource(
-                            if (softRebootBlocked) R.string.settings_soft_reboot_kasumi_unavailable
-                            else R.string.settings_soft_reboot_summary
-                        ),
-                        enabled = !isLateLoadMode && !softRebootBlocked,
-                        checked = !softRebootBlocked && (isLateLoadMode || useSoftReboot),
-                        onCheckedChange = { enabled ->
-                            setSoftRebootEnabled(context, enabled)
-                            useSoftReboot = enabled
-                        }
-                    )
 
                     SettingItem(
                         icon = Icons.Filled.Settings,

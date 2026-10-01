@@ -1,6 +1,5 @@
 #include "init_event.hpp"
 #include "../kagami/include/kagami/embedded.hpp"
-#include "../kagami/include/kagami/kasumi_client.hpp"
 #include "assets.hpp"
 #include "core/feature.hpp"
 #include "core/hide_bootloader.hpp"
@@ -16,7 +15,6 @@
 #include "module/module_config.hpp"
 #include "plugin/lua_engine.hpp"
 #include "profile/profile.hpp"
-#include "soft_reboot_waiter.hpp"
 #include "sulog.hpp"
 #include "umount.hpp"
 #include "utils.hpp"
@@ -28,10 +26,8 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <array>
 #include <cerrno>
 #include <csignal>
-#include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -41,100 +37,6 @@
 namespace ksud {
 
 namespace {
-
-#if defined(RESETPROP_ALONE_AVAILABLE) && RESETPROP_ALONE_AVAILABLE
-extern "C" int resetprop_main(int argc, char** argv);
-#endif
-
-enum class DaemonizeResult : std::uint8_t {
-    Parent,
-    Daemon,
-    Error,
-};
-
-DaemonizeResult daemonize_soft_reboot() {
-    const pid_t pid = fork();
-    if (pid < 0) {
-        LOGE("Failed to fork soft reboot daemon: %s", strerror(errno));
-        return DaemonizeResult::Error;
-    }
-
-    if (pid > 0) {
-        int status = 0;
-        pid_t waited;
-        do {
-            waited = waitpid(pid, &status, 0);
-        } while (waited < 0 && errno == EINTR);
-
-        if (waited < 0 || !WIFEXITED(status) || WEXITSTATUS(status) != 0) {
-            LOGE("Soft reboot daemon failed to initialize");
-            return DaemonizeResult::Error;
-        }
-        return DaemonizeResult::Parent;
-    }
-
-    detach_process_group(true);
-    switch_cgroups();
-    if (!switch_mnt_ns(1)) {
-        LOGE("Failed to enter init mount namespace for soft reboot");
-        _exit(1);
-    }
-    if (chdir("/") != 0) {
-        LOGE("Failed to change directory for soft reboot: %s", strerror(errno));
-        _exit(1);
-    }
-
-    if (!reset_stdio_to_devnull())
-        _exit(1);
-
-    const pid_t daemon_pid = fork();
-    if (daemon_pid < 0)
-        _exit(1);
-    if (daemon_pid > 0)
-        _exit(0);
-
-    return DaemonizeResult::Daemon;
-}
-
-bool reset_boot_completed() {
-    LOGI("Resetting sys.boot_completed to 0");
-#if defined(RESETPROP_ALONE_AVAILABLE) && RESETPROP_ALONE_AVAILABLE
-    std::array<char*, 4> argv = {
-        const_cast<char*>("resetprop"),
-        const_cast<char*>("sys.boot_completed"),
-        const_cast<char*>("0"),
-        nullptr,
-    };
-    return resetprop_main(3, argv.data()) == 0;
-#else
-    return exec_command({RESETPROP_PATH, "sys.boot_completed", "0"}).exit_code == 0;
-#endif
-}
-
-bool wait_for_boot_completed() {
-    LOGI("Waiting for sys.boot_completed to change from 0");
-#if defined(RESETPROP_ALONE_AVAILABLE) && RESETPROP_ALONE_AVAILABLE
-    std::array<char*, 5> argv = {
-        const_cast<char*>("resetprop"),
-        const_cast<char*>("-w"),
-        const_cast<char*>("sys.boot_completed"),
-        const_cast<char*>("0"),
-        nullptr,
-    };
-    return resetprop_main(4, argv.data()) == 0;
-#else
-    return exec_command({RESETPROP_PATH, "-w", "sys.boot_completed", "0"}).exit_code == 0;
-#endif
-}
-
-bool run_soft_reboot_command(const char* command) {
-    const auto result = exec_command({command});
-    if (result.exit_code == 0)
-        return true;
-
-    LOGW("%s failed with exit code %d: %s", command, result.exit_code, result.stderr_str.c_str());
-    return false;
-}
 
 // Catch boot logs (logcat/dmesg) to file
 void catch_bootlog(const char* logname, const std::vector<const char*>& command) {
@@ -571,62 +473,6 @@ void on_boot_completed() {
     run_stage("boot-completed", false);
 
     LOGI("boot-completed completed");
-}
-
-int soft_reboot() {
-    std::string version_error;
-    if (!ensure_uapi_version_matched(&version_error)) {
-        LOGE("Skip soft reboot due to UAPI version mismatch: %s", version_error.c_str());
-        return 0;
-    }
-
-    const bool kasumi_available = kagami::kasumi::is_available();
-    const int kasumi_runtime = kagami::kasumi::enabled_state();
-    const auto [kasumi_enabled, kasumi_supported] = get_feature(KSU_FEATURE_KASUMI);
-    if (kasumi_runtime > 0 || (kasumi_supported && kasumi_enabled != 0)) {
-        LOGE("Soft reboot is unavailable while Kasumi is active; use a full reboot");
-        return 1;
-    }
-    if (kasumi_runtime < 0 && kasumi_available) {
-        LOGE("Cannot determine Kasumi runtime state; refusing soft reboot");
-        return 1;
-    }
-
-    switch (daemonize_soft_reboot()) {
-    case DaemonizeResult::Parent:
-        return 0;
-    case DaemonizeResult::Error:
-        return 1;
-    case DaemonizeResult::Daemon:
-        break;
-    }
-
-    LOGI("Emulating soft reboot");
-    if (!reset_boot_completed())
-        LOGW("Failed to reset sys.boot_completed");
-
-    run_stage("emulated-soft-reboot", true);
-
-    {
-        SoftRebootWaiter waiter;
-        waiter.prepare();
-        LOGI("Stopping Android services");
-        (void)run_soft_reboot_command("stop");
-        waiter.wait();
-    }
-
-    LOGI("Running post-fs-data after stop");
-    (void)on_post_data_fs();
-
-    LOGI("Starting Android services");
-    (void)run_soft_reboot_command("start");
-
-    on_services();
-    if (!wait_for_boot_completed())
-        LOGW("Failed while waiting for boot completion");
-    on_boot_completed();
-
-    _exit(0);
 }
 
 }  // namespace ksud

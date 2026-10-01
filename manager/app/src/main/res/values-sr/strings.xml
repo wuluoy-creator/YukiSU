@@ -25,8 +25,6 @@
     <string name="install">Инсталирај</string>
     <string name="reboot">Поново покрени</string>
     <string name="settings">Подешавања</string>
-    <string name="reboot_soft">Софт рестарт</string>
-    <string name="reboot_userspace">Поновно покретање корисничког простора</string>
     <string name="reboot_recovery">Поново покрените систем за опоравак</string>
     <string name="reboot_bootloader">Поново покрените у Боотлоадер</string>
     <string name="reboot_download">Поново покрените за преузимање</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Сакриј системске апликације</string>
     <string name="send_log">Пошаљи дневнике</string>
     <string name="safe_mode">Безбедан режим</string>
-    <string name="home_jailbreak">Бекство из затвора</string>
-    <string name="home_jailbreak_failed">Покретање услуге бекства из затвора није успело</string>
-    <string name="jailbreak_timeout">Jailbreak можда није успео, проверите евиденцију</string>
     <string name="reboot_to_apply">Поново покрените да бисте ступили на снагу</string>
     <string name="module_magisk_conflict">Модули су недоступни због конфликта са Magisk!</string>
     <string name="home_support_title">Подршка развоју</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Преузимање евиденције промена није успело: %s</string>
     <string name="settings_check_update">Проверите ажурирања</string>
     <string name="settings_check_update_summary">Аутоматски провери да ли има ажурирања када отвориш апликацију</string>
-    <string name="settings_auto_jailbreak">Аутоматски jailbreak</string>
-    <string name="settings_auto_jailbreak_summary">Аутоматски користи Magica за покретање касног учитавања када се при покретању открије попустљиви (Permissive) SELinux. Захтева дозволу за аутоматско покретање ове апликације.</string>
     <string name="settings_adb_root">ADB Роот</string>
     <string name="settings_adb_root_summary">Покрените adbd са root привилегијама</string>
     <string name="grant_root_failed">Неуспешно одобрење root!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">Ваш уређај ће бити **принуђен** да се покрене са тренутног неактивног слота након поновног покретања!\nОву опцију користите само након што се OTA заврши.\nНаставити?</string>
     <string name="install_next">Следеће</string>
     <string name="install_select_partition">Изаберите партицију</string>
-    <string name="install_jailbreak_title">Jailbreak инсталација</string>
-    <string name="install_jailbreak_summary">Покрени касно учитавање са странице за инсталацију на дозвољеном уређају. Ако још увек није доступна root схелл, уместо тога ће се користити Magica боотстрап.</string>
-    <string name="install_jailbreak_requires_permissive">Ова радња је доступна само док је SELinux дозвољен.</string>
-    <string name="install_jailbreak_button">Активирај касно учитавање</string>
-    <string name="install_jailbreak_failed">Покретање касног учитавања није успело</string>
     <string name="advanced_options">Напредне опције</string>
     <string name="allow_shell">Увек одобри root Схелл-у</string>
     <string name="allow_shell_summary">Увек дозволите adb љусци да позове su. Не омогућавајте ово осим ако је апсолутно неопходно.</string>
@@ -609,8 +597,6 @@
     <string name="ci_update_error_install_failed">Није могуће инсталирати CI ажурирање.</string>
     <string name="ci_update_error_install_status">Инсталирање путем PackageInstaller-а није успело. Код стања: %1$d.</string>
     <string name="ci_update_error_stream_failed">Пренос тока података CI ажурирања није успео.</string>
-    <string name="settings_soft_reboot">Користи меко поновно покретање умјесто обичног</string>
-    <string name="settings_soft_reboot_summary">Користи меко поновно покретање након инсталирања, ажурирања, омогућавања, онемогућавања или уклањања модула.</string>
     <string name="install_direct_lkm_title">Угради LKM изравно у boot језгро</string>
     <string name="install_direct_lkm_summary">Закрпавање одабране слике, изравна инсталација и инсталација у OTA слот користе boot умјесто init_boot, уз претходно уклањање старе KernelSU ињекције у ramdisk.</string>
     <string name="install_direct_lkm_warning_title">Изравна уградња у језгро је омогућена</string>

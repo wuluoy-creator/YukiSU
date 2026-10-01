@@ -25,8 +25,6 @@
     <string name="install">Installieren</string>
     <string name="reboot">Neustarten</string>
     <string name="settings">Einstellungen</string>
-    <string name="reboot_soft">Soft-Neustart</string>
-    <string name="reboot_userspace">Soft-Reboot</string>
     <string name="reboot_recovery">In den Recovery-Modus neustarten</string>
     <string name="reboot_bootloader">In den Bootloader-Modus neustarten</string>
     <string name="reboot_download">In den Download-Modus neustarten</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">System-Apps ausblenden</string>
     <string name="send_log">Protokoll senden</string>
     <string name="safe_mode">Sicherer Modus</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Jailbreak-Dienst konnte nicht gestartet werden</string>
-    <string name="jailbreak_timeout">Jailbreak ist möglicherweise fehlgeschlagen, bitte prüfe die Protokolle</string>
     <string name="reboot_to_apply">Neustarten, damit Änderungen wirksam werden</string>
     <string name="module_magisk_conflict">Module sind aufgrund eines Konfliktes mit Magisk nicht verfügbar!</string>
     <string name="home_support_title">Unterstützen Sie die Entwicklung</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Konnte Veränderungs-Protokoll nicht laden: %s</string>
     <string name="settings_check_update">Auf Aktualisierung prüfen</string>
     <string name="settings_check_update_summary">Prüfe automatisch auf Aktualisierungen, wenn die App geöffnet wird</string>
-    <string name="settings_auto_jailbreak">Automatischer Jailbreak</string>
-    <string name="settings_auto_jailbreak_summary">Automatisch Magica nutzen, um das späte Laden zu starten, wenn beim Booten ein permissives SELinux erkannt wird. Erfordert die Autostart-Berechtigung für diese App.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">adbd mit Root-Rechten ausführen</string>
     <string name="grant_root_failed">Root-Zugriff konnte nicht gewährt werden!</string>
@@ -127,11 +120,6 @@
 \nFortfahren?</string>
     <string name="install_next">Weiter</string>
     <string name="install_select_partition">Partition auswählen</string>
-    <string name="install_jailbreak_title">Jailbreak-Installation</string>
-    <string name="install_jailbreak_summary">Spätes Laden direkt von der Installationsseite auf einem permissiven Gerät auslösen. Wenn noch keine Root-Shell verfügbar ist, wird stattdessen der Magica-Start verwendet.</string>
-    <string name="install_jailbreak_requires_permissive">Diese Aktion ist nur verfügbar, solange SELinux permissiv ist.</string>
-    <string name="install_jailbreak_button">Spätes Laden auslösen</string>
-    <string name="install_jailbreak_failed">Spätes Laden konnte nicht ausgelöst werden</string>
     <string name="advanced_options">Erweiterte Optionen</string>
     <string name="allow_shell">Der Shell immer Root gewähren</string>
     <string name="allow_shell_summary">adb shell immer erlauben, su aufzurufen. Aktiviere dies nur, wenn unbedingt nötig.</string>
@@ -611,8 +599,6 @@
     <string name="ci_update_error_install_failed">CI-Update konnte nicht installiert werden.</string>
     <string name="ci_update_error_install_status">PackageInstaller-Installation fehlgeschlagen, Statuscode %1$d.</string>
     <string name="ci_update_error_stream_failed">Übertragung des CI-Update-Datenstroms fehlgeschlagen.</string>
-    <string name="settings_soft_reboot">Sanften Neustart statt Neustart verwenden</string>
-    <string name="settings_soft_reboot_summary">Nach dem Installieren, Aktualisieren, Aktivieren, Deaktivieren oder Entfernen von Modulen einen sanften Neustart verwenden.</string>
     <string name="install_direct_lkm_title">LKM direkt in den boot-Kernel einbetten</string>
     <string name="install_direct_lkm_summary">Image-Patchen, Direktinstallation und Installation im OTA-Slot verwenden boot statt init_boot und entfernen zuerst die alte KernelSU-Ramdisk-Injektion.</string>
     <string name="install_direct_lkm_warning_title">Direktes Einbetten in den Kernel aktiviert</string>

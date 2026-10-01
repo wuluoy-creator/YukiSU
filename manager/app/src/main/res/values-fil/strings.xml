@@ -25,8 +25,6 @@
     <string name="install">I-install</string>
     <string name="reboot">I-reboot</string>
     <string name="settings">Mga setting</string>
-    <string name="reboot_soft">Soft restart</string>
-    <string name="reboot_userspace">I-soft Reboot</string>
     <string name="reboot_recovery">I-reboot sa Pagbawi</string>
     <string name="reboot_bootloader">I-reboot sa Bootloader</string>
     <string name="reboot_download">I-reboot upang I-download</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Itago ang mga application ng system</string>
     <string name="send_log">Magpadala ng Log</string>
     <string name="safe_mode">Safe mode</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Nabigong simulan ang jailbreak service</string>
-    <string name="jailbreak_timeout">Maaaring nabigo ang jailbreak, mangyaring tingnan ang mga log</string>
     <string name="reboot_to_apply">I-reboot para umepekto</string>
     <string name="module_magisk_conflict">Hindi pinagana ang mga modyul dahil salungat ito sa Magisk!</string>
     <string name="home_support_title">Pag-unlad ng Suporta</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Nabigong kunin ang changelog: %s</string>
     <string name="settings_check_update">Check update</string>
     <string name="settings_check_update_summary">Awtomatikong tingnan ang mga update kapag binuksan ang app</string>
-    <string name="settings_auto_jailbreak">Auto jailbreak</string>
-    <string name="settings_auto_jailbreak_summary">Awtomatikong gamitin ang Magica para i-bootstrap ang late-load kapag may natukoy na Permissive SELinux sa boot. Kailangang bigyan ng autostart permission ang app na ito.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">Patakbuhin ang adbd na may root privileges</string>
     <string name="grant_root_failed">Nabigong magbigay ng root!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">Ang iyong device ay **PIPILITIN** na mag-boot sa kasalukuyang inactive na slot pagkatapos ng reboot!\nGamitin lang ang opsyong ito pagkatapos matapos ang OTA.\nMagpatuloy?</string>
     <string name="install_next">Susunod</string>
     <string name="install_select_partition">Pumili ng partition</string>
-    <string name="install_jailbreak_title">Jailbreak install</string>
-    <string name="install_jailbreak_summary">I-trigger ang late-load mula sa install page sa isang permissive na device. Kung wala pang root shell, gagamitin ang Magica bootstrap.</string>
-    <string name="install_jailbreak_requires_permissive">Available lang ang aksyong ito habang permissive ang SELinux.</string>
-    <string name="install_jailbreak_button">I-trigger ang late-load</string>
-    <string name="install_jailbreak_failed">Nabigong i-trigger ang late-load</string>
     <string name="advanced_options">Mga advanced na opsyon</string>
     <string name="allow_shell">Laging magbigay ng root sa Shell</string>
     <string name="allow_shell_summary">Laging payagan ang adb shell na tumawag sa su. Huwag i-enable ito maliban kung talagang kinakailangan.</string>
@@ -629,8 +617,6 @@
     <string name="ci_update_error_install_failed">Hindi ma-install ang update sa CI.</string>
     <string name="ci_update_error_install_status">Nabigo ang pag-install ng PackageInstaller. Code ng katayuan: %1$d.</string>
     <string name="ci_update_error_stream_failed">Nabigo ang paglilipat ng data stream ng update sa CI.</string>
-    <string name="settings_soft_reboot">Gumamit ng soft restart bilang kapalit ng restart</string>
-    <string name="settings_soft_reboot_summary">Gumamit ng soft restart pagkatapos mag-install, mag-update, magpagana, hindi magpagana o magtanggal ng module.</string>
     <string name="install_direct_lkm_title">Direktang i-embed ang LKM sa kernel ng boot</string>
     <string name="install_direct_lkm_summary">Gagamit ng boot sa halip na init_boot ang pag-patch ng image, direktang pag-install at pag-install sa OTA slot. Aalisin muna ang lumang KernelSU ramdisk injection.</string>
     <string name="install_direct_lkm_warning_title">Pinagana ang direktang pag-embed sa kernel</string>

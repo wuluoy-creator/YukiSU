@@ -33,7 +33,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KernelSU"
         android:directBootAware="true"
-        android:zygotePreloadName="com.anatdx.yukisu.magica.AppZygotePreload"
         tools:targetApi="34">
         <meta-data
             android:name="com.anatdx.yukisu.CI_RUN_ID"
@@ -112,13 +111,6 @@
         </provider>
 
         <service
-            android:name=".magica.MagicaService"
-            android:directBootAware="true"
-            android:exported="false"
-            android:isolatedProcess="true"
-            android:useAppZygote="true" />
-
-        <service
             android:name=".superkey.SuperKeyAuthenticationService"
             android:directBootAware="false"
             android:exported="false"
@@ -132,21 +124,6 @@
             android:process=":boot">
             <intent-filter>
                 <action android:name="com.anatdx.yukisu.action.KSUD_INTEGRITY_CHANGED" />
-            </intent-filter>
-        </receiver>
-
-        <receiver
-            android:name=".magica.BootCompletedReceiver"
-            android:directBootAware="true"
-            android:enabled="false"
-            android:exported="false"
-            android:process=":boot">
-            <intent-filter>
-                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.anatdx.yukisu.magica.LAUNCH" />
             </intent-filter>
         </receiver>
 

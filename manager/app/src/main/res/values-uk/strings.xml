@@ -25,8 +25,6 @@
     <string name="install">Встановити</string>
     <string name="reboot">Перезавантажити</string>
     <string name="settings">Налаштування</string>
-    <string name="reboot_soft">М\'яке перезавантаження</string>
-    <string name="reboot_userspace">М\'яке перезавантаження</string>
     <string name="reboot_recovery">Перезавантажити в Recovery</string>
     <string name="reboot_bootloader">Перезавантажити в Bootloader</string>
     <string name="reboot_download">Перезавантажити в режим Download</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Сховати системні додатки</string>
     <string name="send_log">Надіслати логи</string>
     <string name="safe_mode">Безпечний режим</string>
-    <string name="home_jailbreak">Джейлбрейк</string>
-    <string name="home_jailbreak_failed">Не вдалося запустити службу джейлбрейку</string>
-    <string name="jailbreak_timeout">Джейлбрейк, можливо, не вдався, перевірте журнали</string>
     <string name="reboot_to_apply">Перезавантажте, щоб застосувати</string>
     <string name="module_magisk_conflict">Модулі недоступні через конфлікт з Magisk!</string>
     <string name="home_support_title">Підтримка розвитку</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Не вдалося завантажити список змін: %s</string>
     <string name="settings_check_update">Перевіряти оновлення</string>
     <string name="settings_check_update_summary">Автоматично перевіряти оновлення при відкритті додатку</string>
-    <string name="settings_auto_jailbreak">Автоматичний джейлбрейк</string>
-    <string name="settings_auto_jailbreak_summary">Автоматично використовувати Magica для запуску пізнього завантаження, коли під час завантаження виявлено дозвільний (Permissive) SELinux. Потребує надання цьому застосунку дозволу на автозапуск.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">Запускати adbd з правами root</string>
     <string name="grant_root_failed">Не вдалося надати root-права!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">Ваш пристрій буде **ПРИМУСОВО** завантажено в поточний неактивний слот після перезавантаження!\nВикористовуйте цю опцію лише після завершення OTA.\nПродовжити?</string>
     <string name="install_next">Далі</string>
     <string name="install_select_partition">Виберіть розділ</string>
-    <string name="install_jailbreak_title">Встановлення через джейлбрейк</string>
-    <string name="install_jailbreak_summary">Запустити пізнє завантаження безпосередньо зі сторінки встановлення на дозвільному пристрої. Якщо root-оболонка ще недоступна, замість цього буде використано запуск Magica.</string>
-    <string name="install_jailbreak_requires_permissive">Ця дія доступна лише коли SELinux у дозвільному режимі.</string>
-    <string name="install_jailbreak_button">Запустити пізнє завантаження</string>
-    <string name="install_jailbreak_failed">Не вдалося запустити пізнє завантаження</string>
     <string name="advanced_options">Додаткові параметри</string>
     <string name="allow_shell">Завжди надавати root оболонці Shell</string>
     <string name="allow_shell_summary">Завжди дозволяти adb shell викликати su. Не вмикайте це без крайньої потреби.</string>
@@ -611,8 +599,6 @@
     <string name="ci_update_error_install_failed">Не вдалося встановити оновлення CI.</string>
     <string name="ci_update_error_install_status">Установлення через PackageInstaller не вдалося. Код стану: %1$d.</string>
     <string name="ci_update_error_stream_failed">Помилка потокового передавання даних оновлення CI.</string>
-    <string name="settings_soft_reboot">Використовувати м’яке перезавантаження замість звичайного</string>
-    <string name="settings_soft_reboot_summary">Використовувати м’яке перезавантаження після встановлення, оновлення, увімкнення, вимкнення або видалення модулів.</string>
     <string name="install_direct_lkm_title">Вбудувати LKM безпосередньо в ядро boot</string>
     <string name="install_direct_lkm_summary">Виправлення вибраного образу, пряме встановлення та встановлення у слот OTA використовують boot замість init_boot, попередньо видаляючи старе впровадження KernelSU в ramdisk.</string>
     <string name="install_direct_lkm_warning_title">Пряме вбудовування в ядро ввімкнено</string>

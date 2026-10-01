@@ -25,8 +25,6 @@
     <string name="install">Yüklə</string>
     <string name="reboot">Yenidən başlat</string>
     <string name="settings">Parametrlər</string>
-    <string name="reboot_soft">Yumşaq yenidən başlatma</string>
-    <string name="reboot_userspace">Yüngül vəziyyətdə yenodən başlat</string>
     <string name="reboot_recovery">Bərpa rejimində yenidən başlat</string>
     <string name="reboot_bootloader">Bootloader rejimində yenidən başlat</string>
     <string name="reboot_download">Yükləmə rejimində yenidən başlat</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Sistem proqramlarını gizlət</string>
     <string name="send_log">Log-u göndər</string>
     <string name="safe_mode">Təhlükəsiz rejimi</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Jailbreak xidmətini başlatmaq alınmadı</string>
-    <string name="jailbreak_timeout">Jailbreak alınmamış ola bilər, zəhmət olmasa jurnalları yoxlayın</string>
     <string name="reboot_to_apply">Qüvvəyə minməsi üçün yenidən başlat</string>
     <string name="module_magisk_conflict">Modular deaktiv edilir,çünki o Magisk-in modulları ilə toqquşur!</string>
     <string name="home_support_title">İnkişafa Dəstək</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Dəyişiklik jurnalı alına bilmədi: %s</string>
     <string name="settings_check_update">Check update</string>
     <string name="settings_check_update_summary">Tətbiq açılarkən yeniləmələri avtomatik yoxla</string>
-    <string name="settings_auto_jailbreak">Avtomatik jailbreak</string>
-    <string name="settings_auto_jailbreak_summary">Yüklənərkən Permissive SELinux aşkar edildikdə late-load-u başlatmaq üçün avtomatik olaraq Magica istifadə et. Bu tətbiqə avtomatik başlatma icazəsi verilməsini tələb edir.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">adbd-ni root səlahiyyətləri ilə işlət</string>
     <string name="grant_root_failed">Root səlahiyyəti verilə bilmədi!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">Cihazınız yenidən başladıqdan sonra **MƏCBURİ** olaraq cari qeyri-aktiv slota yüklənəcək!\nBu seçimi yalnız OTA tamamlandıqdan sonra istifadə edin.\nDavam edilsin?</string>
     <string name="install_next">İrəli</string>
     <string name="install_select_partition">Bölmə seçin</string>
-    <string name="install_jailbreak_title">Jailbreak ilə quraşdırma</string>
-    <string name="install_jailbreak_summary">Permissive cihazda late-load-u birbaşa quraşdırma səhifəsindən işə salın. Hələ root shell yoxdursa, onun əvəzinə Magica bootstrap istifadə olunacaq.</string>
-    <string name="install_jailbreak_requires_permissive">Bu əməliyyat yalnız SELinux permissive vəziyyətdə olduqda mümkündür.</string>
-    <string name="install_jailbreak_button">Late-load-u işə sal</string>
-    <string name="install_jailbreak_failed">Late-load işə salına bilmədi</string>
     <string name="advanced_options">Qabaqcıl seçimlər</string>
     <string name="allow_shell">Shell-ə həmişə root ver</string>
     <string name="allow_shell_summary">adb shell-in su çağırmasına həmişə icazə ver. Tam zəruri olmadıqca bunu aktivləşdirməyin.</string>
@@ -609,8 +597,6 @@
     <string name="ci_update_error_install_failed">CI yeniləməsi quraşdırıla bilmədi.</string>
     <string name="ci_update_error_install_status">PackageInstaller quraşdırması uğursuz oldu. Vəziyyət kodu: %1$d.</string>
     <string name="ci_update_error_stream_failed">CI yeniləməsinin məlumat axını ötürülə bilmədi.</string>
-    <string name="settings_soft_reboot">Adi yenidən başlatma əvəzinə yumşaq yenidən başlatma istifadə et</string>
-    <string name="settings_soft_reboot_summary">Modul quraşdırıldıqdan, yeniləndikdən, aktivləşdirildikdən, söndürüldükdən və ya silindikdən sonra yumşaq yenidən başlatma istifadə edir.</string>
     <string name="install_direct_lkm_title">LKM-ni birbaşa boot nüvəsinə yerləşdir</string>
     <string name="install_direct_lkm_summary">Seçilmiş obraza yama tətbiqi, birbaşa quraşdırma və OTA slotuna quraşdırma init_boot əvəzinə boot istifadə edir və əvvəl köhnə KernelSU ramdisk inyeksiyasını təmizləyir.</string>
     <string name="install_direct_lkm_warning_title">Nüvəyə birbaşa yerləşdirmə rejimi aktivdir</string>

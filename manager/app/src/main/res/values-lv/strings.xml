@@ -25,8 +25,6 @@
     <string name="install">Instalēt</string>
     <string name="reboot">Restartēt</string>
     <string name="settings">Iestatījumi</string>
-    <string name="reboot_soft">Mīkstā restartēšana</string>
-    <string name="reboot_userspace">Ātri restartēt</string>
     <string name="reboot_recovery">Restartēt uz Recovery</string>
     <string name="reboot_bootloader">Restartēt uz Bootloaderu</string>
     <string name="reboot_download">Restartēt uz Download</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Slēpt sistēmas lietotnes</string>
     <string name="send_log">Ziņot žurnālu</string>
     <string name="safe_mode">Drošais režīms</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Neizdevās palaist jailbreak pakalpojumu</string>
-    <string name="jailbreak_timeout">Jailbreak, iespējams, neizdevās, lūdzu, pārbaudiet žurnālus</string>
     <string name="reboot_to_apply">Restartējiet, lai stātos spēkā</string>
     <string name="module_magisk_conflict">Moduļi ir atspējoti, jo tie konfliktē ar Magisk!</string>
     <string name="home_support_title">Atbalstīt attīstību</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Izmaiņu žurnāla iegūšana neizdevās: %s</string>
     <string name="settings_check_update">Pārbaudīt atjauninājumus</string>
     <string name="settings_check_update_summary">Automātiski pārbaudīt atjauninājumus atverot aplikāciju</string>
-    <string name="settings_auto_jailbreak">Automātiskais jailbreak</string>
-    <string name="settings_auto_jailbreak_summary">Automātiski izmantot Magica, lai palaistu vēlīno ielādi, kad sāknēšanas laikā tiek atklāts atļaujošs (Permissive) SELinux. Nepieciešama automātiskās palaišanas atļauja šai lietotnei.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">Palaist adbd ar root tiesībām</string>
     <string name="grant_root_failed">Neizdevās piešķirt sakni!</string>
@@ -127,11 +120,6 @@
 \nTurpināt?</string>
     <string name="install_next">Nākamais</string>
     <string name="install_select_partition">Izvēlieties nodalījumu</string>
-    <string name="install_jailbreak_title">Instalēšana ar jailbreak</string>
-    <string name="install_jailbreak_summary">Palaist vēlīno ielādi tieši no instalēšanas lapas atļaujošā ierīcē. Ja root čaula vēl nav pieejama, tā vietā tiks izmantota Magica palaišana.</string>
-    <string name="install_jailbreak_requires_permissive">Šī darbība ir pieejama tikai tad, kad SELinux ir atļaujošs (permissive).</string>
-    <string name="install_jailbreak_button">Palaist vēlīno ielādi</string>
-    <string name="install_jailbreak_failed">Neizdevās palaist vēlīno ielādi</string>
     <string name="advanced_options">Papildu opcijas</string>
     <string name="allow_shell">Vienmēr piešķirt root čaulai (Shell)</string>
     <string name="allow_shell_summary">Vienmēr atļaut adb shell izsaukt su. Neiespējojiet to, ja vien tas nav absolūti nepieciešams.</string>
@@ -611,8 +599,6 @@
     <string name="ci_update_error_install_failed">Nevar instalēt CI atjauninājumu.</string>
     <string name="ci_update_error_install_status">PackageInstaller instalēšana neizdevās; statusa kods %1$d.</string>
     <string name="ci_update_error_stream_failed">CI atjauninājuma datu straumes pārsūtīšana neizdevās.</string>
-    <string name="settings_soft_reboot">Restartēšanas vietā izmantot mīksto restartēšanu</string>
-    <string name="settings_soft_reboot_summary">Pēc moduļu instalēšanas, atjaunināšanas, iespējošanas, atspējošanas vai noņemšanas izmantot mīksto restartēšanu.</string>
     <string name="install_direct_lkm_title">Iegult LKM tieši boot kodolā</string>
     <string name="install_direct_lkm_summary">Attēla ielāpošana, tiešā instalēšana un OTA slota instalēšana izmanto boot, nevis init_boot, un vispirms noņem veco KernelSU ramdisk injicēšanu.</string>
     <string name="install_direct_lkm_warning_title">Tiešā iegulšana kodolā ir iespējota</string>

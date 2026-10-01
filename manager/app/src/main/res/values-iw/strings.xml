@@ -25,8 +25,6 @@
     <string name="install">להתקין</string>
     <string name="reboot">הפעלה מחדש</string>
     <string name="settings">הגדרות</string>
-    <string name="reboot_soft">הפעלה מחדש רכה</string>
-    <string name="reboot_userspace">רך Reboot</string>
     <string name="reboot_recovery">הפעלה מחדש לריקברי</string>
     <string name="reboot_bootloader">הפעלה מחדש לבוטלאודר</string>
     <string name="reboot_download">הפעלה מחדש למצב הורדה</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">הסתר אפליקציות מערכת</string>
     <string name="send_log">שלח לוג</string>
     <string name="safe_mode">מצב בטוח</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">הפעלת שירות ה-jailbreak נכשלה</string>
-    <string name="jailbreak_timeout">ייתכן שה-jailbreak נכשל, אנא בדוק את היומנים</string>
     <string name="reboot_to_apply">הפעל מחדש כדי להכניס לתוקף</string>
     <string name="module_magisk_conflict">מודולים מושבתים מכיוון שהם מתנגשים עם זה של Magisk!</string>
     <string name="home_support_title">תמיכה בפיתוח</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">שליפת יומן השינויים נכשלה: %s</string>
     <string name="settings_check_update">בדוק עדכון</string>
     <string name="settings_check_update_summary">בדוק עדכונים אוטומטית בעת פתיחת האפליקציה</string>
-    <string name="settings_auto_jailbreak">Jailbreak אוטומטי</string>
-    <string name="settings_auto_jailbreak_summary">השתמש אוטומטית ב-Magica כדי לאתחל late-load כאשר מזוהה SELinux Permissive באתחול. דורש הענקת הרשאת הפעלה אוטומטית לאפליקציה זו.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">הרץ את adbd עם הרשאות root</string>
     <string name="grant_root_failed">הענקת הרשאת root נכשלה!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">המכשיר שלך **ייאלץ** לאתחל לחריץ הלא פעיל הנוכחי לאחר הפעלה מחדש!\nהשתמש באפשרות זו רק לאחר השלמת ה-OTA.\nלהמשיך?</string>
     <string name="install_next">הבא</string>
     <string name="install_select_partition">בחר מחיצה</string>
-    <string name="install_jailbreak_title">התקנת Jailbreak</string>
-    <string name="install_jailbreak_summary">הפעל טעינה מאוחרת מדף ההתקנה במכשיר מתירני. אם עדיין אין מעטפת root זמינה, במקום זאת ישתמשו ב-Magica אתחול.</string>
-    <string name="install_jailbreak_requires_permissive">פעולה זו זמינה רק כאשר SELinux במצב permissive.</string>
-    <string name="install_jailbreak_button">הפעל late-load</string>
-    <string name="install_jailbreak_failed">הפעלת late-load נכשלה</string>
     <string name="advanced_options">אפשרויות מתקדמות</string>
     <string name="allow_shell">תמיד הענק root ל-Shell</string>
     <string name="allow_shell_summary">תמיד אפשר ל-adb shell לקרוא ל-su. אל תפעיל זאת אלא אם כן הכרחי לחלוטין.</string>
@@ -609,8 +597,6 @@
     <string name="ci_update_error_install_failed">לא ניתן להתקין את עדכון CI.</string>
     <string name="ci_update_error_install_status">ההתקנה באמצעות PackageInstaller נכשלה. קוד מצב: %1$d.</string>
     <string name="ci_update_error_stream_failed">העברת זרם נתוני עדכון CI נכשלה.</string>
-    <string name="settings_soft_reboot">שימוש בהפעלה מחדש רכה במקום הפעלה מחדש</string>
-    <string name="settings_soft_reboot_summary">שימוש בהפעלה מחדש רכה לאחר התקנה, עדכון, הפעלה, השבתה או הסרה של מודולים.</string>
     <string name="install_direct_lkm_title">הטמעת LKM ישירות בליבת boot</string>
     <string name="install_direct_lkm_summary">תיקון תמונה שנבחרה, התקנה ישירה והתקנה לחריץ OTA ישתמשו ב-boot במקום ב-init_boot, לאחר ניקוי ההזרקה הישנה של KernelSU ל-ramdisk.</string>
     <string name="install_direct_lkm_warning_title">מצב הטמעה ישירה בליבה מופעל</string>

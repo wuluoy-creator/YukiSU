@@ -25,8 +25,6 @@
     <string name="install">ಸ್ಥಾಪಿಸಿ</string>
     <string name="reboot">ರೀಬೂಟ್</string>
     <string name="settings">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</string>
-    <string name="reboot_soft">ಸಾಫ್ಟ್ ರೀಸ್ಟಾರ್ಟ್</string>
-    <string name="reboot_userspace">ಸಾಫ್ಟ್ ರೀಬೂಟ್</string>
     <string name="reboot_recovery">ರಿಕವರಿ ಮೋಡ್‌ಗೆ ರೀಬೂಟ್ ಮಾಡಿ</string>
     <string name="reboot_bootloader">ಬೂಟ್‌ಲೋಡರ್ ಮೋಡ್‌ಗೆ ರೀಬೂಟ್ ಮಾಡಿ</string>
     <string name="reboot_download">ಡೌನ್‌ಲೋಡ್‌ಗೆ ರೀಬೂಟ್ ಮಾಡಿ</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">ಸಿಸ್ಟಮ್ ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ಮರೆಮಾಡಿ</string>
     <string name="send_log">ಲಾಗ್ ಕಳುಹಿಸಿ</string>
     <string name="safe_mode">ಸುರಕ್ಷಿತ ಮೋಡ್</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">jailbreak ಸೇವೆಯನ್ನು ಪ್ರಾರಂಭಿಸಲು ವಿಫಲವಾಗಿದೆ</string>
-    <string name="jailbreak_timeout">Jailbreak ಬಹುಶಃ ವಿಫಲವಾಗಿರಬಹುದು, ದಯವಿಟ್ಟು ಲಾಗ್‌ಗಳನ್ನು ಪರಿಶೀಲಿಸಿ</string>
     <string name="reboot_to_apply">ಪರಿಣಾಮ ಬೀರಲು ರೀಬೂಟ್ ಮಾಡಿ</string>
     <string name="module_magisk_conflict">ಮಾಡ್ಯೂಲ್‌ಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ ಏಕೆಂದರೆ ಇದು ಮ್ಯಾಜಿಸ್ಕ್‌ನೊಂದಿಗೆ ಸಂಘರ್ಷವಾಗಿದೆ!</string>
     <string name="home_support_title">ಬೆಂಬಲ ಅಭಿವೃದ್ಧಿ</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">ಬದಲಾವಣೆ ಲಾಗ್ ಪಡೆಯಲು ವಿಫಲವಾಗಿದೆ: %s</string>
     <string name="settings_check_update">Check update</string>
     <string name="settings_check_update_summary">ಆ್ಯಪ್ ತೆರೆಯುವಾಗ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಅಪ್‌ಡೇಟ್‌ಗಳನ್ನು ಪರಿಶೀಲಿಸಿ</string>
-    <string name="settings_auto_jailbreak">ಸ್ವಯಂಚಾಲಿತ jailbreak</string>
-    <string name="settings_auto_jailbreak_summary">ಬೂಟ್‌ನಲ್ಲಿ Permissive SELinux ಪತ್ತೆಯಾದಾಗ late-load ಬೂಟ್‌ಸ್ಟ್ರ್ಯಾಪ್ ಮಾಡಲು ಸ್ವಯಂಚಾಲಿತವಾಗಿ Magica ಬಳಸಿ. ಈ ಆ್ಯಪ್‌ಗೆ ಸ್ವಯಂ-ಪ್ರಾರಂಭ ಅನುಮತಿ ನೀಡುವ ಅಗತ್ಯವಿದೆ.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">root ಸವಲತ್ತುಗಳೊಂದಿಗೆ adbd ಚಲಾಯಿಸಿ</string>
     <string name="grant_root_failed">root ನೀಡಲು ವಿಫಲವಾಗಿದೆ!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">ರೀಬೂಟ್ ನಂತರ ನಿಮ್ಮ ಸಾಧನವನ್ನು ಪ್ರಸ್ತುತ ನಿಷ್ಕ್ರಿಯ ಸ್ಲಾಟ್‌ಗೆ ಬೂಟ್ ಮಾಡಲು **ಒತ್ತಾಯಿಸಲಾಗುತ್ತದೆ**!\nಈ ಆಯ್ಕೆಯನ್ನು OTA ಪೂರ್ಣಗೊಂಡ ನಂತರ ಮಾತ್ರ ಬಳಸಿ.\nಮುಂದುವರಿಯುವುದೇ?</string>
     <string name="install_next">ಮುಂದೆ</string>
     <string name="install_select_partition">ಪಾರ್ಟಿಶನ್ ಆಯ್ಕೆಮಾಡಿ</string>
-    <string name="install_jailbreak_title">Jailbreak ಸ್ಥಾಪನೆ</string>
-    <string name="install_jailbreak_summary">permissive ಸಾಧನದಲ್ಲಿ ಸ್ಥಾಪನಾ ಪುಟದಿಂದ ನೇರವಾಗಿ late-load ಟ್ರಿಗ್ಗರ್ ಮಾಡಿ. ಇನ್ನೂ root ಶೆಲ್ ಲಭ್ಯವಿಲ್ಲದಿದ್ದರೆ, ಬದಲಿಗೆ Magica ಬೂಟ್‌ಸ್ಟ್ರ್ಯಾಪ್ ಬಳಸಲಾಗುತ್ತದೆ.</string>
-    <string name="install_jailbreak_requires_permissive">ಈ ಕ್ರಿಯೆಯು SELinux permissive ಆಗಿರುವಾಗ ಮಾತ್ರ ಲಭ್ಯವಿದೆ.</string>
-    <string name="install_jailbreak_button">late-load ಟ್ರಿಗ್ಗರ್ ಮಾಡಿ</string>
-    <string name="install_jailbreak_failed">late-load ಟ್ರಿಗ್ಗರ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ</string>
     <string name="advanced_options">ಸುಧಾರಿತ ಆಯ್ಕೆಗಳು</string>
     <string name="allow_shell">Shell ಗೆ ಯಾವಾಗಲೂ root ನೀಡಿ</string>
     <string name="allow_shell_summary">adb shell ಗೆ ಯಾವಾಗಲೂ su ಕರೆಯಲು ಅನುಮತಿಸಿ. ಸಂಪೂರ್ಣವಾಗಿ ಅಗತ್ಯವಿಲ್ಲದ ಹೊರತು ಇದನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಬೇಡಿ.</string>
@@ -629,8 +617,6 @@
     <string name="ci_update_error_install_failed">CI ನವೀಕರಣ ಸ್ಥಾಪಿಸಲಾಗಲಿಲ್ಲ.</string>
     <string name="ci_update_error_install_status">PackageInstaller ಸ್ಥಾಪನೆ ವಿಫಲವಾಗಿದೆ. ಸ್ಥಿತಿ ಕೋಡ್ %1$d.</string>
     <string name="ci_update_error_stream_failed">CI ನವೀಕರಣ ಡೇಟಾ ಸ್ಟ್ರೀಮ್ ವರ್ಗಾವಣೆ ವಿಫಲವಾಗಿದೆ.</string>
-    <string name="settings_soft_reboot">ಮರುಪ್ರಾರಂಭದ ಬದಲು ಸಾಫ್ಟ್ ಮರುಪ್ರಾರಂಭ ಬಳಸಿ</string>
-    <string name="settings_soft_reboot_summary">ಮಾಡ್ಯೂಲ್ ಸ್ಥಾಪನೆ, ನವೀಕರಣ, ಸಕ್ರಿಯಗೊಳಿಸುವಿಕೆ, ನಿಷ್ಕ್ರಿಯಗೊಳಿಸುವಿಕೆ ಅಥವಾ ತೆಗೆದುಹಾಕುವಿಕೆಯ ನಂತರ ಸಾಫ್ಟ್ ಮರುಪ್ರಾರಂಭ ಬಳಸಿ.</string>
     <string name="install_direct_lkm_title">LKM ಅನ್ನು boot ಕರ್ನಲ್‌ಗೆ ನೇರವಾಗಿ ಸೇರಿಸಿ</string>
     <string name="install_direct_lkm_summary">ಇಮೇಜ್ ಪ್ಯಾಚ್, ನೇರ ಸ್ಥಾಪನೆ ಮತ್ತು OTA ಸ್ಲಾಟ್ ಸ್ಥಾಪನೆಯೆಲ್ಲವೂ init_boot ಬದಲು boot ಬಳಸುತ್ತವೆ ಮತ್ತು ಮೊದಲು ಹಳೆಯ KernelSU ramdisk ಇಂಜೆಕ್ಷನ್ ತೆರವುಗೊಳಿಸುತ್ತವೆ.</string>
     <string name="install_direct_lkm_warning_title">ಕರ್ನಲ್‌ಗೆ ನೇರವಾಗಿ ಸೇರಿಸುವ ಮೋಡ್ ಸಕ್ರಿಯವಾಗಿದೆ</string>

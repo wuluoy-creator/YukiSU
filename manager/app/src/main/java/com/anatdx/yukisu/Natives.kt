@@ -62,9 +62,6 @@ object Natives {
     val isSafeMode: Boolean
         external get
 
-    val isLateLoadMode: Boolean
-        external get
-
     val isLkmBundled: Boolean
         external get
 

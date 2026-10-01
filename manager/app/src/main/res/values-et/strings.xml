@@ -25,8 +25,6 @@
     <string name="install">Paigalda</string>
     <string name="reboot">Taaskäivita</string>
     <string name="settings">Seaded</string>
-    <string name="reboot_soft">Pehme taaskäivitus</string>
-    <string name="reboot_userspace">Pehme taaskäivitus</string>
     <string name="reboot_recovery">Taaskäivita taastusesse</string>
     <string name="reboot_bootloader">Taaskäivita käivituslaadurisse</string>
     <string name="reboot_download">Taaskäivita allalaadimisrežiimi</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Peida süsteemirakendused</string>
     <string name="send_log">Saada logid</string>
     <string name="safe_mode">Turvarežiim</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Jailbreak-teenuse käivitamine ebaõnnestus</string>
-    <string name="jailbreak_timeout">Jailbreak võis ebaõnnestuda, palun kontrollige logisid</string>
     <string name="reboot_to_apply">Muudatuste rakendamiseks taaskäivita</string>
     <string name="module_magisk_conflict">Moodulid pole saadaval Magiski konflikti tõttu!</string>
     <string name="home_support_title">Toetage arendust</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Muudatuste logi hankimine ebaõnnestus: %s</string>
     <string name="settings_check_update">Kontrolli uuendusi</string>
     <string name="settings_check_update_summary">Rakenduse avamisel kontrolli automaatselt uuendusi</string>
-    <string name="settings_auto_jailbreak">Automaatne jailbreak</string>
-    <string name="settings_auto_jailbreak_summary">Kasuta automaatselt Magicat hilise laadimise käivitamiseks, kui käivitamisel tuvastatakse lubav (Permissive) SELinux. Nõuab sellele rakendusele automaatse käivitamise loa andmist.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">Käivita adbd root-õigustega</string>
     <string name="grant_root_failed">Juurkasutaja andmine ebaõnnestus!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">Sinu seade **SUNNITAKSE** pärast taaskäivitust ebaaktiivsesse lahtrisse käivituma!\nKasuta seda valikut vaid siis, kui tegid üle-õhu uuenduse.\nJätkad?</string>
     <string name="install_next">Edasi</string>
     <string name="install_select_partition">Vali partitsioon</string>
-    <string name="install_jailbreak_title">Installimine jailbreakiga</string>
-    <string name="install_jailbreak_summary">Käivita hiline laadimine otse installilehelt lubaval seadmel. Kui root-kest pole veel saadaval, kasutatakse selle asemel Magica käivitamist.</string>
-    <string name="install_jailbreak_requires_permissive">See toiming on saadaval ainult siis, kui SELinux on lubav (permissive).</string>
-    <string name="install_jailbreak_button">Käivita hiline laadimine</string>
-    <string name="install_jailbreak_failed">Hilise laadimise käivitamine ebaõnnestus</string>
     <string name="advanced_options">Täpsemad valikud</string>
     <string name="allow_shell">Anna alati root kestale (Shell)</string>
     <string name="allow_shell_summary">Luba alati, et adb shell kutsub su. Ärge lubage seda, kui see pole hädavajalik.</string>
@@ -609,8 +597,6 @@
     <string name="ci_update_error_install_failed">CI-uuendust ei saa paigaldada.</string>
     <string name="ci_update_error_install_status">PackageInstaller ei saanud paigaldada; olekukood %1$d.</string>
     <string name="ci_update_error_stream_failed">CI-uuenduse andmevoo edastamine nurjus.</string>
-    <string name="settings_soft_reboot">Kasuta taaskäivituse asemel pehmet taaskäivitust</string>
-    <string name="settings_soft_reboot_summary">Kasuta pärast moodulite paigaldamist, uuendamist, lubamist, keelamist või eemaldamist pehmet taaskäivitust.</string>
     <string name="install_direct_lkm_title">Manusta LKM otse boot-tuuma</string>
     <string name="install_direct_lkm_summary">Tõmmise paikamine, otsepaigaldus ja OTA-pesasse paigaldamine kasutavad init_boot-i asemel boot-i ning eemaldavad esmalt vana KernelSU ramdisk-süstimise.</string>
     <string name="install_direct_lkm_warning_title">Otsene tuuma manustamine lubatud</string>

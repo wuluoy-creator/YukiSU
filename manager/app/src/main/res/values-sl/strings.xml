@@ -25,8 +25,6 @@
     <string name="install">Namesti</string>
     <string name="reboot">Znova zaženi</string>
     <string name="settings">Nastavitve</string>
-    <string name="reboot_soft">Mehki ponovni zagon</string>
-    <string name="reboot_userspace">Mehki ponovni zagon</string>
     <string name="reboot_recovery">Ponovni zagon v Recovery</string>
     <string name="reboot_bootloader">Ponovni zagon v Bootloader</string>
     <string name="reboot_download">Ponovni zagon v Download</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Skrij prikaz sistemskih aplikacij</string>
     <string name="send_log">Prijavite dnevnik</string>
     <string name="safe_mode">Varni način</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Storitve jailbreak ni bilo mogoče zagnati</string>
-    <string name="jailbreak_timeout">Jailbreak morda ni uspel, preverite dnevnike</string>
     <string name="reboot_to_apply">Za uveljavitev je potreben ponovni zagon</string>
     <string name="module_magisk_conflict">Moduli so onemogočeni, ker so v konfliktu z Magiskovimi!</string>
     <string name="home_support_title">Podpora razvoju</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Napaka pri pridobivanju dnevnika sprememb: %s</string>
     <string name="settings_check_update">Check update</string>
     <string name="settings_check_update_summary">Samodejno preveri posodobitve ob odpiranju aplikacije</string>
-    <string name="settings_auto_jailbreak">Samodejni jailbreak</string>
-    <string name="settings_auto_jailbreak_summary">Samodejno uporabi Magica za zagon poznega nalaganja, ko je ob zagonu zaznan dopustni (Permissive) SELinux. Zahteva dovoljenje za samodejni zagon te aplikacije.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">Zaženi adbd s pravicami root</string>
     <string name="grant_root_failed">Dodelitev root ni uspela!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">Vaša naprava bo po ponovnem zagonu **PRISILNO** zagnana v trenutno neaktivno režo!\nTo možnost uporabite šele po končanem OTA.\nNadaljujem?</string>
     <string name="install_next">Naprej</string>
     <string name="install_select_partition">Izberite razdelek</string>
-    <string name="install_jailbreak_title">Namestitev z jailbreak</string>
-    <string name="install_jailbreak_summary">Sproži pozno nalaganje neposredno s strani za namestitev na dopustni napravi. Če lupina root še ni na voljo, bo namesto tega uporabljen zagon Magica.</string>
-    <string name="install_jailbreak_requires_permissive">To dejanje je na voljo le, ko je SELinux dopusten (permissive).</string>
-    <string name="install_jailbreak_button">Sproži pozno nalaganje</string>
-    <string name="install_jailbreak_failed">Poznega nalaganja ni bilo mogoče sprožiti</string>
     <string name="advanced_options">Napredne možnosti</string>
     <string name="allow_shell">Vedno dodeli root lupini (Shell)</string>
     <string name="allow_shell_summary">Vedno dovoli adb shell klicati su. Ne omogočite tega, razen če je nujno potrebno.</string>
@@ -609,8 +597,6 @@
     <string name="ci_update_error_install_failed">Posodobitve CI ni mogoče namestiti.</string>
     <string name="ci_update_error_install_status">Namestitev prek PackageInstaller ni uspela; koda stanja %1$d.</string>
     <string name="ci_update_error_stream_failed">Prenos podatkovnega toka posodobitve CI ni uspel.</string>
-    <string name="settings_soft_reboot">Namesto običajnega uporabljaj mehki ponovni zagon</string>
-    <string name="settings_soft_reboot_summary">Po namestitvi, posodobitvi, omogočanju, onemogočanju ali odstranitvi modulov uporabi mehki ponovni zagon.</string>
     <string name="install_direct_lkm_title">Vdelaj LKM neposredno v jedro boot</string>
     <string name="install_direct_lkm_summary">Popravljanje slike, neposredna namestitev in namestitev v režo OTA uporabljajo boot namesto init_boot ter najprej odstranijo staro vbrizgavanje KernelSU v ramdisk.</string>
     <string name="install_direct_lkm_warning_title">Način neposredne vdelave v jedro je omogočen</string>

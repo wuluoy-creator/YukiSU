@@ -25,8 +25,6 @@
     <string name="install">Yükle</string>
     <string name="reboot">Yeniden başlat</string>
     <string name="settings">Ayarlar</string>
-    <string name="reboot_soft">Yumuşak yeniden başlatma</string>
-    <string name="reboot_userspace">Yumuşak yeniden başlatma</string>
     <string name="reboot_recovery">Kurtarma moduna yeniden başlat</string>
     <string name="reboot_bootloader">Bootloader\'a yeniden başlat</string>
     <string name="reboot_download">Download moduna yeniden başlat</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Sistem uygulamalarını gizle</string>
     <string name="send_log">Günlükleri gönder</string>
     <string name="safe_mode">Güvenli mod</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Jailbreak hizmeti başlatılamadı</string>
-    <string name="jailbreak_timeout">Jailbreak başarısız olmuş olabilir, lütfen günlükleri kontrol edin</string>
     <string name="reboot_to_apply">Etkili olması için yeniden başlatın</string>
     <string name="module_magisk_conflict">Magisk ile çakışma nedeniyle modüller kullanılamıyor!</string>
     <string name="home_support_title">Geliştirmeyi Destekleyin</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Değişiklik günlüğü alılamadı: %s</string>
     <string name="settings_check_update">Güncelleme kontrolü</string>
     <string name="settings_check_update_summary">Uygulama açıldığında otomatik olarak güncellemeleri kontrol et</string>
-    <string name="settings_auto_jailbreak">Otomatik jailbreak</string>
-    <string name="settings_auto_jailbreak_summary">Önyüklemede izin veren (Permissive) SELinux algılandığında geç yüklemeyi başlatmak için otomatik olarak Magica kullan. Bu uygulamaya otomatik başlatma izni verilmesini gerektirir.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">adbd\'yi root ayrıcalıklarıyla çalıştır</string>
     <string name="grant_root_failed">Root yetkisi verilemedi!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">Cihazınız, yeniden başlatma sonrasında **ZORUNLU** olarak mevcut etkin olmayan yuvaya önyükleme yapacaktır!\nSadece OTA tamamlandıktan sonra bu seçeneği kullanın.\nDevam etmek istiyor musunuz?</string>
     <string name="install_next">İleri</string>
     <string name="install_select_partition">Bölüm seçin</string>
-    <string name="install_jailbreak_title">Jailbreak ile kurulum</string>
-    <string name="install_jailbreak_summary">İzin veren bir aygıtta geç yüklemeyi doğrudan kurulum sayfasından tetikleyin. Henüz root kabuğu yoksa bunun yerine Magica başlatma kullanılır.</string>
-    <string name="install_jailbreak_requires_permissive">Bu eylem yalnızca SELinux izin verir (permissive) durumdayken kullanılabilir.</string>
-    <string name="install_jailbreak_button">Geç yüklemeyi tetikle</string>
-    <string name="install_jailbreak_failed">Geç yükleme tetiklenemedi</string>
     <string name="advanced_options">Gelişmiş seçenekler</string>
     <string name="allow_shell">Shell\'e her zaman root ver</string>
     <string name="allow_shell_summary">adb shell\'in su çağırmasına her zaman izin ver. Kesinlikle gerekmedikçe bunu etkinleştirmeyin.</string>
@@ -609,8 +597,6 @@
     <string name="ci_update_error_install_failed">CI güncellemesi yüklenemedi.</string>
     <string name="ci_update_error_install_status">PackageInstaller yüklemesi başarısız. Durum kodu: %1$d.</string>
     <string name="ci_update_error_stream_failed">CI güncellemesi veri akışı aktarılamadı.</string>
-    <string name="settings_soft_reboot">Yeniden başlatma yerine yumuşak yeniden başlatma kullan</string>
-    <string name="settings_soft_reboot_summary">Modül yükleme, güncelleme, etkinleştirme, devre dışı bırakma veya kaldırmadan sonra yumuşak yeniden başlatma kullanır.</string>
     <string name="install_direct_lkm_title">LKM\'yi doğrudan boot çekirdeğine göm</string>
     <string name="install_direct_lkm_summary">Seçilen görüntüyü yamalama, doğrudan yükleme ve OTA yuvasına yükleme işlemleri init_boot yerine boot kullanır ve önce eski KernelSU ramdisk enjeksiyonunu temizler.</string>
     <string name="install_direct_lkm_warning_title">Çekirdeğe doğrudan gömme kipi etkin</string>

@@ -1,7 +1,6 @@
 package com.anatdx.yukisu
 
 import android.app.Application
-import android.os.Process
 import android.system.Os
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
@@ -33,8 +32,8 @@ class KernelSUApplication : Application(), ViewModelStoreOwner {
         super.onCreate()
         ksuApp = this
 
-        // Boot and isolated Magica processes only need the native/bootstrap environment.
-        if (isBootstrapProcess()) {
+        // Boot receivers and services only need the native environment.
+        if (Application.getProcessName() == "$packageName:boot") {
             Os.setenv("TMPDIR", cacheDir.absolutePath, true)
             return
         }
@@ -85,7 +84,4 @@ class KernelSUApplication : Application(), ViewModelStoreOwner {
     }
     override val viewModelStore: ViewModelStore
         get() = appViewModelStore
-
-    private fun isBootstrapProcess(): Boolean =
-        Process.isIsolated() || Application.getProcessName() == "$packageName:boot"
 }

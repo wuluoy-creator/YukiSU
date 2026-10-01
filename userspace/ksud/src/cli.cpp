@@ -15,9 +15,7 @@
 #include "flash/flash_ak3.hpp"
 #include "flash/flash_partition.hpp"
 #include "init_event.hpp"
-#include "late_load.hpp"
 #include "log.hpp"
-#include "magica/magica.hpp"
 #include "magisk_compat/msud.hpp"
 #include "module/module.hpp"
 #include "module/module_config.hpp"
@@ -587,17 +585,6 @@ int cmd_flash_new(const std::vector<std::string>& args, const CliArguments& cli)
     return 1;
 }
 
-int cmd_late_load(const CliArguments& cli) {
-    if (cli.has("--magica")) {
-        uint32_t port = 0;
-        if (!parse_uint32(cli.value("--magica"), &port) || port == 0 || port > 65535)
-            return terminal::usage_error("invalid Magica port: expected 1 through 65535",
-                                         "ksud late-load --magica [PORT] [--allow-shell]");
-        return magica::run(static_cast<uint16_t>(port), cli.has("--allow-shell"));
-    }
-    return late_load::run(cli.has("--post-magica"), cli.has("--allow-shell"));
-}
-
 }  // namespace
 
 int cli_run(int argc, char** argv) {
@@ -696,8 +683,6 @@ int cli_run(int argc, char** argv) {
         return 0;
     } else if (cmd == "insmod") {
         return cmd_insmod(args);
-    } else if (cmd == "late-load") {
-        return cmd_late_load(cli);
     } else if (cmd == "post-fs-data") {
         return on_post_data_fs();
     } else if (cmd == "services") {
@@ -706,8 +691,6 @@ int cli_run(int argc, char** argv) {
     } else if (cmd == "boot-completed") {
         on_boot_completed();
         return 0;
-    } else if (cmd == "soft-reboot") {
-        return soft_reboot();
     } else if (cmd == "module") {
         return cmd_module(args);
     } else if (cmd == "plugin") {

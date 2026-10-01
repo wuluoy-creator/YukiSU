@@ -405,19 +405,15 @@ set(KSUD_OUR_SOURCES
     src/su.cpp
     src/su_args.cpp
     src/init_event.cpp
-    src/soft_reboot_waiter.cpp
     src/integrity_monitor.cpp
     src/yukizygisk_diagnostics.cpp
     src/yukizygisk_snapshot.cpp
     src/yzctl.cpp
-    src/late_load.cpp
     src/umount.cpp
     src/debug.cpp
     src/sulog.cpp
     src/magisk_compat/msud.cpp
     src/magisk_compat/su_transition.cpp
-    src/magica/adb_client.cpp
-    src/magica/magica.cpp
     src/core/hide_bootloader.cpp
     src/flash/flash_ak3.cpp
     src/flash/flash_partition.cpp

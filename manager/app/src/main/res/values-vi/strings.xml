@@ -25,8 +25,6 @@
     <string name="install">Cài đặt</string>
     <string name="reboot">Khởi động lại</string>
     <string name="settings">Cài đặt</string>
-    <string name="reboot_soft">Khởi động lại mềm</string>
-    <string name="reboot_userspace">Khởi động lại mềm</string>
     <string name="reboot_recovery">Khởi động lại vào Recovery</string>
     <string name="reboot_bootloader">Khởi động lại vào Bootloader</string>
     <string name="reboot_download">Khởi động lại vào Download</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Ẩn ứng dụng hệ thống</string>
     <string name="send_log">Gửi nhật ký</string>
     <string name="safe_mode">Chế độ an toàn</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Không thể khởi động dịch vụ jailbreak</string>
-    <string name="jailbreak_timeout">Jailbreak có thể đã thất bại, vui lòng kiểm tra nhật ký</string>
     <string name="reboot_to_apply">Khởi động lại để có hiệu lực</string>
     <string name="module_magisk_conflict">Các module không khả dụng do xung đột với Magisk!</string>
     <string name="home_support_title">Hỗ trợ phát triển</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Lấy changelog thất bại: %s</string>
     <string name="settings_check_update">Kiểm tra cập nhật</string>
     <string name="settings_check_update_summary">Tự động kiểm tra cập nhật khi mở ứng dụng</string>
-    <string name="settings_auto_jailbreak">Jailbreak tự động</string>
-    <string name="settings_auto_jailbreak_summary">Tự động dùng Magica để khởi động late-load khi phát hiện SELinux Permissive lúc khởi động. Cần cấp quyền tự khởi động cho ứng dụng này.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">Chạy adbd với quyền root</string>
     <string name="grant_root_failed">Cấp quyền root thất bại!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">Thiết bị của bạn sẽ **BUỘC** phải khởi động vào phân vùng chưa được sử dụng!\nChỉ sử dụng tùy chọn này sau khi cập nhật OTA hoàn tất.\nTiếp tục?</string>
     <string name="install_next">Kế tiếp</string>
     <string name="install_select_partition">Chọn phân vùng</string>
-    <string name="install_jailbreak_title">Cài đặt bằng jailbreak</string>
-    <string name="install_jailbreak_summary">Kích hoạt late-load trực tiếp từ trang cài đặt trên thiết bị permissive. Nếu chưa có shell root, sẽ dùng khởi động Magica thay thế.</string>
-    <string name="install_jailbreak_requires_permissive">Thao tác này chỉ khả dụng khi SELinux ở chế độ permissive.</string>
-    <string name="install_jailbreak_button">Kích hoạt tải muộn</string>
-    <string name="install_jailbreak_failed">Không thể kích hoạt late-load</string>
     <string name="advanced_options">Tùy chọn nâng cao</string>
     <string name="allow_shell">Luôn cấp root cho Shell</string>
     <string name="allow_shell_summary">Luôn cho phép adb shell gọi su. Đừng bật trừ khi thực sự cần thiết.</string>
@@ -629,8 +617,6 @@
     <string name="ci_update_error_install_failed">Không thể cài bản cập nhật CI.</string>
     <string name="ci_update_error_install_status">PackageInstaller cài đặt thất bại với mã trạng thái %1$d.</string>
     <string name="ci_update_error_stream_failed">Truyền luồng dữ liệu cập nhật CI thất bại.</string>
-    <string name="settings_soft_reboot">Dùng khởi động lại mềm thay cho khởi động lại</string>
-    <string name="settings_soft_reboot_summary">Dùng khởi động lại mềm sau khi cài, cập nhật, bật, tắt hoặc xóa mô-đun.</string>
     <string name="install_direct_lkm_title">Nhúng LKM trực tiếp vào nhân boot</string>
     <string name="install_direct_lkm_summary">Vá ảnh, cài trực tiếp và cài vào khe OTA đều dùng boot thay cho init_boot, đồng thời dọn phần chèn ramdisk KernelSU cũ trước.</string>
     <string name="install_direct_lkm_warning_title">Đã bật chế độ nhúng trực tiếp vào nhân</string>

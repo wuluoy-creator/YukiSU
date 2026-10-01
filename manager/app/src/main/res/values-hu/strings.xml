@@ -25,8 +25,6 @@
     <string name="install">Telepítés</string>
     <string name="reboot">Újraindítás</string>
     <string name="settings">Beállítások</string>
-    <string name="reboot_soft">Lágy újraindítás</string>
-    <string name="reboot_userspace">Rendszerfelület újraindítása</string>
     <string name="reboot_recovery">Indítsa újra a helyreállításhoz</string>
     <string name="reboot_bootloader">Indítsa újra a Bootloader alkalmazást</string>
     <string name="reboot_download">Újraindítás letöltő módba</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Rendszeralkalmazások elrejtése</string>
     <string name="send_log">Naplók küldése</string>
     <string name="safe_mode">Biztonságos mód</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Nem sikerült elindítani a jailbreak szolgáltatást</string>
-    <string name="jailbreak_timeout">A jailbreak sikertelen lehetett, kérjük, ellenőrizze a naplókat</string>
     <string name="reboot_to_apply">Indítsa újra a készüléket a változások érvényesítéséhez</string>
     <string name="module_magisk_conflict">A modulok nem érhetők el a Magiskkel való ütközés miatt!</string>
     <string name="home_support_title">Fejlesztés támogatása</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">A változásnapló lekérése nem sikerült: %s</string>
     <string name="settings_check_update">Frissítés ellenőrzése</string>
     <string name="settings_check_update_summary">Automatikusan keressen frissítéseket az alkalmazás megnyitásakor</string>
-    <string name="settings_auto_jailbreak">Automatikus jailbreak</string>
-    <string name="settings_auto_jailbreak_summary">A Magica automatikus használata a késleltetett betöltés indításához, ha indításkor engedékeny (Permissive) SELinux észlelhető. Automatikus indítási engedélyt igényel az alkalmazáshoz.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">Az adbd futtatása root jogosultságokkal</string>
     <string name="grant_root_failed">A root jog megadása sikertelen!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">Az eszköze **KÉNYSZERÍTETTEN** a jelenleg inaktív helyről fog indulni újraindítás után!\nCsak az OTA befejezése után használja.\nFolytatja?</string>
     <string name="install_next">Következő</string>
     <string name="install_select_partition">Partíció kiválasztása</string>
-    <string name="install_jailbreak_title">Telepítés jailbreakkel</string>
-    <string name="install_jailbreak_summary">A késleltetett betöltés indítása közvetlenül a telepítési oldalról egy engedékeny eszközön. Ha még nincs elérhető root shell, helyette a Magica bootstrap kerül használatra.</string>
-    <string name="install_jailbreak_requires_permissive">Ez a művelet csak akkor érhető el, ha a SELinux engedékeny (permissive).</string>
-    <string name="install_jailbreak_button">Késleltetett betöltés indítása</string>
-    <string name="install_jailbreak_failed">Nem sikerült elindítani a késleltetett betöltést</string>
     <string name="advanced_options">Speciális beállítások</string>
     <string name="allow_shell">Mindig adjon root jogot a Shellnek</string>
     <string name="allow_shell_summary">Mindig engedélyezze, hogy az adb shell meghívja a su-t. Csak akkor engedélyezze, ha feltétlenül szükséges.</string>
@@ -610,8 +598,6 @@ A</string>
     <string name="ci_update_error_install_failed">A CI frissítés nem telepíthető.</string>
     <string name="ci_update_error_install_status">A PackageInstaller telepítése sikertelen. Állapotkód: %1$d.</string>
     <string name="ci_update_error_stream_failed">A CI frissítési adatfolyam átvitele sikertelen.</string>
-    <string name="settings_soft_reboot">Lágy újraindítás használata újraindítás helyett</string>
-    <string name="settings_soft_reboot_summary">Lágy újraindítás modulok telepítése, frissítése, engedélyezése, letiltása vagy eltávolítása után.</string>
     <string name="install_direct_lkm_title">LKM beágyazása közvetlenül a boot kernelbe</string>
     <string name="install_direct_lkm_summary">A kiválasztott lemezkép javítása, a közvetlen telepítés és az OTA slotba telepítés boot-ot használ init_boot helyett, és előbb eltávolítja a régi KernelSU ramdisk-injektálást.</string>
     <string name="install_direct_lkm_warning_title">Közvetlen kernelbeágyazás engedélyezve</string>

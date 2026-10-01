@@ -25,8 +25,6 @@
     <string name="install">Instal</string>
     <string name="reboot">Reboot</string>
     <string name="settings">Pengaturan</string>
-    <string name="reboot_soft">Mulai ulang lunak</string>
-    <string name="reboot_userspace">Soft Reboot</string>
     <string name="reboot_recovery">Reboot ke Recovery</string>
     <string name="reboot_bootloader">Reboot ke Bootloader</string>
     <string name="reboot_download">Reboot ke Download</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Sembunyikan aplikasi sistem</string>
     <string name="send_log">Kirim Log</string>
     <string name="safe_mode">Mode aman</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Gagal memulai layanan jailbreak</string>
-    <string name="jailbreak_timeout">Jailbreak mungkin gagal, silakan periksa log</string>
     <string name="reboot_to_apply">Reboot agar berfungsi</string>
     <string name="module_magisk_conflict">Konflik dengan Magisk, fungsi modul ditiadakan!</string>
     <string name="home_support_title">Mendukung Pengembangan</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Gagal mengambil Changelog: %s</string>
     <string name="settings_check_update">Cek terbaru</string>
     <string name="settings_check_update_summary">Cek terbaru setiap membuka aplikasi</string>
-    <string name="settings_auto_jailbreak">Jailbreak otomatis</string>
-    <string name="settings_auto_jailbreak_summary">Otomatis menggunakan Magica untuk memulai late-load saat SELinux Permissive terdeteksi saat boot. Memerlukan izin mulai otomatis untuk aplikasi ini.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">Jalankan adbd dengan hak akses root</string>
     <string name="grant_root_failed">Gagal memberikan akses root!</string>
@@ -127,11 +120,6 @@
 \nLanjutkan?</string>
     <string name="install_next">Selanjutnya</string>
     <string name="install_select_partition">Pilih partisi</string>
-    <string name="install_jailbreak_title">Pemasangan via jailbreak</string>
-    <string name="install_jailbreak_summary">Picu late-load langsung dari halaman pemasangan pada perangkat permissive. Jika belum ada shell root, bootstrap Magica akan digunakan sebagai gantinya.</string>
-    <string name="install_jailbreak_requires_permissive">Tindakan ini hanya tersedia saat SELinux permissive.</string>
-    <string name="install_jailbreak_button">Picu late-load</string>
-    <string name="install_jailbreak_failed">Gagal memicu late-load</string>
     <string name="advanced_options">Opsi lanjutan</string>
     <string name="allow_shell">Selalu beri root ke Shell</string>
     <string name="allow_shell_summary">Selalu izinkan adb shell memanggil su. Jangan aktifkan kecuali benar-benar diperlukan.</string>
@@ -633,8 +621,6 @@
     <string name="ci_update_error_install_failed">Tidak dapat memasang pembaruan CI.</string>
     <string name="ci_update_error_install_status">Pemasangan PackageInstaller gagal dengan kode status %1$d.</string>
     <string name="ci_update_error_stream_failed">Transfer aliran data pembaruan CI gagal.</string>
-    <string name="settings_soft_reboot">Gunakan mulai ulang lunak sebagai pengganti mulai ulang</string>
-    <string name="settings_soft_reboot_summary">Gunakan mulai ulang lunak setelah memasang, memperbarui, mengaktifkan, menonaktifkan, atau menghapus modul.</string>
     <string name="install_direct_lkm_title">Sematkan LKM langsung ke kernel boot</string>
     <string name="install_direct_lkm_summary">Patch citra, pemasangan langsung, dan pemasangan slot OTA semuanya menggunakan boot sebagai pengganti init_boot serta membersihkan injeksi ramdisk KernelSU lama terlebih dahulu.</string>
     <string name="install_direct_lkm_warning_title">Mode penyematan kernel langsung aktif</string>

@@ -25,8 +25,6 @@
     <string name="install">Įdiegti</string>
     <string name="reboot">Paleisti iš naujo</string>
     <string name="settings">Parametrai</string>
-    <string name="reboot_soft">Švelnus paleidimas iš naujo</string>
-    <string name="reboot_userspace">Perkrovimas neišjungus</string>
     <string name="reboot_recovery">Perkrauti į atkūrimo rėžimą</string>
     <string name="reboot_bootloader">Perkrauti į įkrovos tvarkyklę</string>
     <string name="reboot_download">Perkrauti į atsisiuntimo rėžimą</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Slėpti sistemos programas</string>
     <string name="send_log">Siųsti žurnalą</string>
     <string name="safe_mode">Saugus rėžimas</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Nepavyko paleisti jailbreak paslaugos</string>
-    <string name="jailbreak_timeout">Jailbreak galėjo nepavykti, patikrinkite žurnalus</string>
     <string name="reboot_to_apply">Paleiskite iš naujo, kad įsigaliotų</string>
     <string name="module_magisk_conflict">Moduliai yra išjungti, nes jie konfliktuoja su Magisk\'s!</string>
     <string name="home_support_title">Parama plėtrai</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Nepavyko gauti keitimų žurnalo: %s</string>
     <string name="settings_check_update">Check update</string>
     <string name="settings_check_update_summary">Automatiškai tikrinti atnaujinimus atidarant programą</string>
-    <string name="settings_auto_jailbreak">Automatinis jailbreak</string>
-    <string name="settings_auto_jailbreak_summary">Automatiškai naudoti Magica vėlyvajam įkėlimui paleisti, kai paleidimo metu aptinkamas leidžiamasis (Permissive) SELinux. Reikalingas šios programos automatinio paleidimo leidimas.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">Paleisti adbd su root teisėmis</string>
     <string name="grant_root_failed">Nepavyko suteikti root!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">Jūsų įrenginys bus **PRIVERSTINAI** paleistas į dabartinį neaktyvų lizdą po paleidimo iš naujo!\nNaudokite šią parinktį tik po OTA užbaigimo.\nTęsti?</string>
     <string name="install_next">Toliau</string>
     <string name="install_select_partition">Pasirinkti skaidinį</string>
-    <string name="install_jailbreak_title">Diegimas naudojant jailbreak</string>
-    <string name="install_jailbreak_summary">Paleisti vėlyvąjį įkėlimą tiesiai iš diegimo puslapio leidžiamajame įrenginyje. Jei root apvalkalas dar nepasiekiamas, vietoj jo bus naudojamas Magica paleidimas.</string>
-    <string name="install_jailbreak_requires_permissive">Šis veiksmas galimas tik tada, kai SELinux yra leidžiamasis (permissive).</string>
-    <string name="install_jailbreak_button">Paleisti vėlyvąjį įkėlimą</string>
-    <string name="install_jailbreak_failed">Nepavyko paleisti vėlyvojo įkėlimo</string>
     <string name="advanced_options">Išplėstinės parinktys</string>
     <string name="allow_shell">Visada suteikti root apvalkalui (Shell)</string>
     <string name="allow_shell_summary">Visada leisti adb shell iškviesti su. Neįjunkite, jei tai nėra absoliučiai būtina.</string>
@@ -609,8 +597,6 @@
     <string name="ci_update_error_install_failed">Nepavyko įdiegti CI atnaujinimo.</string>
     <string name="ci_update_error_install_status">PackageInstaller diegimas nepavyko; būsenos kodas %1$d.</string>
     <string name="ci_update_error_stream_failed">Nepavyko perduoti CI atnaujinimo duomenų srauto.</string>
-    <string name="settings_soft_reboot">Vietoj įprasto paleidimo iš naujo naudoti švelnųjį</string>
-    <string name="settings_soft_reboot_summary">Įdiegus, atnaujinus, įjungus, išjungus ar pašalinus modulius naudoti švelnųjį paleidimą iš naujo.</string>
     <string name="install_direct_lkm_title">Įterpti LKM tiesiai į boot branduolį</string>
     <string name="install_direct_lkm_summary">Atvaizdo taisymas, tiesioginis diegimas ir diegimas į OTA lizdą naudoja boot vietoj init_boot ir pirmiausia pašalina ankstesnę KernelSU ramdisk injekciją.</string>
     <string name="install_direct_lkm_warning_title">Tiesioginio įterpimo į branduolį režimas įjungtas</string>

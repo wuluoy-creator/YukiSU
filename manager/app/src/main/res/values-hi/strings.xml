@@ -25,8 +25,6 @@
     <string name="install">इंस्टाल करें</string>
     <string name="reboot">रीबूट करें</string>
     <string name="settings">सेटिंग</string>
-    <string name="reboot_soft">सॉफ्ट रीस्टार्ट</string>
-    <string name="reboot_userspace">सॉफ्ट रिबूट</string>
     <string name="reboot_recovery">रिकवरी में रिबूट करें</string>
     <string name="reboot_bootloader">बुटलोडर में रिबूट करें</string>
     <string name="reboot_download">डाउनलोड में रिबूट करें</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">सिस्टम एप्प छिपाए</string>
     <string name="send_log">लॉग भेजे</string>
     <string name="safe_mode">सुरक्षित मोड</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">jailbreak सेवा शुरू करने में विफल</string>
-    <string name="jailbreak_timeout">Jailbreak शायद विफल हो गया, कृपया लॉग जांचें</string>
     <string name="reboot_to_apply">प्रभाव में होने के लिए रीबूट करें</string>
     <string name="module_magisk_conflict">मॉड्यूल बंद कर दिए गए हैं क्योंकि यह मैजिक के साथ टकरा रहे है!</string>
     <string name="home_support_title">विकास का समर्थन करें</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">चेंजलॉग प्राप्त करने में विफल: %s</string>
     <string name="settings_check_update">Check update</string>
     <string name="settings_check_update_summary">ऐप खोलने पर स्वचालित रूप से अपडेट की जांच करें</string>
-    <string name="settings_auto_jailbreak">स्वचालित jailbreak</string>
-    <string name="settings_auto_jailbreak_summary">बूट पर Permissive SELinux का पता चलने पर late-load बूटस्ट्रैप करने के लिए स्वचालित रूप से Magica का उपयोग करें। इस ऐप को स्वतः-प्रारंभ अनुमति देने की आवश्यकता है।</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">adbd को root विशेषाधिकारों के साथ चलाएं</string>
     <string name="grant_root_failed">root प्रदान करने में विफल!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">रीबूट के बाद आपके डिवाइस को वर्तमान निष्क्रिय स्लॉट में बूट करने के लिए **बाध्य** किया जाएगा!\nइस विकल्प का उपयोग केवल OTA पूरा होने के बाद करें।\nजारी रखें?</string>
     <string name="install_next">अगला</string>
     <string name="install_select_partition">पार्टीशन चुनें</string>
-    <string name="install_jailbreak_title">Jailbreak इंस्टॉल</string>
-    <string name="install_jailbreak_summary">permissive डिवाइस पर इंस्टॉल पृष्ठ से सीधे late-load ट्रिगर करें। यदि अभी तक कोई root शेल उपलब्ध नहीं है, तो इसके बजाय Magica बूटस्ट्रैप का उपयोग किया जाएगा।</string>
-    <string name="install_jailbreak_requires_permissive">यह क्रिया केवल तब उपलब्ध है जब SELinux permissive हो।</string>
-    <string name="install_jailbreak_button">late-load ट्रिगर करें</string>
-    <string name="install_jailbreak_failed">late-load ट्रिगर करने में विफल</string>
     <string name="advanced_options">उन्नत विकल्प</string>
     <string name="allow_shell">Shell को हमेशा root प्रदान करें</string>
     <string name="allow_shell_summary">adb shell को हमेशा su कॉल करने की अनुमति दें। जब तक बिल्कुल आवश्यक न हो, इसे सक्षम न करें।</string>
@@ -629,8 +617,6 @@
     <string name="ci_update_error_install_failed">CI अपडेट इंस्टॉल नहीं किया जा सका।</string>
     <string name="ci_update_error_install_status">PackageInstaller इंस्टॉलेशन विफल हुआ, स्थिति कोड %1$d।</string>
     <string name="ci_update_error_stream_failed">CI अपडेट डेटा स्ट्रीम स्थानांतरण विफल हुआ।</string>
-    <string name="settings_soft_reboot">रीस्टार्ट के बजाय सॉफ़्ट रीस्टार्ट इस्तेमाल करें</string>
-    <string name="settings_soft_reboot_summary">मॉड्यूल इंस्टॉल, अपडेट, सक्षम, अक्षम या हटाने के बाद सॉफ़्ट रीस्टार्ट इस्तेमाल करें।</string>
     <string name="install_direct_lkm_title">LKM को सीधे boot कर्नेल में एम्बेड करें</string>
     <string name="install_direct_lkm_summary">इमेज पैच, सीधे इंस्टॉल और OTA स्लॉट इंस्टॉल के लिए init_boot की जगह boot उपयोग होगा और पहले पुराना KernelSU ramdisk इंजेक्शन साफ़ होगा।</string>
     <string name="install_direct_lkm_warning_title">कर्नेल में सीधे एम्बेड करने का मोड सक्षम है</string>

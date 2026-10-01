@@ -25,8 +25,6 @@
     <string name="install">インストール</string>
     <string name="reboot">再起動</string>
     <string name="settings">設定</string>
-    <string name="reboot_soft">ソフト再起動</string>
-    <string name="reboot_userspace">ソフトリブート</string>
     <string name="reboot_recovery">リカバリーで再起動</string>
     <string name="reboot_bootloader">ブートローダーで再起動</string>
     <string name="reboot_download">ダウンロードモードで再起動</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">システムアプリを非表示</string>
     <string name="send_log">ログを送信する</string>
     <string name="safe_mode">セーフモード</string>
-    <string name="home_jailbreak">脱獄</string>
-    <string name="home_jailbreak_failed">脱獄サービスの起動に失敗しました</string>
-    <string name="jailbreak_timeout">脱獄に失敗した可能性があります。ログを確認してください</string>
     <string name="reboot_to_apply">再起動すると有効化されます</string>
     <string name="module_magisk_conflict">モジュールが Magisk との競合により利用できません！</string>
     <string name="home_support_title">サポート開発</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">変更ログの取得に失敗しました: %s</string>
     <string name="settings_check_update">更新を確認する</string>
     <string name="settings_check_update_summary">アプリの起動時に更新を自動で確認します。</string>
-    <string name="settings_auto_jailbreak">自動脱獄</string>
-    <string name="settings_auto_jailbreak_summary">起動時に Permissive な SELinux を検出した場合、Magica を使って自動的に late-load を開始します。このアプリに自動起動の許可が必要です。</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">adbd を root 権限で実行します</string>
     <string name="grant_root_failed">root の付与に失敗しました！</string>
@@ -127,11 +120,6 @@
 \n続行しますか？</string>
     <string name="install_next">次へ</string>
     <string name="install_select_partition">パーティションを選択</string>
-    <string name="install_jailbreak_title">脱獄インストール</string>
-    <string name="install_jailbreak_summary">Permissive なデバイスでインストールページから直接 late-load をトリガーします。root シェルがまだ使えない場合は、代わりに Magica ブートストラップが使用されます。</string>
-    <string name="install_jailbreak_requires_permissive">この操作は SELinux が Permissive のときのみ使用できます。</string>
-    <string name="install_jailbreak_button">late-load をトリガー</string>
-    <string name="install_jailbreak_failed">late-load のトリガーに失敗しました</string>
     <string name="advanced_options">詳細オプション</string>
     <string name="allow_shell">Shell に常に root を許可</string>
     <string name="allow_shell_summary">adb shell が su を呼び出すことを常に許可します。本当に必要な場合以外は有効にしないでください。</string>
@@ -631,8 +619,6 @@
     <string name="ci_update_error_install_failed">CI 更新をインストールできません。</string>
     <string name="ci_update_error_install_status">PackageInstaller によるインストールに失敗しました。ステータスコード：%1$d。</string>
     <string name="ci_update_error_stream_failed">CI 更新のストリーム転送に失敗しました。</string>
-    <string name="settings_soft_reboot">再起動の代わりにソフト再起動を使用</string>
-    <string name="settings_soft_reboot_summary">モジュールのインストール、更新、有効化、無効化、削除後にソフト再起動を使用します。</string>
     <string name="install_direct_lkm_title">LKM を boot カーネルに直接組み込む</string>
     <string name="install_direct_lkm_summary">イメージへのパッチ、直接インストール、OTA スロットへのインストールで init_boot の代わりに boot を使用し、先に古い KernelSU の ramdisk インジェクションを除去します。</string>
     <string name="install_direct_lkm_warning_title">カーネル直接組み込みモードが有効です</string>

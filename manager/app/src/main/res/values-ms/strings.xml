@@ -25,8 +25,6 @@
     <string name="install">Pasang</string>
     <string name="reboot">But semula</string>
     <string name="settings">Tetapan</string>
-    <string name="reboot_soft">But semula lembut</string>
-    <string name="reboot_userspace">Soft Reboot</string>
     <string name="reboot_recovery">Reboot ke Recovery</string>
     <string name="reboot_bootloader">Reboot ke Bootloader</string>
     <string name="reboot_download">Reboot ke Download</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Sembunyikan aplikasi sistem</string>
     <string name="send_log">Hantar log</string>
     <string name="safe_mode">Mod selamat</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Gagal memulakan perkhidmatan jailbreak</string>
-    <string name="jailbreak_timeout">Jailbreak mungkin gagal, sila semak log</string>
     <string name="reboot_to_apply">But semula untuk berkuat kuasa</string>
     <string name="module_magisk_conflict">Modul dilumpuhkan kerana berkonflik dengan modul Magisk!</string>
     <string name="home_support_title">Pembangunan Sokongan</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Gagal mendapatkan log perubahan: %s</string>
     <string name="settings_check_update">Check update</string>
     <string name="settings_check_update_summary">Semak kemas kini secara automatik apabila membuka aplikasi</string>
-    <string name="settings_auto_jailbreak">Jailbreak automatik</string>
-    <string name="settings_auto_jailbreak_summary">Gunakan Magica secara automatik untuk memulakan late-load apabila SELinux Permissive dikesan semasa but. Memerlukan kebenaran mula automatik untuk aplikasi ini.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">Jalankan adbd dengan keistimewaan root</string>
     <string name="grant_root_failed">Gagal memberikan akses root!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">Peranti anda akan **DIPAKSA** but ke slot tidak aktif semasa selepas but semula!\nGunakan pilihan ini hanya selepas OTA selesai.\nTeruskan?</string>
     <string name="install_next">Seterusnya</string>
     <string name="install_select_partition">Pilih partition</string>
-    <string name="install_jailbreak_title">Pemasangan melalui jailbreak</string>
-    <string name="install_jailbreak_summary">Picu late-load terus daripada halaman pemasangan pada peranti permissive. Jika belum ada shell root, bootstrap Magica akan digunakan sebaliknya.</string>
-    <string name="install_jailbreak_requires_permissive">Tindakan ini hanya tersedia semasa SELinux dalam permissive.</string>
-    <string name="install_jailbreak_button">Picu late-load</string>
-    <string name="install_jailbreak_failed">Gagal memicu late-load</string>
     <string name="advanced_options">Pilihan lanjutan</string>
     <string name="allow_shell">Sentiasa beri root kepada Shell</string>
     <string name="allow_shell_summary">Sentiasa benarkan adb shell memanggil su. Jangan dayakan ini melainkan benar-benar perlu.</string>
@@ -629,8 +617,6 @@
     <string name="ci_update_error_install_failed">Tidak dapat memasang kemas kini CI.</string>
     <string name="ci_update_error_install_status">Pemasangan PackageInstaller gagal dengan kod status %1$d.</string>
     <string name="ci_update_error_stream_failed">Pemindahan strim data kemas kini CI gagal.</string>
-    <string name="settings_soft_reboot">Gunakan but semula lembut menggantikan but semula</string>
-    <string name="settings_soft_reboot_summary">Gunakan but semula lembut selepas memasang, mengemas kini, mendayakan, melumpuhkan atau membuang modul.</string>
     <string name="install_direct_lkm_title">Benamkan LKM terus ke dalam kernel boot</string>
     <string name="install_direct_lkm_summary">Tampalan imej, pemasangan terus dan pemasangan slot OTA semuanya menggunakan boot menggantikan init_boot serta membersihkan suntikan ramdisk KernelSU lama terlebih dahulu.</string>
     <string name="install_direct_lkm_warning_title">Mod pembenaman terus ke kernel didayakan</string>

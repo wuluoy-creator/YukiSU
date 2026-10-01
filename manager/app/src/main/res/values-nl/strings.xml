@@ -25,8 +25,6 @@
     <string name="install">Installeren</string>
     <string name="reboot">Herstart</string>
     <string name="settings">Instellingen</string>
-    <string name="reboot_soft">Zachte herstart</string>
-    <string name="reboot_userspace">Soft herstart</string>
     <string name="reboot_recovery">Herstart naar Recovery</string>
     <string name="reboot_bootloader">Herstart naar Bootloader</string>
     <string name="reboot_download">Herstart om te downloaden</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Verberg systeem apps</string>
     <string name="send_log">Verzenden Logs</string>
     <string name="safe_mode">Veilige modus</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Kan jailbreak-service niet starten</string>
-    <string name="jailbreak_timeout">Jailbreak is mogelijk mislukt, controleer de logboeken</string>
     <string name="reboot_to_apply">Herstart om effect te hebben</string>
     <string name="module_magisk_conflict">Modules zijn niet beschikbaar vanwege een conflict met Magisk!</string>
     <string name="home_support_title">Ondersteuning van ontwikkeling</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Ophalen van wijzigingslogboek mislukt: %s</string>
     <string name="settings_check_update">Controleer update</string>
     <string name="settings_check_update_summary">Controleer automatisch op updates bij het openen van de app</string>
-    <string name="settings_auto_jailbreak">Automatische jailbreak</string>
-    <string name="settings_auto_jailbreak_summary">Gebruik automatisch Magica om laat laden te starten wanneer bij het opstarten een permissieve SELinux wordt gedetecteerd. Vereist dat deze app toestemming voor automatisch starten krijgt.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">adbd met root-rechten uitvoeren</string>
     <string name="grant_root_failed">Kan geen root verlenen!</string>
@@ -127,11 +120,6 @@
 \nDoorgaan?</string>
     <string name="install_next">Naast</string>
     <string name="install_select_partition">Partitie selecteren</string>
-    <string name="install_jailbreak_title">Installatie via jailbreak</string>
-    <string name="install_jailbreak_summary">Activeer laat laden rechtstreeks vanaf de installatiepagina op een permissief apparaat. Als er nog geen root-shell beschikbaar is, wordt in plaats daarvan Magica gebruikt.</string>
-    <string name="install_jailbreak_requires_permissive">Deze actie is alleen beschikbaar wanneer SELinux permissief is.</string>
-    <string name="install_jailbreak_button">Laat laden activeren</string>
-    <string name="install_jailbreak_failed">Kan laat laden niet activeren</string>
     <string name="advanced_options">Geavanceerde opties</string>
     <string name="allow_shell">Altijd root verlenen aan Shell</string>
     <string name="allow_shell_summary">Sta adb shell altijd toe om su aan te roepen. Schakel dit alleen in als het absoluut noodzakelijk is.</string>
@@ -611,8 +599,6 @@
     <string name="ci_update_error_install_failed">Kan CI-update niet installeren.</string>
     <string name="ci_update_error_install_status">Installatie via PackageInstaller mislukt, statuscode %1$d.</string>
     <string name="ci_update_error_stream_failed">Overdracht van CI-updategegevensstroom mislukt.</string>
-    <string name="settings_soft_reboot">Zachte herstart gebruiken in plaats van herstart</string>
-    <string name="settings_soft_reboot_summary">Een zachte herstart gebruiken na het installeren, bijwerken, inschakelen, uitschakelen of verwijderen van modules.</string>
     <string name="install_direct_lkm_title">LKM direct in de boot-kernel integreren</string>
     <string name="install_direct_lkm_summary">Image patchen, directe installatie en installatie in het OTA-slot gebruiken boot in plaats van init_boot en verwijderen eerst de oude KernelSU-ramdiskinjectie.</string>
     <string name="install_direct_lkm_warning_title">Directe kernelintegratie ingeschakeld</string>

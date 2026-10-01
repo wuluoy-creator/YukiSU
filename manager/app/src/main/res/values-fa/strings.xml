@@ -25,8 +25,6 @@
     <string name="install">نصب</string>
     <string name="reboot">راه اندازی دوباره</string>
     <string name="settings">تنظیمات</string>
-    <string name="reboot_soft">راه‌اندازی مجدد نرم</string>
-    <string name="reboot_userspace">راه اندازی نرم</string>
     <string name="reboot_recovery">راه اندازی به ریکاوری </string>
     <string name="reboot_bootloader">راه اندازی به بوتلودر</string>
     <string name="reboot_download">راه اندازی به حالت دانلود</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">مخفی کردن برنامه های سیستمی</string>
     <string name="send_log">ارسال وقایع</string>
     <string name="safe_mode">حالت ایمن</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">شروع سرویس jailbreak انجام نشد</string>
-    <string name="jailbreak_timeout">ممکن است jailbreak ناموفق بوده باشد، لطفاً لاگ‌ها را بررسی کنید</string>
     <string name="reboot_to_apply">راه‌اندازی مجدد برای تاثیرگذاری</string>
     <string name="module_magisk_conflict">مازول به دلیل تعارض با مجیسک غیرفعال شده اند\'s!</string>
     <string name="home_support_title">توسعه پشتیبانی</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">دریافت تغییرات انجام نشد: %s</string>
     <string name="settings_check_update">Check update</string>
     <string name="settings_check_update_summary">هنگام باز کردن برنامه به‌طور خودکار به‌روزرسانی‌ها را بررسی کن</string>
-    <string name="settings_auto_jailbreak">‏Jailbreak خودکار</string>
-    <string name="settings_auto_jailbreak_summary">هنگام تشخیص Permissive SELinux در بوت، به‌طور خودکار از Magica برای راه‌اندازی late-load استفاده کن. نیازمند اعطای مجوز شروع خودکار به این برنامه است.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">‏adbd را با دسترسی root اجرا کن</string>
     <string name="grant_root_failed">اعطای دسترسی root انجام نشد!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">دستگاه شما پس از راه‌اندازی مجدد **مجبور** به بوت در اسلات غیرفعال فعلی خواهد شد!\nاین گزینه را فقط پس از اتمام OTA استفاده کنید.\nادامه می‌دهید؟</string>
     <string name="install_next">بعدی</string>
     <string name="install_select_partition">انتخاب پارتیشن</string>
-    <string name="install_jailbreak_title">نصب Jailbreak</string>
-    <string name="install_jailbreak_summary">بارگذاری دیرهنگام را از صفحه نصب در یک دستگاه مجاز فعال کنید. اگر هنوز پوسته root موجود نیست، به جای آن از bootstrap Magica استفاده می شود.</string>
-    <string name="install_jailbreak_requires_permissive">این عمل فقط زمانی در دسترس است که SELinux در حالت permissive باشد.</string>
-    <string name="install_jailbreak_button">فعال‌سازی late-load</string>
-    <string name="install_jailbreak_failed">فعال‌سازی late-load انجام نشد</string>
     <string name="advanced_options">گزینه‌های پیشرفته</string>
     <string name="allow_shell">همیشه به Shell دسترسی root بده</string>
     <string name="allow_shell_summary">همیشه به adb shell اجازه فراخوانی su را بده. این را فعال نکنید مگر اینکه کاملاً ضروری باشد.</string>
@@ -609,8 +597,6 @@
     <string name="ci_update_error_install_failed">نصب به‌روزرسانی CI ممکن نیست.</string>
     <string name="ci_update_error_install_status">نصب با PackageInstaller ناموفق بود. کد وضعیت: %1$d.</string>
     <string name="ci_update_error_stream_failed">انتقال جریان داده به‌روزرسانی CI ناموفق بود.</string>
-    <string name="settings_soft_reboot">استفاده از راه‌اندازی مجدد نرم به‌جای راه‌اندازی مجدد</string>
-    <string name="settings_soft_reboot_summary">استفاده از راه‌اندازی مجدد نرم پس از نصب، به‌روزرسانی، فعال‌سازی، غیرفعال‌سازی یا حذف ماژول‌ها.</string>
     <string name="install_direct_lkm_title">جاسازی مستقیم LKM در هسته boot</string>
     <string name="install_direct_lkm_summary">وصله تصویر انتخاب‌شده، نصب مستقیم و نصب در اسلات OTA از boot به‌جای init_boot استفاده می‌کنند و ابتدا تزریق قدیمی KernelSU در ramdisk را پاک می‌کنند.</string>
     <string name="install_direct_lkm_warning_title">حالت جاسازی مستقیم در هسته فعال است</string>

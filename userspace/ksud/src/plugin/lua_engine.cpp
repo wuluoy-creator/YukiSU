@@ -590,8 +590,7 @@ void drain_pipe(int* fd, std::string* output, bool* truncated) {
 }
 
 // resetprop is welded into ksud as a multi-call entry, so a plugin setprop needs
-// no child process. Matches how core/hide_bootloader, init_event and magica
-// already reach it.
+// no child process. Matches how core/hide_bootloader and module/module reach it.
 CapturedCommand run_command(const std::vector<std::string>& arguments);
 
 bool set_prop_builtin(const std::string& name, const std::string& value) {

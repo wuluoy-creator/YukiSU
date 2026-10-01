@@ -25,8 +25,6 @@
     <string name="install">Instaluj</string>
     <string name="reboot">Uruchom ponownie</string>
     <string name="settings">Ustawienia</string>
-    <string name="reboot_soft">Miękki restart</string>
-    <string name="reboot_userspace">Miękki restart</string>
     <string name="reboot_recovery">Uruchom ponownie do odzyskiwania</string>
     <string name="reboot_bootloader">Restart do trybu Bootloader</string>
     <string name="reboot_download">Restart do trybu Download</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Ukryj aplikacje systemowe</string>
     <string name="send_log">Wyślij logi</string>
     <string name="safe_mode">Tryb bezpieczny</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Nie udało się uruchomić usługi jailbreak</string>
-    <string name="jailbreak_timeout">Jailbreak mógł się nie powieść, sprawdź dzienniki</string>
     <string name="reboot_to_apply">Uruchom ponownie, aby zastosować zmiany</string>
     <string name="module_magisk_conflict">Moduły są niedostępne z powodu konfliktu z Magiskiem!</string>
     <string name="home_support_title">Wspieraj rozwój</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Pobranie dziennika zmian nie powiodło się: %s</string>
     <string name="settings_check_update">Wyszukaj aktualizacje</string>
     <string name="settings_check_update_summary">Wyszukuj aktualizacje automatycznie przy otwieraniu aplikacji</string>
-    <string name="settings_auto_jailbreak">Automatyczny jailbreak</string>
-    <string name="settings_auto_jailbreak_summary">Automatycznie używaj Magica do uruchomienia późnego ładowania, gdy podczas rozruchu zostanie wykryty permisywny SELinux. Wymaga przyznania tej aplikacji uprawnienia do automatycznego uruchamiania.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">Uruchamiaj adbd z uprawnieniami roota</string>
     <string name="grant_root_failed">Nie udało się przyznać roota!</string>
@@ -127,11 +120,6 @@
 \nCzy chcesz kontynuować?</string>
     <string name="install_next">Dalej</string>
     <string name="install_select_partition">Wybierz partycję</string>
-    <string name="install_jailbreak_title">Instalacja przez jailbreak</string>
-    <string name="install_jailbreak_summary">Wyzwól późne ładowanie bezpośrednio ze strony instalacji na urządzeniu permisywnym. Jeśli powłoka roota nie jest jeszcze dostępna, zostanie użyty rozruch Magica.</string>
-    <string name="install_jailbreak_requires_permissive">Ta akcja jest dostępna tylko wtedy, gdy SELinux jest permisywny.</string>
-    <string name="install_jailbreak_button">Wyzwól późne ładowanie</string>
-    <string name="install_jailbreak_failed">Nie udało się wyzwolić późnego ładowania</string>
     <string name="advanced_options">Opcje zaawansowane</string>
     <string name="allow_shell">Zawsze przyznawaj roota powłoce Shell</string>
     <string name="allow_shell_summary">Zawsze zezwalaj adb shell na wywoływanie su. Nie włączaj tego, chyba że jest to absolutnie konieczne.</string>
@@ -611,8 +599,6 @@
     <string name="ci_update_error_install_failed">Nie można zainstalować aktualizacji CI.</string>
     <string name="ci_update_error_install_status">Instalowanie przez PackageInstaller nie powiodło się; kod stanu: %1$d.</string>
     <string name="ci_update_error_stream_failed">Przesyłanie strumienia danych aktualizacji CI nie powiodło się.</string>
-    <string name="settings_soft_reboot">Używaj miękkiego restartu zamiast zwykłego</string>
-    <string name="settings_soft_reboot_summary">Używaj miękkiego restartu po zainstalowaniu, aktualizacji, włączeniu, wyłączeniu lub usunięciu modułów.</string>
     <string name="install_direct_lkm_title">Osadź LKM bezpośrednio w jądrze boot</string>
     <string name="install_direct_lkm_summary">Łatanie obrazu, instalacja bezpośrednia i instalacja do slotu OTA używają boot zamiast init_boot, uprzednio usuwając stare wstrzyknięcie KernelSU do ramdisk.</string>
     <string name="install_direct_lkm_warning_title">Włączono tryb bezpośredniego osadzania w jądrze</string>

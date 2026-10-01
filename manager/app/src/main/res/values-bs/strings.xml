@@ -25,8 +25,6 @@
     <string name="install">Instalirajte</string>
     <string name="reboot">Ponovo pokrenite</string>
     <string name="settings">Podešavanja</string>
-    <string name="reboot_soft">Meko ponovno pokretanje</string>
-    <string name="reboot_userspace">Lagano Ponovo pokretanje</string>
     <string name="reboot_recovery">Ponovo pokrenite u Oporavu</string>
     <string name="reboot_bootloader">Ponovo pokrenite u Pogonski Učitavatelj</string>
     <string name="reboot_download">Ponovo pokrenite u Preuzimanje</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Sakrijte sistemske aplikacije</string>
     <string name="send_log">Pošaljite Izvještaj</string>
     <string name="safe_mode">Sigurnosni mod</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Pokretanje jailbreak usluge nije uspjelo</string>
-    <string name="jailbreak_timeout">Jailbreak možda nije uspio, provjerite zapisnike</string>
     <string name="reboot_to_apply">Ponovo pokrenite da bi proradilo</string>
     <string name="module_magisk_conflict">Module su isključene jer je u sukobu sa Magisk-om!</string>
     <string name="home_support_title">Podrška razvoju</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Dohvaćanje zapisnika promjena nije uspjelo: %s</string>
     <string name="settings_check_update">Check update</string>
     <string name="settings_check_update_summary">Automatski provjeri ažuriranja pri otvaranju aplikacije</string>
-    <string name="settings_auto_jailbreak">Automatski jailbreak</string>
-    <string name="settings_auto_jailbreak_summary">Automatski koristi Magica za pokretanje kasnog učitavanja kada se pri pokretanju otkrije popustljivi (Permissive) SELinux. Zahtijeva dopuštenje za automatsko pokretanje ove aplikacije.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">Pokreni adbd s root ovlastima</string>
     <string name="grant_root_failed">Dodjela root ovlasti nije uspjela!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">Vaš će uređaj nakon ponovnog pokretanja biti **PRISILNO** pokrenut u trenutni neaktivni utor!\nOvu opciju koristite tek nakon dovršetka OTA.\nNastaviti?</string>
     <string name="install_next">Dalje</string>
     <string name="install_select_partition">Odaberi particiju</string>
-    <string name="install_jailbreak_title">Instalacija putem jailbreaka</string>
-    <string name="install_jailbreak_summary">Pokreni kasno učitavanje izravno sa stranice za instalaciju na popustljivom uređaju. Ako root ljuska još nije dostupna, umjesto toga koristit će se Magica pokretanje.</string>
-    <string name="install_jailbreak_requires_permissive">Ova je radnja dostupna samo kada je SELinux popustljiv (permissive).</string>
-    <string name="install_jailbreak_button">Pokreni kasno učitavanje</string>
-    <string name="install_jailbreak_failed">Pokretanje kasnog učitavanja nije uspjelo</string>
     <string name="advanced_options">Napredne opcije</string>
     <string name="allow_shell">Uvijek dodijeli root ljusci (Shell)</string>
     <string name="allow_shell_summary">Uvijek dopusti adb shell pozivanje su. Nemojte omogućiti osim ako nije apsolutno nužno.</string>
@@ -609,8 +597,6 @@
     <string name="ci_update_error_install_failed">Nije moguće instalirati CI ažuriranje.</string>
     <string name="ci_update_error_install_status">Instaliranje putem PackageInstallera nije uspjelo. Kod stanja: %1$d.</string>
     <string name="ci_update_error_stream_failed">Prijenos toka podataka CI ažuriranja nije uspio.</string>
-    <string name="settings_soft_reboot">Koristi meko ponovno pokretanje umjesto običnog</string>
-    <string name="settings_soft_reboot_summary">Koristi meko ponovno pokretanje nakon instaliranja, ažuriranja, omogućavanja, onemogućavanja ili uklanjanja modula.</string>
     <string name="install_direct_lkm_title">Ugradi LKM izravno u boot jezgru</string>
     <string name="install_direct_lkm_summary">Zakrpavanje odabrane slike, izravna instalacija i instalacija u OTA utor koriste boot umjesto init_boot, uz prethodno uklanjanje stare KernelSU injekcije u ramdisk.</string>
     <string name="install_direct_lkm_warning_title">Izravna ugradnja u jezgru je omogućena</string>

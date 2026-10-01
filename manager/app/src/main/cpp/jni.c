@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/prctl.h>
-#include <sys/wait.h>
 #include <unistd.h>
 
 NativeBridgeNP(getVersion, jint) { return (jint)get_version(); }
@@ -53,8 +52,6 @@ NativeBridgeNP(getSuperuserCount, jint) { return (jint)get_superuser_count(); }
 NativeBridgeNP(isSafeMode, jboolean) { return is_safe_mode(); }
 
 NativeBridgeNP(isManager, jboolean) { return is_manager(); }
-
-NativeBridgeNP(isLateLoadMode, jboolean) { return is_late_load_mode(); }
 
 NativeBridgeNP(isLkmBundled, jboolean) { return is_lkm_bundled(); }
 
@@ -668,69 +665,3 @@ NativeBridgeNP(isSuperKeyAuthenticated, jboolean) {
 
 // Check if manager signature is considered OK
 NativeBridgeNP(isSignatureOk, jboolean) { return is_signature_ok(); }
-
-static int wait_child_exit(pid_t pid) {
-  int status = 0;
-  while (waitpid(pid, &status, 0) < 0) {
-    if (errno == EINTR) {
-      continue;
-    }
-    LogDebug("waitpid failed: %s", strerror(errno));
-    return -1;
-  }
-
-  if (!WIFEXITED(status) || WEXITSTATUS(status) != 0) {
-    LogDebug("magica bootstrap child failed, status=%d", status);
-  }
-  return status;
-}
-
-static int fork_dont_care_and_exec_ksud(const char *path) {
-  pid_t pid = fork();
-  if (pid < 0) {
-    LogDebug("fork failed: %s", strerror(errno));
-    return -1;
-  }
-
-  if (pid > 0) {
-    wait_child_exit(pid);
-    return (int)pid;
-  }
-
-  if (setuid(0) != 0) {
-    LogDebug("setuid failed: %s", strerror(errno));
-    _exit(1);
-  }
-
-  pid = fork();
-  if (pid < 0) {
-    LogDebug("fork(2) failed: %s", strerror(errno));
-    _exit(1);
-  }
-
-  if (pid > 0) {
-    _exit(0);
-  }
-
-  execl(path, "ksud", "late-load", "--magica", "5555", NULL);
-  LogDebug("exec failed: %s", strerror(errno));
-  _exit(1);
-}
-
-JNIEXPORT void JNICALL
-Java_com_anatdx_yukisu_magica_AppZygotePreload_forkDontCareAndExecKsud(
-    JNIEnv *env, jclass clazz, jstring ksud_path) {
-  (void)clazz;
-  if (!ksud_path) {
-    return;
-  }
-
-  const char *path = (*env)->GetStringUTFChars(env, ksud_path, nullptr);
-  if (!path) {
-    return;
-  }
-
-  LogDebug("executing magica %s", path);
-  fork_dont_care_and_exec_ksud(path);
-  (*env)->ReleaseStringUTFChars(env, ksud_path, path);
-}

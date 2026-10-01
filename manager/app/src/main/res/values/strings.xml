@@ -88,8 +88,6 @@
     <string name="install">Install</string>
     <string name="reboot">Reboot</string>
     <string name="settings">Settings</string>
-    <string name="reboot_soft">Soft restart</string>
-    <string name="reboot_userspace">Userspace reboot</string>
     <string name="reboot_recovery">Reboot to Recovery</string>
     <string name="reboot_bootloader">Reboot to Bootloader</string>
     <string name="reboot_fastbootd" tools:ignore="MissingTranslation">Reboot to Fastbootd</string>
@@ -109,9 +107,6 @@
     <string name="hide_system_apps">Hide system apps</string>
     <string name="send_log">Send logs</string>
     <string name="safe_mode">Safe mode</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Failed to start jailbreak service</string>
-    <string name="jailbreak_timeout">Jailbreak may have failed, please check logs</string>
     <string name="reboot_to_apply">Reboot to take effect</string>
     <string name="module_magisk_conflict">Modules are unavailable due to a conflict with Magisk!</string>
     <string name="home_support_title">Support Development</string>
@@ -218,12 +213,6 @@
     <string name="ci_update_error_install_failed" tools:ignore="MissingTranslation">The CI update could not be installed.</string>
     <string name="ci_update_error_install_status" tools:ignore="MissingTranslation">PackageInstaller failed with status %1$d.</string>
     <string name="ci_update_error_stream_failed" tools:ignore="MissingTranslation">The CI update stream failed.</string>
-    <string name="settings_auto_jailbreak">Auto jailbreak</string>
-    <string name="settings_auto_jailbreak_summary">Automatically use Magica to bootstrap late-load when Permissive SELinux is detected at boot. Requires granting autostart permission to this app.</string>
-    <string name="settings_soft_reboot" tools:ignore="MissingTranslation">Soft restart instead of reboot</string>
-    <string name="settings_soft_reboot_summary" tools:ignore="MissingTranslation">Use a soft restart after installing, updating, enabling, disabling, or removing modules.</string>
-    <string name="settings_soft_reboot_kasumi_unavailable" tools:ignore="MissingTranslation">Unavailable while Kasumi is active; module changes will use a full reboot.</string>
-    <string name="soft_reboot_kasumi_unavailable" tools:ignore="MissingTranslation">Kasumi is active. Use a full reboot.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">Run adbd with root privileges</string>
     <string name="grant_root_failed">Failed to grant root!</string>
@@ -249,11 +238,6 @@
     <string name="install_inactive_slot_warning">Your device will be **FORCED** to boot to the current inactive slot after a reboot!\nOnly use this option after OTA is done.\nContinue?</string>
     <string name="install_next">Next</string>
     <string name="install_select_partition">Select partition</string>
-    <string name="install_jailbreak_title">Jailbreak install</string>
-    <string name="install_jailbreak_summary">Trigger late-load from the install page on a permissive device. If no root shell is available yet, Magica bootstrap will be used instead.</string>
-    <string name="install_jailbreak_requires_permissive">This action is only available while SELinux is permissive.</string>
-    <string name="install_jailbreak_button">Trigger late-load</string>
-    <string name="install_jailbreak_failed">Failed to trigger late-load</string>
     <string name="advanced_options">Advanced options</string>
     <string name="allow_shell">Always grant root to Shell</string>
     <string name="allow_shell_summary">Always allow adb shell to call su. Do not enable this unless absolutely necessary.</string>

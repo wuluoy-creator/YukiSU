@@ -168,14 +168,6 @@ bool is_lkm_bundled() {
          (info.flags & KSU_GET_INFO_FLAG_BUNDLED) != 0;
 }
 
-bool is_late_load_mode() {
-  auto info = get_info();
-  if (info.version > 0) {
-    return (info.flags & KSU_GET_INFO_FLAG_LATE_LOAD) != 0;
-  }
-  return false;
-}
-
 bool is_image_patch_mode() {
   struct ksu_get_load_mode_cmd cmd = {};
   if (ksuctl(KSU_IOCTL_GET_LOAD_MODE, &cmd) != 0) {

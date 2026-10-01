@@ -87,8 +87,6 @@
     <string name="install">安装</string>
     <string name="reboot">重启</string>
     <string name="settings">设置</string>
-    <string name="reboot_soft">软重启</string>
-    <string name="reboot_userspace">用户空间重启</string>
     <string name="reboot_recovery">重启到 Recovery</string>
     <string name="reboot_bootloader">重启到 Bootloader</string>
     <string name="reboot_fastbootd">重启到 Fastbootd</string>
@@ -108,9 +106,6 @@
     <string name="hide_system_apps">隐藏系统应用</string>
     <string name="send_log">发送日志</string>
     <string name="safe_mode">安全模式</string>
-    <string name="home_jailbreak">越狱</string>
-    <string name="home_jailbreak_failed">启动越狱服务失败</string>
-    <string name="jailbreak_timeout">越狱可能失败了，请检查日志</string>
     <string name="reboot_to_apply">重启生效</string>
     <string name="module_magisk_conflict">因与 Magisk 有冲突，所有模块不可用！</string>
     <string name="home_support_title">支持开发</string>
@@ -215,12 +210,6 @@
     <string name="ci_update_error_install_failed">无法安装 CI 更新。</string>
     <string name="ci_update_error_install_status">PackageInstaller 安装失败，状态码为 %1$d。</string>
     <string name="ci_update_error_stream_failed">CI 更新数据流传输失败。</string>
-    <string name="settings_auto_jailbreak">自动越狱</string>
-    <string name="settings_auto_jailbreak_summary">开机检测到 Permissive SELinux 时自动使用 Magica 引导 late-load。需要授予本应用自启动权限。</string>
-    <string name="settings_soft_reboot">使用软重启代替重启</string>
-    <string name="settings_soft_reboot_summary">安装、更新、启用、停用或移除模块后使用软重启。</string>
-    <string name="settings_soft_reboot_kasumi_unavailable">Kasumi 运行期间无法使用软重启；模块变更后将使用完整重启。</string>
-    <string name="soft_reboot_kasumi_unavailable">Kasumi 正在运行，请使用完整重启。</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">让 adbd 以 root 权限运行</string>
     <string name="grant_root_failed">获取 root 失败！</string>
@@ -244,11 +233,6 @@
     <string name="install_inactive_slot_warning">将在重启后强制切换到另一个槽位！注意只能在 OTA 更新完成后的重启之前使用。</string>
     <string name="install_next">下一步</string>
     <string name="install_select_partition">选择分区</string>
-    <string name="install_jailbreak_title">越狱安装</string>
-    <string name="install_jailbreak_summary">在安装页直接触发 late-load。如果当前还没有 root shell，会改为使用 Magica 引导。</string>
-    <string name="install_jailbreak_requires_permissive">只有在 SELinux 为宽容模式时才能使用此功能。</string>
-    <string name="install_jailbreak_button">触发 late-load</string>
-    <string name="install_jailbreak_failed">触发 late-load 失败</string>
     <string name="advanced_options">高级选项</string>
     <string name="allow_shell">总是给 shell 授予 root 权限</string>
     <string name="allow_shell_summary">总是允许 adb shell 调用 su ，非必要请勿开启。</string>

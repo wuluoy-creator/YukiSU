@@ -44,7 +44,6 @@ uint32_t get_dynamic_managers(struct ksu_dynamic_manager_app *apps,
 bool is_safe_mode();
 
 bool is_manager();
-bool is_late_load_mode();
 bool is_lkm_bundled();
 bool is_image_patch_mode();
 int get_load_mode();

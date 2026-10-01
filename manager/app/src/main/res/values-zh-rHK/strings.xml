@@ -25,8 +25,6 @@
     <string name="install">安裝</string>
     <string name="reboot">重新啟動</string>
     <string name="settings">配置</string>
-    <string name="reboot_soft">軟重啟</string>
-    <string name="reboot_userspace">軟重啟</string>
     <string name="reboot_recovery">重新啟動到 Recovery</string>
     <string name="reboot_bootloader">重新啟動到 Bootloader</string>
     <string name="reboot_fastbootd">重新啟動到 Fastbootd</string>
@@ -46,9 +44,6 @@
     <string name="hide_system_apps">隱藏系統應用</string>
     <string name="send_log">發送日誌</string>
     <string name="safe_mode">安全模式</string>
-    <string name="home_jailbreak">越獄</string>
-    <string name="home_jailbreak_failed">啟動越獄服務失敗</string>
-    <string name="jailbreak_timeout">越獄可能失敗了，請檢查日誌</string>
     <string name="reboot_to_apply">重新啟動後生效</string>
     <string name="module_magisk_conflict">因同 Magisk 有衝突，所有模組唔可用！</string>
     <string name="home_support_title">支援開發</string>
@@ -120,8 +115,6 @@
     <string name="ci_update_retry">重試</string>
     <string name="ci_update_failed">CI 更新失敗：%1$s</string>
     <string name="ci_update_root_installed">CI 更新已安裝，請重新開啟應用程式</string>
-    <string name="settings_auto_jailbreak">自動越獄</string>
-    <string name="settings_auto_jailbreak_summary">開機偵測到 Permissive SELinux 時自動使用 Magica 引導 late-load。需要授予本應用自動啟動權限。</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">讓 adbd 以 root 權限執行</string>
     <string name="grant_root_failed">獲取 root 失敗！</string>
@@ -137,11 +130,6 @@
     <string name="install_inactive_slot_warning">將喺重新啟動後強制切換到另一個槽位！\n注意只能喺 OTA 更新完成後嘅重新啟動之前使用。\n確認？</string>
     <string name="install_next">下一步</string>
     <string name="install_select_partition">選擇分割區</string>
-    <string name="install_jailbreak_title">越獄安裝</string>
-    <string name="install_jailbreak_summary">喺安裝頁直接觸發 late-load。如果目前還沒有 root shell，會改為使用 Magica 引導。</string>
-    <string name="install_jailbreak_requires_permissive">只有喺 SELinux 為寬鬆模式時才能使用此功能。</string>
-    <string name="install_jailbreak_button">觸發 late-load</string>
-    <string name="install_jailbreak_failed">觸發 late-load 失敗</string>
     <string name="advanced_options">進階選項</string>
     <string name="allow_shell">總是給 shell 授予 root 權限</string>
     <string name="allow_shell_summary">總是允許 adb shell 呼叫 su，非必要請勿開啟。</string>
@@ -615,10 +603,6 @@
     <string name="ci_update_error_install_failed">無法安裝 CI 更新。</string>
     <string name="ci_update_error_install_status">PackageInstaller 安裝失敗，狀態碼為 %1$d。</string>
     <string name="ci_update_error_stream_failed">CI 更新數據流傳輸失敗。</string>
-    <string name="settings_soft_reboot">使用軟重新啟動代替重新啟動</string>
-    <string name="settings_soft_reboot_summary">安裝、更新、啟用、停用或移除模組後使用軟重新啟動。</string>
-    <string name="settings_soft_reboot_kasumi_unavailable">Kasumi 運行期間無法使用軟重新啟動；模組變更後將使用完整重新啟動。</string>
-    <string name="soft_reboot_kasumi_unavailable">Kasumi 正在運行，請使用完整重新啟動。</string>
     <string name="install_direct_lkm_title">將 LKM 直接嵌入 boot 核心</string>
     <string name="install_direct_lkm_summary">選擇修補鏡像、直接安裝和 OTA 槽位安裝均改用 boot 而不是 init_boot，並先清理舊的 KernelSU ramdisk 注入。</string>
     <string name="install_direct_lkm_warning_title">已啟用核心直嵌模式</string>

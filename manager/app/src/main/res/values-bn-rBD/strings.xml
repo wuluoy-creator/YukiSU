@@ -25,8 +25,6 @@
     <string name="install">ইন্সটল</string>
     <string name="reboot">রিবুট</string>
     <string name="settings">সেটিংস</string>
-    <string name="reboot_soft">সফট রিস্টার্ট</string>
-    <string name="reboot_userspace">সফট রিবুট</string>
     <string name="reboot_recovery">রিকভারিতে বুট</string>
     <string name="reboot_bootloader">বুটলোডারে বুট</string>
     <string name="reboot_download">ডাউনলোড মডে বুট</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">হাইড সিস্টেম অ্যাপস</string>
     <string name="send_log">সেন্ড লগ</string>
     <string name="safe_mode">নিরাপদ মোড</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">jailbreak পরিষেবা শুরু করতে ব্যর্থ</string>
-    <string name="jailbreak_timeout">Jailbreak সম্ভবত ব্যর্থ হয়েছে, অনুগ্রহ করে লগ পরীক্ষা করুন</string>
     <string name="reboot_to_apply">রিবুট এপ্লাই</string>
     <string name="module_magisk_conflict">মডিউলগুলি অক্ষম কারণ তারা ম্যাজিস্কের সাথে বিরোধিতা করে!</string>
     <string name="home_support_title">সাপোর্ট ডেভেলপমেন্ট</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">পরিবর্তন লগ আনতে ব্যর্থ: %s</string>
     <string name="settings_check_update">আপডেট পরীক্ষা করুন</string>
     <string name="settings_check_update_summary">অ্যাপ খোলার সময় স্বয়ংক্রিয়ভাবে আপডেট পরীক্ষা করুন</string>
-    <string name="settings_auto_jailbreak">স্বয়ংক্রিয় jailbreak</string>
-    <string name="settings_auto_jailbreak_summary">বুটে Permissive SELinux সনাক্ত হলে late-load বুটস্ট্র্যাপ করতে স্বয়ংক্রিয়ভাবে Magica ব্যবহার করুন। এই অ্যাপকে স্বয়ংক্রিয়-শুরু অনুমতি দেওয়া প্রয়োজন।</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">root সুবিধা সহ adbd চালান</string>
     <string name="grant_root_failed">root প্রদান করতে ব্যর্থ!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">রিবুটের পরে আপনার ডিভাইস বর্তমান নিষ্ক্রিয় স্লটে বুট করতে **বাধ্য** হবে!\nএই বিকল্পটি শুধুমাত্র OTA সম্পন্ন হওয়ার পরে ব্যবহার করুন।\nচালিয়ে যাবেন?</string>
     <string name="install_next">পরবর্তী</string>
     <string name="install_select_partition">পার্টিশন নির্বাচন করুন</string>
-    <string name="install_jailbreak_title">Jailbreak ইনস্টল</string>
-    <string name="install_jailbreak_summary">permissive ডিভাইসে ইনস্টল পৃষ্ঠা থেকে সরাসরি late-load ট্রিগার করুন। যদি এখনও কোনো root শেল উপলব্ধ না থাকে, তবে এর পরিবর্তে Magica বুটস্ট্র্যাপ ব্যবহার করা হবে।</string>
-    <string name="install_jailbreak_requires_permissive">এই ক্রিয়াটি শুধুমাত্র তখনই উপলব্ধ যখন SELinux permissive থাকে।</string>
-    <string name="install_jailbreak_button">late-load ট্রিগার করুন</string>
-    <string name="install_jailbreak_failed">late-load ট্রিগার করতে ব্যর্থ</string>
     <string name="advanced_options">উন্নত বিকল্প</string>
     <string name="allow_shell">Shell কে সর্বদা root প্রদান করুন</string>
     <string name="allow_shell_summary">adb shell কে সর্বদা su কল করার অনুমতি দিন। একান্ত প্রয়োজন না হলে এটি সক্রিয় করবেন না।</string>
@@ -625,8 +613,6 @@
     <string name="ci_update_error_install_failed">CI আপডেট ইনস্টল করা যায়নি।</string>
     <string name="ci_update_error_install_status">PackageInstaller ইনস্টল ব্যর্থ হয়েছে, অবস্থা কোড %1$d।</string>
     <string name="ci_update_error_stream_failed">CI আপডেটের ডেটা স্ট্রিম স্থানান্তর ব্যর্থ।</string>
-    <string name="settings_soft_reboot">পুনরায় চালুর বদলে সফট রিস্টার্ট ব্যবহার করুন</string>
-    <string name="settings_soft_reboot_summary">মডিউল ইনস্টল, আপডেট, চালু, বন্ধ বা অপসারণের পর সফট রিস্টার্ট ব্যবহার করুন।</string>
     <string name="install_direct_lkm_title">boot কার্নেলে সরাসরি LKM এমবেড করুন</string>
     <string name="install_direct_lkm_summary">ইমেজ প্যাচ, সরাসরি ইনস্টল ও OTA স্লটে ইনস্টল সব ক্ষেত্রেই init_boot-এর বদলে boot ব্যবহার হবে এবং আগে পুরোনো KernelSU ramdisk ইনজেকশন সরানো হবে।</string>
     <string name="install_direct_lkm_warning_title">কার্নেলে সরাসরি এমবেড মোড চালু হয়েছে</string>

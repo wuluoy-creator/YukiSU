@@ -76,18 +76,9 @@ const std::vector<Command>& commands() {
         {"uninstall", "Uninstall YukiSU", "", 0, 0, {kMagiskboot}},
         {"insmod", "Load a kernel module with kallsyms access", "<KO> [PARAMS...]", 1,
          kTrailingArgs},
-        {"late-load",
-         "Load kernelsu.ko and execute late-load stages",
-         "",
-         0,
-         0,
-         {{"--magica", "", "PORT", "5555"},
-          {"--post-magica", "", "", ""},
-          {"--allow-shell", "", "", ""}}},
         {"post-fs-data", "Trigger post-fs-data", ""},
         {"services", "Trigger service scripts", ""},
         {"boot-completed", "Trigger boot-completed", ""},
-        {"soft-reboot", "Restart Android and reapply module stages", ""},
         {"sepolicy", "Manage SELinux policy", "<COMMAND>"},
         {"sepolicy patch", "Apply a policy statement", "<POLICY>", 1, 1},
         {"sepolicy apply", "Apply policy from a file", "<FILE>", 1, 1},
@@ -423,10 +414,6 @@ std::string_view option_description(const Option& option, std::string_view path)
                    : "Use this magiskboot path";
     if (option.name == "--libadbroot")
         return "Install this adb root library";
-    if (option.name == "--magica")
-        return "Use Magica with an optional TCP port";
-    if (option.name == "--post-magica")
-        return "Run the post-Magica late-load stage";
     if (option.name == "--allow-shell")
         return "Keep a root shell available";
     if (option.name == "--enable-adbd")

@@ -25,8 +25,6 @@
     <string name="install">Instalar</string>
     <string name="reboot">Reiniciar</string>
     <string name="settings">Axustes</string>
-    <string name="reboot_soft">Reinicio suave</string>
-    <string name="reboot_userspace">Reinicio suave</string>
     <string name="reboot_recovery">Reiniciar en modo recuperación</string>
     <string name="reboot_bootloader">Reiniciar en modo Bootloader</string>
     <string name="reboot_download">Reiniciar para descargar</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Ocultar aplicacións do sistema</string>
     <string name="send_log">Enviar rexistro</string>
     <string name="safe_mode">Modo seguro</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Erro ao iniciar o servizo de jailbreak</string>
-    <string name="jailbreak_timeout">O jailbreak puido fallar, comproba os rexistros</string>
     <string name="reboot_to_apply">Reinicia para que teña efecto</string>
     <string name="module_magisk_conflict">Os módulos están desactivados porque entran en conflito cos do Magisk!</string>
     <string name="home_support_title">Apoio ao Desenvolvemento</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Erro ao obter o rexistro de cambios: %s</string>
     <string name="settings_check_update">Buscar actualizacións</string>
     <string name="settings_check_update_summary">Buscar actualizacións automaticamente ao abrir a aplicación</string>
-    <string name="settings_auto_jailbreak">Jailbreak automático</string>
-    <string name="settings_auto_jailbreak_summary">Usar Magica automaticamente para iniciar o late-load cando se detecte un SELinux permissive no arranque. Require concederlle a esta aplicación permiso de inicio automático.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">Executar adbd con privilexios de root</string>
     <string name="grant_root_failed">Erro ao conceder acceso root!</string>
@@ -125,11 +118,6 @@
     <string name="install_inactive_slot_warning">O teu dispositivo será **FORZADO** a arrancar no slot inactivo actual despois dun reinicio!\nUsa esta opción só despois de rematar o OTA.\nContinuar?</string>
     <string name="install_next">Seguinte</string>
     <string name="install_select_partition">Seleccionar partición</string>
-    <string name="install_jailbreak_title">Instalación por jailbreak</string>
-    <string name="install_jailbreak_summary">Acciona o late-load directamente desde a páxina de instalación nun dispositivo permissive. Se aínda non hai un shell de root dispoñíbel, usarase o arranque de Magica.</string>
-    <string name="install_jailbreak_requires_permissive">Esta acción só está dispoñíbel cando o SELinux está en permissive.</string>
-    <string name="install_jailbreak_button">Accionar o late-load</string>
-    <string name="install_jailbreak_failed">Erro ao accionar o late-load</string>
     <string name="advanced_options">Opcións avanzadas</string>
     <string name="allow_shell">Conceder sempre root ao Shell</string>
     <string name="allow_shell_summary">Permitir sempre que o adb shell chame a su. Non actives isto a menos que sexa absolutamente necesario.</string>
@@ -609,8 +597,6 @@
     <string name="ci_update_error_install_failed">Non se puido instalar a actualización CI.</string>
     <string name="ci_update_error_install_status">Fallou a instalación de PackageInstaller, código de estado %1$d.</string>
     <string name="ci_update_error_stream_failed">Fallou a transmisión do fluxo de datos da actualización CI.</string>
-    <string name="settings_soft_reboot">Usar un reinicio suave no canto de reiniciar</string>
-    <string name="settings_soft_reboot_summary">Usar un reinicio suave tras instalar, actualizar, activar, desactivar ou eliminar módulos.</string>
     <string name="install_direct_lkm_title">Integrar o LKM directamente no núcleo de boot</string>
     <string name="install_direct_lkm_summary">A modificación de imaxes, a instalación directa e a instalación na rañura OTA usan boot no canto de init_boot e eliminan primeiro a antiga inxección de KernelSU no ramdisk.</string>
     <string name="install_direct_lkm_warning_title">Integración directa no núcleo activada</string>

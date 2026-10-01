@@ -25,8 +25,6 @@
     <string name="install">Installa</string>
     <string name="reboot">Riavvia</string>
     <string name="settings">Impostazioni</string>
-    <string name="reboot_soft">Riavvio soft</string>
-    <string name="reboot_userspace">Riavvio rapido</string>
     <string name="reboot_recovery">Riavvia in modalità Recovery</string>
     <string name="reboot_bootloader">Riavvia in modalità Bootloader</string>
     <string name="reboot_download">Riavvia in modalità Download</string>
@@ -45,9 +43,6 @@
     <string name="hide_system_apps">Nascondi app di sistema</string>
     <string name="send_log">Invia log</string>
     <string name="safe_mode">Modalità provvisoria</string>
-    <string name="home_jailbreak">Jailbreak</string>
-    <string name="home_jailbreak_failed">Avvio del servizio di jailbreak non riuscito</string>
-    <string name="jailbreak_timeout">Il jailbreak potrebbe non essere riuscito, controlla i registri</string>
     <string name="reboot_to_apply">Riavvia per applicare la modifica</string>
     <string name="module_magisk_conflict">I moduli sono disabilitati perché in conflitto con Magisk!</string>
     <string name="home_support_title">Sostegno allo sviluppo</string>
@@ -108,8 +103,6 @@
     <string name="module_changelog_failed">Impossibile reperire il changelog: %s</string>
     <string name="settings_check_update">Controlla aggiornamenti</string>
     <string name="settings_check_update_summary">Controlla automaticamente la disponibilità di aggiornamenti all\'apertura dell\'applicazione</string>
-    <string name="settings_auto_jailbreak">Jailbreak automatico</string>
-    <string name="settings_auto_jailbreak_summary">Usa automaticamente Magica per avviare il caricamento tardivo quando all\'avvio viene rilevato un SELinux permissivo. Richiede la concessione dell\'autorizzazione di avvio automatico a questa app.</string>
     <string name="settings_adb_root">ADB Root</string>
     <string name="settings_adb_root_summary">Esegui adbd con privilegi di root</string>
     <string name="grant_root_failed">Impossibile ottenere l\'accesso root!</string>
@@ -127,11 +120,6 @@
 \nProcedere?</string>
     <string name="install_next">Avanti</string>
     <string name="install_select_partition">Seleziona partizione</string>
-    <string name="install_jailbreak_title">Installazione tramite jailbreak</string>
-    <string name="install_jailbreak_summary">Attiva il caricamento tardivo direttamente dalla pagina di installazione su un dispositivo permissivo. Se non è ancora disponibile una shell di root, verrà invece usato l\'avvio di Magica.</string>
-    <string name="install_jailbreak_requires_permissive">Questa azione è disponibile solo quando SELinux è permissivo.</string>
-    <string name="install_jailbreak_button">Attiva caricamento tardivo</string>
-    <string name="install_jailbreak_failed">Impossibile attivare il caricamento tardivo</string>
     <string name="advanced_options">Opzioni avanzate</string>
     <string name="allow_shell">Concedi sempre root alla Shell</string>
     <string name="allow_shell_summary">Consenti sempre ad adb shell di chiamare su. Non abilitarlo se non strettamente necessario.</string>
@@ -611,8 +599,6 @@
     <string name="ci_update_error_install_failed">Impossibile installare l’aggiornamento CI.</string>
     <string name="ci_update_error_install_status">Installazione con PackageInstaller non riuscita, codice di stato %1$d.</string>
     <string name="ci_update_error_stream_failed">Trasmissione del flusso dati dell’aggiornamento CI non riuscita.</string>
-    <string name="settings_soft_reboot">Usa un riavvio software al posto del riavvio</string>
-    <string name="settings_soft_reboot_summary">Usa un riavvio software dopo aver installato, aggiornato, attivato, disattivato o rimosso moduli.</string>
     <string name="install_direct_lkm_title">Integra il LKM direttamente nel kernel di boot</string>
     <string name="install_direct_lkm_summary">La modifica delle immagini, l’installazione diretta e l’installazione nello slot OTA usano boot al posto di init_boot e rimuovono prima la vecchia iniezione di KernelSU nel ramdisk.</string>
     <string name="install_direct_lkm_warning_title">Integrazione diretta nel kernel attivata</string>
