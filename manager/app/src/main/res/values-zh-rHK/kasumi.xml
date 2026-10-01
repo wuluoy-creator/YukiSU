@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">進階</string>
     <string name="kasumi_apply_failed">已保存的配置尚未套用至核心</string>
     <string name="kasumi_backend_enable_desc">允許掛載規劃器使用此後端</string>
-    <string name="kasumi_builtin_mount">內建掛載</string>
-    <string name="kasumi_builtin_mount_desc">使用內置 Kagami 掛載引擎，重新啟動後生效。</string>
     <string name="kasumi_check_conflicts">檢查掛載衝突</string>
     <string name="kasumi_debug">偵錯日誌</string>
     <string name="kasumi_debug_desc">輸出額外的 Kagami 調試信息</string>
@@ -134,9 +132,6 @@
     <string name="kasumi_tempdir">臨時掛載基點</string>
     <string name="kasumi_tempdir_desc">臨時掛載的基礎路徑（留空則自動選擇）</string>
     <string name="kasumi_title">Kasumi 配置</string>
-    <string name="kasumi_toast_builtin_disabled">內置掛載已停用，重啟後生效</string>
-    <string name="kasumi_toast_builtin_enabled">內置掛載已啟用，重啟後生效</string>
-    <string name="kasumi_toast_builtin_failed">更新內置掛載設定失敗</string>
     <string name="kasumi_toast_load_error">載入資料時發生錯誤：%s</string>
     <string name="kasumi_user_hide_add">新增</string>
     <string name="kasumi_user_hide_placeholder">/要隱藏嘅絕對路徑</string>

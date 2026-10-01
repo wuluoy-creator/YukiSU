@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_advanced">고급</string>
-    <string name="kasumi_builtin_mount">내장 마운트</string>
     <string name="kasumi_debug">디버그 로깅</string>
     <string name="kasumi_filter_all">전체</string>
     <string name="kasumi_fs_type_erofs">EROFS 이미지</string>
@@ -81,9 +80,6 @@
     <string name="kasumi_tempdir">임시 마운트 지점</string>
     <string name="kasumi_tempdir_desc">임시 마운트의 기본 경로(자동을 위해 비워 두세요)</string>
     <string name="kasumi_title">Kasumi 구성</string>
-    <string name="kasumi_toast_builtin_disabled">내장 마운트 비활성화됨. 적용하려면 재부팅하세요.</string>
-    <string name="kasumi_toast_builtin_enabled">내장 마운트 활성화됨. 적용하려면 재부팅하세요.</string>
-    <string name="kasumi_toast_builtin_failed">내장 마운트 설정 업데이트에 실패했습니다</string>
     <string name="kasumi_toast_load_error">데이터 로드 오류: %s</string>
     <string name="kasumi_user_hide_add">추가</string>
     <string name="kasumi_user_hide_placeholder">/숨길/절대/경로</string>
@@ -95,7 +91,6 @@
     <string name="kasumi_absolute_path">절대 경로를 입력하세요</string>
     <string name="kasumi_apply_failed">저장한 설정이 아직 커널에 적용되지 않았습니다</string>
     <string name="kasumi_backend_enable_desc">마운트 계획기가 이 백엔드를 사용하도록 허용</string>
-    <string name="kasumi_builtin_mount_desc">내장 Kagami 마운트 엔진을 사용합니다. 재부팅 후 적용됩니다.</string>
     <string name="kasumi_check_conflicts">마운트 충돌 확인</string>
     <string name="kasumi_debug_desc">추가 Kagami 디버그 정보 출력</string>
     <string name="kasumi_edit_rule">규칙 편집</string>

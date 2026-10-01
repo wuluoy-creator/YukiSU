@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_advanced">উন্নত</string>
-    <string name="kasumi_builtin_mount">অন্তর্নির্মিত মাউন্ট</string>
     <string name="kasumi_debug">ডিবাগ লগিং</string>
     <string name="kasumi_filter_all">সব</string>
     <string name="kasumi_fs_type_erofs">EROFS ইমেজ</string>
@@ -81,9 +80,6 @@
     <string name="kasumi_tempdir">অস্থায়ী মাউন্ট পয়েন্ট</string>
     <string name="kasumi_tempdir_desc">অস্থায়ী মাউন্টের জন্য বেস পাথ (স্বয়ংক্রিয়র জন্য খালি রাখুন)</string>
     <string name="kasumi_title">Kasumi কনফিগারেশন</string>
-    <string name="kasumi_toast_builtin_disabled">অন্তর্নির্মিত মাউন্ট নিষ্ক্রিয় করা হয়েছে। প্রয়োগ করতে রিবুট করুন।</string>
-    <string name="kasumi_toast_builtin_enabled">অন্তর্নির্মিত মাউন্ট সক্রিয় করা হয়েছে। প্রয়োগ করতে রিবুট করুন।</string>
-    <string name="kasumi_toast_builtin_failed">অন্তর্নির্মিত মাউন্ট সেটিং আপডেট করতে ব্যর্থ</string>
     <string name="kasumi_toast_load_error">ডেটা লোড করতে ত্রুটি: %s</string>
     <string name="kasumi_user_hide_add">যোগ করুন</string>
     <string name="kasumi_user_hide_placeholder">/নিরঙ্কুশ/পাথ/লুকানোর/জন্য</string>
@@ -95,7 +91,6 @@
     <string name="kasumi_absolute_path">একটি পরম পাথ লিখুন</string>
     <string name="kasumi_apply_failed">সংরক্ষিত কনফিগারেশন এখনও কার্নেলে প্রয়োগ করা হয়নি</string>
     <string name="kasumi_backend_enable_desc">মাউন্ট পরিকল্পনাকারীকে এই ব্যাকএন্ড ব্যবহারের অনুমতি দিন</string>
-    <string name="kasumi_builtin_mount_desc">অন্তর্নির্মিত Kagami মাউন্ট ইঞ্জিন ব্যবহার করুন। পুনরায় চালুর পর কার্যকর হবে।</string>
     <string name="kasumi_check_conflicts">মাউন্টের দ্বন্দ্ব পরীক্ষা করুন</string>
     <string name="kasumi_debug_desc">অতিরিক্ত Kagami ডিবাগ তথ্য দেখান</string>
     <string name="kasumi_edit_rule">নিয়ম সম্পাদনা করুন</string>

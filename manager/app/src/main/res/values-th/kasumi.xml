@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_advanced">ขั้นสูง</string>
-    <string name="kasumi_builtin_mount">การเมานต์แบบฝังในตัว</string>
     <string name="kasumi_debug">การบันทึกการดีบัก</string>
     <string name="kasumi_filter_all">ทั้งหมด</string>
     <string name="kasumi_fs_type_erofs">อิมเมจ EROFS</string>
@@ -81,9 +80,6 @@
     <string name="kasumi_tempdir">จุดเมานต์ชั่วคราว</string>
     <string name="kasumi_tempdir_desc">พาธฐานสำหรับการเมานต์ชั่วคราว (เว้นว่างไว้เพื่ออัตโนมัติ)</string>
     <string name="kasumi_title">การกำหนดค่า Kasumi</string>
-    <string name="kasumi_toast_builtin_disabled">ปิดใช้งานการเมานต์แบบฝังในตัวแล้ว รีบูตเพื่อใช้งาน</string>
-    <string name="kasumi_toast_builtin_enabled">เปิดใช้งานการเมานต์แบบฝังในตัวแล้ว รีบูตเพื่อใช้งาน</string>
-    <string name="kasumi_toast_builtin_failed">อัปเดตการตั้งค่าการเมานต์แบบฝังในตัวไม่สำเร็จ</string>
     <string name="kasumi_toast_load_error">เกิดข้อผิดพลาดในการโหลดข้อมูล: %s</string>
     <string name="kasumi_user_hide_add">เพิ่ม</string>
     <string name="kasumi_user_hide_placeholder">/พาธ/สัมบูรณ์/ที่จะซ่อน</string>
@@ -95,7 +91,6 @@
     <string name="kasumi_absolute_path">ป้อนพาธแบบสัมบูรณ์</string>
     <string name="kasumi_apply_failed">การกำหนดค่าที่บันทึกยังไม่ได้ใช้กับเคอร์เนล</string>
     <string name="kasumi_backend_enable_desc">อนุญาตให้ตัววางแผนเมานต์ใช้แบ็กเอนด์นี้</string>
-    <string name="kasumi_builtin_mount_desc">ใช้เอนจินเมานต์ Kagami ในตัว มีผลหลังรีสตาร์ต</string>
     <string name="kasumi_check_conflicts">ตรวจสอบความขัดแย้งในการเมานต์</string>
     <string name="kasumi_debug_desc">แสดงข้อมูลดีบัก Kagami เพิ่มเติม</string>
     <string name="kasumi_edit_rule">แก้ไขกฎ</string>

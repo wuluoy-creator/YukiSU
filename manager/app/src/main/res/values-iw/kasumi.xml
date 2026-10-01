@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">מתקדם</string>
     <string name="kasumi_apply_failed">התצורה שנשמרה עדיין לא הוחלה על הליבה</string>
     <string name="kasumi_backend_enable_desc">לאפשר למתכנן העיגון להשתמש במנוע זה</string>
-    <string name="kasumi_builtin_mount">עיגון מובנה</string>
-    <string name="kasumi_builtin_mount_desc">שימוש במנוע העיגון המובנה Kagami. ייכנס לתוקף לאחר הפעלה מחדש.</string>
     <string name="kasumi_check_conflicts">בדיקת התנגשויות עיגון</string>
     <string name="kasumi_debug">רישום ניפוי שגיאות</string>
     <string name="kasumi_debug_desc">הפקת מידע נוסף לניפוי שגיאות של Kagami</string>
@@ -138,9 +136,6 @@
     <string name="kasumi_tempdir">נקודת עיגון זמנית</string>
     <string name="kasumi_tempdir_desc">נתיב בסיס לעיגונים זמניים (השאר ריק לאוטומטי)</string>
     <string name="kasumi_title">תצורת Kasumi</string>
-    <string name="kasumi_toast_builtin_disabled">עיגון מובנה הושבת. הפעל מחדש כדי להחיל.</string>
-    <string name="kasumi_toast_builtin_enabled">עיגון מובנה הופעל. הפעל מחדש כדי להחיל.</string>
-    <string name="kasumi_toast_builtin_failed">עדכון הגדרת העיגון המובנה נכשל</string>
     <string name="kasumi_toast_load_error">שגיאה בטעינת הנתונים: %s</string>
     <string name="kasumi_user_hide_add">הוסף</string>
     <string name="kasumi_user_hide_placeholder">/נתיב/מוחלט/להסתרה</string>

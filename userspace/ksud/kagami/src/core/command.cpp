@@ -1236,7 +1236,6 @@ std::string operation_description(const std::vector<std::string>& args) {
             result += " keys=";
             const std::set<std::string> public_values = {"debug",
                                                          "verbose",
-                                                         "builtin_mount_enabled",
                                                          "enable_kernel_debug",
                                                          "enable_stealth",
                                                          "enable_mount_hide",

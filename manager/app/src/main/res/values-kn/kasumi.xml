@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_advanced">ಸುಧಾರಿತ</string>
-    <string name="kasumi_builtin_mount">ಅಂತರ್ನಿರ್ಮಿತ ಮೌಂಟ್</string>
     <string name="kasumi_debug">ಡೀಬಗ್ ಲಾಗಿಂಗ್</string>
     <string name="kasumi_filter_all">ಎಲ್ಲಾ</string>
     <string name="kasumi_fs_type_erofs">EROFS ಚಿತ್ರ</string>
@@ -81,9 +80,6 @@
     <string name="kasumi_tempdir">ತಾತ್ಕಾಲಿಕ ಮೌಂಟ್ ಪಾಯಿಂಟ್</string>
     <string name="kasumi_tempdir_desc">ತಾತ್ಕಾಲಿಕ ಮೌಂಟ್‌ಗಳಿಗಾಗಿ ಬೇಸ್ ಪಥ (ಸ್ವಯಂಚಾಲಿತಕ್ಕಾಗಿ ಖಾಲಿ ಬಿಡಿ)</string>
     <string name="kasumi_title">Kasumi ಕಾನ್ಫಿಗರೇಶನ್</string>
-    <string name="kasumi_toast_builtin_disabled">ಅಂತರ್ನಿರ್ಮಿತ ಮೌಂಟ್ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ. ಅನ್ವಯಿಸಲು ರೀಬೂಟ್ ಮಾಡಿ.</string>
-    <string name="kasumi_toast_builtin_enabled">ಅಂತರ್ನಿರ್ಮಿತ ಮೌಂಟ್ ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ. ಅನ್ವಯಿಸಲು ರೀಬೂಟ್ ಮಾಡಿ.</string>
-    <string name="kasumi_toast_builtin_failed">ಅಂತರ್ನಿರ್ಮಿತ ಮೌಂಟ್ ಸೆಟ್ಟಿಂಗ್ ಅಪ್‌ಡೇಟ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ</string>
     <string name="kasumi_toast_load_error">ಡೇಟಾ ಲೋಡ್ ಮಾಡುವಾಗ ದೋಷ: %s</string>
     <string name="kasumi_user_hide_add">ಸೇರಿಸಿ</string>
     <string name="kasumi_user_hide_placeholder">/ಸಂಪೂರ್ಣ/ಪಥ/ಮರೆಮಾಡಲು</string>
@@ -95,7 +91,6 @@
     <string name="kasumi_absolute_path">ಸಂಪೂರ್ಣ ಪಥವನ್ನು ನಮೂದಿಸಿ</string>
     <string name="kasumi_apply_failed">ಉಳಿಸಿದ ಸಂರಚನೆಯನ್ನು ಇನ್ನೂ ಕರ್ನಲ್‌ಗೆ ಅನ್ವಯಿಸಿಲ್ಲ</string>
     <string name="kasumi_backend_enable_desc">ಈ ಬ್ಯಾಕೆಂಡ್ ಬಳಸಲು ಮೌಂಟ್ ಯೋಜಕಕ್ಕೆ ಅನುಮತಿಸಿ</string>
-    <string name="kasumi_builtin_mount_desc">ಅಂತರ್ನಿರ್ಮಿತ Kagami ಮೌಂಟ್ ಎಂಜಿನ್ ಬಳಸಿ. ಮರುಪ್ರಾರಂಭದ ನಂತರ ಜಾರಿಗೆ ಬರುತ್ತದೆ.</string>
     <string name="kasumi_check_conflicts">ಮೌಂಟ್ ಸಂಘರ್ಷಗಳನ್ನು ಪರಿಶೀಲಿಸಿ</string>
     <string name="kasumi_debug_desc">ಹೆಚ್ಚುವರಿ Kagami ಡೀಬಗ್ ಮಾಹಿತಿ ಹೊರಹಾಕಿ</string>
     <string name="kasumi_edit_rule">ನಿಯಮ ಸಂಪಾದಿಸಿ</string>

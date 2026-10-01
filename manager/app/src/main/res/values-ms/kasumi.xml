@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_advanced">Lanjutan</string>
-    <string name="kasumi_builtin_mount">Lekapan Terbina Dalam</string>
     <string name="kasumi_debug">Pengelogan nyahpepijat</string>
     <string name="kasumi_filter_all">Semua</string>
     <string name="kasumi_fs_type_erofs">Imej EROFS</string>
@@ -81,9 +80,6 @@
     <string name="kasumi_tempdir">Titik Lekapan Sementara</string>
     <string name="kasumi_tempdir_desc">Laluan asas untuk lekapan sementara (biarkan kosong untuk automatik)</string>
     <string name="kasumi_title">Konfigurasi Kasumi</string>
-    <string name="kasumi_toast_builtin_disabled">Lekapan terbina dalam dilumpuhkan. But semula untuk menerapkannya.</string>
-    <string name="kasumi_toast_builtin_enabled">Lekapan terbina dalam didayakan. But semula untuk menerapkannya.</string>
-    <string name="kasumi_toast_builtin_failed">Gagal mengemas kini tetapan lekapan terbina dalam</string>
     <string name="kasumi_toast_load_error">Ralat semasa memuatkan data: %s</string>
     <string name="kasumi_user_hide_add">Tambah</string>
     <string name="kasumi_user_hide_placeholder">/laluan/mutlak/untuk/disembunyikan</string>
@@ -95,7 +91,6 @@
     <string name="kasumi_absolute_path">Masukkan laluan mutlak</string>
     <string name="kasumi_apply_failed">Konfigurasi yang disimpan belum digunakan pada kernel</string>
     <string name="kasumi_backend_enable_desc">Benarkan perancang lekapan menggunakan backend ini</string>
-    <string name="kasumi_builtin_mount_desc">Gunakan enjin lekapan Kagami terbina dalam. Berkuat kuasa selepas but semula.</string>
     <string name="kasumi_check_conflicts">Semak konflik lekapan</string>
     <string name="kasumi_debug_desc">Keluarkan maklumat nyahpepijat Kagami tambahan</string>
     <string name="kasumi_edit_rule">Sunting peraturan</string>

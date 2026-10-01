@@ -19,7 +19,6 @@ struct Config {
     std::vector<std::string> partitions;
     bool debug = false;
     bool verbose = false;
-    bool builtin_mount_enabled = true;
     bool enable_kernel_debug = false;
     bool enable_stealth = true;
     bool enable_overlay_xattr_hide = false;

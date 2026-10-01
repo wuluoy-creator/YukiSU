@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">Напредно</string>
     <string name="kasumi_apply_failed">Сачувана конфигурација још није примењена на језгро</string>
     <string name="kasumi_backend_enable_desc">Допусти планеру монтирања употребу овог позадинског система</string>
-    <string name="kasumi_builtin_mount">Уграђени носач</string>
-    <string name="kasumi_builtin_mount_desc">Употребљава уграђени механизам монтирања Kagami. Примењује се након поновног покретања.</string>
     <string name="kasumi_check_conflicts">Провери сукобе монтирања</string>
     <string name="kasumi_debug">Евидентирање грешака</string>
     <string name="kasumi_debug_desc">Исписуј додатне информације за отклањање грешака у Kagami-ју</string>
@@ -138,9 +136,6 @@
     <string name="kasumi_tempdir">Привремена тачка постављања</string>
     <string name="kasumi_tempdir_desc">Основна путања за привремене монтаже (оставите празно за ауто)</string>
     <string name="kasumi_title">Kasumi Конфигурација</string>
-    <string name="kasumi_toast_builtin_disabled">Уграђени носач је онемогућен. Поново покрените да бисте применили.</string>
-    <string name="kasumi_toast_builtin_enabled">Омогућено уграђено монтирање. Поново покрените да бисте применили.</string>
-    <string name="kasumi_toast_builtin_failed">Ажурирање уграђене поставке монтирања није успело</string>
     <string name="kasumi_toast_load_error">Грешка при учитавању података: %s</string>
     <string name="kasumi_user_hide_add">Додај</string>
     <string name="kasumi_user_hide_placeholder">/absolute/path/to/hide</string>

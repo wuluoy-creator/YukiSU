@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_advanced">प्रगत</string>
-    <string name="kasumi_builtin_mount">अंगभूत माउंट</string>
     <string name="kasumi_debug">डीबग लॉगिंग</string>
     <string name="kasumi_filter_all">सर्व</string>
     <string name="kasumi_fs_type_erofs">EROFS प्रतिमा</string>
@@ -81,9 +80,6 @@
     <string name="kasumi_tempdir">तात्पुरते माउंट पॉइंट</string>
     <string name="kasumi_tempdir_desc">तात्पुरत्या माउंटसाठी बेस पथ (स्वयंचलितसाठी रिकामे ठेवा)</string>
     <string name="kasumi_title">Kasumi कॉन्फिगरेशन</string>
-    <string name="kasumi_toast_builtin_disabled">अंगभूत माउंट अक्षम केले. लागू करण्यासाठी रीबूट करा.</string>
-    <string name="kasumi_toast_builtin_enabled">अंगभूत माउंट सक्षम केले. लागू करण्यासाठी रीबूट करा.</string>
-    <string name="kasumi_toast_builtin_failed">अंगभूत माउंट सेटिंग अपडेट करण्यात अयशस्वी</string>
     <string name="kasumi_toast_load_error">डेटा लोड करताना त्रुटी: %s</string>
     <string name="kasumi_user_hide_add">जोडा</string>
     <string name="kasumi_user_hide_placeholder">/निरपेक्ष/पथ/लपवण्यासाठी</string>
@@ -95,7 +91,6 @@
     <string name="kasumi_absolute_path">पूर्ण पथ प्रविष्ट करा</string>
     <string name="kasumi_apply_failed">जतन केलेले कॉन्फिगरेशन अद्याप कर्नलवर लागू झालेले नाही</string>
     <string name="kasumi_backend_enable_desc">माउंट नियोजकाला हा बॅकएंड वापरण्याची परवानगी द्या</string>
-    <string name="kasumi_builtin_mount_desc">अंगभूत Kagami माउंट इंजिन वापरा. रीस्टार्टनंतर लागू होईल.</string>
     <string name="kasumi_check_conflicts">माउंट संघर्ष तपासा</string>
     <string name="kasumi_debug_desc">अतिरिक्त Kagami डीबग माहिती लिहा</string>
     <string name="kasumi_edit_rule">नियम संपादित करा</string>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_advanced">詳細</string>
-    <string name="kasumi_builtin_mount">組み込みマウント</string>
     <string name="kasumi_debug">デバッグログ</string>
     <string name="kasumi_filter_all">すべて</string>
     <string name="kasumi_fs_type_erofs">EROFS イメージ</string>
@@ -81,9 +80,6 @@
     <string name="kasumi_tempdir">一時マウントポイント</string>
     <string name="kasumi_tempdir_desc">一時マウントのベースパス（空欄で自動）</string>
     <string name="kasumi_title">Kasumi 設定</string>
-    <string name="kasumi_toast_builtin_disabled">組み込みマウントを無効にしました。再起動して適用してください。</string>
-    <string name="kasumi_toast_builtin_enabled">組み込みマウントを有効にしました。再起動して適用してください。</string>
-    <string name="kasumi_toast_builtin_failed">組み込みマウント設定の更新に失敗しました</string>
     <string name="kasumi_toast_load_error">データの読み込みエラー: %s</string>
     <string name="kasumi_user_hide_add">追加</string>
     <string name="kasumi_user_hide_placeholder">/隠す/絶対/パス</string>
@@ -95,7 +91,6 @@
     <string name="kasumi_absolute_path">絶対パスを入力してください</string>
     <string name="kasumi_apply_failed">保存した設定はまだカーネルに適用されていません</string>
     <string name="kasumi_backend_enable_desc">マウントプランナーによるこのバックエンドの使用を許可</string>
-    <string name="kasumi_builtin_mount_desc">内蔵の Kagami マウントエンジンを使用します。再起動後に反映されます。</string>
     <string name="kasumi_check_conflicts">マウントの競合を確認</string>
     <string name="kasumi_debug_desc">Kagami の追加デバッグ情報を出力</string>
     <string name="kasumi_edit_rule">ルールを編集</string>

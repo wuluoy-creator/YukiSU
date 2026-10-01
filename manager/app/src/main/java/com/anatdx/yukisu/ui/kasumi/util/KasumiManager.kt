@@ -31,7 +31,6 @@ object KasumiManager {
         val available: Boolean,
         val globalMode: String,
         val externalOwner: String,
-        val builtinEnabled: Boolean = true,
         val activeKasumiIds: Set<String> = emptySet(),
     )
     data class Snapshot(
@@ -91,7 +90,6 @@ object KasumiManager {
             parseModules(objectResult("module", "list", "--all")), kernel.getBoolean("kasumi_available"),
             config.optString("mount_backend", "auto"),
             meta.optString("external_mount_owner"),
-            config.optBoolean("builtin_mount_enabled", true),
             if (kernel.optBoolean("enabled"))
                 Regex("/data/adb/modules/([^/\\s]+)").findAll(kernel.optString("rules")).map { it.groupValues[1] }.toSet()
             else emptySet(),
@@ -195,12 +193,5 @@ object KasumiManager {
         Natives.kasumiReadLog(false).toString(Charsets.UTF_8)
     }
 
-    internal suspend fun readConfig(): JSONObject = withContext(Dispatchers.IO) {
-        objectResult("config", "show", "--stored")
-    }
-
     internal suspend fun syncPartitions() = mutate { command("config", "sync-partitions") }
-
-    suspend fun isBuiltinMountEnabled(): Boolean = readConfig().optBoolean("builtin_mount_enabled", true)
-    suspend fun setBuiltinMountEnabled(enabled: Boolean) = saveConfig(JSONObject().put("builtin_mount_enabled", enabled))
 }

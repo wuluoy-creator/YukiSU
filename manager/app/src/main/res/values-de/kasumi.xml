@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">Erweitert</string>
     <string name="kasumi_apply_failed">Die gespeicherte Konfiguration wurde noch nicht auf den Kernel angewendet</string>
     <string name="kasumi_backend_enable_desc">Diesem Backend die Nutzung durch den Mount-Planer erlauben</string>
-    <string name="kasumi_builtin_mount">Integriertes Einhängen</string>
-    <string name="kasumi_builtin_mount_desc">Die integrierte Kagami-Mount-Engine verwenden. Wird nach einem Neustart wirksam.</string>
     <string name="kasumi_check_conflicts">Mount-Konflikte prüfen</string>
     <string name="kasumi_debug">Debug-Protokollierung</string>
     <string name="kasumi_debug_desc">Zusätzliche Kagami-Debuginformationen ausgeben</string>
@@ -136,9 +134,6 @@
     <string name="kasumi_tempdir">Temporärer Einhängepunkt</string>
     <string name="kasumi_tempdir_desc">Basispfad für temporäre Einhängungen (leer lassen für automatisch)</string>
     <string name="kasumi_title">Kasumi-Konfiguration</string>
-    <string name="kasumi_toast_builtin_disabled">Integriertes Einhängen deaktiviert. Zum Anwenden neu starten.</string>
-    <string name="kasumi_toast_builtin_enabled">Integriertes Einhängen aktiviert. Zum Anwenden neu starten.</string>
-    <string name="kasumi_toast_builtin_failed">Einstellung für integriertes Einhängen konnte nicht aktualisiert werden</string>
     <string name="kasumi_toast_load_error">Fehler beim Laden der Daten: %s</string>
     <string name="kasumi_user_hide_add">Hinzufügen</string>
     <string name="kasumi_user_hide_placeholder">/absoluter/pfad/zum/verbergen</string>

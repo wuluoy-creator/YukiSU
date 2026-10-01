@@ -65,7 +65,6 @@ std::string default_config_json() {
   "overlay_writable": false,
   "debug": false,
   "verbose": false,
-  "builtin_mount_enabled": true,
   "fs_type": "auto",
   "enable_kernel_debug": false,
   "enable_stealth": true,
@@ -238,8 +237,6 @@ bool parse_config_json(const std::string& json, Config& config, std::string& err
     config.debug = json_bool_or(&root, "debug", config.debug);
     config.verbose = json_bool_or(&root, "verbose", config.verbose);
     logging::set_debug_enabled(config.debug || config.verbose);
-    config.builtin_mount_enabled =
-        json_bool_or(&root, "builtin_mount_enabled", config.builtin_mount_enabled);
     config.enable_kernel_debug =
         json_bool_or(&root, "enable_kernel_debug", config.enable_kernel_debug);
     config.enable_stealth = json_bool_or(&root, "enable_stealth", config.enable_stealth);

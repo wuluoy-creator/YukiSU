@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">Speciális</string>
     <string name="kasumi_apply_failed">A mentett konfiguráció még nincs alkalmazva a kernelre</string>
     <string name="kasumi_backend_enable_desc">A csatolástervező használhatja ezt a háttérmotort</string>
-    <string name="kasumi_builtin_mount">Beépített csatolás</string>
-    <string name="kasumi_builtin_mount_desc">A beépített Kagami csatolómotort használja. Újraindítás után lép életbe.</string>
     <string name="kasumi_check_conflicts">Csatolási ütközések keresése</string>
     <string name="kasumi_debug">Hibakeresési naplózás</string>
     <string name="kasumi_debug_desc">További Kagami hibakeresési adatok kiírása</string>
@@ -136,9 +134,6 @@
     <string name="kasumi_tempdir">Ideiglenes csatolási pont</string>
     <string name="kasumi_tempdir_desc">Az ideiglenes csatolások alapútvonala (hagyja üresen az automatikushoz)</string>
     <string name="kasumi_title">Kasumi konfiguráció</string>
-    <string name="kasumi_toast_builtin_disabled">Beépített csatolás letiltva. Indítsa újra az alkalmazáshoz.</string>
-    <string name="kasumi_toast_builtin_enabled">Beépített csatolás engedélyezve. Indítsa újra az alkalmazáshoz.</string>
-    <string name="kasumi_toast_builtin_failed">Nem sikerült frissíteni a beépített csatolás beállítását</string>
     <string name="kasumi_toast_load_error">Hiba az adatok betöltésekor: %s</string>
     <string name="kasumi_user_hide_add">Hozzáadás</string>
     <string name="kasumi_user_hide_placeholder">/abszolút/útvonal/az/elrejtéshez</string>

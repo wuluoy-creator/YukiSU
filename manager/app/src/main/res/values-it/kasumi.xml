@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">Avanzate</string>
     <string name="kasumi_apply_failed">La configurazione salvata non è ancora stata applicata al kernel</string>
     <string name="kasumi_backend_enable_desc">Consenti al pianificatore dei montaggi di usare questo motore</string>
-    <string name="kasumi_builtin_mount">Montaggio integrato</string>
-    <string name="kasumi_builtin_mount_desc">Usa il motore di montaggio Kagami integrato. Ha effetto dopo il riavvio.</string>
     <string name="kasumi_check_conflicts">Verifica conflitti di montaggio</string>
     <string name="kasumi_debug">Registrazione di debug</string>
     <string name="kasumi_debug_desc">Genera informazioni aggiuntive di debug di Kagami</string>
@@ -138,9 +136,6 @@
     <string name="kasumi_tempdir">Punto di montaggio temporaneo</string>
     <string name="kasumi_tempdir_desc">Percorso di base dei montaggi temporanei (lascia vuoto per automatico)</string>
     <string name="kasumi_title">Configurazione Kasumi</string>
-    <string name="kasumi_toast_builtin_disabled">Montaggio integrato disabilitato. Riavvia per applicare.</string>
-    <string name="kasumi_toast_builtin_enabled">Montaggio integrato abilitato. Riavvia per applicare.</string>
-    <string name="kasumi_toast_builtin_failed">Impossibile aggiornare l\'impostazione del montaggio integrato</string>
     <string name="kasumi_toast_load_error">Errore durante il caricamento dei dati: %s</string>
     <string name="kasumi_user_hide_add">Aggiungi</string>
     <string name="kasumi_user_hide_placeholder">/percorso/assoluto/da/nascondere</string>

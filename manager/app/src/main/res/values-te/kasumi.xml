@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_advanced">అధునాతన</string>
-    <string name="kasumi_builtin_mount">అంతర్నిర్మిత మౌంట్</string>
     <string name="kasumi_debug">డీబగ్ లాగింగ్</string>
     <string name="kasumi_filter_all">అన్నీ</string>
     <string name="kasumi_fs_type_erofs">EROFS చిత్రం</string>
@@ -81,9 +80,6 @@
     <string name="kasumi_tempdir">తాత్కాలిక మౌంట్ పాయింట్</string>
     <string name="kasumi_tempdir_desc">తాత్కాలిక మౌంట్‌ల కోసం బేస్ పాత్ (స్వయంచాలకం కోసం ఖాళీగా ఉంచండి)</string>
     <string name="kasumi_title">Kasumi కాన్ఫిగరేషన్</string>
-    <string name="kasumi_toast_builtin_disabled">అంతర్నిర్మిత మౌంట్ నిలిపివేయబడింది. వర్తింపజేయడానికి రీబూట్ చేయండి.</string>
-    <string name="kasumi_toast_builtin_enabled">అంతర్నిర్మిత మౌంట్ ప్రారంభించబడింది. వర్తింపజేయడానికి రీబూట్ చేయండి.</string>
-    <string name="kasumi_toast_builtin_failed">అంతర్నిర్మిత మౌంట్ సెట్టింగ్‌ను అప్‌డేట్ చేయడం విఫలమైంది</string>
     <string name="kasumi_toast_load_error">డేటాను లోడ్ చేయడంలో లోపం: %s</string>
     <string name="kasumi_user_hide_add">జోడించండి</string>
     <string name="kasumi_user_hide_placeholder">/సంపూర్ణ/పాత్/దాచడానికి</string>
@@ -95,7 +91,6 @@
     <string name="kasumi_absolute_path">సంపూర్ణ పాత్‌ను నమోదు చేయండి</string>
     <string name="kasumi_apply_failed">సేవ్ చేసిన కాన్ఫిగరేషన్ ఇంకా కెర్నల్‌కు వర్తించలేదు</string>
     <string name="kasumi_backend_enable_desc">ఈ బ్యాకెండ్‌ను ఉపయోగించడానికి మౌంట్ ప్లానర్‌ను అనుమతించండి</string>
-    <string name="kasumi_builtin_mount_desc">అంతర్నిర్మిత Kagami మౌంట్ ఇంజిన్‌ను ఉపయోగించండి. పునఃప్రారంభం తర్వాత అమలవుతుంది.</string>
     <string name="kasumi_check_conflicts">మౌంట్ వైరుధ్యాలను తనిఖీ చేయండి</string>
     <string name="kasumi_debug_desc">అదనపు Kagami డీబగ్ సమాచారాన్ని చూపండి</string>
     <string name="kasumi_edit_rule">నియమాన్ని సవరించండి</string>

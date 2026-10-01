@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">Išplėstinė</string>
     <string name="kasumi_apply_failed">Išsaugota konfigūracija dar nepritaikyta branduoliui</string>
     <string name="kasumi_backend_enable_desc">Leisti prijungimo planuoklei naudoti šią posistemę</string>
-    <string name="kasumi_builtin_mount">Integruotas prijungimas</string>
-    <string name="kasumi_builtin_mount_desc">Naudoti įtaisytąjį Kagami prijungimo variklį. Įsigalios paleidus iš naujo.</string>
     <string name="kasumi_check_conflicts">Tikrinti prijungimo konfliktus</string>
     <string name="kasumi_debug">Derinimo registravimas</string>
     <string name="kasumi_debug_desc">Išvesti papildomą Kagami derinimo informaciją</string>
@@ -140,9 +138,6 @@
     <string name="kasumi_tempdir">Laikinasis prijungimo taškas</string>
     <string name="kasumi_tempdir_desc">Laikinųjų prijungimų pagrindinis kelias (palikite tuščią automatiniam)</string>
     <string name="kasumi_title">Kasumi konfigūracija</string>
-    <string name="kasumi_toast_builtin_disabled">Integruotas prijungimas išjungtas. Paleiskite iš naujo, kad pritaikytumėte.</string>
-    <string name="kasumi_toast_builtin_enabled">Integruotas prijungimas įjungtas. Paleiskite iš naujo, kad pritaikytumėte.</string>
-    <string name="kasumi_toast_builtin_failed">Nepavyko atnaujinti integruoto prijungimo parametro</string>
     <string name="kasumi_toast_load_error">Klaida įkeliant duomenis: %s</string>
     <string name="kasumi_user_hide_add">Pridėti</string>
     <string name="kasumi_user_hide_placeholder">/absoliutus/kelias/slėpimui</string>

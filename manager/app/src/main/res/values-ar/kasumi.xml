@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">متقدم</string>
     <string name="kasumi_apply_failed">لم يُطبّق الإعداد المحفوظ على النواة بعد</string>
     <string name="kasumi_backend_enable_desc">السماح لمخطط التركيب باستخدام هذه الواجهة الخلفية</string>
-    <string name="kasumi_builtin_mount">التركيب المدمج</string>
-    <string name="kasumi_builtin_mount_desc">استخدام محرك التركيب المدمج Kagami. يسري بعد إعادة التشغيل.</string>
     <string name="kasumi_check_conflicts">التحقق من تعارضات التركيب</string>
     <string name="kasumi_debug">تسجيل تصحيح الأخطاء</string>
     <string name="kasumi_debug_desc">إخراج معلومات إضافية لتصحيح أخطاء Kagami</string>
@@ -144,9 +142,6 @@
     <string name="kasumi_tempdir">نقطة تركيب مؤقتة</string>
     <string name="kasumi_tempdir_desc">المسار الأساسي لعمليات التركيب المؤقتة (اتركه فارغاً للتلقائي)</string>
     <string name="kasumi_title">إعداد Kasumi</string>
-    <string name="kasumi_toast_builtin_disabled">تم تعطيل التركيب المدمج. أعد التشغيل للتطبيق.</string>
-    <string name="kasumi_toast_builtin_enabled">تم تفعيل التركيب المدمج. أعد التشغيل للتطبيق.</string>
-    <string name="kasumi_toast_builtin_failed">فشل تحديث إعداد التركيب المدمج</string>
     <string name="kasumi_toast_load_error">خطأ في تحميل البيانات: %s</string>
     <string name="kasumi_user_hide_add">إضافة</string>
     <string name="kasumi_user_hide_placeholder">/المسار/المطلق/للإخفاء</string>

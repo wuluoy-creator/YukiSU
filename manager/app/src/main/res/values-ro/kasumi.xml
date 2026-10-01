@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">Avansat</string>
     <string name="kasumi_apply_failed">Configurația salvată nu a fost încă aplicată nucleului</string>
     <string name="kasumi_backend_enable_desc">Permite planificatorului de montări să utilizeze acest motor</string>
-    <string name="kasumi_builtin_mount">Montare integrată</string>
-    <string name="kasumi_builtin_mount_desc">Folosește motorul de montare Kagami integrat. Se aplică după repornire.</string>
     <string name="kasumi_check_conflicts">Verifică conflictele de montare</string>
     <string name="kasumi_debug">Jurnalizare depanare</string>
     <string name="kasumi_debug_desc">Generează informații suplimentare de depanare Kagami</string>
@@ -138,9 +136,6 @@
     <string name="kasumi_tempdir">Punct de montare temporar</string>
     <string name="kasumi_tempdir_desc">Calea de bază pentru montările temporare (lăsați gol pentru automat)</string>
     <string name="kasumi_title">Configurare Kasumi</string>
-    <string name="kasumi_toast_builtin_disabled">Montare integrată dezactivată. Reporniți pentru a aplica.</string>
-    <string name="kasumi_toast_builtin_enabled">Montare integrată activată. Reporniți pentru a aplica.</string>
-    <string name="kasumi_toast_builtin_failed">Actualizarea setării de montare integrată a eșuat</string>
     <string name="kasumi_toast_load_error">Eroare la încărcarea datelor: %s</string>
     <string name="kasumi_user_hide_add">Adaugă</string>
     <string name="kasumi_user_hide_placeholder">/cale/absolută/de/ascuns</string>

@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">Дополнительно</string>
     <string name="kasumi_apply_failed">Сохранённая конфигурация ещё не применена к ядру</string>
     <string name="kasumi_backend_enable_desc">Разрешить планировщику монтирования использовать этот механизм</string>
-    <string name="kasumi_builtin_mount">Встроенное монтирование</string>
-    <string name="kasumi_builtin_mount_desc">Использовать встроенный механизм монтирования Kagami. Вступит в силу после перезагрузки.</string>
     <string name="kasumi_check_conflicts">Проверить конфликты монтирования</string>
     <string name="kasumi_debug">Журнал отладки</string>
     <string name="kasumi_debug_desc">Выводить дополнительные отладочные сведения Kagami</string>
@@ -140,9 +138,6 @@
     <string name="kasumi_tempdir">Временная точка монтирования</string>
     <string name="kasumi_tempdir_desc">Базовый путь для временных монтирований (оставьте пустым для авто)</string>
     <string name="kasumi_title">Конфигурация Kasumi</string>
-    <string name="kasumi_toast_builtin_disabled">Встроенное монтирование отключено. Перезагрузите для применения.</string>
-    <string name="kasumi_toast_builtin_enabled">Встроенное монтирование включено. Перезагрузите для применения.</string>
-    <string name="kasumi_toast_builtin_failed">Не удалось изменить настройку встроенного монтирования</string>
     <string name="kasumi_toast_load_error">Ошибка загрузки данных: %s</string>
     <string name="kasumi_user_hide_add">Добавить</string>
     <string name="kasumi_user_hide_placeholder">/абсолютный/путь/для/скрытия</string>

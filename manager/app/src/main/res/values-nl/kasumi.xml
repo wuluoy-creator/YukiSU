@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">Geavanceerd</string>
     <string name="kasumi_apply_failed">De opgeslagen configuratie is nog niet op de kernel toegepast</string>
     <string name="kasumi_backend_enable_desc">De koppelplanner toestaan deze backend te gebruiken</string>
-    <string name="kasumi_builtin_mount">Ingebouwd koppelen</string>
-    <string name="kasumi_builtin_mount_desc">De ingebouwde Kagami-koppelengine gebruiken. Wordt actief na opnieuw opstarten.</string>
     <string name="kasumi_check_conflicts">Koppelconflicten controleren</string>
     <string name="kasumi_debug">Foutopsporingslogboek</string>
     <string name="kasumi_debug_desc">Extra Kagami-foutopsporingsinformatie uitvoeren</string>
@@ -136,9 +134,6 @@
     <string name="kasumi_tempdir">Tijdelijk koppelpunt</string>
     <string name="kasumi_tempdir_desc">Basispad voor tijdelijke koppelingen (laat leeg voor automatisch)</string>
     <string name="kasumi_title">Kasumi-configuratie</string>
-    <string name="kasumi_toast_builtin_disabled">Ingebouwd koppelen uitgeschakeld. Herstart om toe te passen.</string>
-    <string name="kasumi_toast_builtin_enabled">Ingebouwd koppelen ingeschakeld. Herstart om toe te passen.</string>
-    <string name="kasumi_toast_builtin_failed">Kan de instelling voor ingebouwd koppelen niet bijwerken</string>
     <string name="kasumi_toast_load_error">Fout bij het laden van gegevens: %s</string>
     <string name="kasumi_user_hide_add">Toevoegen</string>
     <string name="kasumi_user_hide_placeholder">/absoluut/pad/om/te/verbergen</string>

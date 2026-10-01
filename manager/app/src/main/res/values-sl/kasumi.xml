@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">Napredno</string>
     <string name="kasumi_apply_failed">Shranjena konfiguracija še ni uporabljena v jedru</string>
     <string name="kasumi_backend_enable_desc">Dovoli načrtovalniku priklopov uporabo tega zaledja</string>
-    <string name="kasumi_builtin_mount">Vgrajeni priklop</string>
-    <string name="kasumi_builtin_mount_desc">Uporabi vgrajeni mehanizem priklopov Kagami. Začne veljati po ponovnem zagonu.</string>
     <string name="kasumi_check_conflicts">Preveri spore pri priklopih</string>
     <string name="kasumi_debug">Beleženje razhroščevanja</string>
     <string name="kasumi_debug_desc">Izpisuj dodatne razhroščevalne podatke Kagami</string>
@@ -140,9 +138,6 @@
     <string name="kasumi_tempdir">Začasna priklopna točka</string>
     <string name="kasumi_tempdir_desc">Osnovna pot za začasne priklope (pustite prazno za samodejno)</string>
     <string name="kasumi_title">Konfiguracija Kasumi</string>
-    <string name="kasumi_toast_builtin_disabled">Vgrajeni priklop onemogočen. Znova zaženite za uveljavitev.</string>
-    <string name="kasumi_toast_builtin_enabled">Vgrajeni priklop omogočen. Znova zaženite za uveljavitev.</string>
-    <string name="kasumi_toast_builtin_failed">Nastavitve vgrajenega priklopa ni bilo mogoče posodobiti</string>
     <string name="kasumi_toast_load_error">Napaka pri nalaganju podatkov: %s</string>
     <string name="kasumi_user_hide_add">Dodaj</string>
     <string name="kasumi_user_hide_placeholder">/absolutna/pot/za/skrivanje</string>

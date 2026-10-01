@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">Napredno</string>
     <string name="kasumi_apply_failed">Spremljena konfiguracija još nije primijenjena na jezgru</string>
     <string name="kasumi_backend_enable_desc">Dopusti planeru montiranja upotrebu ovog pozadinskog sustava</string>
-    <string name="kasumi_builtin_mount">Ugrađeno montiranje</string>
-    <string name="kasumi_builtin_mount_desc">Upotrebljava ugrađeni mehanizam montiranja Kagami. Primjenjuje se nakon ponovnog pokretanja.</string>
     <string name="kasumi_check_conflicts">Provjeri sukobe montiranja</string>
     <string name="kasumi_debug">Bilježenje ispravljanja pogrešaka</string>
     <string name="kasumi_debug_desc">Ispisuj dodatne informacije za otklanjanje pogrešaka u Kagamiju</string>
@@ -138,9 +136,6 @@
     <string name="kasumi_tempdir">Privremena točka montiranja</string>
     <string name="kasumi_tempdir_desc">Osnovna putanja za privremena montiranja (ostavite prazno za automatsko)</string>
     <string name="kasumi_title">Konfiguracija Kasumi</string>
-    <string name="kasumi_toast_builtin_disabled">Ugrađeno montiranje onemogućeno. Ponovno pokrenite za primjenu.</string>
-    <string name="kasumi_toast_builtin_enabled">Ugrađeno montiranje omogućeno. Ponovno pokrenite za primjenu.</string>
-    <string name="kasumi_toast_builtin_failed">Ažuriranje postavke ugrađenog montiranja nije uspjelo</string>
     <string name="kasumi_toast_load_error">Pogreška pri učitavanju podataka: %s</string>
     <string name="kasumi_user_hide_add">Dodaj</string>
     <string name="kasumi_user_hide_placeholder">/apsolutna/putanja/za/skrivanje</string>

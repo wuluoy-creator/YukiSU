@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">Qabaqcıl</string>
     <string name="kasumi_apply_failed">Saxlanmış konfiqurasiya hələ nüvəyə tətbiq edilməyib</string>
     <string name="kasumi_backend_enable_desc">Qoşma planlayıcısına bu arxa mexanizmdən istifadə etməyə icazə ver</string>
-    <string name="kasumi_builtin_mount">Daxili Bağlama</string>
-    <string name="kasumi_builtin_mount_desc">Daxili Kagami qoşma mexanizmindən istifadə edir. Yenidən başladıqdan sonra qüvvəyə minir.</string>
     <string name="kasumi_check_conflicts">Qoşma ziddiyyətlərini yoxla</string>
     <string name="kasumi_debug">Sazlama jurnalı</string>
     <string name="kasumi_debug_desc">Əlavə Kagami sazlama məlumatları çıxar</string>
@@ -136,9 +134,6 @@
     <string name="kasumi_tempdir">Müvəqqəti Bağlama Nöqtəsi</string>
     <string name="kasumi_tempdir_desc">Müvəqqəti bağlamalar üçün əsas yol (avtomatik üçün boş buraxın)</string>
     <string name="kasumi_title">Kasumi Konfiqurasiyası</string>
-    <string name="kasumi_toast_builtin_disabled">Daxili bağlama deaktivdir. Tətbiq üçün yenidən başladın.</string>
-    <string name="kasumi_toast_builtin_enabled">Daxili bağlama aktivdir. Tətbiq üçün yenidən başladın.</string>
-    <string name="kasumi_toast_builtin_failed">Daxili bağlama ayarı yenilənə bilmədi</string>
     <string name="kasumi_toast_load_error">Məlumat yüklənərkən xəta: %s</string>
     <string name="kasumi_user_hide_add">Əlavə et</string>
     <string name="kasumi_user_hide_placeholder">/gizlədiləcək/mütləq/yol</string>

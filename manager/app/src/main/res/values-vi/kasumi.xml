@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_advanced">Nâng cao</string>
-    <string name="kasumi_builtin_mount">Gắn kết tích hợp</string>
     <string name="kasumi_debug">Nhật ký gỡ lỗi</string>
     <string name="kasumi_filter_all">Tất cả</string>
     <string name="kasumi_fs_type_erofs">Ảnh EROFS</string>
@@ -81,9 +80,6 @@
     <string name="kasumi_tempdir">Điểm gắn kết tạm thời</string>
     <string name="kasumi_tempdir_desc">Đường dẫn gốc cho các gắn kết tạm thời (để trống để tự động)</string>
     <string name="kasumi_title">Cấu hình Kasumi</string>
-    <string name="kasumi_toast_builtin_disabled">Đã tắt gắn kết tích hợp. Khởi động lại để áp dụng.</string>
-    <string name="kasumi_toast_builtin_enabled">Đã bật gắn kết tích hợp. Khởi động lại để áp dụng.</string>
-    <string name="kasumi_toast_builtin_failed">Không thể cập nhật cài đặt gắn kết tích hợp</string>
     <string name="kasumi_toast_load_error">Lỗi khi tải dữ liệu: %s</string>
     <string name="kasumi_user_hide_add">Thêm</string>
     <string name="kasumi_user_hide_placeholder">/đường/dẫn/tuyệt/đối/cần/ẩn</string>
@@ -95,7 +91,6 @@
     <string name="kasumi_absolute_path">Nhập đường dẫn tuyệt đối</string>
     <string name="kasumi_apply_failed">Cấu hình đã lưu chưa được áp dụng vào nhân</string>
     <string name="kasumi_backend_enable_desc">Cho phép bộ lập kế hoạch gắn kết sử dụng backend này</string>
-    <string name="kasumi_builtin_mount_desc">Sử dụng công cụ gắn kết Kagami tích hợp. Có hiệu lực sau khi khởi động lại.</string>
     <string name="kasumi_check_conflicts">Kiểm tra xung đột gắn kết</string>
     <string name="kasumi_debug_desc">Xuất thêm thông tin gỡ lỗi Kagami</string>
     <string name="kasumi_edit_rule">Sửa quy tắc</string>

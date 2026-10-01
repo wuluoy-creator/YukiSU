@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">Zaawansowane</string>
     <string name="kasumi_apply_failed">Zapisana konfiguracja nie została jeszcze zastosowana w jądrze</string>
     <string name="kasumi_backend_enable_desc">Zezwól planerowi montowania na używanie tego mechanizmu</string>
-    <string name="kasumi_builtin_mount">Wbudowane montowanie</string>
-    <string name="kasumi_builtin_mount_desc">Używaj wbudowanego mechanizmu montowania Kagami. Zmiana wymaga ponownego uruchomienia.</string>
     <string name="kasumi_check_conflicts">Sprawdź konflikty montowania</string>
     <string name="kasumi_debug">Dziennik debugowania</string>
     <string name="kasumi_debug_desc">Zapisuj dodatkowe informacje diagnostyczne Kagami</string>
@@ -140,9 +138,6 @@
     <string name="kasumi_tempdir">Tymczasowy punkt montowania</string>
     <string name="kasumi_tempdir_desc">Ścieżka bazowa dla tymczasowych montowań (pozostaw puste dla automatycznego)</string>
     <string name="kasumi_title">Konfiguracja Kasumi</string>
-    <string name="kasumi_toast_builtin_disabled">Wbudowane montowanie wyłączone. Uruchom ponownie, aby zastosować.</string>
-    <string name="kasumi_toast_builtin_enabled">Wbudowane montowanie włączone. Uruchom ponownie, aby zastosować.</string>
-    <string name="kasumi_toast_builtin_failed">Nie udało się zaktualizować ustawienia wbudowanego montowania</string>
     <string name="kasumi_toast_load_error">Błąd podczas ładowania danych: %s</string>
     <string name="kasumi_user_hide_add">Dodaj</string>
     <string name="kasumi_user_hide_placeholder">/bezwzględna/ścieżka/do/ukrycia</string>

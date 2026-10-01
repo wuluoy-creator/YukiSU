@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">پیشرفته</string>
     <string name="kasumi_apply_failed">پیکربندی ذخیره‌شده هنوز روی هسته اعمال نشده است</string>
     <string name="kasumi_backend_enable_desc">اجازه به برنامه‌ریز اتصال برای استفاده از این زیرسامانه</string>
-    <string name="kasumi_builtin_mount">مانت داخلی</string>
-    <string name="kasumi_builtin_mount_desc">استفاده از موتور اتصال داخلی Kagami؛ پس از راه‌اندازی مجدد اعمال می‌شود.</string>
     <string name="kasumi_check_conflicts">بررسی تداخل‌های اتصال</string>
     <string name="kasumi_debug">ثبت لاگ اشکال‌زدایی</string>
     <string name="kasumi_debug_desc">نمایش اطلاعات اشکال‌زدایی بیشتر Kagami</string>
@@ -136,9 +134,6 @@
     <string name="kasumi_tempdir">نقطه مانت موقت</string>
     <string name="kasumi_tempdir_desc">مسیر پایه برای مانت‌های موقت (برای خودکار خالی بگذارید)</string>
     <string name="kasumi_title">پیکربندی Kasumi</string>
-    <string name="kasumi_toast_builtin_disabled">مانت داخلی غیرفعال شد. برای اعمال، راه‌اندازی مجدد کنید.</string>
-    <string name="kasumi_toast_builtin_enabled">مانت داخلی فعال شد. برای اعمال، راه‌اندازی مجدد کنید.</string>
-    <string name="kasumi_toast_builtin_failed">به‌روزرسانی تنظیم مانت داخلی انجام نشد</string>
     <string name="kasumi_toast_load_error">خطا در بارگذاری داده‌ها: %s</string>
     <string name="kasumi_user_hide_add">افزودن</string>
     <string name="kasumi_user_hide_placeholder">/مسیر/مطلق/برای/پنهان‌سازی</string>

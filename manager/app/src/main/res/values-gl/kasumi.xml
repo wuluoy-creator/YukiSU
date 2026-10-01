@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">Avanzado</string>
     <string name="kasumi_apply_failed">A configuración gardada aínda non se aplicou ao núcleo</string>
     <string name="kasumi_backend_enable_desc">Permitir que o planificador de montaxes use este motor</string>
-    <string name="kasumi_builtin_mount">Montaxe integrada</string>
-    <string name="kasumi_builtin_mount_desc">Usar o motor de montaxe Kagami integrado. Aplícase despois de reiniciar.</string>
     <string name="kasumi_check_conflicts">Comprobar conflitos de montaxe</string>
     <string name="kasumi_debug">Rexistro de depuración</string>
     <string name="kasumi_debug_desc">Xerar información adicional de depuración de Kagami</string>
@@ -136,9 +134,6 @@
     <string name="kasumi_tempdir">Punto de montaxe temporal</string>
     <string name="kasumi_tempdir_desc">Ruta base das montaxes temporais (deixa en branco para automático)</string>
     <string name="kasumi_title">Configuración de Kasumi</string>
-    <string name="kasumi_toast_builtin_disabled">Montaxe integrada desactivada. Reinicia para aplicar.</string>
-    <string name="kasumi_toast_builtin_enabled">Montaxe integrada activada. Reinicia para aplicar.</string>
-    <string name="kasumi_toast_builtin_failed">Erro ao actualizar o axuste de montaxe integrada</string>
     <string name="kasumi_toast_load_error">Erro ao cargar os datos: %s</string>
     <string name="kasumi_user_hide_add">Engadir</string>
     <string name="kasumi_user_hide_placeholder">/ruta/absoluta/para/ocultar</string>

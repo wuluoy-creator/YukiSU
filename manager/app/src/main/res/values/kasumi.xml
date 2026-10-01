@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">Advanced</string>
     <string name="kasumi_apply_failed">Saved configuration has not been applied to the kernel</string>
     <string name="kasumi_backend_enable_desc">Available to the mount planner</string>
-    <string name="kasumi_builtin_mount">Built-in Mount</string>
-    <string name="kasumi_builtin_mount_desc">Use the built-in Kagami mount engine. Changes apply after reboot.</string>
     <string name="kasumi_check_conflicts">Check mount conflicts</string>
     <string name="kasumi_debug">Debug logging</string>
     <string name="kasumi_debug_desc">Output extra Kagami diagnostics</string>
@@ -137,9 +135,6 @@
     <string name="kasumi_tempdir">Temporary Mount Point</string>
     <string name="kasumi_tempdir_desc">Base path for temporary mounts (leave empty for auto)</string>
     <string name="kasumi_title">Kasumi Configuration</string>
-    <string name="kasumi_toast_builtin_disabled">Built-in mount disabled. Reboot to apply.</string>
-    <string name="kasumi_toast_builtin_enabled">Built-in mount enabled. Reboot to apply.</string>
-    <string name="kasumi_toast_builtin_failed">Failed to update built-in mount setting</string>
     <string name="kasumi_toast_load_error">Error loading data: %s</string>
     <string name="kasumi_user_hide_add">Add</string>
     <string name="kasumi_user_hide_placeholder">/absolute/path/to/hide</string>

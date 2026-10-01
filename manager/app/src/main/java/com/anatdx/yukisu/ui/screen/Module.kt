@@ -1126,7 +1126,7 @@ private fun ModuleList(
                             module = module,
                             updateUrl = updatedModule.first,
                             mountInfo = mountState?.modules?.get(module.dirId),
-                            mountConfigEnabled = mountState?.externalOwner?.isEmpty() == true && mountState.builtinEnabled,
+                            mountConfigEnabled = mountState?.externalOwner?.isEmpty() == true,
                             onMountConfig = { onMountConfig(module.dirId, module.name) },
                             onUninstallClicked = {
                                 scope.launch { onModuleUninstallClicked(module) }

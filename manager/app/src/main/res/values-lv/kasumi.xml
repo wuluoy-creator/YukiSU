@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">Papildu</string>
     <string name="kasumi_apply_failed">Saglabātā konfigurācija vēl nav piemērota kodolam</string>
     <string name="kasumi_backend_enable_desc">Atļaut montēšanas plānotājam izmantot šo aizmugursistēmu</string>
-    <string name="kasumi_builtin_mount">Iebūvētā montēšana</string>
-    <string name="kasumi_builtin_mount_desc">Izmantot iebūvēto Kagami montēšanas dzini. Stājas spēkā pēc restartēšanas.</string>
     <string name="kasumi_check_conflicts">Pārbaudīt montēšanas konfliktus</string>
     <string name="kasumi_debug">Atkļūdošanas reģistrēšana</string>
     <string name="kasumi_debug_desc">Izvadīt papildu Kagami atkļūdošanas informāciju</string>
@@ -138,9 +136,6 @@
     <string name="kasumi_tempdir">Pagaidu montēšanas punkts</string>
     <string name="kasumi_tempdir_desc">Pagaidu montējumu bāzes ceļš (atstājiet tukšu automātiskajam)</string>
     <string name="kasumi_title">Kasumi konfigurācija</string>
-    <string name="kasumi_toast_builtin_disabled">Iebūvētā montēšana atspējota. Restartējiet, lai lietotu.</string>
-    <string name="kasumi_toast_builtin_enabled">Iebūvētā montēšana iespējota. Restartējiet, lai lietotu.</string>
-    <string name="kasumi_toast_builtin_failed">Neizdevās atjaunināt iebūvētās montēšanas iestatījumu</string>
     <string name="kasumi_toast_load_error">Kļūda, ielādējot datus: %s</string>
     <string name="kasumi_user_hide_add">Pievienot</string>
     <string name="kasumi_user_hide_placeholder">/absolūtais/ceļš/slēpšanai</string>

@@ -44,10 +44,6 @@ int embedded_mount() try {
         std::cerr << "Kagami: " << error << '\n';
         return 1;
     }
-    if (!config.builtin_mount_enabled) {
-        logging::write(logging::Level::Info, "boot", "built-in mounting disabled; skip mount plan");
-        return 0;
-    }
     logging::write(logging::Level::Info, "boot",
                    "starting built-in mount plan; no external LKM lookup");
     return run_via_daemon({"module", "mount-all"});

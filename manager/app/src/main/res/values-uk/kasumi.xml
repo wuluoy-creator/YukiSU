@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">Додатково</string>
     <string name="kasumi_apply_failed">Збережену конфігурацію ще не застосовано до ядра</string>
     <string name="kasumi_backend_enable_desc">Дозволити планувальнику монтування використовувати цей механізм</string>
-    <string name="kasumi_builtin_mount">Вбудоване монтування</string>
-    <string name="kasumi_builtin_mount_desc">Використовувати вбудований механізм монтування Kagami. Набуде чинності після перезавантаження.</string>
     <string name="kasumi_check_conflicts">Перевірити конфлікти монтування</string>
     <string name="kasumi_debug">Журнал налагодження</string>
     <string name="kasumi_debug_desc">Виводити додаткові відомості налагодження Kagami</string>
@@ -140,9 +138,6 @@
     <string name="kasumi_tempdir">Тимчасова точка монтування</string>
     <string name="kasumi_tempdir_desc">Базовий шлях для тимчасових монтувань (залиште порожнім для автоматичного)</string>
     <string name="kasumi_title">Конфігурація Kasumi</string>
-    <string name="kasumi_toast_builtin_disabled">Вбудоване монтування вимкнено. Перезавантажте, щоб застосувати.</string>
-    <string name="kasumi_toast_builtin_enabled">Вбудоване монтування увімкнено. Перезавантажте, щоб застосувати.</string>
-    <string name="kasumi_toast_builtin_failed">Не вдалося оновити налаштування вбудованого монтування</string>
     <string name="kasumi_toast_load_error">Помилка завантаження даних: %s</string>
     <string name="kasumi_user_hide_add">Додати</string>
     <string name="kasumi_user_hide_placeholder">/абсолютний/шлях/для/приховування</string>

@@ -4,8 +4,6 @@
     <string name="kasumi_advanced">Avanceret</string>
     <string name="kasumi_apply_failed">Den gemte konfiguration er endnu ikke anvendt på kernen</string>
     <string name="kasumi_backend_enable_desc">Tillad monteringsplanlæggeren at bruge denne backend</string>
-    <string name="kasumi_builtin_mount">Indbygget montering</string>
-    <string name="kasumi_builtin_mount_desc">Brug den indbyggede Kagami-monteringsmotor. Træder i kraft efter genstart.</string>
     <string name="kasumi_check_conflicts">Kontrollér monteringskonflikter</string>
     <string name="kasumi_debug">Fejlfindingslogning</string>
     <string name="kasumi_debug_desc">Udskriv yderligere fejlfindingsoplysninger fra Kagami</string>
@@ -136,9 +134,6 @@
     <string name="kasumi_tempdir">Midlertidigt monteringspunkt</string>
     <string name="kasumi_tempdir_desc">Basissti for midlertidige monteringer (lad være tom for auto)</string>
     <string name="kasumi_title">Kasumi-konfiguration</string>
-    <string name="kasumi_toast_builtin_disabled">Indbygget montering deaktiveret. Genstart for at anvende.</string>
-    <string name="kasumi_toast_builtin_enabled">Indbygget montering aktiveret. Genstart for at anvende.</string>
-    <string name="kasumi_toast_builtin_failed">Kunne ikke opdatere indstilling for indbygget montering</string>
     <string name="kasumi_toast_load_error">Fejl ved indlæsning af data: %s</string>
     <string name="kasumi_user_hide_add">Tilføj</string>
     <string name="kasumi_user_hide_placeholder">/absolut/sti/der/skal/skjules</string>
