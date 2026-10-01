@@ -498,7 +498,6 @@
     <string name="plugin_repository_update">అప్‌డేట్</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="download_dialog_msg">HTTPS URL</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="ramdisk_editor_title">%s Ramdisk</string>
     <string name="ramdisk_editor_elf_value_enum">%1$s（%2$d）</string>
     <string name="ramdisk_editor_cancel">రద్దు చేయండి</string>
@@ -632,8 +631,6 @@
     <string name="settings_webview_zygote_umount_summary">మౌంట్ సమాచారం లీక్ కాకుండా WebView zygote నుండి మాడ్యూల్‌లను అన్‌మౌంట్ చేయండి. WebView వనరులను మార్చే మాడ్యూల్‌లు పనిచేయకపోవచ్చు. పునఃప్రారంభం తర్వాత అమలవుతుంది.</string>
     <string name="hide_seccomp_status">Seccomp స్థితిని దాచండి</string>
     <string name="hide_seccomp_status_summary">హోమ్ పేజీలో Seccomp స్థితి సమాచారాన్ని దాచండి</string>
-    <string name="ui_style">ఇంటర్‌ఫేస్ శైలి</string>
-    <string name="ui_style_classic">Material 3 క్లాసిక్</string>
     <string name="predictive_back_gesture">ఊహాత్మక వెనుకకు వెళ్లే సంజ్ఞ</string>
     <string name="predictive_back_gesture_summary">వెనుకకు వెళ్లే సంజ్ఞతో మునుపటి పేజీ ప్రివ్యూ చూపండి. డిఫాల్ట్‌గా ఆఫ్</string>
     <string name="feature_control">ఫీచర్ నియంత్రణ</string>

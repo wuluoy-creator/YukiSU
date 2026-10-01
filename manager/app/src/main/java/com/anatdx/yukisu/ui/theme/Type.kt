@@ -71,19 +71,19 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        letterSpacing = 0.sp
     ),
     bodyMedium = TextStyle(
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 20.sp,
-        letterSpacing = 0.25.sp
+        letterSpacing = 0.sp
     ),
     bodySmall = TextStyle(
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
         lineHeight = 16.sp,
-        letterSpacing = 0.4.sp
+        letterSpacing = 0.sp
     ),
 
     // 标签
@@ -105,13 +105,4 @@ val Typography = Typography(
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
     )
-)
-
-val ExpressiveTypography = Typography.copy(
-    displaySmall = Typography.displaySmall.copy(fontWeight = FontWeight.Bold),
-    headlineLarge = Typography.headlineLarge.copy(fontWeight = FontWeight.ExtraBold),
-    headlineMedium = Typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
-    headlineSmall = Typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-    titleLarge = Typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-    titleMedium = Typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
 )

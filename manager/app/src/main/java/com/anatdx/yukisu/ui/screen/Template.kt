@@ -64,11 +64,7 @@ fun AppProfileTemplateScreen(
     val scope = rememberCoroutineScope()
     val resources = LocalResources.current
     val topAppBarState = rememberTopAppBarState()
-    val scrollBehavior = if (isExpressiveUi) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(topAppBarState)
-    } else {
-        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-    }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
 
     LaunchedEffect(Unit) {
         if (viewModel.templateList.isEmpty()) {
@@ -143,7 +139,7 @@ fun AppProfileTemplateScreen(
                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer
             )
         },
-        contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)
+        contentWindowInsets = WindowInsets.safeDrawing
     ) { innerPadding ->
         YukiPullToRefreshBox(
             modifier = Modifier.padding(innerPadding),
@@ -157,7 +153,7 @@ fun AppProfileTemplateScreen(
                     .fillMaxSize()
                     .nestedScroll(scrollBehavior.nestedScrollConnection),
                 contentPadding = remember {
-                    PaddingValues(bottom = 16.dp + 56.dp + 16.dp /* Scaffold Fab Spacing + Fab container height */)
+                    PaddingValues(top = 8.dp, bottom = 16.dp + 56.dp + 16.dp /* Scaffold Fab Spacing + Fab container height */)
                 }
             ) {
                 itemsIndexed(
@@ -196,12 +192,12 @@ private fun TemplateItem(
                     Modifier
                         .padding(
                             horizontal = 16.dp,
-                            vertical = ListItemDefaults.SegmentedGap / 2,
+                            vertical = 0.dp,
                         )
                         .defaultMinSize(minHeight = ExpressiveListGroupMinHeight)
                         .clip(expressiveShape)
                         .background(
-                            MaterialTheme.colorScheme.surfaceContainer.copy(alpha = cardAlpha)
+                            MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = cardAlpha)
                         )
                 } else {
                     Modifier
@@ -216,7 +212,7 @@ private fun TemplateItem(
         content = {
             Text(
                 text = template.name,
-                fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
+                style = MaterialTheme.typography.titleMedium,
             )
         },
         supportingContent = {
@@ -226,7 +222,11 @@ private fun TemplateItem(
                     style = MaterialTheme.typography.bodySmall,
                     fontSize = MaterialTheme.typography.bodySmall.fontSize,
                 )
-                Text(template.description)
+                Text(
+                    text = template.description,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
                 FlowRow {
                     LabelText(label = "UID: ${template.uid}")
                     LabelText(label = "GID: ${template.gid}")
@@ -265,7 +265,7 @@ private fun TopBar(
     }
     val navigationIcon: @Composable () -> Unit = {
         IconButton(onClick = onBack) {
-            YukiIcon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+            YukiIcon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
         }
     }
     val actions: @Composable RowScope.() -> Unit = {
@@ -309,25 +309,14 @@ private fun TopBar(
         WindowInsetsSides.Top + WindowInsetsSides.Horizontal
     )
 
-    if (isExpressiveUi) {
-        LargeFlexibleTopAppBar(
-            title = title,
-            navigationIcon = navigationIcon,
-            actions = actions,
-            colors = colors,
-            windowInsets = windowInsets,
-            scrollBehavior = scrollBehavior,
-        )
-    } else {
-        TopAppBar(
-            title = title,
-            navigationIcon = navigationIcon,
-            actions = actions,
-            colors = colors,
-            windowInsets = windowInsets,
-            scrollBehavior = scrollBehavior,
-        )
-    }
+    TopAppBar(
+        title = title,
+        navigationIcon = navigationIcon,
+        actions = actions,
+        colors = colors,
+        windowInsets = windowInsets,
+        scrollBehavior = scrollBehavior,
+    )
 }
 
 @Composable
@@ -337,7 +326,7 @@ fun LabelText(label: String) {
             .padding(top = 4.dp, end = 4.dp)
             .background(
                 if (isExpressiveUi) {
-                    MaterialTheme.colorScheme.secondaryContainer
+                    MaterialTheme.colorScheme.surfaceContainer
                 } else {
                     Color.Black
                 },
@@ -346,15 +335,9 @@ fun LabelText(label: String) {
     ) {
         Text(
             text = label,
-            modifier = Modifier.padding(vertical = 2.dp, horizontal = 5.dp),
-            style = TextStyle(
-                fontSize = 8.sp,
-                color = if (isExpressiveUi) {
-                    MaterialTheme.colorScheme.onSecondaryContainer
-                } else {
-                    Color.White
-                },
-            )
+            modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }

@@ -21,6 +21,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -288,11 +291,13 @@ fun LogViewerScreen(navigator: DestinationsNavigator) {
                 }
             )
         },
-        contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)
+        contentWindowInsets = WindowInsets.safeDrawing
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
+                .consumeWindowInsets(paddingValues)
+                .imePadding()
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
         ) {
             LogControlPanel(
@@ -742,8 +747,7 @@ private fun LogList(
     LazyColumn(
         state = listState,
         modifier = modifier,
-        contentPadding = PaddingValues(horizontal = SPACING_LARGE, vertical = SPACING_MEDIUM),
-        verticalArrangement = Arrangement.spacedBy(SPACING_SMALL)
+        contentPadding = PaddingValues(horizontal = SPACING_LARGE, vertical = SPACING_MEDIUM)
     ) {
         items(entries) { entry ->
             LogEntryCard(entry = entry)
@@ -799,21 +803,22 @@ private fun LogList(
 @Composable
 private fun LogEntryCard(entry: LogEntry) {
     var expanded by remember { mutableStateOf(false) }
+    val expandLabel = stringResource(if (expanded) R.string.collapse_menu else R.string.expand_menu)
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { expanded = !expanded },
-        colors = getCardColors(MaterialTheme.colorScheme.surfaceContainerLow),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+            .semantics { stateDescription = expandLabel }
+            .clickable(role = Role.Button, onClickLabel = expandLabel) { expanded = !expanded },
+        color = MaterialTheme.colorScheme.surfaceContainerLow
     ) {
         Column(
-            modifier = Modifier.padding(SPACING_MEDIUM)
+            modifier = Modifier.padding(horizontal = SPACING_LARGE, vertical = 12.dp)
         ) {
-            Row(
+            FlowRow(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(SPACING_SMALL)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -839,9 +844,10 @@ private fun LogEntryCard(entry: LogEntry) {
 
             Spacer(modifier = Modifier.height(SPACING_SMALL))
 
-            Row(
+            FlowRow(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(SPACING_SMALL)
             ) {
                 Text(
                     text = "UID: ${entry.uid}",
@@ -859,7 +865,7 @@ private fun LogEntryCard(entry: LogEntry) {
                 text = entry.comm,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
-                maxLines = if (expanded) Int.MAX_VALUE else 1,
+                maxLines = if (expanded) Int.MAX_VALUE else 2,
                 overflow = TextOverflow.Ellipsis
             )
 
@@ -874,11 +880,7 @@ private fun LogEntryCard(entry: LogEntry) {
                 )
             }
 
-            AnimatedVisibility(
-                visible = expanded,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically()
-            ) {
+            if (expanded) {
                 Column {
                     Spacer(modifier = Modifier.height(SPACING_MEDIUM))
                     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
@@ -897,6 +899,8 @@ private fun LogEntryCard(entry: LogEntry) {
                     )
                 }
             }
+            Spacer(Modifier.height(12.dp))
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
         }
     }
 }
@@ -911,13 +915,14 @@ private fun EmptyLogState(
         contentAlignment = Alignment.Center
     ) {
         Column(
+            modifier = Modifier.padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(SPACING_LARGE)
         ) {
             Icon(
                 imageVector = if (hasLogs) Icons.Filled.FilterList else Icons.Filled.Description,
                 contentDescription = null,
-                modifier = Modifier.size(64.dp),
+                modifier = Modifier.size(48.dp),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(

@@ -500,7 +500,6 @@
     <string name="plugin_repository_update">更新</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="download_dialog_msg">HTTPS URL</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="ramdisk_editor_title">%s Ramdisk</string>
     <string name="ramdisk_editor_elf_value_enum">%1$s（%2$d）</string>
     <string name="ramdisk_editor_cancel">キャンセル</string>
@@ -634,8 +633,6 @@
     <string name="settings_webview_zygote_umount_summary">WebView zygote からモジュールをアンマウントし、マウント情報の漏洩を防ぎます。WebView のリソースを変更するモジュールが動作しなくなる可能性があります。再起動後に反映されます。</string>
     <string name="hide_seccomp_status">Seccomp の状態を隠す</string>
     <string name="hide_seccomp_status_summary">ホーム画面の Seccomp の状態情報を隠す</string>
-    <string name="ui_style">UI スタイル</string>
-    <string name="ui_style_classic">Material 3 クラシック</string>
     <string name="predictive_back_gesture">予測型「戻る」ジェスチャー</string>
     <string name="predictive_back_gesture_summary">戻るジェスチャーに合わせて前の画面をプレビューします。デフォルトではオフです</string>
     <string name="feature_control">機能の制御</string>

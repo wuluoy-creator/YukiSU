@@ -615,9 +615,6 @@
     <string name="settings_webview_zygote_umount_summary">Smonta i moduli da WebView zygote per evitare la divulgazione delle informazioni di montaggio. I moduli che modificano le risorse WebView potrebbero non funzionare più. Ha effetto dopo il riavvio.</string>
     <string name="hide_seccomp_status">Nascondi stato di Seccomp</string>
     <string name="hide_seccomp_status_summary">Nascondi le informazioni sullo stato di Seccomp nella pagina iniziale</string>
-    <string name="ui_style">Stile dell’interfaccia</string>
-    <string name="ui_style_classic">Material 3 classico</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="predictive_back_gesture">Gesto Indietro predittivo</string>
     <string name="predictive_back_gesture_summary">Mostra un’anteprima della pagina precedente durante il gesto Indietro. Disattivato per impostazione predefinita.</string>
     <string name="feature_control">Controllo delle funzioni</string>

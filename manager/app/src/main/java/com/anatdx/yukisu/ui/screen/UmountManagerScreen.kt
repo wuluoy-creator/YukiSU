@@ -2,6 +2,8 @@ package com.anatdx.yukisu.ui.screen
 
 import android.content.Context
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
@@ -50,11 +52,7 @@ data class UmountPathEntry(
 @Composable
 fun UmountManagerScreen(navigator: DestinationsNavigator) {
     val topAppBarState = rememberTopAppBarState()
-    val scrollBehavior = if (isExpressiveUi) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(topAppBarState)
-    } else {
-        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-    }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
     val snackBarHost = LocalSnackbarHost.current
     val context = LocalContext.current
     val resources = LocalResources.current
@@ -93,7 +91,7 @@ fun UmountManagerScreen(navigator: DestinationsNavigator) {
             FloatingActionButton(
                 onClick = { showAddDialog = true }
             ) {
-                Icon(Icons.Filled.Add, contentDescription = null)
+                Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.add_umount_path))
             }
         }
     ) { paddingValues ->
@@ -106,22 +104,24 @@ fun UmountManagerScreen(navigator: DestinationsNavigator) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(SPACING_LARGE),
-                colors = getCardColors(MaterialTheme.colorScheme.primaryContainer),
+                colors = getCardColors(MaterialTheme.colorScheme.surfaceContainer),
                 elevation = getCardElevation()
             ) {
-                Column(
-                    modifier = Modifier.padding(SPACING_LARGE)
+                Row(
+                    modifier = Modifier.padding(SPACING_LARGE),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.Top,
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Info,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                    Spacer(modifier = Modifier.height(SPACING_MEDIUM))
                     Text(
                         text = stringResource(R.string.umount_path_restart_notice),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.weight(1f),
                     )
                 }
             }
@@ -136,8 +136,7 @@ fun UmountManagerScreen(navigator: DestinationsNavigator) {
             } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(horizontal = SPACING_LARGE, vertical = SPACING_MEDIUM),
-                    verticalArrangement = Arrangement.spacedBy(SPACING_MEDIUM)
+                    contentPadding = PaddingValues(start = SPACING_LARGE, end = SPACING_LARGE, top = SPACING_MEDIUM, bottom = 88.dp)
                 ) {
                     items(pathList, key = { it.path }) { entry ->
                         UmountPathCard(
@@ -167,13 +166,13 @@ fun UmountManagerScreen(navigator: DestinationsNavigator) {
                     }
 
                     item {
-                        Row(
+                        Column(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = SPACING_LARGE),
-                            horizontalArrangement = Arrangement.spacedBy(SPACING_MEDIUM)
+                            verticalArrangement = Arrangement.spacedBy(SPACING_MEDIUM)
                         ) {
-                            Button(
+                            OutlinedButton(
                                 onClick = {
                                     scope.launch {
                                         if (confirmDialog.awaitConfirm(
@@ -198,7 +197,7 @@ fun UmountManagerScreen(navigator: DestinationsNavigator) {
                                         }
                                     }
                                 },
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.fillMaxWidth()
                             ) {
                                 Icon(Icons.Filled.DeleteForever, contentDescription = null)
                                 Spacer(modifier = Modifier.width(SPACING_MEDIUM))
@@ -222,7 +221,7 @@ fun UmountManagerScreen(navigator: DestinationsNavigator) {
                                         }
                                     }
                                 },
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.fillMaxWidth()
                             ) {
                                 Icon(Icons.Filled.Check, contentDescription = null)
                                 Spacer(modifier = Modifier.width(SPACING_MEDIUM))
@@ -277,12 +276,12 @@ private fun UmountManagerTopBar(
     }
     val navigationIcon: @Composable () -> Unit = {
         IconButton(onClick = onBack) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
         }
     }
     val actions: @Composable RowScope.() -> Unit = {
         IconButton(onClick = onRefresh) {
-            Icon(Icons.Filled.Refresh, contentDescription = null)
+            Icon(Icons.Filled.Refresh, contentDescription = stringResource(R.string.refresh))
         }
     }
     val colors = TopAppBarDefaults.topAppBarColors(
@@ -293,25 +292,14 @@ private fun UmountManagerTopBar(
         WindowInsetsSides.Top + WindowInsetsSides.Horizontal
     )
 
-    if (isExpressiveUi) {
-        LargeFlexibleTopAppBar(
-            title = title,
-            navigationIcon = navigationIcon,
-            actions = actions,
-            colors = colors,
-            windowInsets = windowInsets,
-            scrollBehavior = scrollBehavior
-        )
-    } else {
-        TopAppBar(
-            title = title,
-            navigationIcon = navigationIcon,
-            actions = actions,
-            colors = colors,
-            windowInsets = windowInsets,
-            scrollBehavior = scrollBehavior
-        )
-    }
+    TopAppBar(
+        title = title,
+        navigationIcon = navigationIcon,
+        actions = actions,
+        colors = colors,
+        windowInsets = windowInsets,
+        scrollBehavior = scrollBehavior
+    )
 }
 
 @Composable
@@ -324,10 +312,9 @@ fun UmountPathCard(
     val context = LocalContext.current
     val resources = LocalResources.current
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = getCardColors(MaterialTheme.colorScheme.surfaceContainerLow),
-        elevation = getCardElevation()
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
     ) {
         Row(
             modifier = Modifier
@@ -338,7 +325,7 @@ fun UmountPathCard(
             Icon(
                 imageVector = Icons.Filled.Folder,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(24.dp)
             )
 
@@ -374,7 +361,7 @@ fun UmountPathCard(
             ) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.confirm_delete),
                     tint = MaterialTheme.colorScheme.error
                 )
             }
@@ -394,7 +381,7 @@ fun AddUmountPathDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.add_umount_path)) },
         text = {
-            Column {
+            Column(Modifier.verticalScroll(rememberScrollState())) {
                 OutlinedTextField(
                     value = path,
                     onValueChange = { path = it },

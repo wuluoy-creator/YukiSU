@@ -9,6 +9,7 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -44,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.PointerEventPass
@@ -55,6 +57,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -369,16 +373,8 @@ private fun SuperUserContent(
             modifier = Modifier
                 .fillMaxSize()
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
-            contentPadding = if (isExpressiveUi) {
-                PaddingValues(horizontal = 16.dp, vertical = 12.dp)
-            } else {
-                PaddingValues(0.dp)
-            },
-            verticalArrangement = if (isExpressiveUi) {
-                Arrangement.spacedBy(ListItemDefaults.SegmentedGap)
-            } else {
-                Arrangement.Top
-            }
+            contentPadding = PaddingValues(top = 8.dp, bottom = 96.dp),
+            verticalArrangement = Arrangement.Top
         ) {
             filteredAndSortedAppGroups.forEach { appGroup ->
                 item(key = "${appGroup.uid}-${appGroup.mainApp.packageName}") {
@@ -409,7 +405,7 @@ private fun SuperUserContent(
             if (filteredAndSortedAppGroups.isEmpty()) {
                 item {
                     Box(
-                        modifier = Modifier.fillMaxWidth().height(400.dp),
+                        modifier = Modifier.fillParentMaxSize().padding(24.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         if ((viewModel.isRefreshing || viewModel.appGroupList.isEmpty()) && viewModel.search.isEmpty()) {
@@ -748,22 +744,10 @@ private fun LoadingAnimation(
     modifier: Modifier = Modifier,
     isLoading: Boolean = true
 ) {
-    val infiniteTransition = rememberInfiniteTransition(label = "loading")
-
-    val alpha by infiniteTransition.animateFloat(
-        initialValue = 0.3f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(600, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "alpha"
-    )
-
     AnimatedVisibility(
         visible = isLoading,
-        enter = fadeIn() + scaleIn(),
-        exit = fadeOut() + scaleOut(),
+        enter = fadeIn(animationSpec = tween(150)),
+        exit = fadeOut(animationSpec = tween(100)),
         modifier = modifier
     ) {
         Column(
@@ -772,8 +756,8 @@ private fun LoadingAnimation(
         ) {
             LinearProgressIndicator(
                 modifier = Modifier.width(200.dp).height(4.dp),
-                color = MaterialTheme.colorScheme.primary.copy(alpha = alpha),
-                trackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+                color = MaterialTheme.colorScheme.primary,
+                trackColor = MaterialTheme.colorScheme.surfaceContainerHighest
             )
         }
     }
@@ -794,8 +778,8 @@ private fun EmptyState(
         YukiIcon(
             imageVector = if (isSearchEmpty) Icons.Filled.SearchOff else Icons.Filled.Archive,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f),
-            modifier = Modifier.size(96.dp).padding(bottom = 16.dp)
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(bottom = 16.dp).size(48.dp)
         )
         Text(
             text = if (isSearchEmpty || selectedCategory == AppCategory.ALL) {
@@ -820,10 +804,10 @@ private fun SwipeActionContainer(
     val hapticFeedback = LocalHapticFeedback.current
     val actionThresholdPx = remember(density) { with(density) { 132.dp.toPx() } }
     val maxRevealPx = remember(density) { with(density) { 148.dp.toPx() } }
-    val rootBackgroundColor = Color(0xFFDFF3D8)
-    val rootContentColor = Color(0xFF246B35)
-    val umountBackgroundColor = Color(0xFFFFE1E1)
-    val umountContentColor = Color(0xFF9B1C1C)
+    val rootBackgroundColor = MaterialTheme.colorScheme.primaryContainer
+    val rootContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+    val umountBackgroundColor = MaterialTheme.colorScheme.errorContainer
+    val umountContentColor = MaterialTheme.colorScheme.onErrorContainer
     val containerShape = if (isExpressiveUi) {
         ListItemDefaults.shapes().shape
     } else {
@@ -1045,14 +1029,10 @@ private fun AppGroupItem(
 ) {
     val mainApp = appGroup.mainApp
     val managerContainerColor = when {
-        appGroup.isDynamicManager -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.42f)
-        appGroup.isPresetManager -> MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.32f)
-        else -> Color.Transparent
-    }
-    val expressiveContainerColor = when {
-        appGroup.isDynamicManager -> MaterialTheme.colorScheme.primaryContainer
-        appGroup.isPresetManager -> MaterialTheme.colorScheme.tertiaryContainer
-        else -> MaterialTheme.colorScheme.surfaceContainer
+        isSelected -> MaterialTheme.colorScheme.secondaryContainer
+        appGroup.isDynamicManager -> lerp(MaterialTheme.colorScheme.surface, MaterialTheme.colorScheme.primaryContainer, 0.22f)
+        appGroup.isPresetManager -> lerp(MaterialTheme.colorScheme.surface, MaterialTheme.colorScheme.tertiaryContainer, 0.16f)
+        else -> MaterialTheme.colorScheme.surface
     }
 
     SwipeActionContainer(
@@ -1075,17 +1055,14 @@ private fun AppGroupItem(
             onClick = onClick,
             onLongClick = onLongClick,
             classicContainerColor = managerContainerColor,
-            expressiveContainerColor = expressiveContainerColor,
+            expressiveContainerColor = managerContainerColor,
             headlineContent = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text(
                         text = mainApp.label,
-                        maxLines = 1,
+                        style = MaterialTheme.typography.titleMedium,
+                        maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f, fill = false)
                     )
                     if (appGroup.isDynamicManager || appGroup.isPresetManager) {
                         LabelItem(
@@ -1107,16 +1084,25 @@ private fun AppGroupItem(
                 }
             },
             supportingContent = {
-                Column {
+                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     val summaryText = if (appGroup.apps.size > 1) {
                         stringResource(R.string.group_contains_apps, appGroup.apps.size)
                     } else {
                         mainApp.packageName
                     }
 
-                    Text(summaryText)
+                    Text(
+                        text = summaryText,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
 
-                    FlowRow(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
                         if (appGroup.isDynamicManager) {
                             LabelItem(
                                 text = "ACTIVE",
@@ -1151,7 +1137,8 @@ private fun AppGroupItem(
                             LabelItem(
                                 text = "DEFAULT",
                                 style = LabelItemDefaults.style.copy(
-                                    containerColor = Color.Gray
+                                    containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             )
                         }
@@ -1173,48 +1160,22 @@ private fun AppGroupItem(
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(mainApp.packageInfo)
-                        .crossfade(true)
                         .build(),
-                    contentDescription = mainApp.label,
-                    modifier = Modifier.padding(4.dp).width(48.dp).height(48.dp)
+                    contentDescription = null,
+                    modifier = Modifier.size(44.dp)
                 )
             },
             trailingContent = {
                 AnimatedVisibility(
                     visible = viewModel.showBatchActions,
-                    enter = fadeIn(animationSpec = tween(200)) + scaleIn(
-                        animationSpec = tween(200),
-                        initialScale = 0.6f
-                    ),
-                    exit = fadeOut(animationSpec = tween(200)) + scaleOut(
-                        animationSpec = tween(200),
-                        targetScale = 0.6f
-                    )
+                    enter = fadeIn(animationSpec = tween(150)),
+                    exit = fadeOut(animationSpec = tween(100))
                 ) {
-                    val checkboxInteractionSource = remember { MutableInteractionSource() }
-                    val isCheckboxPressed by checkboxInteractionSource.collectIsPressedAsState()
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        AnimatedVisibility(
-                            visible = isCheckboxPressed,
-                            enter = expandHorizontally() + fadeIn(),
-                            exit = shrinkHorizontally() + fadeOut()
-                        ) {
-                            Text(
-                                text = if (isSelected) stringResource(R.string.selected) else stringResource(R.string.select),
-                                style = MaterialTheme.typography.labelMedium,
-                                modifier = Modifier.padding(end = 4.dp)
-                            )
-                        }
-                        Checkbox(
-                            checked = isSelected,
-                            onCheckedChange = { onToggleSelection() },
-                            interactionSource = checkboxInteractionSource,
-                        )
-                    }
+                    Checkbox(
+                        modifier = Modifier.semantics { contentDescription = mainApp.label },
+                        checked = isSelected,
+                        onCheckedChange = { onToggleSelection() },
+                    )
                 }
             }
         )
@@ -1232,34 +1193,25 @@ private fun AppGroupListItemLayout(
     leadingContent: @Composable (() -> Unit)?,
     trailingContent: @Composable (() -> Unit)?
 ) {
-    if (isExpressiveUi) {
-        SegmentedListItem(
-            onClick = onClick,
-            onLongClick = onLongClick,
-            // App rows form one continuous list, not a bounded settings group. Keep the
-            // first and last rows on the same compact shape as every row in between.
-            shapes = ListItemDefaults.shapes(),
-            colors = ListItemDefaults.segmentedColors(
-                containerColor = expressiveContainerColor.copy(alpha = CardConfig.cardAlpha)
-            ),
-            supportingContent = supportingContent,
-            leadingContent = leadingContent,
-            trailingContent = trailingContent,
-            content = headlineContent
-        )
-    } else {
+    Column {
         ListItem(
-            modifier = Modifier.pointerInput(Unit) {
-                detectTapGestures(
-                    onLongPress = { onLongClick() },
-                    onTap = { onClick() }
-                )
-            },
-            colors = ListItemDefaults.colors(containerColor = classicContainerColor),
+            modifier = Modifier.combinedClickable(
+                onClick = onClick,
+                onLongClickLabel = stringResource(R.string.select),
+                onLongClick = onLongClick
+            ),
+            colors = ListItemDefaults.colors(
+                containerColor = (if (isExpressiveUi) expressiveContainerColor else classicContainerColor)
+                    .copy(alpha = CardConfig.cardAlpha)
+            ),
             content = headlineContent,
             supportingContent = supportingContent,
             leadingContent = leadingContent,
             trailingContent = trailingContent
+        )
+        HorizontalDivider(
+            modifier = Modifier.padding(start = 76.dp, end = 16.dp),
+            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
         )
     }
 }

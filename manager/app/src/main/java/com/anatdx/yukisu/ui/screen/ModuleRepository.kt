@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
@@ -41,10 +42,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.LinearWavyProgressIndicator
-import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -72,6 +70,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -119,12 +119,7 @@ private fun RepositoryCard(
     shape: Shape? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    val expressive = isExpressiveUi
-    val resolvedContainerColor = containerColor ?: if (expressive) {
-        MaterialTheme.colorScheme.surfaceContainer
-    } else {
-        MaterialTheme.colorScheme.surfaceContainerHigh
-    }
+    val resolvedContainerColor = containerColor ?: MaterialTheme.colorScheme.surface
     val colors = if (containerColor == null) {
         getCardColors(resolvedContainerColor)
     } else {
@@ -133,11 +128,7 @@ private fun RepositoryCard(
             contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,
         )
     }
-    val resolvedShape = shape ?: if (expressive) {
-        MaterialTheme.shapes.large
-    } else {
-        CardDefaults.elevatedShape
-    }
+    val resolvedShape = shape ?: MaterialTheme.shapes.medium
 
     if (onClick == null) {
         ElevatedCard(
@@ -262,21 +253,13 @@ private fun RepositoryFilterChip(
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun RepositoryLinearProgress(modifier: Modifier = Modifier) {
-    if (isExpressiveUi) {
-        LinearWavyProgressIndicator(modifier = modifier)
-    } else {
-        LinearProgressIndicator(modifier = modifier)
-    }
+    LinearProgressIndicator(modifier = modifier)
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun RepositoryLoadingIndicator(modifier: Modifier = Modifier) {
-    if (isExpressiveUi) {
-        LoadingIndicator(modifier = modifier)
-    } else {
-        CircularProgressIndicator(modifier = modifier)
-    }
+    CircularProgressIndicator(modifier = modifier)
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -299,33 +282,20 @@ private fun RepositoryTopAppBar(
     )
     val navigationIcon: @Composable () -> Unit = {
         RepositoryIconButton(onClick = onBack) {
-            YukiIcon(Icons.AutoMirrored.Outlined.ArrowBack, null)
+            YukiIcon(Icons.AutoMirrored.Outlined.ArrowBack, stringResource(R.string.back))
         }
     }
 
-    if (isExpressiveUi) {
-        LargeFlexibleTopAppBar(
-            title = title,
-            navigationIcon = navigationIcon,
-            actions = actions,
-            scrollBehavior = scrollBehavior,
-            colors = colors,
-            windowInsets = WindowInsets.safeDrawing.only(
-                WindowInsetsSides.Top + WindowInsetsSides.Horizontal
-            ),
-        )
-    } else {
-        TopAppBar(
-            title = title,
-            navigationIcon = navigationIcon,
-            actions = actions,
-            scrollBehavior = scrollBehavior,
-            colors = colors,
-            windowInsets = WindowInsets.safeDrawing.only(
-                WindowInsetsSides.Top + WindowInsetsSides.Horizontal
-            ),
-        )
-    }
+    TopAppBar(
+        title = title,
+        navigationIcon = navigationIcon,
+        actions = actions,
+        scrollBehavior = scrollBehavior,
+        colors = colors,
+        windowInsets = WindowInsets.safeDrawing.only(
+            WindowInsetsSides.Top + WindowInsetsSides.Horizontal
+        ),
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -340,11 +310,7 @@ fun ModuleRepositoryScreen(navigator: DestinationsNavigator) {
         viewModel.visibleModules(catalog)
     }
     val topAppBarState = rememberTopAppBarState()
-    val scrollBehavior = if (isExpressiveUi) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(topAppBarState)
-    } else {
-        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-    }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
 
     LaunchedEffect(Unit) {
         viewModel.refreshInstalledModules()
@@ -477,22 +443,19 @@ private fun RepositoryModuleCard(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
     ) {
-        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text(
                         module.name,
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = if (isExpressiveUi) FontWeight.Normal else FontWeight.SemiBold,
+                        fontWeight = FontWeight.SemiBold,
                     )
                     Text(
                         module.moduleId,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
-                }
-                if (installed != null) {
-                    RepositoryTag(stringResource(R.string.repository_installed_version, installed.version))
                 }
             }
             if (module.description.isNotBlank()) {
@@ -504,11 +467,14 @@ private fun RepositoryModuleCard(
                     overflow = TextOverflow.Ellipsis,
                 )
             }
-            Row(
+            FlowRow(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
+                verticalArrangement = Arrangement.spacedBy(6.dp),
             ) {
+                if (installed != null) {
+                    RepositoryTag(stringResource(R.string.repository_installed_version, installed.version))
+                }
                 Text(
                     module.declaredVersion.ifBlank { module.declaredVersionCode.toString() },
                     style = MaterialTheme.typography.labelMedium,
@@ -517,9 +483,6 @@ private fun RepositoryModuleCard(
                     source?.name ?: stringResource(R.string.repository_removed_source),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.primary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f),
                 )
                 if (duplicateCount > 1) {
                     RepositoryTag(stringResource(R.string.repository_source_count, duplicateCount))
@@ -553,9 +516,9 @@ private fun RepositoryModuleCard(
 @Composable
 private fun RepositoryTag(text: String) {
     Surface(
-        color = MaterialTheme.colorScheme.secondaryContainer,
-        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-        shape = if (isExpressiveUi) MaterialTheme.shapes.extraSmall else MaterialTheme.shapes.small,
+        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        shape = MaterialTheme.shapes.extraSmall,
     ) {
         Text(
             text,
@@ -569,7 +532,7 @@ private fun RepositoryTag(text: String) {
 private fun EmptyRepositoryState(onManageSources: () -> Unit) {
     Box(Modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Icon(Icons.Outlined.Inventory2, null, Modifier.size(56.dp))
+            Icon(Icons.Outlined.Inventory2, null, Modifier.size(48.dp))
             Spacer(Modifier.height(16.dp))
             Text(stringResource(R.string.repository_empty), style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(12.dp))
@@ -598,11 +561,7 @@ fun RepositorySourcesScreen(navigator: DestinationsNavigator) {
     var showAddDialog by remember { mutableStateOf(false) }
     var deleteSource by remember { mutableStateOf<RepositorySource?>(null) }
     val topAppBarState = rememberTopAppBarState()
-    val scrollBehavior = if (isExpressiveUi) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(topAppBarState)
-    } else {
-        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-    }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
 
     LaunchedEffect(section, mmrlDirectory.entries.isEmpty()) {
         if (section == RepositorySourcesSection.MMRL && mmrlDirectory.entries.isEmpty()) {
@@ -892,13 +851,13 @@ private fun MmrlDirectoryRepositoryCard(
     onOpen: () -> Unit,
 ) {
     RepositoryCard(modifier = Modifier.fillMaxWidth()) {
-        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(verticalAlignment = Alignment.Top) {
                 Column(Modifier.weight(1f)) {
                     Text(
                         entry.name,
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = if (isExpressiveUi) FontWeight.Normal else FontWeight.SemiBold,
+                        fontWeight = FontWeight.SemiBold,
                     )
                     entry.modulesCount?.let { count ->
                         Text(
@@ -986,13 +945,13 @@ private fun RepositorySourceCard(
     RepositoryCard(
         modifier = Modifier.fillMaxWidth(),
     ) {
-        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text(
                         source.name,
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = if (isExpressiveUi) FontWeight.Normal else FontWeight.SemiBold,
+                        fontWeight = FontWeight.SemiBold,
                     )
                     Text(
                         "${source.format.displayName()} · $moduleCount ${stringResource(R.string.module)}",
@@ -1000,7 +959,11 @@ private fun RepositorySourceCard(
                         color = MaterialTheme.colorScheme.primary,
                     )
                 }
-                YukiSwitch(checked = source.enabled, onCheckedChange = onEnabledChange)
+                YukiSwitch(
+                    checked = source.enabled,
+                    onCheckedChange = onEnabledChange,
+                    modifier = Modifier.semantics { contentDescription = source.name }
+                )
             }
             Text(
                 source.url,
@@ -1036,9 +999,13 @@ private fun RepositorySourceCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End,
             ) {
-                RepositoryIconButton(onClick = onMoveUp) { Icon(Icons.Outlined.ArrowUpward, null) }
-                RepositoryIconButton(onClick = onMoveDown) { Icon(Icons.Outlined.ArrowDownward, null) }
-                RepositoryIconButton(onClick = onRefresh) { Icon(Icons.Outlined.Refresh, null) }
+                RepositoryIconButton(onClick = onMoveUp) {
+                    Icon(Icons.Outlined.ArrowUpward, stringResource(R.string.ui_move_source_up, source.name))
+                }
+                RepositoryIconButton(onClick = onMoveDown) {
+                    Icon(Icons.Outlined.ArrowDownward, stringResource(R.string.ui_move_source_down, source.name))
+                }
+                RepositoryIconButton(onClick = onRefresh) { Icon(Icons.Outlined.Refresh, stringResource(R.string.refresh)) }
                 if (!source.builtIn) {
                     RepositoryIconButton(onClick = onDelete) {
                         Icon(Icons.Outlined.Delete, stringResource(R.string.delete))
@@ -1064,7 +1031,10 @@ private fun AddRepositorySourceDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.repository_add_source)) },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
                 Text(
                     stringResource(R.string.repository_unverified_warning),
                     color = MaterialTheme.colorScheme.error,
@@ -1146,11 +1116,7 @@ fun ModuleRepositoryDetailScreen(
     var downloadProgress by remember { mutableStateOf(DownloadProgress()) }
     var downloadHandle by remember { mutableStateOf<DownloadHandle?>(null) }
     val topAppBarState = rememberTopAppBarState()
-    val scrollBehavior = if (isExpressiveUi) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(topAppBarState)
-    } else {
-        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-    }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
 
     LaunchedEffect(sourceId, moduleId) {
         viewModel.refreshInstalledModules()
@@ -1211,11 +1177,11 @@ fun ModuleRepositoryDetailScreen(
                 RepositoryCard(
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Text(
                             module.name,
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = if (isExpressiveUi) FontWeight.Normal else FontWeight.SemiBold,
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.SemiBold,
                         )
                         Text("ID: ${module.moduleId}", style = MaterialTheme.typography.bodySmall)
                         if (module.author.isNotBlank()) Text(module.author)
@@ -1335,12 +1301,13 @@ fun ModuleRepositoryDetailScreen(
                                 },
                                 modifier = Modifier.fillMaxWidth(),
                             ) {
-                                Text(
-                                    sources.firstOrNull { it.id == alternative.sourceId }?.name
-                                        ?: stringResource(R.string.repository_removed_source),
-                                    modifier = Modifier.weight(1f),
-                                )
-                                Text(alternative.declaredVersion)
+                                Column(Modifier.fillMaxWidth()) {
+                                    Text(
+                                        sources.firstOrNull { it.id == alternative.sourceId }?.name
+                                            ?: stringResource(R.string.repository_removed_source),
+                                    )
+                                    Text(alternative.declaredVersion, style = MaterialTheme.typography.bodySmall)
+                                }
                             }
                         }
                     }
@@ -1515,15 +1482,18 @@ private fun VersionCard(
     RepositoryCard(
         modifier = Modifier.fillMaxWidth(),
     ) {
-        Row(
+        Column(
             modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
                     Text(
                         version.version.ifBlank { version.versionCode.toString() },
-                        fontWeight = if (isExpressiveUi) FontWeight.Normal else FontWeight.SemiBold,
+                        fontWeight = FontWeight.SemiBold,
                     )
                     if (isDeclared) RepositoryTag(stringResource(R.string.repository_current_release))
                     if (isInstalled) RepositoryTag(stringResource(R.string.repository_installed))
@@ -1540,7 +1510,7 @@ private fun VersionCard(
                     Text(Formatter.formatFileSize(context, it), style = MaterialTheme.typography.bodySmall)
                 }
             }
-            RepositoryButton(onClick = onInstall) {
+            RepositoryButton(onClick = onInstall, modifier = Modifier.align(Alignment.End)) {
                 Text(
                     if (isInstalled) stringResource(R.string.repository_reinstall)
                     else stringResource(R.string.install)

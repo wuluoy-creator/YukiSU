@@ -615,9 +615,6 @@
     <string name="settings_webview_zygote_umount_summary">Module aus WebView zygote aushängen, um das Offenlegen von Mount-Informationen zu verhindern. Dadurch können Module, die WebView-Ressourcen ändern, unwirksam werden. Wird nach einem Neustart wirksam.</string>
     <string name="hide_seccomp_status">Seccomp-Status verbergen</string>
     <string name="hide_seccomp_status_summary">Seccomp-Status auf der Startseite verbergen</string>
-    <string name="ui_style">Oberflächenstil</string>
-    <string name="ui_style_classic">Material 3 Klassisch</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="predictive_back_gesture">Vorausschauende Zurück-Geste</string>
     <string name="predictive_back_gesture_summary">Beim Zurückgehen eine Vorschau der vorherigen Seite passend zur Geste anzeigen. Standardmäßig deaktiviert.</string>
     <string name="feature_control">Funktionssteuerung</string>

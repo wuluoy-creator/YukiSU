@@ -615,9 +615,6 @@
     <string name="settings_webview_zygote_umount_summary">Odmontowuj moduły z WebView zygote, aby zapobiegać wyciekom informacji o montowaniach. Może to uniemożliwić działanie modułom modyfikującym zasoby WebView. Wymaga ponownego uruchomienia.</string>
     <string name="hide_seccomp_status">Ukryj stan Seccomp</string>
     <string name="hide_seccomp_status_summary">Ukryj stan Seccomp na stronie głównej</string>
-    <string name="ui_style">Styl interfejsu</string>
-    <string name="ui_style_classic">Klasyczny Material 3</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="predictive_back_gesture">Predykcyjny gest wstecz</string>
     <string name="predictive_back_gesture_summary">Pokazuj podgląd poprzedniej strony podczas wykonywania gestu wstecz. Domyślnie wyłączone.</string>
     <string name="feature_control">Sterowanie funkcjami</string>

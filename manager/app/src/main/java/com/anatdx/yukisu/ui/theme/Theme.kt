@@ -41,7 +41,6 @@ object ThemeConfig {
     var forceDarkMode by mutableStateOf<Boolean?>(null)
     var currentTheme by mutableStateOf<ThemeColors>(ThemeColors.Default)
     var useDynamicColor by mutableStateOf(false)
-    var uiStyle by mutableStateOf(UiStyle.Classic)
     
     // 背景状态
     var isTransPrideUnlocked by mutableStateOf(false)
@@ -80,7 +79,6 @@ object ThemeConfig {
         forceDarkMode = null
         currentTheme = ThemeColors.Default
         useDynamicColor = false
-        uiStyle = UiStyle.Classic
         backgroundImageLoaded = false
         isThemeChanging = false
         preventBackgroundRefresh = false
@@ -140,33 +138,6 @@ object ThemeManager {
         ThemeConfig.useDynamicColor = enabled
     }
 
-    fun saveUiStyle(context: Context, uiStyle: UiStyle) {
-        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit {
-            putString("ui_style", uiStyle.persistedValue)
-        }
-        ThemeConfig.uiStyle = uiStyle
-    }
-
-    fun loadUiStyle(context: Context) {
-        val themePrefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val savedValue = themePrefs.getString("ui_style", null)
-
-        if (savedValue != null) {
-            ThemeConfig.uiStyle = UiStyle.fromPersistedValue(savedValue)
-            return
-        }
-
-        // A genuinely fresh installation starts with MD3E. Existing installations
-        // that predate the UI-style preference keep the classic UI they were using.
-        val isFirstRun = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
-            .getBoolean("is_first_run", true)
-        val defaultStyle = if (isFirstRun) UiStyle.Expressive else UiStyle.Classic
-        themePrefs.edit {
-            putString("ui_style", defaultStyle.persistedValue)
-        }
-        ThemeConfig.uiStyle = defaultStyle
-    }
-    
     fun unlockTransPride(context: Context) {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit {
             putBoolean("trans_pride_unlocked", true)
@@ -282,6 +253,7 @@ fun KernelSUTheme(
     ThemeInitializer(context = context, systemIsDark = systemIsDark)
 
     val colorScheme = createColorScheme(context, darkTheme, dynamicColor)
+        .utilitySurfaces(darkTheme, CardConfig.isCustomBackgroundEnabled)
 
     // 系统栏样式
     SystemBarController(darkTheme)
@@ -303,16 +275,13 @@ fun KernelSUTheme(
         }
     }
 
-    CompositionLocalProvider(LocalUiStyle provides ThemeConfig.uiStyle) {
-        val expressive = ThemeConfig.uiStyle == UiStyle.Expressive
-        MaterialTheme(
-            colorScheme = colorScheme,
-            typography = if (expressive) ExpressiveTypography else Typography,
-            shapes = if (expressive) ExpressiveShapes else Shapes(),
-            motionScheme = if (expressive) MotionScheme.expressive() else MotionScheme.standard(),
-            content = themedContent
-        )
-    }
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = Typography,
+        shapes = ExpressiveShapes,
+        motionScheme = MotionScheme.standard(),
+        content = themedContent
+    )
 }
 
 @Composable
@@ -343,7 +312,6 @@ private fun ThemeInitializer(context: Context, systemIsDark: Boolean) {
             ThemeManager.loadThemeMode(context)
             ThemeManager.loadThemeColors(context)
             ThemeManager.loadDynamicColorState(context)
-            ThemeManager.loadUiStyle(context)
             ThemeManager.loadTransPrideState(context)
             CardConfig.load(context)
 
@@ -636,8 +604,4 @@ fun Context.saveThemeColors(themeName: String) {
 
 fun Context.saveDynamicColorState(enabled: Boolean) {
     ThemeManager.saveDynamicColorState(this, enabled)
-}
-
-fun Context.saveUiStyle(uiStyle: UiStyle) {
-    ThemeManager.saveUiStyle(this, uiStyle)
 }

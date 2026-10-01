@@ -1,11 +1,6 @@
 package com.anatdx.yukisu.ui.activity.util
 
 import android.content.Context
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.anatdx.yukisu.Natives
@@ -37,13 +32,8 @@ object AnimatedBottomBar {
         showBottomBar: Boolean,
         content: @Composable () -> Unit
     ) {
-        AnimatedVisibility(
-            visible = showBottomBar,
-            enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
-            exit = slideOutVertically(targetOffsetY = { it }) + fadeOut()
-        ) {
-            content()
-        }
+        // Navigation already animates the destination; keep frequent tab changes immediate.
+        if (showBottomBar) content()
     }
 }
 

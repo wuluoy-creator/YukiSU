@@ -59,7 +59,6 @@ class MoreSettingsHandlers(
             false -> 1
             null -> 0
         }
-        state.uiStyleIndex = if (ThemeConfig.uiStyle == UiStyle.Expressive) 1 else 0
 
         // 确保卡片样式跟随主题模式
         when (state.themeMode) {
@@ -124,11 +123,6 @@ class MoreSettingsHandlers(
         }
     }
 
-    fun handleUiStyleChange(index: Int) {
-        val uiStyle = if (index == 1) UiStyle.Expressive else UiStyle.Classic
-        state.uiStyleIndex = index.coerceIn(0, 1)
-        context.saveUiStyle(uiStyle)
-    }
 
     fun handleThemeColorChange(theme: ThemeColors) {
         context.saveThemeColors(when (theme) {

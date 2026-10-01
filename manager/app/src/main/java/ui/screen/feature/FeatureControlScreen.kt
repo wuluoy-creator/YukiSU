@@ -119,7 +119,7 @@ private fun CoroutineScope.persistFeature(
 fun FeatureControlScreen(navigator: DestinationsNavigator) {
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = if (isExpressiveUi) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(topAppBarState)
+        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
     } else {
         TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
     }
@@ -491,7 +491,7 @@ private fun FeatureControlTopBar(
     )
 
     if (isExpressiveUi) {
-        LargeFlexibleTopAppBar(
+        TopAppBar(
             title = title,
             navigationIcon = navigationIcon,
             colors = colors,

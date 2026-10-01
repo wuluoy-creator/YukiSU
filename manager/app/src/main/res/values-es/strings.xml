@@ -613,9 +613,6 @@
     <string name="settings_webview_zygote_umount_summary">Desmontar los módulos de WebView zygote para evitar filtraciones de información de montaje. Esto puede impedir que funcionen los módulos que modifican recursos de WebView. Se aplica tras reiniciar.</string>
     <string name="hide_seccomp_status">Ocultar estado de Seccomp</string>
     <string name="hide_seccomp_status_summary">Ocultar el estado de Seccomp en la página de inicio</string>
-    <string name="ui_style">Estilo de interfaz</string>
-    <string name="ui_style_classic">Material 3 clásico</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="predictive_back_gesture">Gesto de retroceso predictivo</string>
     <string name="predictive_back_gesture_summary">Previsualizar la página anterior durante el gesto de retroceso. Desactivado de forma predeterminada.</string>
     <string name="feature_control">Control de funciones</string>

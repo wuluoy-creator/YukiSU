@@ -613,9 +613,6 @@
     <string name="settings_webview_zygote_umount_summary">برای جلوگیری از افشای اطلاعات اتصال، اتصال ماژول‌ها را از WebView zygote جدا می‌کند. ممکن است ماژول‌هایی که منابع WebView را تغییر می‌دهند از کار بیفتند. پس از راه‌اندازی مجدد اعمال می‌شود.</string>
     <string name="hide_seccomp_status">پنهان کردن وضعیت Seccomp</string>
     <string name="hide_seccomp_status_summary">پنهان کردن اطلاعات وضعیت Seccomp در صفحه اصلی</string>
-    <string name="ui_style">سبک رابط</string>
-    <string name="ui_style_classic">Material 3 کلاسیک</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="predictive_back_gesture">ژست بازگشت پیش‌بینانه</string>
     <string name="predictive_back_gesture_summary">هنگام بازگشت، پیش‌نمایش صفحه قبلی را همراه با ژست نشان می‌دهد. به‌طور پیش‌فرض خاموش است</string>
     <string name="feature_control">کنترل قابلیت‌ها</string>

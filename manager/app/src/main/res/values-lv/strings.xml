@@ -615,9 +615,6 @@
     <string name="settings_webview_zygote_umount_summary">Atmontēt moduļus no WebView zygote, lai novērstu montējumu informācijas noplūdi. Tas var traucēt moduļiem, kas maina WebView resursus. Stājas spēkā pēc restartēšanas.</string>
     <string name="hide_seccomp_status">Slēpt Seccomp statusu</string>
     <string name="hide_seccomp_status_summary">Slēpt Seccomp statusu sākumlapā</string>
-    <string name="ui_style">Saskarnes stils</string>
-    <string name="ui_style_classic">Klasiskais Material 3</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="predictive_back_gesture">Paredzošais atpakaļžests</string>
     <string name="predictive_back_gesture_summary">Atgriežoties priekšskatīt iepriekšējo lapu atbilstoši žestam. Pēc noklusējuma izslēgts.</string>
     <string name="feature_control">Funkciju pārvaldība</string>

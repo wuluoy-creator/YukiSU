@@ -38,7 +38,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
@@ -518,7 +517,7 @@ private fun zygiskModuleState(
 fun YukiZygiskScreen(navigator: DestinationsNavigator) {
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = if (isExpressiveUi) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(topAppBarState)
+        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
     } else {
         TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
     }
@@ -833,7 +832,7 @@ private fun YukiZygiskTopBar(
     )
 
     if (isExpressiveUi) {
-        LargeFlexibleTopAppBar(
+        TopAppBar(
             title = title,
             navigationIcon = navigationIcon,
             colors = colors,

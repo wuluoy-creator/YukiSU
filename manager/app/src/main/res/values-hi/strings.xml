@@ -498,7 +498,6 @@
     <string name="plugin_repository_update">अपडेट</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="download_dialog_msg">HTTPS URL</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="ramdisk_editor_title">%s Ramdisk</string>
     <string name="ramdisk_editor_elf_value_enum">%1$s（%2$d）</string>
     <string name="ramdisk_editor_cancel">रद्द करें</string>
@@ -632,8 +631,6 @@
     <string name="settings_webview_zygote_umount_summary">माउंट जानकारी लीक होने से रोकने के लिए WebView zygote से मॉड्यूल अनमाउंट करें। इससे WebView संसाधनों को बदलने वाले मॉड्यूल काम करना बंद कर सकते हैं। रीस्टार्ट के बाद लागू होगा।</string>
     <string name="hide_seccomp_status">Seccomp स्थिति छिपाएँ</string>
     <string name="hide_seccomp_status_summary">मुख्य पृष्ठ पर Seccomp स्थिति की जानकारी छिपाएँ</string>
-    <string name="ui_style">इंटरफ़ेस शैली</string>
-    <string name="ui_style_classic">Material 3 क्लासिक</string>
     <string name="predictive_back_gesture">पूर्वानुमानित वापस जाने का जेस्चर</string>
     <string name="predictive_back_gesture_summary">वापस जाने के जेस्चर के साथ पिछले पृष्ठ का पूर्वावलोकन दिखाएँ। डिफ़ॉल्ट रूप से बंद है।</string>
     <string name="feature_control">सुविधा नियंत्रण</string>

@@ -498,7 +498,6 @@
     <string name="plugin_repository_update">Cập nhật</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="download_dialog_msg">HTTPS URL</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="ramdisk_editor_title">%s Ramdisk</string>
     <string name="ramdisk_editor_elf_value_enum">%1$s（%2$d）</string>
     <string name="ramdisk_editor_cancel">Thoát</string>
@@ -632,8 +631,6 @@
     <string name="settings_webview_zygote_umount_summary">Tháo gắn kết mô-đun khỏi WebView zygote để tránh rò rỉ thông tin gắn kết. Mô-đun sửa tài nguyên WebView có thể ngừng hoạt động. Có hiệu lực sau khi khởi động lại.</string>
     <string name="hide_seccomp_status">Ẩn trạng thái Seccomp</string>
     <string name="hide_seccomp_status_summary">Ẩn thông tin trạng thái Seccomp trên trang chủ</string>
-    <string name="ui_style">Kiểu giao diện</string>
-    <string name="ui_style_classic">Material 3 cổ điển</string>
     <string name="predictive_back_gesture">Cử chỉ quay lại dự đoán</string>
     <string name="predictive_back_gesture_summary">Xem trước trang trước theo cử chỉ quay lại. Mặc định tắt</string>
     <string name="feature_control">Điều khiển tính năng</string>

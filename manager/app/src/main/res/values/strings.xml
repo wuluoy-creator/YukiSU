@@ -330,9 +330,6 @@
     <string name="hide_tag_card">Hide module label rows</string>
     <string name="hide_tag_card_summary">Hide folder name,size,metamodule notice labels in module cards</string>
     <string name="theme_mode">Theme</string>
-    <string name="ui_style" tools:ignore="MissingTranslation">Interface style</string>
-    <string name="ui_style_classic" tools:ignore="MissingTranslation">Material 3</string>
-    <string name="ui_style_expressive" tools:ignore="MissingTranslation">Material 3 Expressive</string>
     <string name="theme_follow_system">Follow system</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>

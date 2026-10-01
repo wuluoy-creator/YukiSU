@@ -76,7 +76,7 @@ fun AppProfileScreen(
     val snackBarHost = LocalSnackbarHost.current
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = if (isExpressiveUi) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(topAppBarState)
+        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
     } else {
         TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
     }
@@ -266,14 +266,14 @@ private fun AppProfileInner(
     onDynamicManagerChange: (Boolean) -> Unit = {},
 ) {
     val isRootGranted = profile.allowSu
-    val cardColors = getCardColors(MaterialTheme.colorScheme.surfaceContainerHigh)
+    val cardColors = getCardColors(MaterialTheme.colorScheme.surfaceContainerLow)
 
     MaterialTheme(
         colorScheme = MaterialTheme.colorScheme.copy(
             surface = if (isExpressiveUi || CardConfig.isCustomBackgroundEnabled) {
                 Color.Transparent
             } else {
-                MaterialTheme.colorScheme.surfaceContainerHigh
+                MaterialTheme.colorScheme.surfaceContainerLow
             }
         )
     ) {
@@ -514,9 +514,9 @@ private fun ProfileSurface(
     if (isExpressiveUi) {
         Column(
             modifier = modifier
-                .clip(MaterialTheme.shapes.large)
+                .clip(MaterialTheme.shapes.medium)
                 .background(
-                    MaterialTheme.colorScheme.surfaceContainer.copy(alpha = cardAlpha)
+                    MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = cardAlpha)
                 ),
             content = content,
         )
@@ -546,7 +546,7 @@ private fun SharedUidAppsCard(
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp)
+                .heightIn(min = 48.dp)
                 .padding(horizontal = 24.dp, vertical = 14.dp),
         )
         apps.forEachIndexed { index, app ->
@@ -558,20 +558,20 @@ private fun SharedUidAppsCard(
                     )
                     .clip(ListItemDefaults.segmentedShapes(index, apps.size).shape)
                     .background(
-                        MaterialTheme.colorScheme.surfaceContainer.copy(alpha = cardAlpha)
+                        MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = cardAlpha)
                     ),
                 colors = ListItemDefaults.colors(containerColor = Color.Transparent),
                 content = {
                     Text(
                         text = app.label,
                         fontWeight = FontWeight.Normal,
-                        maxLines = 1,
+                        maxLines = Int.MAX_VALUE,
                     )
                 },
                 supportingContent = {
                     Text(
                         text = app.packageName,
-                        maxLines = 1,
+                        maxLines = Int.MAX_VALUE,
                     )
                 },
                 leadingContent = {
@@ -608,13 +608,13 @@ private fun SharedUidAppsCard(
                     content = {
                         Text(
                             text = app.label,
-                            maxLines = 1,
+                            maxLines = Int.MAX_VALUE,
                         )
                     },
                     supportingContent = {
                         Text(
                             text = app.packageName,
-                            maxLines = 1,
+                            maxLines = Int.MAX_VALUE,
                         )
                     },
                     leadingContent = {
@@ -667,7 +667,7 @@ private fun TopBar(
     )
 
     if (isExpressiveUi) {
-        LargeFlexibleTopAppBar(
+        TopAppBar(
             title = titleContent,
             colors = colors,
             navigationIcon = navigationIcon,
@@ -857,7 +857,7 @@ private fun AppProfilePreview() {
     var profile by remember { mutableStateOf(Natives.Profile("")) }
     MaterialTheme(
         colorScheme = MaterialTheme.colorScheme.copy(
-            surface = if (CardConfig.isCustomBackgroundEnabled) Color.Transparent else MaterialTheme.colorScheme.surfaceContainerHigh
+            surface = if (CardConfig.isCustomBackgroundEnabled) Color.Transparent else MaterialTheme.colorScheme.surfaceContainerLow
         )
     ) {
         Surface {

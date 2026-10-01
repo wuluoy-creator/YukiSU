@@ -69,7 +69,7 @@ fun MoreSettingsScreen(
 
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = if (isExpressiveUi) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(topAppBarState)
+        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
     } else {
         TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
     }
@@ -213,7 +213,7 @@ private fun MoreSettingsTopBar(
     )
 
     if (isExpressiveUi) {
-        LargeFlexibleTopAppBar(
+        TopAppBar(
             title = title,
             navigationIcon = navigationIcon,
             colors = colors,
@@ -241,13 +241,6 @@ private fun AppearanceSettings(
     SettingsCard(title = stringResource(R.string.appearance_settings)) {
 
         LanguageSetting(state = state)
-
-        SettingItem(
-            icon = Icons.Default.AutoAwesome,
-            title = stringResource(R.string.ui_style),
-            subtitle = state.uiStyleOptions[state.uiStyleIndex],
-            onClick = { state.showUiStyleDialog = true }
-        )
 
         SwitchSettingItem(
             icon = Icons.AutoMirrored.Filled.ArrowBack,

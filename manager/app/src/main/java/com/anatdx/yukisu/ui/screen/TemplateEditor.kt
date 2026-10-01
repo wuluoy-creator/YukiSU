@@ -65,26 +65,22 @@ fun TemplateEditorScreen(
     }
 
     val topAppBarState = rememberTopAppBarState()
-    val scrollBehavior = if (isExpressiveUi) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(topAppBarState)
-    } else {
-        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-    }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
 
     BackHandler {
         navigator.navigateBack(result = !readOnly)
     }
 
+    val author = if (initialTemplate.author.isNotEmpty()) "@${initialTemplate.author}" else ""
+    val readOnlyHint = if (readOnly) {
+        " - ${stringResource(id = R.string.app_profile_template_readonly)}"
+    } else {
+        ""
+    }
+    val titleSummary = "${initialTemplate.id}$author$readOnlyHint"
+
     Scaffold(
         topBar = {
-            val author =
-                if (initialTemplate.author.isNotEmpty()) "@${initialTemplate.author}" else ""
-            val readOnlyHint = if (readOnly) {
-                " - ${stringResource(id = R.string.app_profile_template_readonly)}"
-            } else {
-                ""
-            }
-            val titleSummary = "${initialTemplate.id}$author$readOnlyHint"
             val saveTemplateFailed = stringResource(id = R.string.app_profile_template_save_failed)
             val context = LocalContext.current
 
@@ -97,7 +93,6 @@ fun TemplateEditorScreen(
                     stringResource(R.string.app_profile_template_edit)
                 },
                 readOnly = readOnly,
-                summary = titleSummary,
                 onBack = dropUnlessResumed { navigator.navigateBack(result = !readOnly) },
                 onDelete = {
                     if (deleteAppProfileTemplate(template.id)) {
@@ -114,7 +109,7 @@ fun TemplateEditorScreen(
                 scrollBehavior = scrollBehavior
             )
         },
-        contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)
+        contentWindowInsets = WindowInsets.safeDrawing
     ) { innerPadding ->
         MaterialTheme(
             colorScheme = MaterialTheme.colorScheme.copy(
@@ -124,6 +119,8 @@ fun TemplateEditorScreen(
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
+                    .consumeWindowInsets(innerPadding)
+                    .imePadding()
                     .nestedScroll(scrollBehavior.nestedScrollConnection)
                     .then(
                         if (isExpressiveUi) {
@@ -131,7 +128,7 @@ fun TemplateEditorScreen(
                                 .padding(horizontal = 16.dp, vertical = 8.dp)
                                 .clip(MaterialTheme.shapes.large)
                                 .background(
-                                    MaterialTheme.colorScheme.surfaceContainer.copy(
+                                    MaterialTheme.colorScheme.surfaceContainerLow.copy(
                                         alpha = cardAlpha
                                     )
                                 )
@@ -146,6 +143,14 @@ fun TemplateEditorScreen(
                         readOnly
                     }
             ) {
+            if (titleSummary.isNotBlank()) {
+                Text(
+                    text = titleSummary,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
             if (isCreation) {
                 var errorHint by remember {
                     mutableStateOf("")
@@ -266,29 +271,17 @@ fun saveTemplate(template: TemplateViewModel.TemplateInfo, isCreation: Boolean =
 private fun TopBar(
     title: String,
     readOnly: Boolean,
-    summary: String = "",
     onBack: () -> Unit,
     onDelete: () -> Unit = {},
     onSave: () -> Unit = {},
     scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
     val titleContent: @Composable () -> Unit = {
-        Column {
-            Text(
-                text = title,
-                fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
-            )
-            if (summary.isNotBlank()) {
-                Text(
-                    text = summary,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
-        }
+        Text(text = title)
     }
     val navigationIcon: @Composable () -> Unit = {
         IconButton(onClick = onBack) {
-            YukiIcon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+            YukiIcon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
         }
     }
     val actions: @Composable RowScope.() -> Unit = {
@@ -323,25 +316,14 @@ private fun TopBar(
         WindowInsetsSides.Top + WindowInsetsSides.Horizontal
     )
 
-    if (isExpressiveUi) {
-        LargeFlexibleTopAppBar(
-            title = titleContent,
-            navigationIcon = navigationIcon,
-            actions = actions,
-            colors = colors,
-            windowInsets = windowInsets,
-            scrollBehavior = scrollBehavior,
-        )
-    } else {
-        TopAppBar(
-            title = titleContent,
-            navigationIcon = navigationIcon,
-            actions = actions,
-            colors = colors,
-            windowInsets = windowInsets,
-            scrollBehavior = scrollBehavior,
-        )
-    }
+    TopAppBar(
+        title = titleContent,
+        navigationIcon = navigationIcon,
+        actions = actions,
+        colors = colors,
+        windowInsets = windowInsets,
+        scrollBehavior = scrollBehavior,
+    )
 }
 
 @Composable
@@ -362,7 +344,7 @@ private fun TextEdit(
             value = text,
             modifier = Modifier.fillMaxWidth(),
             label = { Text(label) },
-            suffix = {
+            supportingText = {
                 if (errorHint.isNotBlank()) {
                     Text(
                         text = if (isError) errorHint else "",

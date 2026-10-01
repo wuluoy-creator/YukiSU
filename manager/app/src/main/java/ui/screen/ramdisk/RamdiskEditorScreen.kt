@@ -33,7 +33,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
@@ -874,7 +873,7 @@ private fun RamdiskFragmentSelector(
     Scaffold(
         topBar = {
             if (isExpressiveUi) {
-                LargeFlexibleTopAppBar(
+                TopAppBar(
                     title = title,
                     navigationIcon = navigationIcon,
                     actions = actions,

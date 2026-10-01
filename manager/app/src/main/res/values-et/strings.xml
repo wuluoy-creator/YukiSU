@@ -613,9 +613,6 @@
     <string name="settings_webview_zygote_umount_summary">Haagi moodulid WebView zygote-ist lahti, et vältida haakimisinfo lekkimist. See võib takistada WebView ressursse muutvate moodulite tööd. Jõustub pärast taaskäivitust.</string>
     <string name="hide_seccomp_status">Peida Seccompi olek</string>
     <string name="hide_seccomp_status_summary">Peida Seccompi olek avalehel</string>
-    <string name="ui_style">Liidese stiil</string>
-    <string name="ui_style_classic">Klassikaline Material 3</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="predictive_back_gesture">Ennustav tagasiliikumise žest</string>
     <string name="predictive_back_gesture_summary">Eelvaata tagasiliikumisel eelmist lehte vastavalt žestile. Vaikimisi väljas.</string>
     <string name="feature_control">Funktsioonide juhtimine</string>

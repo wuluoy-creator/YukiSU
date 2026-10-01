@@ -615,9 +615,6 @@
     <string name="settings_webview_zygote_umount_summary">Modules van WebView zygote ontkoppelen om lekken van koppelgegevens te voorkomen. Hierdoor werken modules die WebView-bronnen wijzigen mogelijk niet meer. Wordt actief na opnieuw opstarten.</string>
     <string name="hide_seccomp_status">Seccomp-status verbergen</string>
     <string name="hide_seccomp_status_summary">Seccomp-status op de startpagina verbergen</string>
-    <string name="ui_style">Interfacestijl</string>
-    <string name="ui_style_classic">Material 3 klassiek</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="predictive_back_gesture">Voorspellend teruggebaar</string>
     <string name="predictive_back_gesture_summary">Tijdens het teruggebaar een voorbeeld van de vorige pagina tonen. Standaard uitgeschakeld.</string>
     <string name="feature_control">Functiebeheer</string>

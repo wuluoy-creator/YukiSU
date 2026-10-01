@@ -615,9 +615,6 @@
     <string name="settings_webview_zygote_umount_summary">Демонтувати модулі з WebView zygote, щоб запобігти витоку відомостей про монтування. Модулі, які змінюють ресурси WebView, можуть перестати працювати. Набуде чинності після перезавантаження.</string>
     <string name="hide_seccomp_status">Приховати стан Seccomp</string>
     <string name="hide_seccomp_status_summary">Приховати відомості про стан Seccomp на головній сторінці</string>
-    <string name="ui_style">Стиль інтерфейсу</string>
-    <string name="ui_style_classic">Класичний Material 3</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="predictive_back_gesture">Передбачувальний жест «Назад»</string>
     <string name="predictive_back_gesture_summary">Показувати попередню сторінку відповідно до жесту повернення. Типово вимкнено</string>
     <string name="feature_control">Керування функціями</string>

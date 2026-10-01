@@ -344,11 +344,7 @@ fun InstallScreen(
     }
 
     val topAppBarState = rememberTopAppBarState()
-    val scrollBehavior = if (isExpressiveUi) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(topAppBarState)
-    } else {
-        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-    }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
 
     if (showDownloadDialog) {
         YukiAlertDialog(
@@ -383,9 +379,7 @@ fun InstallScreen(
                 scrollBehavior = scrollBehavior
             )
         },
-        contentWindowInsets = WindowInsets.safeDrawing.only(
-            WindowInsetsSides.Top + WindowInsetsSides.Horizontal
-        )
+        contentWindowInsets = WindowInsets.safeDrawing
     ) { innerPadding ->
         MaterialTheme(
             colorScheme = MaterialTheme.colorScheme.copy(
@@ -395,6 +389,8 @@ fun InstallScreen(
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
+                    .consumeWindowInsets(innerPadding)
+                    .imePadding()
                     .nestedScroll(scrollBehavior.nestedScrollConnection)
                     .verticalScroll(rememberScrollState())
                     .padding(top = 12.dp)
@@ -939,7 +935,7 @@ private fun InstallSurface(
             modifier = modifier
                 .clip(MaterialTheme.shapes.large)
                 .background(
-                    MaterialTheme.colorScheme.surfaceContainer.copy(alpha = cardAlpha)
+                    MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = cardAlpha)
                 )
                 .then(
                     if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier
@@ -1332,23 +1328,13 @@ private fun TopBar(
         WindowInsetsSides.Top + WindowInsetsSides.Horizontal
     )
 
-    if (isExpressiveUi) {
-        LargeFlexibleTopAppBar(
-            title = title,
-            colors = colors,
-            navigationIcon = navigationIcon,
-            windowInsets = windowInsets,
-            scrollBehavior = scrollBehavior,
-        )
-    } else {
-        TopAppBar(
-            title = title,
-            colors = colors,
-            navigationIcon = navigationIcon,
-            windowInsets = windowInsets,
-            scrollBehavior = scrollBehavior,
-        )
-    }
+    TopAppBar(
+        title = title,
+        colors = colors,
+        navigationIcon = navigationIcon,
+        windowInsets = windowInsets,
+        scrollBehavior = scrollBehavior,
+    )
 }
 
 private fun isKoFile(context: Context, uri: Uri): Boolean {

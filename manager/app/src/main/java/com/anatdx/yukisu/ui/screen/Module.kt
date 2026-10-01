@@ -58,6 +58,8 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -1068,7 +1070,7 @@ private fun ModuleList(
         LazyColumn(
             state = listState,
             modifier = modifier,
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = remember {
                 PaddingValues(
                     start = 16.dp,
@@ -1092,10 +1094,10 @@ private fun ModuleList(
                                 YukiIcon(
                                     imageVector = Icons.Outlined.Extension,
                                     contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f),
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                     modifier = Modifier
-                                        .size(96.dp)
                                         .padding(bottom = 16.dp)
+                                        .size(48.dp)
                                 )
                                 Text(
                                     text = stringResource(R.string.module_empty),
@@ -1215,15 +1217,9 @@ fun ModuleItem(
     val hapticFeedback = LocalHapticFeedback.current
 
     ElevatedCard(
-        colors = getCardColors(
-            if (isExpressiveUi) {
-                MaterialTheme.colorScheme.surfaceContainer
-            } else {
-                MaterialTheme.colorScheme.surfaceContainerHigh
-            }
-        ),
+        colors = getCardColors(MaterialTheme.colorScheme.surface),
         elevation = getCardElevation(),
-        shape = if (isExpressiveUi) MaterialTheme.shapes.large else CardDefaults.elevatedShape,
+        shape = MaterialTheme.shapes.medium,
     ) {
         val textDecoration = if (!module.remove) null else TextDecoration.LineThrough
         val viewModel = viewModel<ModuleViewModel>()
@@ -1238,18 +1234,19 @@ fun ModuleItem(
         }
 
         Column(
-            modifier = Modifier.padding(22.dp, 18.dp, 22.dp, 12.dp)
+            modifier = Modifier.padding(16.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.Top
             ) {
                 val moduleVersion = stringResource(id = R.string.module_version)
                 val moduleAuthor = stringResource(id = R.string.module_author)
 
                 Column(
-                    modifier = Modifier.fillMaxWidth(0.8f)
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -1257,28 +1254,24 @@ fun ModuleItem(
                     ) {
                         Text(
                             text = module.name,
-                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                            style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
-                            lineHeight = MaterialTheme.typography.bodySmall.lineHeight,
-                            fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
                             textDecoration = textDecoration,
-                            modifier = Modifier.weight(1f, false)
+                            modifier = Modifier.weight(1f, false),
                         )
                     }
 
                     Text(
                         text = "$moduleVersion: ${module.version}",
-                        fontSize = MaterialTheme.typography.bodySmall.fontSize,
-                        lineHeight = MaterialTheme.typography.bodySmall.lineHeight,
-                        fontFamily = MaterialTheme.typography.bodySmall.fontFamily,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textDecoration = textDecoration,
                     )
 
                     Text(
                         text = "$moduleAuthor: ${module.author}",
-                        fontSize = MaterialTheme.typography.bodySmall.fontSize,
-                        lineHeight = MaterialTheme.typography.bodySmall.lineHeight,
-                        fontFamily = MaterialTheme.typography.bodySmall.fontFamily,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textDecoration = textDecoration,
                     )
 
@@ -1317,13 +1310,13 @@ fun ModuleItem(
                     }
                 }
 
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.width(12.dp))
 
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,
                 ) {
                     YukiSwitch(
+                        modifier = Modifier.semantics { contentDescription = module.name },
                         enabled = !module.update && !conflictDisabled,
                         checked = localEnabled,
                         onCheckedChange = { newChecked ->
@@ -1343,10 +1336,8 @@ fun ModuleItem(
 
             Text(
                 text = module.description,
-                fontSize = MaterialTheme.typography.bodySmall.fontSize,
-                fontFamily = MaterialTheme.typography.bodySmall.fontFamily,
-                lineHeight = MaterialTheme.typography.bodySmall.lineHeight,
-                fontWeight = MaterialTheme.typography.bodySmall.fontWeight,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = moduleDescriptionMaxLines,
                 textDecoration = textDecoration,
@@ -1373,9 +1364,9 @@ fun ModuleItem(
                 val isLoadedRuntimeModule = module.runtimeLoaded
                 val runtimeKind = module.runtimeKind
                 Spacer(modifier = Modifier.height(12.dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     if (isLoadedRuntimeModule) {
@@ -1431,15 +1422,15 @@ fun ModuleItem(
                     }
                     Surface(
                         shape = RoundedCornerShape(4.dp),
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.colorScheme.surfaceContainerHighest,
                         modifier = Modifier
                     ) {
                         Text(
                             text = module.dirId,
                             style = MaterialTheme.typography.labelSmall,
                             modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            maxLines = 1,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 2,
                             overflow = TextOverflow.Ellipsis
                         )
                     }
@@ -1487,19 +1478,18 @@ fun ModuleItem(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Row(
+            FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier.fillMaxWidth()
             ) {
                 if (mountInfo != null && mountConfigEnabled && !module.metamodule) {
-                    FilledTonalButton(
-                        modifier = Modifier.defaultMinSize(minWidth = 52.dp, minHeight = 32.dp),
+                    ModuleActionButton(
                         enabled = !module.remove && localEnabled,
                         onClick = onMountConfig,
-                        contentPadding = ButtonDefaults.TextButtonContentPadding,
-                    ) {
-                        Icon(Icons.Outlined.Folder, stringResource(R.string.kasumi_mount_config), Modifier.size(20.dp))
-                    }
+                        imageVector = Icons.Outlined.Folder,
+                        contentDescription = stringResource(R.string.kasumi_mount_config)
+                    )
                 }
                 if (module.hasActionScript) {
                     ModuleActionButton(
@@ -1509,7 +1499,7 @@ fun ModuleItem(
                             viewModel.markNeedRefresh()
                         },
                         imageVector = Icons.Outlined.PlayArrow,
-                        contentDescription = null
+                        contentDescription = stringResource(R.string.action)
                     )
                 }
 
@@ -1518,11 +1508,9 @@ fun ModuleItem(
                         enabled = !module.remove && localEnabled,
                         onClick = { onClick(module) },
                         imageVector = Icons.AutoMirrored.Outlined.Wysiwyg,
-                        contentDescription = null
+                        contentDescription = "WebUI"
                     )
                 }
-
-                Spacer(modifier = Modifier.weight(1f, true))
 
                 if (module.hasActionScript || module.hasWebUi) {
                     ModuleActionButton(
@@ -1538,7 +1526,7 @@ fun ModuleItem(
                         enabled = !module.remove,
                         onClick = { onUpdate(module) },
                         imageVector = Icons.Outlined.Download,
-                        contentDescription = null,
+                        contentDescription = stringResource(R.string.module_update),
                         prominent = true
                     )
                 }
@@ -1547,7 +1535,7 @@ fun ModuleItem(
                     onClick = { onUninstallClicked(module) },
                     imageVector = if (!module.remove) Icons.Outlined.Delete else Icons.Outlined.Refresh,
                     modifier = if (!module.remove) Modifier else Modifier.rotate(180f),
-                    contentDescription = null
+                    contentDescription = stringResource(if (!module.remove) R.string.uninstall else R.string.cancel)
                 )
             }
         }
@@ -1572,44 +1560,21 @@ private fun ModuleActionButton(
         )
     }
 
-    if (isExpressiveUi) {
-        if (prominent) {
-            FilledIconButton(
-                onClick = onClick,
-                shapes = IconButtonDefaults.shapes(),
-                modifier = Modifier.size(40.dp),
-                enabled = enabled,
-                interactionSource = interactionSource,
-                content = icon
-            )
-        } else {
-            FilledTonalIconButton(
-                onClick = onClick,
-                shapes = IconButtonDefaults.shapes(),
-                modifier = Modifier.size(40.dp),
-                enabled = enabled,
-                interactionSource = interactionSource,
-                content = icon
-            )
-        }
-    } else if (prominent) {
-        Button(
-            modifier = Modifier.defaultMinSize(minWidth = 52.dp, minHeight = 32.dp),
+    if (prominent) {
+        FilledIconButton(
+            modifier = Modifier.size(48.dp),
             enabled = enabled,
             onClick = onClick,
-            shape = ButtonDefaults.textShape,
             interactionSource = interactionSource,
-            contentPadding = ButtonDefaults.TextButtonContentPadding,
-            content = { icon() }
+            content = icon
         )
     } else {
-        FilledTonalButton(
-            modifier = Modifier.defaultMinSize(minWidth = 52.dp, minHeight = 32.dp),
+        IconButton(
+            modifier = Modifier.size(48.dp),
             enabled = enabled,
             onClick = onClick,
             interactionSource = interactionSource,
-            contentPadding = ButtonDefaults.TextButtonContentPadding,
-            content = { icon() }
+            content = icon
         )
     }
 }

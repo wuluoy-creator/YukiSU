@@ -613,9 +613,6 @@
     <string name="settings_webview_zygote_umount_summary">Atjungti modulius nuo WebView zygote, kad nenutekėtų prijungimų informacija. Tai gali sutrikdyti WebView išteklius keičiančių modulių veikimą. Įsigalios paleidus iš naujo.</string>
     <string name="hide_seccomp_status">Slėpti Seccomp būseną</string>
     <string name="hide_seccomp_status_summary">Slėpti Seccomp būseną pradžios puslapyje</string>
-    <string name="ui_style">Sąsajos stilius</string>
-    <string name="ui_style_classic">Klasikinis Material 3</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="predictive_back_gesture">Nuspėjamasis grįžimo gestas</string>
     <string name="predictive_back_gesture_summary">Grįžtant pagal gestą peržiūrėti ankstesnį puslapį. Pagal numatymą išjungta.</string>
     <string name="feature_control">Funkcijų valdymas</string>

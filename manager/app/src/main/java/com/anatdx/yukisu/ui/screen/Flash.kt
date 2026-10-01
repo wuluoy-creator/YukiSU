@@ -147,11 +147,7 @@ fun FlashScreen(navigator: DestinationsNavigator, flashIt: FlashIt) {
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     val topAppBarState = rememberTopAppBarState()
-    val scrollBehavior = if (isExpressiveUi) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(topAppBarState)
-    } else {
-        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-    }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
     val viewModel: ModuleViewModel = viewModel()
 
     val errorCodeString = stringResource(R.string.error_code)
@@ -527,7 +523,7 @@ fun FlashScreen(navigator: DestinationsNavigator, flashIt: FlashIt) {
             }
         },
         snackbarHost = { SnackbarHost(hostState = snackBarHost.hostState) },
-        contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
+        contentWindowInsets = WindowInsets.safeDrawing,
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
         KeyEventBlocker {
@@ -579,7 +575,7 @@ fun FlashScreen(navigator: DestinationsNavigator, flashIt: FlashIt) {
                     scrollState.animateScrollTo(scrollState.maxValue)
                 }
                 Text(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 88.dp),
                     text = text,
                     style = MaterialTheme.typography.bodyMedium,
                     fontFamily = FontFamily.Monospace,
@@ -746,7 +742,7 @@ private fun FlashProgressSurface(content: @Composable ColumnScope.() -> Unit) {
                 )
                 .clip(MaterialTheme.shapes.large)
                 .background(
-                    MaterialTheme.colorScheme.surfaceContainer.copy(alpha = cardAlpha)
+                    MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = cardAlpha)
                 )
                 .padding(16.dp),
             content = content,
@@ -843,25 +839,14 @@ private fun TopBar(
         WindowInsetsSides.Top + WindowInsetsSides.Horizontal
     )
 
-    if (isExpressiveUi) {
-        LargeFlexibleTopAppBar(
-            title = title,
-            navigationIcon = navigationIcon,
-            actions = actions,
-            colors = colors,
-            windowInsets = windowInsets,
-            scrollBehavior = scrollBehavior,
-        )
-    } else {
-        TopAppBar(
-            title = title,
-            navigationIcon = navigationIcon,
-            actions = actions,
-            colors = colors,
-            windowInsets = windowInsets,
-            scrollBehavior = scrollBehavior,
-        )
-    }
+    TopAppBar(
+        title = title,
+        navigationIcon = navigationIcon,
+        actions = actions,
+        colors = colors,
+        windowInsets = windowInsets,
+        scrollBehavior = scrollBehavior,
+    )
 }
 
 suspend fun getModuleNameFromUri(context: Context, uri: Uri): String {

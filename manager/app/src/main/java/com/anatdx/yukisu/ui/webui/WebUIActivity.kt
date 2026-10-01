@@ -1,5 +1,6 @@
 package com.anatdx.yukisu.ui.webui
 
+import com.anatdx.yukisu.ui.theme.ThemeManager
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
@@ -19,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.theme.KernelSUTheme
-import com.anatdx.yukisu.ui.theme.ThemeManager
 import kotlinx.coroutines.CancellationException
 
 class WebUIActivity : ComponentActivity() {
@@ -37,7 +37,6 @@ class WebUIActivity : ComponentActivity() {
         ThemeManager.loadThemeMode(this)
         ThemeManager.loadThemeColors(this)
         ThemeManager.loadDynamicColorState(this)
-        ThemeManager.loadUiStyle(this)
 
         setContent {
             KernelSUTheme {

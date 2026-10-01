@@ -38,15 +38,6 @@ fun MoreSettingsDialogs(
     state: MoreSettingsState,
     handlers: MoreSettingsHandlers
 ) {
-    if (state.showUiStyleDialog) {
-        SingleChoiceDialog(
-            title = stringResource(R.string.ui_style),
-            options = state.uiStyleOptions,
-            selectedIndex = state.uiStyleIndex,
-            onOptionSelected = handlers::handleUiStyleChange,
-            onDismiss = { state.showUiStyleDialog = false }
-        )
-    }
 
     if (state.showThemeModeDialog) {
         SingleChoiceDialog(

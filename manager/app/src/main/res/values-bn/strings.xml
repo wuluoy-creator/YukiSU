@@ -498,7 +498,6 @@
     <string name="plugin_repository_update">আপডেট</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="download_dialog_msg">HTTPS URL</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="ramdisk_editor_title">%s Ramdisk</string>
     <string name="ramdisk_editor_elf_value_enum">%1$s（%2$d）</string>
     <string name="ramdisk_editor_cancel">বাতিল করুন</string>
@@ -632,8 +631,6 @@
     <string name="settings_webview_zygote_umount_summary">মাউন্টের তথ্য ফাঁস রোধে WebView zygote থেকে মডিউল আনমাউন্ট করুন। WebView-এর রিসোর্স বদলানো মডিউল অকার্যকর হতে পারে। পুনরায় চালুর পর কার্যকর হবে।</string>
     <string name="hide_seccomp_status">Seccomp-এর অবস্থা লুকান</string>
     <string name="hide_seccomp_status_summary">হোম পৃষ্ঠায় Seccomp-এর অবস্থার তথ্য লুকান</string>
-    <string name="ui_style">ইন্টারফেসের ধরন</string>
-    <string name="ui_style_classic">Material 3 ক্লাসিক</string>
     <string name="predictive_back_gesture">পূর্বানুমানভিত্তিক ফিরে যাওয়ার অঙ্গভঙ্গি</string>
     <string name="predictive_back_gesture_summary">ফিরে যাওয়ার অঙ্গভঙ্গির সঙ্গে আগের পৃষ্ঠার পূর্বরূপ দেখান। ডিফল্টভাবে বন্ধ</string>
     <string name="feature_control">বৈশিষ্ট্য নিয়ন্ত্রণ</string>

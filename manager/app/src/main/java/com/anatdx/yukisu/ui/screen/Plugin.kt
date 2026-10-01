@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -73,6 +74,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -90,6 +93,8 @@ import com.anatdx.yukisu.ui.component.YukiSwitch
 import com.anatdx.yukisu.ui.component.rememberConfirmDialog
 import com.anatdx.yukisu.ui.component.rememberFabVisibilityState
 import com.anatdx.yukisu.ui.theme.isExpressiveUi
+import com.anatdx.yukisu.ui.theme.getCardColors
+import com.anatdx.yukisu.ui.theme.getCardElevation
 import com.anatdx.yukisu.ui.util.rememberSnackbarController
 import com.anatdx.yukisu.ui.util.PluginCommandResult
 import com.anatdx.yukisu.ui.util.copyPluginPackageTo
@@ -607,24 +612,17 @@ private fun PluginCard(
 
     ElevatedCard(
         modifier = Modifier.fillMaxWidth(),
-        shape = if (isExpressiveUi) RoundedCornerShape(20.dp) else RoundedCornerShape(16.dp),
+        shape = MaterialTheme.shapes.medium,
+        colors = getCardColors(MaterialTheme.colorScheme.surface),
+        elevation = getCardElevation(),
     ) {
         Column(Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Outlined.Extension,
-                    contentDescription = null,
-                    modifier = Modifier.size(28.dp),
-                    tint = MaterialTheme.colorScheme.primary,
-                )
-                Spacer(Modifier.width(12.dp))
                 Column(Modifier.weight(1f)) {
                     Text(
                         text = plugin.name.ifBlank { plugin.id },
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
                     )
                     if (metadata.isNotBlank()) {
                         Spacer(Modifier.height(2.dp))
@@ -632,8 +630,6 @@ private fun PluginCard(
                             text = metadata,
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 }
@@ -688,6 +684,7 @@ private fun PluginCard(
                     }
                 }
                 YukiSwitch(
+                    modifier = Modifier.semantics { contentDescription = plugin.name.ifBlank { plugin.id } },
                     checked = plugin.enabled,
                     onCheckedChange = onToggle,
                     enabled = !operationInProgress,
@@ -738,11 +735,14 @@ private fun PluginCard(
 
             if (plugin.quickAction != null || plugin.config.isNotEmpty()) {
                 Spacer(Modifier.height(14.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
                     plugin.quickAction?.let { quickAction ->
                         FilledTonalButton(
                             onClick = onQuickAction,
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier.heightIn(min = 48.dp),
                             enabled = canRunActions && !operationInProgress,
                             contentPadding = ButtonDefaults.ContentPadding,
                         ) {
@@ -754,15 +754,13 @@ private fun PluginCard(
                             Spacer(Modifier.width(6.dp))
                             Text(
                                 text = quickActionLabel(quickAction, locale),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
                             )
                         }
                     }
                     if (plugin.config.isNotEmpty()) {
                         FilledTonalButton(
                             onClick = onConfig,
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier.heightIn(min = 48.dp),
                             enabled = !operationInProgress,
                             contentPadding = ButtonDefaults.ContentPadding,
                         ) {
@@ -795,7 +793,7 @@ private fun PluginEmptyState(
         Icon(
             imageVector = if (loadFailed) Icons.Outlined.Warning else Icons.Outlined.Extension,
             contentDescription = null,
-            modifier = Modifier.size(56.dp),
+            modifier = Modifier.size(48.dp),
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Spacer(Modifier.height(16.dp))

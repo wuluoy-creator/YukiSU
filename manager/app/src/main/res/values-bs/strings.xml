@@ -613,9 +613,6 @@
     <string name="settings_webview_zygote_umount_summary">Odmontira module iz WebView zygote radi sprječavanja otkrivanja podataka o montiranju. Moduli koji mijenjaju WebView resurse možda neće raditi. Primjenjuje se nakon ponovnog pokretanja.</string>
     <string name="hide_seccomp_status">Sakrij stanje Seccompa</string>
     <string name="hide_seccomp_status_summary">Skriva podatke o stanju Seccompa na početnoj stranici</string>
-    <string name="ui_style">Stil sučelja</string>
-    <string name="ui_style_classic">Klasični Material 3</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="predictive_back_gesture">Prediktivna gesta za povratak</string>
     <string name="predictive_back_gesture_summary">Prikazuje prethodnu stranicu prateći gestu povratka. Zadano je isključeno</string>
     <string name="feature_control">Upravljanje funkcijama</string>

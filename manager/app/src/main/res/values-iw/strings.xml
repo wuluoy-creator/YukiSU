@@ -613,9 +613,6 @@
     <string name="settings_webview_zygote_umount_summary">ניתוק עיגון המודולים מ-WebView zygote למניעת דליפת מידע על עיגונים. מודולים שמשנים משאבי WebView עלולים להפסיק לפעול. ייכנס לתוקף לאחר הפעלה מחדש.</string>
     <string name="hide_seccomp_status">הסתרת מצב Seccomp</string>
     <string name="hide_seccomp_status_summary">הסתרת מידע על מצב Seccomp בדף הבית</string>
-    <string name="ui_style">סגנון הממשק</string>
-    <string name="ui_style_classic">Material 3 קלאסי</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="predictive_back_gesture">מחוות חזרה חזויה</string>
     <string name="predictive_back_gesture_summary">תצוגה מקדימה של הדף הקודם בהתאם למחוות החזרה. כבוי כברירת מחדל</string>
     <string name="feature_control">שליטה בתכונות</string>

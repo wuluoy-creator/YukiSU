@@ -39,6 +39,7 @@
             android:value="${ciRunId}" />
         <activity
             android:name=".ui.MainActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true"
             android:enabled="true"
             android:launchMode="standard"

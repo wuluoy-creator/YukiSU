@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.anatdx.yukisu.ui.theme.isExpressiveUi
 
@@ -62,11 +63,11 @@ fun YukiAlertDialog(
         } else {
             AlertDialogDefaults.shape
         },
-        containerColor = containerColor ?: AlertDialogDefaults.containerColor,
+        containerColor = containerColor ?: MaterialTheme.colorScheme.surfaceContainerLow,
         iconContentColor = iconContentColor ?: AlertDialogDefaults.iconContentColor,
         titleContentColor = titleContentColor ?: AlertDialogDefaults.titleContentColor,
         textContentColor = textContentColor ?: AlertDialogDefaults.textContentColor,
-        tonalElevation = tonalElevation ?: AlertDialogDefaults.TonalElevation,
+        tonalElevation = tonalElevation ?: 0.dp,
         properties = properties,
     )
 }

@@ -615,9 +615,6 @@
     <string name="settings_webview_zygote_umount_summary">Demontează modulele din WebView zygote pentru a preveni divulgarea informațiilor de montare. Modulele care modifică resursele WebView pot înceta să funcționeze. Se aplică după repornire.</string>
     <string name="hide_seccomp_status">Ascunde starea Seccomp</string>
     <string name="hide_seccomp_status_summary">Ascunde informațiile de stare Seccomp de pe pagina principală</string>
-    <string name="ui_style">Stilul interfeței</string>
-    <string name="ui_style_classic">Material 3 clasic</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="predictive_back_gesture">Gest de revenire predictiv</string>
     <string name="predictive_back_gesture_summary">Previzualizează pagina anterioară în timpul gestului de revenire. Dezactivat implicit.</string>
     <string name="feature_control">Controlul funcțiilor</string>

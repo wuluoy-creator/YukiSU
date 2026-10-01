@@ -613,9 +613,6 @@
     <string name="settings_webview_zygote_umount_summary">Afmontér moduler fra WebView zygote for at forhindre læk af monteringsoplysninger. Moduler, der ændrer WebView-ressourcer, kan holde op med at virke. Træder i kraft efter genstart.</string>
     <string name="hide_seccomp_status">Skjul Seccomp-status</string>
     <string name="hide_seccomp_status_summary">Skjul Seccomp-status på startsiden</string>
-    <string name="ui_style">Grænsefladestil</string>
-    <string name="ui_style_classic">Material 3 klassisk</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="predictive_back_gesture">Forudsigende tilbagebevægelse</string>
     <string name="predictive_back_gesture_summary">Vis en forhåndsvisning af den forrige side under tilbagebevægelsen. Deaktiveret som standard.</string>
     <string name="feature_control">Funktionsstyring</string>

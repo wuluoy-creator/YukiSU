@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
@@ -34,6 +35,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -85,11 +88,7 @@ fun PluginRepositoryScreen(navigator: DestinationsNavigator) {
     val scope = rememberCoroutineScope()
     val snackbarHost = rememberSnackbarController()
     val topAppBarState = rememberTopAppBarState()
-    val scrollBehavior = if (isExpressiveUi) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(topAppBarState)
-    } else {
-        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-    }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
 
     var installTarget by remember { mutableStateOf<RepositoryPlugin?>(null) }
     var downloadingPlugin by remember { mutableStateOf<RepositoryPlugin?>(null) }
@@ -325,7 +324,7 @@ fun PluginRepositorySourcesScreen(navigator: DestinationsNavigator) {
                 title = { Text(stringResource(R.string.repository_sources)) },
                 navigationIcon = {
                     IconButton(onClick = navigator::popBackStack) {
-                        YukiIcon(Icons.AutoMirrored.Outlined.ArrowBack, null)
+                        YukiIcon(Icons.AutoMirrored.Outlined.ArrowBack, stringResource(R.string.back))
                     }
                 },
                 actions = {
@@ -469,13 +468,13 @@ private fun PluginRepositoryItem(
     val description = localizedText(plugin.descriptions, locale, plugin.description)
     val uriHandler = LocalUriHandler.current
     PluginRepositoryCard {
-        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text(
                         plugin.name,
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = if (isExpressiveUi) FontWeight.Normal else FontWeight.SemiBold,
+                        fontWeight = FontWeight.SemiBold,
                     )
                     plugin.pluginId?.let { id ->
                         Text(
@@ -484,9 +483,6 @@ private fun PluginRepositoryItem(
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
-                }
-                installed?.let {
-                    PluginRepositoryTag(stringResource(R.string.repository_installed_version, it.version))
                 }
             }
             if (description.isNotBlank()) {
@@ -498,15 +494,23 @@ private fun PluginRepositoryItem(
                     overflow = TextOverflow.Ellipsis,
                 )
             }
-            Row(
+            FlowRow(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp),
             ) {
+                installed?.let {
+                    PluginRepositoryTag(stringResource(R.string.repository_installed_version, it.version))
+                }
                 source?.let { PluginRepositoryTag(it.name) }
                 if (plugin.version.isNotBlank()) PluginRepositoryTag(plugin.version)
                 plugin.author.takeIf(String::isNotBlank)?.let { PluginRepositoryTag(it) }
-                Spacer(Modifier.weight(1f))
+            }
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
                 plugin.homepage?.let { url ->
                     IconButton(onClick = { uriHandler.openUri(url) }) {
                         YukiIcon(
@@ -515,7 +519,7 @@ private fun PluginRepositoryItem(
                         )
                     }
                 }
-                Button(onClick = onInstall, enabled = !installing) {
+                Button(onClick = onInstall, enabled = !installing, modifier = Modifier.heightIn(min = 48.dp)) {
                     if (installing) {
                         CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp)
                         Spacer(Modifier.width(8.dp))
@@ -573,7 +577,7 @@ private fun PluginRepositorySourceItem(
     onDelete: () -> Unit,
 ) {
     PluginRepositoryCard {
-        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text(source.name, style = MaterialTheme.typography.titleMedium)
@@ -585,7 +589,11 @@ private fun PluginRepositorySourceItem(
                         overflow = TextOverflow.Ellipsis,
                     )
                 }
-                YukiSwitch(checked = source.enabled, onCheckedChange = onToggle)
+                YukiSwitch(
+                    checked = source.enabled,
+                    onCheckedChange = onToggle,
+                    modifier = Modifier.semantics { contentDescription = source.name }
+                )
             }
             Text(
                 stringResource(R.string.plugin_repository_plugin_count, pluginCount),
@@ -610,10 +618,10 @@ private fun PluginRepositorySourceItem(
             }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                 IconButton(onClick = onMoveUp, enabled = canMoveUp) {
-                    YukiIcon(Icons.Outlined.ArrowUpward, null)
+                    YukiIcon(Icons.Outlined.ArrowUpward, stringResource(R.string.ui_move_source_up, source.name))
                 }
                 IconButton(onClick = onMoveDown, enabled = canMoveDown) {
-                    YukiIcon(Icons.Outlined.ArrowDownward, null)
+                    YukiIcon(Icons.Outlined.ArrowDownward, stringResource(R.string.ui_move_source_down, source.name))
                 }
                 IconButton(onClick = onRefresh) {
                     YukiIcon(Icons.Outlined.Refresh, stringResource(R.string.refresh))
@@ -640,7 +648,10 @@ private fun AddPluginRepositorySourceDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.repository_add_source)) },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
                 Text(
                     stringResource(R.string.plugin_repository_unverified_warning),
                     color = MaterialTheme.colorScheme.error,
@@ -681,15 +692,9 @@ private fun AddPluginRepositorySourceDialog(
 private fun PluginRepositoryCard(content: @Composable ColumnScope.() -> Unit) {
     ElevatedCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = getCardColors(
-            if (isExpressiveUi) {
-                MaterialTheme.colorScheme.surfaceContainer
-            } else {
-                MaterialTheme.colorScheme.surfaceContainerHigh
-            }
-        ),
+        colors = getCardColors(MaterialTheme.colorScheme.surface),
         elevation = getCardElevation(),
-        shape = if (isExpressiveUi) MaterialTheme.shapes.large else CardDefaults.elevatedShape,
+        shape = MaterialTheme.shapes.medium,
         content = content,
     )
 }
@@ -697,9 +702,9 @@ private fun PluginRepositoryCard(content: @Composable ColumnScope.() -> Unit) {
 @Composable
 private fun PluginRepositoryTag(text: String) {
     Surface(
-        shape = CircleShape,
-        color = MaterialTheme.colorScheme.secondaryContainer,
-        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        shape = MaterialTheme.shapes.extraSmall,
+        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
     ) {
         Text(text, modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp), style = MaterialTheme.typography.labelSmall)
     }

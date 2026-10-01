@@ -10,6 +10,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.addCallback
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
@@ -210,13 +213,14 @@ private fun SuRequestCard(
 
     Surface(
         modifier = Modifier
-            .fillMaxWidth()
-            .widthIn(max = 420.dp),
+            .widthIn(max = 420.dp)
+            .fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
-        tonalElevation = 6.dp,
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        tonalElevation = 0.dp,
     ) {
         Column(
-            modifier = Modifier.padding(20.dp),
+            modifier = Modifier.verticalScroll(rememberScrollState()).padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Row(
@@ -230,7 +234,7 @@ private fun SuRequestCard(
                         modifier = Modifier.size(48.dp),
                     )
                 }
-                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text(
                         text = appLabel,
                         style = MaterialTheme.typography.titleLarge,
@@ -258,23 +262,23 @@ private fun SuRequestCard(
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Button(
                     onClick = { onChoice(SuRequestActivity.Choice.ALLOW_FOREVER) },
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f).heightIn(min = 48.dp),
                     enabled = ready && canPersist,
                 ) { Text(stringResource(R.string.su_request_allow_forever)) }
                 FilledTonalButton(
                     onClick = { onChoice(SuRequestActivity.Choice.ALLOW_ONCE) },
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f).heightIn(min = 48.dp),
                     enabled = ready,
                 ) { Text(stringResource(R.string.su_request_allow_once)) }
             }
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedButton(
                     onClick = { onChoice(SuRequestActivity.Choice.DENY) },
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f).heightIn(min = 48.dp),
                 ) { Text("${stringResource(R.string.su_request_deny)}（${remaining}s）") }
                 OutlinedButton(
                     onClick = { onChoice(SuRequestActivity.Choice.DENY_HIDE) },
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f).heightIn(min = 48.dp),
                     enabled = ready && canPersist,
                 ) { Text(stringResource(R.string.su_request_deny_hide)) }
             }

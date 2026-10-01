@@ -1,5 +1,6 @@
 package com.anatdx.yukisu.ui.webui
 
+import com.anatdx.yukisu.ui.theme.ThemeManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -24,7 +25,6 @@ import com.anatdx.yukisu.BuildConfig
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.theme.KernelSUTheme
 import com.anatdx.yukisu.ui.theme.ThemeConfig
-import com.anatdx.yukisu.ui.theme.ThemeManager
 import com.anatdx.yukisu.ui.util.listModules
 import com.anatdx.yukisu.ui.util.setTaskDescriptionLabel
 import com.dergoogler.mmrl.hybridwebui.interfaces.prebuilt.FileChooserInterface
@@ -46,7 +46,6 @@ class WebUIXActivity : WXActivity() {
         ThemeManager.loadThemeMode(this)
         ThemeManager.loadThemeColors(this)
         ThemeManager.loadDynamicColorState(this)
-        ThemeManager.loadUiStyle(this)
         super.onCreate(savedInstanceState)
     }
 

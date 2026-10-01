@@ -51,11 +51,7 @@ fun ExecuteModuleActionScreen(navigator: DestinationsNavigator, moduleId: String
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     val topAppBarState = rememberTopAppBarState()
-    val scrollBehavior = if (isExpressiveUi) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(topAppBarState)
-    } else {
-        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-    }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
     var isActionRunning by rememberSaveable { mutableStateOf(true) }
 
     val fromShortcut = remember(activity) {
@@ -149,7 +145,8 @@ fun ExecuteModuleActionScreen(navigator: DestinationsNavigator, moduleId: String
                 .fillMaxSize(1f)
                 .padding(innerPadding)
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
-                .verticalScroll(scrollState),
+                .verticalScroll(scrollState)
+                .padding(bottom = 88.dp),
         ) {
             LaunchedEffect(text) {
                 scrollState.animateScrollTo(scrollState.maxValue)
@@ -202,19 +199,10 @@ private fun TopBar(
         },
     )
 
-    if (isExpressiveUi) {
-        LargeFlexibleTopAppBar(
-            title = title,
-            actions = actions,
-            colors = colors,
-            scrollBehavior = scrollBehavior,
-        )
-    } else {
-        TopAppBar(
-            title = title,
-            actions = actions,
-            colors = colors,
-            scrollBehavior = scrollBehavior,
-        )
-    }
+    TopAppBar(
+        title = title,
+        actions = actions,
+        colors = colors,
+        scrollBehavior = scrollBehavior,
+    )
 }

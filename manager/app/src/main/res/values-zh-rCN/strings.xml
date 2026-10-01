@@ -325,9 +325,6 @@
     <string name="hide_tag_card">隐藏模块标签行</string>
     <string name="hide_tag_card_summary">隐藏模块卡片中的文件夹名称、大小标签和是否为元模块</string>
     <string name="theme_mode">主题模式</string>
-    <string name="ui_style">界面风格</string>
-    <string name="ui_style_classic">Material 3 经典</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="theme_follow_system">跟随系统</string>
     <string name="theme_light">浅色</string>
     <string name="theme_dark">深色</string>

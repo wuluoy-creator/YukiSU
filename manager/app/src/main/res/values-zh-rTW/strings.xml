@@ -624,9 +624,6 @@
     <string name="settings_webview_zygote_umount_summary">從 WebView zygote 卸載模組以防止掛載資訊洩漏。這可能導致修改 WebView 資源的模組失效；重新啟動後生效。</string>
     <string name="hide_seccomp_status">隱藏 Seccomp 狀態</string>
     <string name="hide_seccomp_status_summary">隱藏主頁的 Seccomp 狀態資訊</string>
-    <string name="ui_style">介面風格</string>
-    <string name="ui_style_classic">Material 3 經典</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="feature_control">功能控制</string>
     <string name="feature_control_summary">管理目前核心支援的功能。</string>
     <string name="kernelsu_features">KernelSU 功能</string>

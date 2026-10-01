@@ -2,6 +2,7 @@ package ui.screen.moreSettings.component
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.NavigateNext
@@ -9,95 +10,43 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.anatdx.yukisu.ui.theme.*
+import com.anatdx.yukisu.ui.theme.CardConfig
 import com.anatdx.yukisu.ui.component.YukiSwitch
 import com.anatdx.yukisu.ui.component.YukiIcon
 
-private val SETTINGS_GROUP_SPACING = 16.dp
-
 enum class MoreSettingsItemPosition(val index: Int, val count: Int) {
-    First(0, 3),
-    Middle(1, 3),
-    Last(2, 3),
-    Only(0, 1)
+    First(0, 3), Middle(1, 3), Last(2, 3), Only(0, 1)
 }
 
 @Composable
-fun SettingsCard(
-    title: String,
-    icon: ImageVector? = null,
-    content: @Composable () -> Unit
-) {
-    if (isExpressiveUi) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 20.dp)
+fun SettingsCard(title: String, icon: ImageVector? = null, content: @Composable () -> Unit) {
+    Column(Modifier.fillMaxWidth().padding(bottom = 24.dp)) {
+        Row(
+            Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp)
-                    .padding(horizontal = 8.dp)
-            ) {
-                if (icon != null) {
-                    YukiIcon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(modifier = Modifier.width(12.dp))
-                }
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.Normal,
-                    color = MaterialTheme.colorScheme.primary
-                )
+            if (icon != null) {
+                YukiIcon(icon, null, Modifier.size(20.dp), MaterialTheme.colorScheme.onSurfaceVariant)
+                Spacer(Modifier.width(12.dp))
             }
-            Column(content = { content() })
+            Text(
+                title, modifier = Modifier.semantics { heading() },
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
-    } else {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = SETTINGS_GROUP_SPACING),
-            colors = getCardColors(MaterialTheme.colorScheme.surfaceContainerHigh),
-            elevation = getCardElevation(),
-            shape = MaterialTheme.shapes.medium
-        ) {
-            Column(modifier = Modifier.padding(vertical = 8.dp)) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp)
-                        .padding(horizontal = 16.dp)
-                ) {
-                    if (icon != null) {
-                        YukiIcon(
-                            imageVector = icon,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Spacer(modifier = Modifier.width(12.dp))
-                    }
-                    Text(text = title, style = MaterialTheme.typography.titleMedium)
-                }
-                content()
-            }
-        }
+        Surface(
+            shape = MaterialTheme.shapes.medium,
+            color = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = CardConfig.cardAlpha),
+        ) { Column { content() } }
     }
 }
 
@@ -108,71 +57,29 @@ fun SettingItem(
     subtitle: String? = null,
     groupPosition: MoreSettingsItemPosition = MoreSettingsItemPosition.Middle,
     onClick: () -> Unit,
-    iconTint: Color = MaterialTheme.colorScheme.primary,
+    iconTint: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     trailingContent: @Composable (() -> Unit)? = {
-        YukiIcon(
-            Icons.AutoMirrored.Filled.NavigateNext,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
+        YukiIcon(Icons.AutoMirrored.Filled.NavigateNext, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+    },
 ) {
-    val expressiveShape = if (groupPosition == MoreSettingsItemPosition.Only) {
-        MaterialTheme.shapes.large
-    } else {
-        ListItemDefaults.segmentedShapes(groupPosition.index, groupPosition.count).shape
-    }
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .then(
-                if (isExpressiveUi) {
-                    Modifier
-                        .padding(
-                            horizontal = 6.dp,
-                            vertical = ListItemDefaults.SegmentedGap / 2
-                        )
-                        .defaultMinSize(minHeight = ExpressiveListGroupMinHeight)
-                        .clip(expressiveShape)
-                        .background(
-                            MaterialTheme.colorScheme.surfaceContainer.copy(
-                                alpha = CardConfig.cardAlpha
-                            )
-                        )
-                        .clickable(onClick = onClick)
-                } else {
-                    Modifier.clickable(onClick = onClick)
-                }
-            )
-            .padding(horizontal = 16.dp, vertical = 5.dp),
-        verticalAlignment = if (isExpressiveUi) Alignment.CenterVertically else Alignment.Top
+        Modifier.fillMaxWidth().heightIn(min = 64.dp).clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        MoreSettingsLeadingIcon(icon = icon, tint = iconTint)
-
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
-                maxLines = Int.MAX_VALUE,
-                overflow = TextOverflow.Visible
+        YukiIcon(icon, null, Modifier.size(24.dp), iconTint)
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(title, style = MaterialTheme.typography.bodyLarge)
+            if (subtitle != null) Text(
+                subtitle, style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            if (subtitle != null) {
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = Int.MAX_VALUE,
-                    overflow = TextOverflow.Visible
-                )
-            }
         }
-
         trailingContent?.invoke()
+    }
+    if (groupPosition != MoreSettingsItemPosition.Last && groupPosition != MoreSettingsItemPosition.Only) {
+        HorizontalDivider(Modifier.padding(start = 56.dp), color = MaterialTheme.colorScheme.outlineVariant)
     }
 }
 
@@ -184,158 +91,50 @@ fun SwitchSettingItem(
     checked: Boolean,
     enabled: Boolean = true,
     groupPosition: MoreSettingsItemPosition = MoreSettingsItemPosition.Middle,
-    onChange: (Boolean) -> Unit
+    onChange: (Boolean) -> Unit,
 ) {
-    val expressiveShape = if (groupPosition == MoreSettingsItemPosition.Only) {
-        MaterialTheme.shapes.large
-    } else {
-        ListItemDefaults.segmentedShapes(groupPosition.index, groupPosition.count).shape
-    }
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .alpha(if (enabled) 1f else 0.6f)
-            .then(
-                if (isExpressiveUi) {
-                    Modifier
-                        .padding(
-                            horizontal = 6.dp,
-                            vertical = ListItemDefaults.SegmentedGap / 2
-                        )
-                        .defaultMinSize(minHeight = ExpressiveListGroupMinHeight)
-                        .clip(expressiveShape)
-                        .background(
-                            MaterialTheme.colorScheme.surfaceContainer.copy(
-                                alpha = CardConfig.cardAlpha
-                            )
-                        )
-                        .clickable(enabled = enabled) { onChange(!checked) }
-                } else {
-                    Modifier.clickable(enabled = enabled) { onChange(!checked) }
-                }
-            )
-            .padding(horizontal = 16.dp, vertical = 10.dp),
-        verticalAlignment = if (isExpressiveUi) Alignment.CenterVertically else Alignment.Top
+        Modifier.fillMaxWidth().heightIn(min = 64.dp)
+            .toggleable(value = checked, enabled = enabled, role = Role.Switch, onValueChange = onChange)
+            .alpha(if (enabled) 1f else 0.5f)
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        MoreSettingsLeadingIcon(
-            icon = icon,
-            tint = if (checked) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.onSurfaceVariant
-            }
-        )
-
-        Column(
-            modifier = Modifier.weight(1f).padding(end = 12.dp),
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
-                lineHeight = 20.sp,
+        YukiIcon(icon, null, Modifier.size(24.dp), MaterialTheme.colorScheme.onSurfaceVariant)
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(title, style = MaterialTheme.typography.bodyLarge)
+            if (summary != null) Text(
+                summary, style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            if (summary != null) {
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(
-                    text = summary,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    lineHeight = 16.sp,
-                )
-            }
         }
-
-        YukiSwitch(
-            checked = checked,
-            enabled = enabled,
-            onCheckedChange = onChange
-        )
+        YukiSwitch(checked = checked, enabled = enabled, onCheckedChange = null)
+    }
+    if (groupPosition != MoreSettingsItemPosition.Last && groupPosition != MoreSettingsItemPosition.Only) {
+        HorizontalDivider(Modifier.padding(start = 56.dp), color = MaterialTheme.colorScheme.outlineVariant)
     }
 }
 
 @Composable
 fun SettingsControlGroup(
     groupPosition: MoreSettingsItemPosition = MoreSettingsItemPosition.Middle,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
-    val expressiveShape = if (groupPosition == MoreSettingsItemPosition.Only) {
-        MaterialTheme.shapes.large
-    } else {
-        ListItemDefaults.segmentedShapes(groupPosition.index, groupPosition.count).shape
-    }
-    Column(
-        modifier = if (isExpressiveUi) {
-            Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = 6.dp,
-                    vertical = ListItemDefaults.SegmentedGap / 2
-                )
-                .clip(expressiveShape)
-                .background(
-                    MaterialTheme.colorScheme.surfaceContainer.copy(alpha = CardConfig.cardAlpha)
-                )
-                .padding(horizontal = 16.dp, vertical = 12.dp)
-        } else {
-            Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-        },
-        content = content
-    )
-}
-
-@Composable
-private fun MoreSettingsLeadingIcon(icon: ImageVector, tint: Color) {
-    if (isExpressiveUi) {
-        YukiIcon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier
-                .padding(end = 16.dp)
-                .size(24.dp)
-        )
-    } else {
-        YukiIcon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = tint,
-            modifier = Modifier
-                .padding(end = 16.dp)
-                .size(24.dp)
-        )
-    }
+    Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp), content = content)
 }
 
 @Composable
 fun SettingsDivider() {
-    HorizontalDivider(
-        modifier = Modifier.padding(vertical = 8.dp)
-    )
+    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
 }
 
 @Composable
-fun ColorCircle(
-    color: Color,
-    isSelected: Boolean,
-    modifier: Modifier = Modifier
-) {
+fun ColorCircle(color: Color, isSelected: Boolean, modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier
-            .size(20.dp)
-            .clip(CircleShape)
-            .background(color)
-            .then(
-                if (isSelected) {
-                    Modifier.border(
-                        width = 2.dp,
-                        color = MaterialTheme.colorScheme.primary,
-                        shape = CircleShape
-                    )
-                } else {
-                    Modifier
-                }
-            )
+        modifier.size(20.dp).clip(CircleShape).background(color).then(
+            if (isSelected) Modifier.border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
+            else Modifier
+        )
     )
 }

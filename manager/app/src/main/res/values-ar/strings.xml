@@ -615,9 +615,6 @@
     <string name="settings_webview_zygote_umount_summary">إلغاء تركيب الوحدات من WebView zygote لمنع تسريب معلومات التركيب. قد تتوقف الوحدات التي تعدّل موارد WebView عن العمل. يسري بعد إعادة التشغيل.</string>
     <string name="hide_seccomp_status">إخفاء حالة Seccomp</string>
     <string name="hide_seccomp_status_summary">إخفاء معلومات حالة Seccomp في الصفحة الرئيسية</string>
-    <string name="ui_style">نمط الواجهة</string>
-    <string name="ui_style_classic">Material 3 الكلاسيكي</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="predictive_back_gesture">إيماءة الرجوع التنبؤية</string>
     <string name="predictive_back_gesture_summary">معاينة الصفحة السابقة مع حركة إيماءة الرجوع. معطّل افتراضيًا</string>
     <string name="feature_control">التحكم في الميزات</string>

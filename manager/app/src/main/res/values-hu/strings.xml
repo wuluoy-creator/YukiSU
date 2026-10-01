@@ -614,9 +614,6 @@ A</string>
     <string name="settings_webview_zygote_umount_summary">Leválasztja a modulokat a WebView zygote-ból a csatolási adatok kiszivárgásának megakadályozására. A WebView erőforrásait módosító modulok működésképtelenné válhatnak. Újraindítás után lép életbe.</string>
     <string name="hide_seccomp_status">Seccomp állapotának elrejtése</string>
     <string name="hide_seccomp_status_summary">A Seccomp állapotadatainak elrejtése a kezdőlapon</string>
-    <string name="ui_style">Felület stílusa</string>
-    <string name="ui_style_classic">Klasszikus Material 3</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="predictive_back_gesture">Prediktív visszalépési gesztus</string>
     <string name="predictive_back_gesture_summary">A visszalépési gesztust követve megjeleníti az előző oldal előnézetét. Alapértelmezés szerint kikapcsolva</string>
     <string name="feature_control">Funkciók vezérlése</string>

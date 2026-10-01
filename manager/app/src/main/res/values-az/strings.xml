@@ -613,9 +613,6 @@
     <string name="settings_webview_zygote_umount_summary">Qoşma məlumatlarının sızmasının qarşısını almaq üçün modulları WebView zygote-dan ayırır. WebView resurslarını dəyişən modullar işləməyə bilər. Yenidən başladıqdan sonra qüvvəyə minir.</string>
     <string name="hide_seccomp_status">Seccomp vəziyyətini gizlət</string>
     <string name="hide_seccomp_status_summary">Ana səhifədəki Seccomp vəziyyət məlumatını gizlədir</string>
-    <string name="ui_style">İnterfeys üslubu</string>
-    <string name="ui_style_classic">Klassik Material 3</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="predictive_back_gesture">Proqnozlaşdırılan geri jesti</string>
     <string name="predictive_back_gesture_summary">Geri jestinə uyğun olaraq əvvəlki səhifənin önbaxışını göstərir. Standart olaraq söndürülüb</string>
     <string name="feature_control">Funksiyaların idarə edilməsi</string>

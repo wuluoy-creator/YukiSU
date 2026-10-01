@@ -13,6 +13,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
@@ -23,6 +30,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
@@ -54,7 +63,6 @@ import com.anatdx.yukisu.ui.component.ZipFileDetector
 import com.anatdx.yukisu.ui.component.ZipFileInfo
 import com.anatdx.yukisu.ui.screen.BottomBarDestination
 import com.anatdx.yukisu.ui.theme.KernelSUTheme
-import com.anatdx.yukisu.ui.theme.ThemeManager
 import com.anatdx.yukisu.ui.util.rememberSnackbarController
 import com.anatdx.yukisu.ui.util.KsuCli
 import com.anatdx.yukisu.ui.util.LocalNavigationLeaveGuard
@@ -103,7 +111,6 @@ class MainActivity : ComponentActivity() {
 
             super.onCreate(savedInstanceState)
             resetTaskDescriptionToAppName()
-            ThemeManager.loadUiStyle(this)
 
             // Note: ksud installation moved to KsuCli.refreshShells()
             // which is called after SuperKey authentication succeeds.
@@ -224,7 +231,8 @@ class MainActivity : ComponentActivity() {
                             contentWindowInsets = WindowInsets(0, 0, 0, 0),
                         ) { outerPadding ->
                             DestinationsNavHost(
-                                modifier = Modifier.fillMaxSize().padding(outerPadding),
+                                modifier = Modifier.fillMaxSize().padding(outerPadding)
+                                    .consumeWindowInsets(outerPadding).imePadding(),
                                 navGraph = NavGraphs.root as NavHostGraphSpec,
                                 navController = navController,
                                 engine = rememberPredictiveBackNavHostEngine(bottomBarRoutes, predictiveBackEnabled),
@@ -246,7 +254,15 @@ class MainActivity : ComponentActivity() {
                                         },
                                         contentWindowInsets = WindowInsets(0, 0, 0, 0),
                                     ) { innerPadding ->
-                                        Box(Modifier.fillMaxSize().padding(innerPadding).then(contentModifier)) { content() }
+                                        Box(
+                                            Modifier.fillMaxSize().padding(innerPadding)
+                                                .consumeWindowInsets(innerPadding)
+                                                .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
+                                                .then(contentModifier),
+                                            contentAlignment = Alignment.TopCenter,
+                                        ) {
+                                            Box(Modifier.widthIn(max = 840.dp).fillMaxSize()) { content() }
+                                        }
                                     }
                                 }
                             }

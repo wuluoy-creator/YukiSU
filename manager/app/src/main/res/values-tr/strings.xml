@@ -613,9 +613,6 @@
     <string name="settings_webview_zygote_umount_summary">Bağlama bilgilerinin sızmasını önlemek için WebView zygote içindeki modüllerin bağlamasını kaldırır. WebView kaynaklarını değiştiren modüller çalışmayabilir. Yeniden başlatınca uygulanır.</string>
     <string name="hide_seccomp_status">Seccomp durumunu gizle</string>
     <string name="hide_seccomp_status_summary">Ana sayfadaki Seccomp durum bilgisini gizler</string>
-    <string name="ui_style">Arayüz stili</string>
-    <string name="ui_style_classic">Klasik Material 3</string>
-    <string name="ui_style_expressive">Material 3 Expressive</string>
     <string name="predictive_back_gesture">Öngörülü geri hareketi</string>
     <string name="predictive_back_gesture_summary">Geri hareketini izleyerek önceki sayfanın önizlemesini gösterir. Varsayılan olarak kapalıdır</string>
     <string name="feature_control">Özellik denetimi</string>
