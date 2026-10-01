@@ -1,6 +1,10 @@
 name: Build LKM for KernelSU
 on:
   workflow_call:
+    outputs:
+      manager_cert_sha256:
+        description: 'Configured Manager signing certificate SHA-256 (empty for upstream default)'
+        value: ${{ jobs.prepare.outputs.manager_cert_sha256 }}
     inputs:
       kmi:
         description: 'KMI to build: all, one supported KMI, or a comma-separated list'
@@ -38,9 +42,30 @@ jobs:
     name: Select kernel modules
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    env:
+      MANAGER_KEYSTORE: ${{ github.event_name != 'pull_request' && secrets.KEYSTORE || '' }}
     outputs:
       matrix: ${{ steps.select.outputs.matrix }}
+      manager_cert_size: ${{ steps.manager-cert.outputs.size }}
+      manager_cert_sha256: ${{ steps.manager-cert.outputs.sha256 }}
     steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Java for Manager certificate
+        if: env.MANAGER_KEYSTORE != ''
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Export configured Manager certificate
+        id: manager-cert
+        if: env.MANAGER_KEYSTORE != ''
+        env:
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        run: python3 scripts/ci/manager_certificate.py
+
       - name: Validate KMI selection
         id: select
         env:
@@ -77,3 +102,5 @@ jobs:
     with:
       kmi: ${{ matrix.kmi }}
       yukizygisk: ${{ inputs.yukizygisk }}
+      manager_cert_size: ${{ needs.prepare.outputs.manager_cert_size }}
+      manager_cert_sha256: ${{ needs.prepare.outputs.manager_cert_sha256 }}

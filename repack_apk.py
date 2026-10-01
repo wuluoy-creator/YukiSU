@@ -245,6 +245,18 @@ def validate_signing_args(args: argparse.Namespace) -> None:
         raise FileNotFoundError(f"Keystore not found: {args.keystore_path}")
 
 
+def verify_manager_certificate(apksigner: Path, apk: Path, expected: str) -> None:
+    if not re.fullmatch(r"[0-9a-f]{64}", expected):
+        raise ValueError("Expected Manager certificate must be a lowercase SHA-256 digest")
+    proc = subprocess.run(
+        [str(apksigner), "verify", "--print-certs", str(apk)],
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+    )
+    digests = re.findall(r"^Signer #\d+ certificate SHA-256 digest: ([0-9a-fA-F]{64})$", proc.stdout, re.MULTILINE)
+    if proc.returncode != 0 or [digest.lower() for digest in digests] != [expected]:
+        raise RuntimeError("Final APK signing certificate does not match the certificate trusted by the kernel")
+
+
 def do_repack(args: argparse.Namespace) -> int:
     app_build_type = args.app_build_type or "release"
     ksud_build_type = args.ksud_build_type or "release"
@@ -339,6 +351,8 @@ def do_repack(args: argparse.Namespace) -> int:
             ],
             "apksigner failed",
         )
+        if args.expected_cert_sha256:
+            verify_manager_certificate(apksigner, signed_apk, args.expected_cert_sha256)
     finally:
         for tmp in (unsigned_apk, aligned_apk):
             if tmp.exists():
@@ -367,6 +381,7 @@ def build_parser() -> argparse.ArgumentParser:
     repack.add_argument("-n", "--output-name", help="Base name for output APK")
     repack.add_argument("-o", "--out-dir", help="Output directory")
     repack.add_argument("--strip", action="store_true", help="Strip libksud.so before packing")
+    repack.add_argument("--expected-cert-sha256", help="Require the final APK to match the kernel's Manager certificate")
     repack.set_defaults(func=do_repack)
 
     return parser

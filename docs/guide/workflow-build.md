@@ -43,6 +43,20 @@ Manual builds work without configured signing keys. Without a production APK key
 | `KEYSTORE_PASSWORD` | Keystore password |
 | `KEY_PASSWORD` | Key password |
 
+When these secrets are configured, the LKM build exports the public certificate from the same keystore and embeds its size and SHA-256 as the trusted Manager identity. The final APK is checked against that identity before upload. The private key is never passed to the kernel build. Keep this keystore for subsequent releases.
+
+Without a configured keystore (including untrusted pull-request builds), the kernel retains the upstream trusted certificate. The temporary-signed APK therefore needs a SuperKey configured while patching the boot image to authenticate as Manager. Root access for another app does not grant Manager identity.
+
+If an older fork build shows Manager as uninstalled or unauthorized even though root works, rebuild with the signing secrets above, update the kernel module using the new complete Manager package, and reboot. Updating the APK alone does not update the kernel's trusted certificate. If an existing root shell is available, it can instead register the installed Manager certificate with the current kernel:
+
+```sh
+su
+manager_apk=$(pm path com.anatdx.yukisu | sed -n 's/^package://p' | head -n 1)
+test -n "$manager_apk" && /data/adb/ksud dynamic set-apk "$manager_apk"
+```
+
+After the command succeeds, reboot so the persisted certificate is loaded before Manager discovery.
+
 GPG detached signatures are separate from Android APK signing. Without `GPG_PRIVATE_KEY`, LKM, ksud, and ksuinit still upload successfully without `.sig` files. Configure `GPG_PRIVATE_KEY` and `GPG_PASSPHRASE` to use your own GPG key for ordinary builds. Manager APKs also require the production APK keystore to receive a GPG signature; official nightly builds retain their pinned trusted signing identity.
 
 Manual runs produce Actions artifacts and do not update the nightly distribution channel. Automatic complete builds still use **Build Manager**, preserving the existing update checks and nightly download entry point.

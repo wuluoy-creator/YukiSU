@@ -17,6 +17,14 @@ on:
         required: false
         default: false
         type: boolean
+      manager_cert_size:
+        description: 'Manager signing certificate size in bytes'
+        type: string
+        default: ''
+      manager_cert_sha256:
+        description: 'Manager signing certificate SHA-256'
+        type: string
+        default: ''
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
@@ -35,6 +43,8 @@ jobs:
     env:
       KMI: ${{ inputs.kmi }}
       ENABLE_YUKIZYGISK: ${{ inputs.yukizygisk }}
+      MANAGER_CERT_SIZE: ${{ inputs.manager_cert_size }}
+      MANAGER_CERT_SHA256: ${{ inputs.manager_cert_sha256 }}
 
     steps:
     - name: Checkout source code
@@ -52,6 +62,13 @@ jobs:
 
         echo "Building kernelsu.ko for KMI: $KMI"
         make_args=(CONFIG_KSU=m CONFIG_KSU_SUPERKEY=y CC=clang)
+        if [ -n "$MANAGER_CERT_SIZE$MANAGER_CERT_SHA256" ]; then
+          [[ "$MANAGER_CERT_SIZE" =~ ^[1-9][0-9]{0,3}$ ]]
+          (( MANAGER_CERT_SIZE <= 1024 ))
+          [[ "$MANAGER_CERT_SHA256" =~ ^[0-9a-f]{64}$ ]]
+          make_args+=("KSU_MANAGER_CERT_SIZE=$MANAGER_CERT_SIZE"
+                      "KSU_MANAGER_CERT_SHA256=$MANAGER_CERT_SHA256")
+        fi
         if [ "$ENABLE_YUKIZYGISK" = "true" ]; then
           make_args+=(CONFIG_KSU_YUKIZYGISK=y)
         fi

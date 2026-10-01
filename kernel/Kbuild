@@ -191,7 +191,18 @@ endif
 ccflags-y += -DKSU_VERSION=$(KSU_VERSION)
 ccflags-y += -DKSU_VERSION_FULL=\"$(KSU_VERSION_FULL)\"
 
-$(info -- YukiSU: SuperKey allows the manager app to authenticate using a password instead of APK signature verification. Use Superkey instead of custom signature verification.)
+# Only public certificate metadata is passed to the kernel build.
+ifneq ($(strip $(KSU_MANAGER_CERT_SIZE)$(KSU_MANAGER_CERT_SHA256)),)
+ifeq ($(strip $(KSU_MANAGER_CERT_SIZE)),)
+$(error KSU_MANAGER_CERT_SIZE is required with KSU_MANAGER_CERT_SHA256)
+endif
+ifeq ($(strip $(KSU_MANAGER_CERT_SHA256)),)
+$(error KSU_MANAGER_CERT_SHA256 is required with KSU_MANAGER_CERT_SIZE)
+endif
+ccflags-y += -DKSU_MANAGER_CERT_SIZE=$(KSU_MANAGER_CERT_SIZE)
+ccflags-y += -DKSU_MANAGER_CERT_SHA256=\"$(KSU_MANAGER_CERT_SHA256)\"
+$(info -- YukiSU: using configured Manager signing certificate)
+endif
 
 # Checks Samsung
 ifeq ($(shell grep -q "CONFIG_KDP_CRED" $(srctree)/kernel/cred.c; echo $$?),0)

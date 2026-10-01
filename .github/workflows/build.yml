@@ -204,7 +204,7 @@ jobs:
           path: "manager/app/build/outputs/mapping/release/"
 
   repack-manager:
-    needs: [build-manager, build-ksud]
+    needs: [build-manager, build-ksud, build-lkm]
     if: ${{ !cancelled() && needs.build-manager.result == 'success' && needs.build-ksud.result == 'success' }}
     runs-on: ubuntu-latest
     outputs:
@@ -293,6 +293,8 @@ jobs:
           key-password: ${{ secrets.KEY_PASSWORD }}
 
       - name: Repack and resign
+        env:
+          MANAGER_CERT_SHA256: ${{ needs.build-lkm.outputs.manager_cert_sha256 }}
         run: |
           python3 repack_apk.py repack \
             -b release \
@@ -302,6 +304,7 @@ jobs:
             -A "$SIGN_KEY_ALIAS" \
             -P "$SIGN_KEYSTORE_PASSWORD" \
             -S "$SIGN_KEY_PASSWORD" \
+            --expected-cert-sha256 "$MANAGER_CERT_SHA256" \
             --strip
 
       - name: Import GPG key
@@ -524,5 +527,5 @@ jobs:
               summary.write(f"\n[下载产物 / Artifacts]({os.environ['RUN_URL']}#artifacts)\n")
               if results['repack-manager']['result'] == 'success':
                   summary.write(f"\n[下载完整 Manager APK]({os.environ['MANAGER_ARTIFACT_URL']})。请勿安装 Manager-gradle 中间产物。\n")
-                  summary.write('\n未配置正式签名时，APK 使用本次运行的临时签名；跨运行更新需要保持签名一致。\n')
+                  summary.write('\n配置 KEYSTORE 后，内核会信任同一份 Manager 证书。未配置时 APK 使用临时签名，需在修补时设置 SuperKey 才能认证管理器；跨运行更新需保持签名一致。\n')
           PY
