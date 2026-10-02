@@ -134,6 +134,7 @@ fun FeatureControlScreen(navigator: DestinationsNavigator) {
 fun FeatureControlContent(
     navigator: DestinationsNavigator,
     onSavingChanged: (Boolean) -> Unit = {},
+    scrollable: Boolean = true,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -164,14 +165,16 @@ fun FeatureControlContent(
     val failedMessage = stringResource(R.string.setting_change_failed)
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+        modifier = (if (scrollable) {
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState())
+        } else {
+            Modifier.fillMaxWidth()
+        })
             .padding(horizontal = 16.dp)
             .padding(top = 8.dp)
     ) {
         KsuIsValid {
-            SettingsCard(title = stringResource(R.string.kernelsu_features)) {
+            SettingsCard {
                 FeatureSwitchItem(
                     featureId = Natives.FEATURE_SELINUX_HIDE,
                     icon = Icons.Filled.Security,
@@ -261,7 +264,7 @@ fun FeatureControlContent(
                 )
             }
 
-            SettingsCard(title = stringResource(R.string.yukisu_features)) {
+            SettingsCard {
                 FeatureSwitchItem(
                     featureId = Natives.FEATURE_HIDE_BOOTLOADER,
                     icon = Icons.Filled.Lock,
@@ -303,7 +306,7 @@ fun FeatureControlContent(
             }
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        if (scrollable) Spacer(modifier = Modifier.height(8.dp))
     }
 
 }

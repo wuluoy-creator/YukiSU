@@ -92,7 +92,7 @@ fun MoreSettingsScreen(navigator: DestinationsNavigator) {
 
 @SuppressLint("LocalContextConfigurationRead", "LocalContextResourcesRead", "ObsoleteSdkInt")
 @Composable
-fun MoreSettingsContent(category: PreferenceCategory) {
+fun MoreSettingsContent(category: PreferenceCategory, scrollable: Boolean = true) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val prefs = remember { context.getSharedPreferences("settings", Context.MODE_PRIVATE) }
@@ -160,7 +160,10 @@ fun MoreSettingsContent(category: PreferenceCategory) {
 
     // Native and theme values must be loaded before an editable control is shown.
     if (!settingsLoaded) {
-        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(
+            if (scrollable) Modifier.fillMaxSize() else Modifier.fillMaxWidth().padding(16.dp),
+            contentAlignment = Alignment.Center,
+        ) {
             CircularProgressIndicator()
         }
         return
@@ -172,9 +175,11 @@ fun MoreSettingsContent(category: PreferenceCategory) {
     )
 
     Column(
-        modifier = Modifier.fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier = (if (scrollable) {
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState())
+        } else {
+            Modifier.fillMaxWidth()
+        }).padding(horizontal = 16.dp, vertical = if (scrollable) 8.dp else 0.dp),
     ) {
         when (category) {
             PreferenceCategory.Appearance -> AppearanceSettings(
@@ -450,7 +455,7 @@ private fun HideOptionsSettings(
 
 @Composable
 private fun AdvancedSettings(state: MoreSettingsState, handlers: MoreSettingsHandlers) {
-    SettingsCard(title = stringResource(R.string.settings_category_security)) {
+    SettingsCard {
         SwitchSettingItem(
             icon = Icons.Filled.Security,
             title = stringResource(R.string.selinux),

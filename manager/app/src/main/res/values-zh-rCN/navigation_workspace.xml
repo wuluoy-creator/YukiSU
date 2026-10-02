@@ -9,7 +9,7 @@
     <string name="nav_records_disabled">授权日志尚未开启，可在「诊断」中开启后查看记录。</string>
     <string name="nav_manage_kernel_features">管理内核功能</string>
     <string name="nav_mount">挂载</string>
-    <string name="nav_kernel_policy">内核与隔离</string>
+    <string name="nav_kernel_policy">其他设置</string>
     <string name="nav_isolation">隔离设置</string>
     <string name="nav_active_rules">生效规则</string>
     <string name="nav_kernel_features">内核功能</string>

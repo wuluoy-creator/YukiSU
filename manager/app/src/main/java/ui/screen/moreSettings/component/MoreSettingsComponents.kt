@@ -27,21 +27,23 @@ enum class MoreSettingsItemPosition(val index: Int, val count: Int) {
 }
 
 @Composable
-fun SettingsCard(title: String, icon: ImageVector? = null, content: @Composable () -> Unit) {
+fun SettingsCard(title: String? = null, icon: ImageVector? = null, content: @Composable () -> Unit) {
     Column(Modifier.fillMaxWidth().padding(bottom = 24.dp)) {
-        Row(
-            Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            if (icon != null) {
-                YukiIcon(icon, null, Modifier.size(20.dp), MaterialTheme.colorScheme.onSurfaceVariant)
-                Spacer(Modifier.width(12.dp))
+        if (title != null) {
+            Row(
+                Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                if (icon != null) {
+                    YukiIcon(icon, null, Modifier.size(20.dp), MaterialTheme.colorScheme.onSurfaceVariant)
+                    Spacer(Modifier.width(12.dp))
+                }
+                Text(
+                    title, modifier = Modifier.semantics { heading() },
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
-            Text(
-                title, modifier = Modifier.semantics { heading() },
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
         }
         Surface(
             shape = MaterialTheme.shapes.medium,

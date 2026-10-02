@@ -39,6 +39,7 @@ import ui.screen.feature.SuperuserLogSetting
 import ui.screen.moreSettings.MoreSettingsContent
 import ui.screen.moreSettings.PreferenceCategory
 import ui.screen.moreSettings.component.MoreSettingsItemPosition
+import ui.screen.moreSettings.component.SettingsCard
 
 /** Frequent task switches are immediate. Native tabs expose selection and wrap large text. */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -176,25 +177,17 @@ fun ExtensionRepositoryScreen(navigator: DestinationsNavigator, initialPage: Int
 
 @Destination<RootGraph>
 @Composable
+@Suppress("UNUSED_PARAMETER") // Keep the old navigation argument for restored back stacks.
 fun KernelPolicyScreen(navigator: DestinationsNavigator, initialPage: Int = 0) {
-    var selected by rememberSaveable { mutableIntStateOf(initialPage.coerceIn(0, 1)) }
-    // A restored back stack may still hold an index from the former five-tab page.
-    val currentPage = when (selected) {
-        1, 4 -> 1
-        else -> 0
-    }
     var saving by remember { mutableStateOf(false) }
-    val pages = rememberSaveableStateHolder()
     WorkspaceOperationGuard(saving, KernelPolicyScreenDestination.route)
-    val labels = listOf(stringResource(R.string.nav_kernel_features), stringResource(R.string.nav_advanced_security))
-    WorkspaceScaffold(stringResource(R.string.nav_kernel_policy), navigator, navigationEnabled = !saving, tabs = {
-        WorkspaceTabs(labels, currentPage, { selected = it }, enabled = !saving)
-    }) {
+    WorkspaceScaffold(stringResource(R.string.nav_kernel_policy), navigator, navigationEnabled = !saving) {
         KsuIsValid {
-            pages.SaveableStateProvider(currentPage) {
-                when (currentPage) {
-                    0 -> FeatureControlContent(navigator, onSavingChanged = { saving = it })
-                    else -> MoreSettingsContent(PreferenceCategory.Advanced)
+            Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+                FeatureControlContent(navigator, onSavingChanged = { saving = it }, scrollable = false)
+                MoreSettingsContent(PreferenceCategory.Advanced, scrollable = false)
+                Box(Modifier.padding(horizontal = 16.dp)) {
+                    SettingsCard { WebUIEngineSelector() }
                 }
             }
         }

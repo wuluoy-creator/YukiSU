@@ -10,7 +10,7 @@
     <string name="nav_records_disabled" tools:ignore="MissingTranslation">Authorization logging is off. You can enable it in Diagnostics.</string>
     <string name="nav_manage_kernel_features" tools:ignore="MissingTranslation">Manage kernel features</string>
     <string name="nav_mount" tools:ignore="MissingTranslation">Mount</string>
-    <string name="nav_kernel_policy" tools:ignore="MissingTranslation">Kernel &amp; isolation</string>
+    <string name="nav_kernel_policy" tools:ignore="MissingTranslation">Other settings</string>
     <string name="nav_isolation" tools:ignore="MissingTranslation">Isolation</string>
     <string name="nav_active_rules" tools:ignore="MissingTranslation">Active rules</string>
     <string name="nav_kernel_features" tools:ignore="MissingTranslation">Kernel features</string>

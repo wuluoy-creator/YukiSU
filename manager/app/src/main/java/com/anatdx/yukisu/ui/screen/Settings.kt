@@ -84,7 +84,6 @@ private enum class SettingsWorkspaceCategory(val titleRes: Int) {
     Appearance(R.string.settings_category_appearance),
     Display(R.string.settings_category_display),
     App(R.string.settings_category_app),
-    Maintenance(R.string.settings_category_maintenance),
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -123,8 +122,7 @@ fun SettingScreen(navigator: DestinationsNavigator) {
                 when (category) {
                     SettingsWorkspaceCategory.Appearance -> MoreSettingsContent(PreferenceCategory.Appearance)
                     SettingsWorkspaceCategory.Display -> MoreSettingsContent(PreferenceCategory.Display)
-                    SettingsWorkspaceCategory.App -> AppUpdateSettingsContent()
-                    SettingsWorkspaceCategory.Maintenance -> MaintenanceSettingsContent(navigator)
+                    SettingsWorkspaceCategory.App -> UpdateUninstallSettingsContent(navigator)
                     null -> SettingsWorkspaceIndex(navigator) { category = it }
                 }
             }
@@ -137,6 +135,7 @@ private fun SettingsWorkspaceIndex(
     navigator: DestinationsNavigator,
     onCategory: (SettingsWorkspaceCategory) -> Unit,
 ) {
+    val aboutDialog = rememberCustomDialog { AboutDialog(it) }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 16.dp)) {
         SettingsGroupCard(stringResource(R.string.settings_workspace_personalization)) {
             SettingItem(
@@ -190,10 +189,9 @@ private fun SettingsWorkspaceIndex(
             )
             SettingItem(
                 icon = Icons.Filled.Info,
-                title = stringResource(R.string.settings_category_maintenance),
-                summary = stringResource(R.string.settings_category_maintenance_summary),
+                title = stringResource(R.string.about),
                 groupPosition = SettingsItemPosition.Last,
-                onClick = { onCategory(SettingsWorkspaceCategory.Maintenance) },
+                onClick = { aboutDialog.show() },
             )
         }
     }
@@ -248,10 +246,10 @@ fun AuthorizationSettingsContent(navigator: DestinationsNavigator) {
 }
 
 @Composable
-private fun AppUpdateSettingsContent() {
+private fun UpdateUninstallSettingsContent(navigator: DestinationsNavigator) {
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences("settings", Context.MODE_PRIVATE) }
-    var selectedEngine by rememberSaveable { mutableStateOf(prefs.getString("webui_engine", "default") ?: "default") }
+    val loadingDialog = rememberLoadingDialog()
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 16.dp)) {
         SettingsGroupCard(stringResource(R.string.settings_category_app)) {
             var checkUpdate by rememberSaveable { mutableStateOf(prefs.getBoolean("check_update", true)) }
@@ -293,38 +291,11 @@ private fun AppUpdateSettingsContent() {
             )
         }
         KsuIsValid {
-            SettingsGroupCard(stringResource(R.string.use_webuix)) {
-                WebUIEngineSelector(
-                    selectedEngine = selectedEngine,
-                    onEngineSelected = { engine ->
-                        selectedEngine = engine
-                        prefs.edit { putString("webui_engine", engine) }
-                    },
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun MaintenanceSettingsContent(navigator: DestinationsNavigator) {
-    val loadingDialog = rememberLoadingDialog()
-    val aboutDialog = rememberCustomDialog { AboutDialog(it) }
-    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 16.dp)) {
-        KsuIsValid {
             SettingsGroupCard(stringResource(R.string.settings_uninstall)) {
                 UninstallItem(navigator, groupPosition = SettingsItemPosition.Only) {
                     loadingDialog.withLoading(it)
                 }
             }
-        }
-        SettingsGroupCard(stringResource(R.string.about)) {
-            SettingItem(
-                icon = Icons.Filled.Info,
-                title = stringResource(R.string.about),
-                groupPosition = SettingsItemPosition.Only,
-                onClick = { aboutDialog.show() },
-            )
         }
     }
 }
@@ -459,10 +430,10 @@ private fun SettingsGroupCard(
 }
 
 @Composable
-private fun WebUIEngineSelector(
-    selectedEngine: String,
-    onEngineSelected: (String) -> Unit
-) {
+internal fun WebUIEngineSelector() {
+    val context = LocalContext.current
+    val prefs = remember { context.getSharedPreferences("settings", Context.MODE_PRIVATE) }
+    var selectedEngine by rememberSaveable { mutableStateOf(prefs.getString("webui_engine", "default") ?: "default") }
     var showDialog by remember { mutableStateOf(false) }
     val engineOptions = listOf(
         "default" to stringResource(R.string.engine_auto_select),
@@ -490,7 +461,8 @@ private fun WebUIEngineSelector(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    onEngineSelected(value)
+                                    selectedEngine = value
+                                    prefs.edit { putString("webui_engine", value) }
                                     showDialog = false
                                 }
                                 .padding(vertical = 12.dp),
