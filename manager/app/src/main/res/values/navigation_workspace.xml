@@ -7,7 +7,7 @@
     <string name="nav_policies" tools:ignore="MissingTranslation">Policies &amp; templates</string>
     <string name="nav_records" tools:ignore="MissingTranslation">Authorization records</string>
     <string name="nav_records_summary" tools:ignore="MissingTranslation">Review application Root requests and command records</string>
-    <string name="nav_records_disabled" tools:ignore="MissingTranslation">Authorization logging is off. You can enable it in Kernel features.</string>
+    <string name="nav_records_disabled" tools:ignore="MissingTranslation">Authorization logging is off. You can enable it in Diagnostics.</string>
     <string name="nav_manage_kernel_features" tools:ignore="MissingTranslation">Manage kernel features</string>
     <string name="nav_mount" tools:ignore="MissingTranslation">Mount</string>
     <string name="nav_kernel_policy" tools:ignore="MissingTranslation">Kernel &amp; isolation</string>

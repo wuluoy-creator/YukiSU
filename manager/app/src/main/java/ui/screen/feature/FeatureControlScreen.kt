@@ -21,6 +21,7 @@ import com.anatdx.yukisu.Natives
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.KsuIsValid
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.screen.SettingItem
 import com.anatdx.yukisu.ui.theme.isExpressiveUi
 import com.anatdx.yukisu.ui.util.LocalSnackbarHost
 import com.anatdx.yukisu.ui.util.getFeatureStatus
@@ -29,6 +30,7 @@ import com.anatdx.yukisu.ui.util.restartAdbd
 import com.anatdx.yukisu.ui.util.setFeatureValue
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
+import com.ramcosta.composedestinations.generated.destinations.UmountManagerScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
@@ -145,12 +147,11 @@ fun FeatureControlContent(
     val webViewZygoteUmount = rememberFeatureToggleState(
         Natives.FEATURE_WEBVIEW_ZYGOTE_UMOUNT
     )
-    val suLog = rememberFeatureToggleState(Natives.FEATURE_SULOG)
     val adbRoot = rememberFeatureToggleState(Natives.FEATURE_ADB_ROOT)
     val hideBootloader = rememberFeatureToggleState(Natives.FEATURE_HIDE_BOOTLOADER)
 
     val saving = listOf(
-        selinuxHide, kernelUmountDisabled, webViewZygoteUmount, suLog,
+        selinuxHide, kernelUmountDisabled, webViewZygoteUmount,
         adbRoot, hideBootloader,
     ).any { it.saving }
     val savingCallback by rememberUpdatedState(onSavingChanged)
@@ -225,21 +226,12 @@ fun FeatureControlContent(
                     }
                 )
 
-                FeatureSwitchItem(
-                    featureId = Natives.FEATURE_SULOG,
-                    icon = Icons.Filled.Visibility,
-                    title = stringResource(R.string.settings_disable_sulog),
-                    summary = stringResource(R.string.settings_disable_sulog_summary),
-                    state = suLog,
-                    onChange = { enabled ->
-                        scope.persistFeature(
-                            state = suLog,
-                            featureId = Natives.FEATURE_SULOG,
-                            featureName = "sulog",
-                            kernelEnabled = enabled,
-                            onRuntimeSettled = FeatureControlState::updateSuLog
-                        )
-                    }
+                SettingItem(
+                    icon = Icons.Filled.FolderOff,
+                    title = stringResource(R.string.nav_umount_paths),
+                    summary = stringResource(R.string.nav_umount_paths_summary),
+                    enabled = !saving,
+                    onClick = { navigator.navigate(UmountManagerScreenDestination) },
                 )
 
                 FeatureSwitchItem(
@@ -339,7 +331,7 @@ internal fun IsolationKernelSettings(
         title = stringResource(R.string.settings_unshare_mnt),
         summary = stringResource(R.string.settings_unshare_mnt_summary),
         state = unshareMnt,
-        groupPosition = MoreSettingsItemPosition.First,
+        groupPosition = if (ksmSupported) MoreSettingsItemPosition.First else MoreSettingsItemPosition.Only,
         enabled = enabled && !saving,
         onChange = { checked ->
             if (enabled && !unshareMnt.saving && !suPathSaving) {
@@ -359,6 +351,40 @@ internal fun IsolationKernelSettings(
             onSavingChange = { suPathSaving = it },
         )
     }
+}
+
+@Composable
+internal fun SuperuserLogSetting(
+    enabled: Boolean = true,
+    groupPosition: MoreSettingsItemPosition = MoreSettingsItemPosition.Last,
+    onSavingChanged: (Boolean) -> Unit = {},
+) {
+    val scope = rememberCoroutineScope()
+    val suLog = rememberFeatureToggleState(Natives.FEATURE_SULOG)
+    val savingCallback by rememberUpdatedState(onSavingChanged)
+    SideEffect { savingCallback(suLog.saving) }
+    DisposableEffect(Unit) { onDispose { savingCallback(false) } }
+
+    FeatureSwitchItem(
+        featureId = Natives.FEATURE_SULOG,
+        icon = Icons.Filled.Visibility,
+        title = stringResource(R.string.settings_disable_sulog),
+        summary = stringResource(R.string.settings_disable_sulog_summary),
+        state = suLog,
+        groupPosition = groupPosition,
+        enabled = enabled,
+        onChange = { checked ->
+            if (enabled && !suLog.saving) {
+                scope.persistFeature(
+                    state = suLog,
+                    featureId = Natives.FEATURE_SULOG,
+                    featureName = "sulog",
+                    kernelEnabled = checked,
+                    onRuntimeSettled = FeatureControlState::updateSuLog,
+                )
+            }
+        },
+    )
 }
 
 @Composable

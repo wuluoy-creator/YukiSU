@@ -22,6 +22,7 @@ import com.anatdx.yukisu.Natives
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.YukiAlertDialog
 import com.anatdx.yukisu.ui.screen.SettingItem
+import com.anatdx.yukisu.ui.screen.SettingsItemPosition
 import com.anatdx.yukisu.ui.util.getKsud
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.CoroutineStart
@@ -76,6 +77,7 @@ internal fun SuPathSetting(
         title = title,
         summary = current,
         enabled = enabled && !saving,
+        groupPosition = SettingsItemPosition.Last,
         onClick = {
             if (enabled && !saving) {
                 input = current

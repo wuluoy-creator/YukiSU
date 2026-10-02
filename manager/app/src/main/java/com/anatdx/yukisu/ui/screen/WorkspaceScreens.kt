@@ -35,8 +35,10 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import ui.screen.feature.FeatureControlContent
 import ui.screen.feature.FeatureControlState
 import ui.screen.feature.IsolationKernelSettings
+import ui.screen.feature.SuperuserLogSetting
 import ui.screen.moreSettings.MoreSettingsContent
 import ui.screen.moreSettings.PreferenceCategory
+import ui.screen.moreSettings.component.MoreSettingsItemPosition
 
 /** Frequent task switches are immediate. Native tabs expose selection and wrap large text. */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -132,8 +134,8 @@ fun AuthorizationRecordsScreen(navigator: DestinationsNavigator) {
                 Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
                     Text(stringResource(R.string.nav_records_disabled), style = MaterialTheme.typography.bodyLarge)
                     Spacer(Modifier.height(16.dp))
-                    OutlinedButton(onClick = { navigator.navigate(KernelPolicyScreenDestination()) }) {
-                        Text(stringResource(R.string.nav_manage_kernel_features))
+                    OutlinedButton(onClick = { navigator.navigate(DiagnosticsScreenDestination) }) {
+                        Text(stringResource(R.string.settings_category_diagnostics))
                     }
                 }
             }
@@ -214,14 +216,6 @@ fun MountIsolationScreen(navigator: DestinationsNavigator) {
                     enabled = controlsEnabled,
                     onSavingChanged = { isolationSaving = it },
                 )
-                SettingItem(
-                    icon = Icons.Outlined.FolderOff,
-                    title = stringResource(R.string.nav_umount_paths),
-                    summary = stringResource(R.string.nav_umount_paths_summary),
-                    enabled = controlsEnabled && !isolationSaving,
-                    groupPosition = SettingsItemPosition.Last,
-                    onClick = { navigator.navigate(UmountManagerScreenDestination) },
-                )
             }
         }
     }
@@ -251,7 +245,9 @@ fun MountIsolationScreen(navigator: DestinationsNavigator) {
 @Composable
 fun DiagnosticsScreen(navigator: DestinationsNavigator) {
     var selected by rememberSaveable { mutableIntStateOf(0) }
-    var saving by remember { mutableStateOf(false) }
+    var kasumiSaving by remember { mutableStateOf(false) }
+    var suLogSaving by remember { mutableStateOf(false) }
+    val saving = kasumiSaving || suLogSaving
     val pages = rememberSaveableStateHolder()
     WorkspaceOperationGuard(saving, DiagnosticsScreenDestination.route)
     val rootAvailable = remember { Natives.isManager && Natives.version != null }
@@ -270,20 +266,32 @@ fun DiagnosticsScreen(navigator: DestinationsNavigator) {
         when (currentPage) {
             0 -> Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 16.dp)) {
                 val logsEnabled = if (rootAvailable) rememberAuthorizationLogsEnabled() else false
-                DiagnosticExportActions(additionalActions = if (logsEnabled) {
+                DiagnosticExportActions(additionalActions = if (rootAvailable) {
                     {
-                        SettingItem(
-                            icon = Icons.Outlined.History,
-                            title = stringResource(R.string.nav_records),
-                            summary = stringResource(R.string.nav_records_summary),
+                        SuperuserLogSetting(
                             enabled = !saving,
-                            groupPosition = SettingsItemPosition.Last,
-                            onClick = { navigator.navigate(AuthorizationRecordsScreenDestination) },
+                            groupPosition = if (logsEnabled) MoreSettingsItemPosition.Middle else MoreSettingsItemPosition.Last,
+                            onSavingChanged = { suLogSaving = it },
                         )
+                        if (logsEnabled) {
+                            SettingItem(
+                                icon = Icons.Outlined.History,
+                                title = stringResource(R.string.nav_records),
+                                summary = stringResource(R.string.nav_records_summary),
+                                enabled = !saving,
+                                groupPosition = SettingsItemPosition.Last,
+                                onClick = { navigator.navigate(AuthorizationRecordsScreenDestination) },
+                            )
+                        }
                     }
                 } else null)
                 KsuIsValid {
-                    KasumiWorkspace(KasumiSection.Debug, scrollable = false, onSavingChanged = { saving = it })
+                    KasumiWorkspace(
+                        KasumiSection.Debug,
+                        scrollable = false,
+                        onSavingChanged = { kasumiSaving = it },
+                        externalSaving = suLogSaving,
+                    )
                 }
             }
             1 -> KsuIsValid { KasumiWorkspace(KasumiSection.Logs) }
@@ -293,7 +301,7 @@ fun DiagnosticsScreen(navigator: DestinationsNavigator) {
     }
 }
 
-/** Refresh availability when returning from the kernel controls or another app. */
+/** Refresh availability when returning from diagnostics or another app. */
 @Composable
 private fun rememberAuthorizationLogsEnabled(): Boolean {
     val lifecycleOwner = LocalLifecycleOwner.current
