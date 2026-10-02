@@ -468,11 +468,6 @@
     <string name="settings_auto_update_ksud">Uuenda ksud deemonit automaatselt</string>
     <string name="settings_auto_update_ksud_summary">Sünkrooni kaasas olev ksud binaarfail asukohta /data/adb/ksud rakenduse külmkäivitusel. Vaikimisi väljas; vastasel juhul kasutage avalehel käsitsi nuppu.</string>
 
-    <string name="su_request_desc">Rakendus taotleb superkasutaja (su) juurdepääsu.</string>
-    <string name="su_request_allow_forever">Luba alati</string>
-    <string name="su_request_allow_once">Luba üks kord</string>
-    <string name="su_request_deny">Keeldu</string>
-    <string name="su_request_deny_hide">Keeldu ja peida</string>
     <string name="settings_unshare_mnt">Haakimisvaate korrastus</string>
     <string name="settings_unshare_mnt_summary">Loob pärast lahtihaakimist nimeruumi uuesti ja korrastab nähtavad ID-d. Rakendamiseks taaskäivita rakendus.</string>
     <string name="home_lkm_update_available">Saadaval on kaasasoleva LKM-i uuem versioon. Puuduta värskendamiseks.</string>
@@ -550,7 +545,6 @@
     <string name="settings_yukizygisk_toast_on">Lubatud; jõustub pärast taaskäivitust</string>
     <string name="settings_yukizygisk_toast_off">Keelatud; jõustub pärast taaskäivitust</string>
     <string name="settings_yukizygisk_toast_failed">Lülitamine nurjus</string>
-    <string name="su_compact_magisk_summary">Õiguste andmise hüpikaken</string>
     <string name="settings_check_ci_update">Otsi CI-uuendusi</string>
     <string name="settings_check_ci_update_summary">Otsi rakenduse avamisel allkirjastatud öiseid halduriversioone. Vaikimisi väljas.</string>
     <string name="ci_update_title">Uus CI-versioon leitud</string>
@@ -736,7 +730,6 @@
     <string name="ksud_integrity_notification_title">ksud on asendatud</string>
     <string name="ksud_integrity_notification_channel">ksud turvahoiatused</string>
     <string name="ksud_integrity_notification_channel_summary">Hoiata, kui /data/adb/ksud ei vasta praegusele haldurile.</string>
-    <string name="su_request_failed">Root-päring aegus või selle saatmine nurjus.</string>
     <string name="yukizygisk_injected_zygotes">Zygote-i jälgimine</string>
     <string name="yukizygisk_no_zygotes">Zygote puudub</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

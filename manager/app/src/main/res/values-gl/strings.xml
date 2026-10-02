@@ -468,11 +468,6 @@
     <string name="settings_auto_update_ksud">Actualizar automaticamente o daemon ksud</string>
     <string name="settings_auto_update_ksud_summary">Sincronizar o binario ksud incluído en /data/adb/ksud no arranque en frío da aplicación. Desactivado por defecto; do contrario, usa o botón manual na páxina de inicio.</string>
 
-    <string name="su_request_desc">Unha aplicación solicita acceso de superusuario (su).</string>
-    <string name="su_request_allow_forever">Permitir sempre</string>
-    <string name="su_request_allow_once">Permitir unha vez</string>
-    <string name="su_request_deny">Denegar</string>
-    <string name="su_request_deny_hide">Denegar e ocultar</string>
     <string name="settings_unshare_mnt">Ordenar a vista de montaxes</string>
     <string name="settings_unshare_mnt_summary">Recrea o espazo de nomes e ordena os ID visibles tras desmontar. Reinicia a aplicación para aplicar.</string>
     <string name="home_lkm_update_available">Hai unha versión máis recente do LKM integrado. Toca para actualizar.</string>
@@ -550,7 +545,6 @@
     <string name="settings_yukizygisk_toast_on">Activado. Aplícase despois de reiniciar.</string>
     <string name="settings_yukizygisk_toast_off">Desactivado. Aplícase despois de reiniciar.</string>
     <string name="settings_yukizygisk_toast_failed">Fallou o cambio</string>
-    <string name="su_compact_magisk_summary">Xanela de autorización</string>
     <string name="settings_check_ci_update">Buscar actualizacións CI</string>
     <string name="settings_check_ci_update_summary">Buscar versións nocturnas asinadas do xestor ao abrir a aplicación. Desactivado de xeito predeterminado.</string>
     <string name="ci_update_title">Nova versión CI dispoñible</string>
@@ -736,7 +730,6 @@
     <string name="ksud_integrity_notification_title">ksud foi substituído</string>
     <string name="ksud_integrity_notification_channel">Alertas de seguranza de ksud</string>
     <string name="ksud_integrity_notification_channel_summary">Avisar cando /data/adb/ksud non coincida co xestor actual.</string>
-    <string name="su_request_failed">A solicitude Root caducou ou non se puido enviar.</string>
     <string name="yukizygisk_injected_zygotes">Monitor de Zygote</string>
     <string name="yukizygisk_no_zygotes">Sen Zygote</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

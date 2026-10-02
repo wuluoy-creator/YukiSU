@@ -470,11 +470,6 @@
     <string name="settings_auto_update_ksud">Actualizează automat daemonul ksud</string>
     <string name="settings_auto_update_ksud_summary">Sincronizează binarul ksud inclus în /data/adb/ksud la pornirea la rece a aplicației. Dezactivat implicit; altfel, folosiți butonul manual de pe pagina principală.</string>
 
-    <string name="su_request_desc">O aplicație solicită acces de superutilizator (su).</string>
-    <string name="su_request_allow_forever">Permite întotdeauna</string>
-    <string name="su_request_allow_once">Permite o dată</string>
-    <string name="su_request_deny">Refuză</string>
-    <string name="su_request_deny_hide">Refuză și ascunde</string>
     <string name="settings_unshare_mnt">Ordonarea vizualizării montărilor</string>
     <string name="settings_unshare_mnt_summary">Recreează spațiul de nume și ordonează ID-urile vizibile după demontare. Reporniți aplicația pentru aplicare.</string>
     <string name="home_lkm_update_available">Este disponibilă o versiune mai nouă a LKM-ului integrat. Atingeți pentru actualizare.</string>
@@ -552,7 +547,6 @@
     <string name="settings_yukizygisk_toast_on">Activat. Se aplică după repornire.</string>
     <string name="settings_yukizygisk_toast_off">Dezactivat. Se aplică după repornire.</string>
     <string name="settings_yukizygisk_toast_failed">Comutarea a eșuat</string>
-    <string name="su_compact_magisk_summary">Fereastră de autorizare</string>
     <string name="settings_check_ci_update">Caută actualizări CI</string>
     <string name="settings_check_ci_update_summary">Caută versiuni nocturne semnate ale administratorului la deschiderea aplicației. Dezactivat implicit.</string>
     <string name="ci_update_title">Versiune CI nouă disponibilă</string>
@@ -738,7 +732,6 @@
     <string name="ksud_integrity_notification_title">ksud a fost înlocuit</string>
     <string name="ksud_integrity_notification_channel">Alerte de securitate ksud</string>
     <string name="ksud_integrity_notification_channel_summary">Avertizează când /data/adb/ksud nu corespunde administratorului actual.</string>
-    <string name="su_request_failed">Cererea Root a expirat sau trimiterea a eșuat.</string>
     <string name="yukizygisk_injected_zygotes">Monitor Zygote</string>
     <string name="yukizygisk_no_zygotes">Fără Zygote</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

@@ -15,7 +15,6 @@
 #include <linux/version.h>
 
 #include "feature/sucompat_exec.h"
-#include "feature/sucompat_prompt.h"
 #include "feature/sucompat_vfs.h"
 #include "hook/lsm_hook.h"
 #include "infra/symbol_resolver.h"
@@ -27,7 +26,6 @@
 #include "runtime/ksud.h"
 #include "sulog/event.h"
 #include "supercall/supercall.h"
-#include "uapi/supercall.h"
 
 #define KSU_SU_EXEC_CTX_MAGIC 0x4b53555355455845ULL
 #define KSU_SU_CREDS_HOOK_TARGET "selinux_bprm_creds_for_exec"
@@ -44,11 +42,8 @@ enum ksu_su_exec_stage {
 
 struct ksu_su_exec_ctx {
 	u64 magic;
-	u64 prompt_generation;
 	unsigned long su_ino;
 	uid_t uid;
-	u32 choice;
-	bool prompted;
 	enum ksu_su_exec_stage stage;
 	struct ksu_root_profile_state profile;
 	struct ksu_sulog_pending_event *sulog;
@@ -153,38 +148,14 @@ static bool ksu_su_exec_grant_valid(const struct ksu_su_exec_ctx *ctx)
 	if (!ctx || current_uid().val != ctx->uid ||
 	    !ksu_sucompat_vfs_current_ino(ctx->su_ino))
 		return false;
-	if (!ctx->prompted)
-		return ksu_is_allow_uid_for_current(ctx->uid);
-	if (!ksu_sucompat_prompt_grant_valid(ctx->prompt_generation) ||
-	    !ksu_sucompat_vfs_prompt_enabled() ||
-	    !ksu_sucompat_prompt_consumer_ready() || !is_appuid(ctx->uid) ||
-	    is_isolated_process(ctx->uid))
-		return false;
-	if (ctx->choice == KSU_SU_CHOICE_ALLOW_FOREVER)
-		return ksu_is_allow_uid_for_current(ctx->uid);
-	if (ctx->choice == KSU_SU_CHOICE_ALLOW_ONCE)
-		return !ksu_uid_should_umount(ctx->uid);
-	return false;
+	return ksu_is_allow_uid_for_current(ctx->uid);
 }
 
-static int ksu_su_exec_authorize(struct ksu_su_exec_ctx *ctx, bool allow_prompt)
+static int ksu_su_exec_authorize(struct ksu_su_exec_ctx *ctx)
 {
-	int ret;
-
 	if (!ctx || !ksu_sucompat_vfs_current_ino(ctx->su_ino))
 		return -EACCES;
 	ctx->uid = current_uid().val;
-	if (ksu_is_allow_uid_for_current(ctx->uid))
-		return 0;
-	if (!allow_prompt)
-		return -EACCES;
-	if (!ksu_sucompat_vfs_prompt_visible())
-		return -EACCES;
-	ctx->prompted = true;
-	ret =
-	    ksu_sucompat_prompt_request(&ctx->choice, &ctx->prompt_generation);
-	if (ret)
-		return ret;
 	return ksu_su_exec_grant_valid(ctx) ? 0 : -EACCES;
 }
 
@@ -232,7 +203,7 @@ static int __nocfi ksu_su_bprm_creds_for_exec(struct linux_binprm *bprm)
 	if (ret)
 		goto out_log;
 
-	ret = ksu_su_exec_authorize(ctx, !is_check);
+	ret = ksu_su_exec_authorize(ctx);
 	if (ret)
 		goto out_log;
 	if (unlikely(!ksu_cred)) {

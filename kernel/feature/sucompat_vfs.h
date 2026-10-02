@@ -16,12 +16,9 @@ int ksu_sucompat_vfs_set_config(const struct ksu_su_path_config *config);
 bool ksu_sucompat_vfs_current_ino(unsigned long ino);
 bool ksu_sucompat_vfs_reserved_path(const char *path);
 int ksu_sucompat_vfs_refresh(void);
-int ksu_sucompat_vfs_set_prompt_enabled(bool enabled);
 /* The su gate is independent of the shared Kasumi engine's lifetime. */
 bool ksu_sucompat_vfs_enabled(void);
 bool ksu_sucompat_vfs_active(void);
-bool ksu_sucompat_vfs_prompt_enabled(void);
-bool ksu_sucompat_vfs_prompt_visible(void);
 bool ksu_sucompat_vfs_visible(void);
 int ksu_sucompat_vfs_setup_inode(struct inode *inode);
 

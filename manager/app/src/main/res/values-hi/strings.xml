@@ -468,11 +468,6 @@
     <string name="settings_auto_update_ksud">ksud daemon स्वतः-अपडेट करें</string>
     <string name="settings_auto_update_ksud_summary">ऐप कोल्ड-स्टार्ट पर बंडल किए गए ksud बाइनरी को /data/adb/ksud में सिंक करें। डिफ़ॉल्ट रूप से बंद; अन्यथा होम पृष्ठ पर मैन्युअल बटन का उपयोग करें।</string>
 
-    <string name="su_request_desc">एक ऐप सुपरयूज़र (su) एक्सेस का अनुरोध कर रहा है।</string>
-    <string name="su_request_allow_forever">हमेशा अनुमति दें</string>
-    <string name="su_request_allow_once">एक बार अनुमति दें</string>
-    <string name="su_request_deny">अस्वीकार करें</string>
-    <string name="su_request_deny_hide">अस्वीकार करें और छिपाएं</string>
     <string name="settings_unshare_mnt">माउंट दृश्य व्यवस्थित करें</string>
     <string name="settings_unshare_mnt_summary">अनमाउंट के बाद नेमस्पेस फिर से बनाता है और दिखाई देने वाले ID व्यवस्थित करता है। लागू करने के लिए ऐप पुनः शुरू करें।</string>
     <string name="home_lkm_update_available">बिल्ट-इन LKM का नया वर्जन उपलब्ध है। अपडेट करने के लिए टैप करें।</string>
@@ -569,7 +564,6 @@
     <string name="settings_yukizygisk_toast_on">चालू किया गया। रीस्टार्ट के बाद लागू होगा।</string>
     <string name="settings_yukizygisk_toast_off">बंद किया गया। रीस्टार्ट के बाद लागू होगा।</string>
     <string name="settings_yukizygisk_toast_failed">बदलना विफल रहा</string>
-    <string name="su_compact_magisk_summary">अनुमति पॉपअप</string>
     <string name="settings_check_ci_update">CI अपडेट जाँचें</string>
     <string name="settings_check_ci_update_summary">ऐप खोलते समय प्रबंधक के हस्ताक्षरित नाइटली संस्करण जाँचें। डिफ़ॉल्ट रूप से बंद है।</string>
     <string name="ci_update_title">नया CI संस्करण मिला</string>
@@ -743,7 +737,6 @@
     <string name="ksud_integrity_notification_title">ksud बदल दिया गया है</string>
     <string name="ksud_integrity_notification_channel">ksud सुरक्षा चेतावनियाँ</string>
     <string name="ksud_integrity_notification_channel_summary">जब /data/adb/ksud वर्तमान प्रबंधक से मेल न खाए तो चेतावनी दें।</string>
-    <string name="su_request_failed">Root अनुरोध अमान्य हो गया है या भेजना विफल हुआ।</string>
     <string name="yukizygisk_injected_zygotes">Zygote मॉनिटर</string>
     <string name="yukizygisk_no_zygotes">कोई Zygote नहीं</string>
     <string name="yukizygisk_no_native_modules">कोई नेटिव मॉड्यूल नहीं</string>

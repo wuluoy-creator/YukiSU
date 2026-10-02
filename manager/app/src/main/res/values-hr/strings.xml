@@ -468,11 +468,6 @@
     <string name="settings_auto_update_ksud">Automatski ažuriraj daemon ksud</string>
     <string name="settings_auto_update_ksud_summary">Sinkroniziraj priloženu ksud binarnu datoteku u /data/adb/ksud pri hladnom pokretanju aplikacije. Zadano isključeno; u suprotnom koristite ručni gumb na početnoj stranici.</string>
 
-    <string name="su_request_desc">Aplikacija zahtijeva pristup superkorisnika (su).</string>
-    <string name="su_request_allow_forever">Uvijek dopusti</string>
-    <string name="su_request_allow_once">Dopusti jednom</string>
-    <string name="su_request_deny">Odbij</string>
-    <string name="su_request_deny_hide">Odbij i sakrij</string>
     <string name="settings_unshare_mnt">Uređivanje prikaza montiranja</string>
     <string name="settings_unshare_mnt_summary">Nakon demontiranja ponovno stvara imenski prostor i uređuje vidljive ID-ove. Ponovno pokrenite aplikaciju.</string>
     <string name="home_lkm_update_available">Dostupna je novija verzija ugrađenog LKM-a. Dodirnite za ažuriranje.</string>
@@ -550,7 +545,6 @@
     <string name="settings_yukizygisk_toast_on">Uključeno. Primjenjuje se nakon ponovnog pokretanja</string>
     <string name="settings_yukizygisk_toast_off">Isključeno. Primjenjuje se nakon ponovnog pokretanja</string>
     <string name="settings_yukizygisk_toast_failed">Prebacivanje nije uspjelo</string>
-    <string name="su_compact_magisk_summary">Dijalog za dodjelu ovlasti</string>
     <string name="settings_check_ci_update">Provjeravaj CI ažuriranja</string>
     <string name="settings_check_ci_update_summary">Provjerava potpisane noćne verzije upravitelja pri otvaranju aplikacije. Zadano je isključeno</string>
     <string name="ci_update_title">Pronađena je nova CI verzija</string>
@@ -736,7 +730,6 @@
     <string name="ksud_integrity_notification_title">ksud je zamijenjen</string>
     <string name="ksud_integrity_notification_channel">Sigurnosna upozorenja ksud-a</string>
     <string name="ksud_integrity_notification_channel_summary">Upozorava kad /data/adb/ksud ne odgovara trenutačnom upravitelju.</string>
-    <string name="su_request_failed">Root zahtjev više nije valjan ili slanje nije uspjelo.</string>
     <string name="yukizygisk_injected_zygotes">Nadzor Zygotea</string>
     <string name="yukizygisk_no_zygotes">Nema Zygotea</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

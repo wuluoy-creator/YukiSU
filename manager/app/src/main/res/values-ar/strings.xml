@@ -470,11 +470,6 @@
     <string name="settings_auto_update_ksud">تحديث خدمة ksud تلقائياً</string>
     <string name="settings_auto_update_ksud_summary">مزامنة ملف ksud الثنائي المرفق إلى /data/adb/ksud عند بدء التشغيل البارد للتطبيق. معطّل افتراضياً؛ وإلا استخدم الزر اليدوي في الصفحة الرئيسية.</string>
 
-    <string name="su_request_desc">يطلب أحد التطبيقات وصول المستخدم الخارق (su).</string>
-    <string name="su_request_allow_forever">السماح دائماً</string>
-    <string name="su_request_allow_once">السماح مرة واحدة</string>
-    <string name="su_request_deny">رفض</string>
-    <string name="su_request_deny_hide">رفض وإخفاء</string>
     <string name="settings_unshare_mnt">تنظيم عرض التثبيت</string>
     <string name="settings_unshare_mnt_summary">إعادة إنشاء مساحة الأسماء وتنظيم المعرّفات المرئية بعد إلغاء التثبيت. أعد تشغيل التطبيق للتطبيق.</string>
     <string name="home_lkm_update_available">يتوفر إصدار أحدث من LKM المضمّن. اضغط للتحديث.</string>
@@ -552,7 +547,6 @@
     <string name="settings_yukizygisk_toast_on">فُعّل. يسري بعد إعادة التشغيل</string>
     <string name="settings_yukizygisk_toast_off">أُوقف. يسري بعد إعادة التشغيل</string>
     <string name="settings_yukizygisk_toast_failed">فشل التبديل</string>
-    <string name="su_compact_magisk_summary">نافذة منح الصلاحيات</string>
     <string name="settings_check_ci_update">التحقق من تحديثات CI</string>
     <string name="settings_check_ci_update_summary">التحقق من إصدارات المدير الليلية الموقّعة عند فتح التطبيق. معطّل افتراضيًا</string>
     <string name="ci_update_title">عُثر على إصدار CI جديد</string>
@@ -738,7 +732,6 @@
     <string name="ksud_integrity_notification_title">استُبدل ksud</string>
     <string name="ksud_integrity_notification_channel">تنبيهات أمان ksud</string>
     <string name="ksud_integrity_notification_channel_summary">التحذير عندما لا يطابق /data/adb/ksud المدير الحالي.</string>
-    <string name="su_request_failed">لم يعد طلب Root صالحًا أو فشل إرساله.</string>
     <string name="yukizygisk_injected_zygotes">مراقب Zygote</string>
     <string name="yukizygisk_no_zygotes">لا يوجد Zygote</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

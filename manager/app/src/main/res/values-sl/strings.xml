@@ -468,11 +468,6 @@
     <string name="settings_auto_update_ksud">Samodejno posodobi demon ksud</string>
     <string name="settings_auto_update_ksud_summary">Sinhroniziraj priloženo binarno datoteko ksud v /data/adb/ksud ob hladnem zagonu aplikacije. Privzeto izklopljeno; sicer uporabite ročni gumb na začetni strani.</string>
 
-    <string name="su_request_desc">Aplikacija zahteva dostop superuporabnika (su).</string>
-    <string name="su_request_allow_forever">Vedno dovoli</string>
-    <string name="su_request_allow_once">Dovoli enkrat</string>
-    <string name="su_request_deny">Zavrni</string>
-    <string name="su_request_deny_hide">Zavrni in skrij</string>
     <string name="settings_unshare_mnt">Urejanje prikaza priklopov</string>
     <string name="settings_unshare_mnt_summary">Po odklopu znova ustvari imenski prostor in uredi vidne ID-je. Za uveljavitev znova zaženite aplikacijo.</string>
     <string name="home_lkm_update_available">Na voljo je novejša različica vgrajenega LKM. Tapnite za posodobitev.</string>
@@ -550,7 +545,6 @@
     <string name="settings_yukizygisk_toast_on">Omogočeno; začne veljati po ponovnem zagonu</string>
     <string name="settings_yukizygisk_toast_off">Onemogočeno; začne veljati po ponovnem zagonu</string>
     <string name="settings_yukizygisk_toast_failed">Preklop ni uspel</string>
-    <string name="su_compact_magisk_summary">Pojavno okno za dodelitev pravic</string>
     <string name="settings_check_ci_update">Preverjaj posodobitve CI</string>
     <string name="settings_check_ci_update_summary">Ob odpiranju aplikacije preveri podpisane nočne različice upravitelja. Privzeto izklopljeno.</string>
     <string name="ci_update_title">Najdena je nova različica CI</string>
@@ -736,7 +730,6 @@
     <string name="ksud_integrity_notification_title">ksud je bil zamenjan</string>
     <string name="ksud_integrity_notification_channel">Varnostna opozorila ksud</string>
     <string name="ksud_integrity_notification_channel_summary">Opozori, ko se /data/adb/ksud ne ujema s trenutnim upraviteljem.</string>
-    <string name="su_request_failed">Zahteva Root je potekla ali njena oddaja ni uspela.</string>
     <string name="yukizygisk_injected_zygotes">Nadzor Zygote</string>
     <string name="yukizygisk_no_zygotes">Ni Zygote</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

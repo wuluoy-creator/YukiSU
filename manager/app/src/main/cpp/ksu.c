@@ -219,48 +219,6 @@ int get_app_profile(struct app_profile *profile) {
   return -1;
 }
 
-bool set_magisk_compat_enabled(bool enabled) {
-  struct ksu_set_feature_cmd cmd = {};
-  cmd.feature_id = KSU_FEATURE_MAGISK_COMPAT;
-  cmd.value = enabled ? 1 : 0;
-  return ksuctl(KSU_IOCTL_SET_FEATURE, &cmd) == 0;
-}
-
-bool is_magisk_compat_enabled() {
-  struct ksu_get_feature_cmd cmd = {};
-  cmd.feature_id = KSU_FEATURE_MAGISK_COMPAT;
-  if (ksuctl(KSU_IOCTL_GET_FEATURE, &cmd) == 0 && cmd.supported) {
-    return cmd.value != 0;
-  }
-  return false;
-}
-
-int su_prompt_ready(uint64_t request_id, uint64_t nonce) {
-  struct ksu_su_prompt_key key = {
-      .request_id = request_id,
-      .nonce = nonce,
-  };
-  int ret = ksuctl(KSU_IOCTL_SU_PROMPT_READY, &key);
-  if (ret >= 0)
-    return ret;
-  return errno == ENOTTY ? 12000 : -errno;
-}
-
-bool submit_su_prompt(uint64_t request_id, uint64_t nonce, uint32_t choice,
-                      const char *package_name) {
-  struct ksu_su_prompt_verdict verdict = {
-      .request_id = request_id,
-      .nonce = nonce,
-      .choice = choice,
-  };
-
-  if (package_name) {
-    strncpy(verdict.package, package_name, sizeof(verdict.package) - 1);
-    verdict.package[sizeof(verdict.package) - 1] = '\0';
-  }
-  return ksuctl(KSU_IOCTL_SUBMIT_SU_PROMPT, &verdict) == 0;
-}
-
 static inline bool get_feature(uint32_t feature_id, uint64_t *out_value,
                                bool *out_supported) {
   struct ksu_get_feature_cmd cmd = {};

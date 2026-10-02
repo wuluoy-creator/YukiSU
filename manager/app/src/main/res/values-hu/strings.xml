@@ -469,11 +469,6 @@ A</string>
     <string name="settings_auto_update_ksud">ksud démon automatikus frissítése</string>
     <string name="settings_auto_update_ksud_summary">A csomagolt ksud bináris szinkronizálása a /data/adb/ksud helyre az alkalmazás hidegindításakor. Alapértelmezetten kikapcsolva; egyébként használja a kézi gombot a kezdőlapon.</string>
 
-    <string name="su_request_desc">Egy alkalmazás rendszergazdai (su) hozzáférést kér.</string>
-    <string name="su_request_allow_forever">Mindig engedélyezés</string>
-    <string name="su_request_allow_once">Engedélyezés egyszer</string>
-    <string name="su_request_deny">Elutasítás</string>
-    <string name="su_request_deny_hide">Elutasítás és elrejtés</string>
     <string name="settings_unshare_mnt">Csatolási nézet rendezése</string>
     <string name="settings_unshare_mnt_summary">Leválasztás után újra létrehozza a névteret és rendezi a látható azonosítókat. Indítsa újra az alkalmazást.</string>
     <string name="home_lkm_update_available">Elérhető a beépített LKM újabb verziója. Érintse meg a frissítéshez.</string>
@@ -551,7 +546,6 @@ A</string>
     <string name="settings_yukizygisk_toast_on">Bekapcsolva. Újraindítás után lép életbe</string>
     <string name="settings_yukizygisk_toast_off">Kikapcsolva. Újraindítás után lép életbe</string>
     <string name="settings_yukizygisk_toast_failed">Az átváltás sikertelen</string>
-    <string name="su_compact_magisk_summary">Engedélyezési párbeszédablak</string>
     <string name="settings_check_ci_update">CI frissítések keresése</string>
     <string name="settings_check_ci_update_summary">Alkalmazásindításkor aláírt éjszakai kezelőverziókat keres. Alapértelmezés szerint kikapcsolva</string>
     <string name="ci_update_title">Új CI verzió érhető el</string>
@@ -737,7 +731,6 @@ A</string>
     <string name="ksud_integrity_notification_title">A ksud le lett cserélve</string>
     <string name="ksud_integrity_notification_channel">ksud biztonsági riasztások</string>
     <string name="ksud_integrity_notification_channel_summary">Figyelmeztet, ha a /data/adb/ksud nem egyezik a jelenlegi kezelővel.</string>
-    <string name="su_request_failed">A Root-kérés érvénytelen, vagy elküldése sikertelen.</string>
     <string name="yukizygisk_injected_zygotes">Zygote-figyelő</string>
     <string name="yukizygisk_no_zygotes">Nincs Zygote</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

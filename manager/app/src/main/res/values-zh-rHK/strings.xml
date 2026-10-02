@@ -488,11 +488,6 @@
     <string name="settings_auto_update_ksud">自動更新 ksud</string>
     <string name="settings_auto_update_ksud_summary">應用冷啟動時自動將內建的 ksud 同步到 /data/adb/ksud。默認關閉，需要時去主頁手動同步。</string>
 
-    <string name="su_request_desc">一個應用程式正在請求超級使用者（su）權限。</string>
-    <string name="su_request_allow_forever">允許並記住</string>
-    <string name="su_request_allow_once">僅允許一次</string>
-    <string name="su_request_deny">拒絕</string>
-    <string name="su_request_deny_hide">拒絕並隱藏</string>
     <string name="home_lkm_update_available">有可用的內嵌 LKM 更新，按一下更新</string>
     <string name="home_lkm_custom">自訂</string>
     <string name="require_manager_version">需要更新管理器</string>
@@ -567,7 +562,6 @@
     <string name="settings_yukizygisk_toast_on">已開啟，重新啟動生效</string>
     <string name="settings_yukizygisk_toast_off">已關閉，重新啟動生效</string>
     <string name="settings_yukizygisk_toast_failed">切換失敗</string>
-    <string name="su_compact_magisk_summary">授權彈窗</string>
     <string name="ci_update_available_card">發現最新 CI 版本 %1$d，點擊下載</string>
     <string name="ci_update_check_failed_card">CI 更新檢測失敗，點擊重試</string>
     <string name="ci_update_commit">提交 %1$s</string>
@@ -739,7 +733,6 @@
     <string name="ksud_integrity_notification_title">ksud 已被替換</string>
     <string name="ksud_integrity_notification_channel">ksud 安全警報</string>
     <string name="ksud_integrity_notification_channel_summary">當 /data/adb/ksud 與當前管理器不一致時發出警告。</string>
-    <string name="su_request_failed">Root 請求已失效或提交失敗。</string>
     <string name="yukizygisk_injected_zygotes">Zygote 監視器</string>
     <string name="yukizygisk_no_zygotes">無 Zygote</string>
     <string name="yukizygisk_modules">Zygisk 模組</string>

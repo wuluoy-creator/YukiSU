@@ -470,11 +470,6 @@
     <string name="settings_auto_update_ksud">Aggiorna automaticamente il demone ksud</string>
     <string name="settings_auto_update_ksud_summary">Sincronizza il binario ksud incluso in /data/adb/ksud all\'avvio a freddo dell\'app. Disabilitato per impostazione predefinita; altrimenti usa il pulsante manuale nella pagina iniziale.</string>
 
-    <string name="su_request_desc">Un\'app sta richiedendo l\'accesso come superutente (su).</string>
-    <string name="su_request_allow_forever">Consenti sempre</string>
-    <string name="su_request_allow_once">Consenti una volta</string>
-    <string name="su_request_deny">Nega</string>
-    <string name="su_request_deny_hide">Nega e nascondi</string>
     <string name="settings_unshare_mnt">Riordino della vista dei mount</string>
     <string name="settings_unshare_mnt_summary">Ricrea lo spazio dei nomi e riordina gli ID visibili dopo lo smontaggio. Riavvia l’app per applicare.</string>
     <string name="home_lkm_update_available">È disponibile una versione più recente dell\'LKM integrato. Tocca per aggiornare.</string>
@@ -552,7 +547,6 @@
     <string name="settings_yukizygisk_toast_on">Attivato. Ha effetto dopo il riavvio.</string>
     <string name="settings_yukizygisk_toast_off">Disattivato. Ha effetto dopo il riavvio.</string>
     <string name="settings_yukizygisk_toast_failed">Cambio non riuscito</string>
-    <string name="su_compact_magisk_summary">Finestra di autorizzazione</string>
     <string name="settings_check_ci_update">Cerca aggiornamenti CI</string>
     <string name="settings_check_ci_update_summary">Cerca versioni notturne firmate del gestore all’apertura dell’app. Disattivato per impostazione predefinita.</string>
     <string name="ci_update_title">Nuova versione CI disponibile</string>
@@ -738,7 +732,6 @@
     <string name="ksud_integrity_notification_title">ksud è stato sostituito</string>
     <string name="ksud_integrity_notification_channel">Avvisi di sicurezza di ksud</string>
     <string name="ksud_integrity_notification_channel_summary">Avvisa quando /data/adb/ksud non corrisponde al gestore attuale.</string>
-    <string name="su_request_failed">La richiesta Root è scaduta o l’invio non è riuscito.</string>
     <string name="yukizygisk_injected_zygotes">Monitor Zygote</string>
     <string name="yukizygisk_no_zygotes">Nessuno Zygote</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

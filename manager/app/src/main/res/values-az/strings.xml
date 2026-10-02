@@ -468,11 +468,6 @@
     <string name="settings_auto_update_ksud">ksud demonunu avtomatik yenilə</string>
     <string name="settings_auto_update_ksud_summary">Tətbiqin soyuq başlanğıcında birlikdə gələn ksud icra faylını /data/adb/ksud ünvanına sinxronlaşdır. Standart olaraq deaktiv; əks halda ana səhifədəki əllə düyməsini istifadə edin.</string>
 
-    <string name="su_request_desc">Bir tətbiq superistifadəçi (su) girişi tələb edir.</string>
-    <string name="su_request_allow_forever">Həmişə icazə ver</string>
-    <string name="su_request_allow_once">Bir dəfə icazə ver</string>
-    <string name="su_request_deny">Rədd et</string>
-    <string name="su_request_deny_hide">Rədd et və gizlət</string>
     <string name="settings_unshare_mnt">Qoşulma görünüşünü nizamlama</string>
     <string name="settings_unshare_mnt_summary">Ayırmadan sonra ad fəzasını yenidən yaradır və görünən ID-ləri nizamlayır. Tətbiqi yenidən başladın.</string>
     <string name="home_lkm_update_available">Daxili LKM-in daha yeni versiyası mövcuddur. Yeniləmək üçün toxunun.</string>
@@ -550,7 +545,6 @@
     <string name="settings_yukizygisk_toast_on">Açıldı. Yenidən başladıqdan sonra qüvvəyə minir</string>
     <string name="settings_yukizygisk_toast_off">Söndürüldü. Yenidən başladıqdan sonra qüvvəyə minir</string>
     <string name="settings_yukizygisk_toast_failed">Dəyişdirilə bilmədi</string>
-    <string name="su_compact_magisk_summary">İcazə dialoqu</string>
     <string name="settings_check_ci_update">CI yeniləmələrini yoxla</string>
     <string name="settings_check_ci_update_summary">Tətbiq açıldıqda imzalanmış gecə menecer versiyalarını yoxlayır. Standart olaraq söndürülüb</string>
     <string name="ci_update_title">Yeni CI versiyası tapıldı</string>
@@ -736,7 +730,6 @@
     <string name="ksud_integrity_notification_title">ksud əvəzlənib</string>
     <string name="ksud_integrity_notification_channel">ksud təhlükəsizlik xəbərdarlıqları</string>
     <string name="ksud_integrity_notification_channel_summary">/data/adb/ksud cari menecerə uyğun olmadıqda xəbərdarlıq edir.</string>
-    <string name="su_request_failed">Root sorğusu qüvvədən düşüb və ya göndərilə bilmədi.</string>
     <string name="yukizygisk_injected_zygotes">Zygote monitoru</string>
     <string name="yukizygisk_no_zygotes">Zygote yoxdur</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

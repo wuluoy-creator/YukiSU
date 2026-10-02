@@ -528,41 +528,6 @@ NativeBridgeNP(getDynamicManagers, jintArray) {
   return array;
 }
 
-NativeBridgeNP(isMagiskCompatEnabled, jboolean) {
-  return is_magisk_compat_enabled();
-}
-
-NativeBridge(setMagiskCompatEnabled, jboolean, jboolean enabled) {
-  return set_magisk_compat_enabled(enabled);
-}
-
-NativeBridge(submitSuPrompt, jboolean, jlong request_id, jlong nonce,
-             jint choice, jstring package_name) {
-  const char *package_chars = "";
-  if (package_name) {
-    if (GetEnvironment()->GetStringUTFLength(env, package_name) >=
-        KSU_MAX_PACKAGE_NAME) {
-      return false;
-    }
-    package_chars =
-        GetEnvironment()->GetStringUTFChars(env, package_name, nullptr);
-    if (!package_chars) {
-      return false;
-    }
-  }
-
-  bool result = submit_su_prompt((uint64_t)request_id, (uint64_t)nonce,
-                                 (uint32_t)choice, package_chars);
-  if (package_name) {
-    GetEnvironment()->ReleaseStringUTFChars(env, package_name, package_chars);
-  }
-  return result;
-}
-
-NativeBridge(suPromptReady, jint, jlong request_id, jlong nonce) {
-  return su_prompt_ready((uint64_t)request_id, (uint64_t)nonce);
-}
-
 NativeBridgeNP(isKernelUmountEnabled, jboolean) {
   return is_kernel_umount_enabled();
 }

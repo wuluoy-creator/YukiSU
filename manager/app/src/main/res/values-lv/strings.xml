@@ -470,11 +470,6 @@
     <string name="settings_auto_update_ksud">Automātiski atjaunināt ksud dēmonu</string>
     <string name="settings_auto_update_ksud_summary">Sinhronizēt komplektācijā iekļauto ksud bināro failu uz /data/adb/ksud lietotnes aukstajā startā. Pēc noklusējuma izslēgts; pretējā gadījumā izmantojiet manuālo pogu sākuma lapā.</string>
 
-    <string name="su_request_desc">Lietotne pieprasa superlietotāja (su) piekļuvi.</string>
-    <string name="su_request_allow_forever">Vienmēr atļaut</string>
-    <string name="su_request_allow_once">Atļaut vienreiz</string>
-    <string name="su_request_deny">Noraidīt</string>
-    <string name="su_request_deny_hide">Noraidīt un slēpt</string>
     <string name="settings_unshare_mnt">Montējumu skata sakārtošana</string>
     <string name="settings_unshare_mnt_summary">Pēc atvienošanas atjauno vārdtelpu un sakārto redzamos ID. Lai lietotu, pārstartējiet lietotni.</string>
     <string name="home_lkm_update_available">Pieejama jaunāka iebūvētā LKM versija. Pieskarieties, lai atjauninātu.</string>
@@ -552,7 +547,6 @@
     <string name="settings_yukizygisk_toast_on">Iespējots; stājas spēkā pēc restartēšanas</string>
     <string name="settings_yukizygisk_toast_off">Atspējots; stājas spēkā pēc restartēšanas</string>
     <string name="settings_yukizygisk_toast_failed">Pārslēgšana neizdevās</string>
-    <string name="su_compact_magisk_summary">Atļaujas pieprasījuma uznirstošais logs</string>
     <string name="settings_check_ci_update">Pārbaudīt CI atjauninājumus</string>
     <string name="settings_check_ci_update_summary">Atverot lietotni, meklēt parakstītas pārvaldnieka nakts versijas. Pēc noklusējuma izslēgts.</string>
     <string name="ci_update_title">Atrasta jauna CI versija</string>
@@ -738,7 +732,6 @@
     <string name="ksud_integrity_notification_title">ksud ir aizstāts</string>
     <string name="ksud_integrity_notification_channel">ksud drošības brīdinājumi</string>
     <string name="ksud_integrity_notification_channel_summary">Brīdināt, ja /data/adb/ksud neatbilst pašreizējam pārvaldniekam.</string>
-    <string name="su_request_failed">Root pieprasījums vairs nav derīgs vai tā iesniegšana neizdevās.</string>
     <string name="yukizygisk_injected_zygotes">Zygote pārraudzība</string>
     <string name="yukizygisk_no_zygotes">Nav Zygote</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

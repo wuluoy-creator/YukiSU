@@ -393,11 +393,6 @@ int get_sulog_fd() {
     return ksuctl(KSU_IOCTL_GET_SULOG_FD, &cmd);
 }
 
-int get_su_prompt_fd() {
-    GetSuPromptFdCmd cmd = {0};
-    return ksuctl(KSU_IOCTL_GET_SU_PROMPT_FD, &cmd);
-}
-
 uint32_t mark_get(int32_t pid) {
     ManageMarkCmd cmd = {KSU_MARK_GET, pid, 0};
     ksuctl(KSU_IOCTL_MANAGE_MARK, &cmd);

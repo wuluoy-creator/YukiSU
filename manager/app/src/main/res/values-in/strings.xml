@@ -470,11 +470,6 @@
     <string name="settings_auto_update_ksud">Otomatis perbarui daemon ksud</string>
     <string name="settings_auto_update_ksud_summary">Sinkronkan biner ksud bawaan ke /data/adb/ksud saat aplikasi mulai dingin. Nonaktif secara bawaan; jika tidak, gunakan tombol manual di halaman utama.</string>
 
-    <string name="su_request_desc">Sebuah aplikasi meminta akses superuser (su).</string>
-    <string name="su_request_allow_forever">Selalu izinkan</string>
-    <string name="su_request_allow_once">Izinkan sekali</string>
-    <string name="su_request_deny">Tolak</string>
-    <string name="su_request_deny_hide">Tolak &amp; sembunyikan</string>
     <!-- locale-only keys -->
     <string name="profile">Profil Aplikasi</string>
     <string name="settings_unshare_mnt">Rapikan tampilan mount</string>
@@ -573,7 +568,6 @@
     <string name="settings_yukizygisk_toast_on">Diaktifkan, berlaku setelah mulai ulang</string>
     <string name="settings_yukizygisk_toast_off">Dinonaktifkan, berlaku setelah mulai ulang</string>
     <string name="settings_yukizygisk_toast_failed">Gagal beralih</string>
-    <string name="su_compact_magisk_summary">Dialog pemberian izin</string>
     <string name="settings_check_ci_update">Periksa pembaruan CI</string>
     <string name="settings_check_ci_update_summary">Periksa versi nightly pengelola yang ditandatangani saat membuka aplikasi. Nonaktif secara bawaan</string>
     <string name="ci_update_title">Versi CI baru ditemukan</string>
@@ -747,7 +741,6 @@
     <string name="ksud_integrity_notification_title">ksud telah diganti</string>
     <string name="ksud_integrity_notification_channel">Peringatan keamanan ksud</string>
     <string name="ksud_integrity_notification_channel_summary">Beri peringatan saat /data/adb/ksud tidak cocok dengan pengelola saat ini.</string>
-    <string name="su_request_failed">Permintaan Root sudah tidak berlaku atau gagal dikirim.</string>
     <string name="yukizygisk_injected_zygotes">Pemantau Zygote</string>
     <string name="yukizygisk_no_zygotes">Tidak ada Zygote</string>
     <string name="yukizygisk_no_native_modules">Tidak ada modul Native</string>

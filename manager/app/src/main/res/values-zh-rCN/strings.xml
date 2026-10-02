@@ -137,7 +137,6 @@
     <string name="settings_yukizygisk_toast_on">已开启，重启生效</string>
     <string name="settings_yukizygisk_toast_off">已关闭，重启生效</string>
     <string name="settings_yukizygisk_toast_failed">切换失败</string>
-    <string name="su_compact_magisk_summary">授权弹窗</string>
     <string name="profile_umount_modules_summary">启用该选项后将允许 KernelSU 为本应用还原被模块修改过的文件。</string>
     <string name="profile_selinux_domain">域</string>
     <string name="profile_selinux_rules">规则</string>
@@ -731,12 +730,6 @@
     <string name="setting_change_failed">设置失败</string>
     <string name="settings_auto_update_ksud">自动更新 ksud</string>
     <string name="settings_auto_update_ksud_summary">应用冷启动时自动将内置的 ksud 同步到 /data/adb/ksud。默认关闭，需要时去主页手动同步。</string>
-    <string name="su_request_desc">一个应用正在请求超级用户（su）权限。</string>
-    <string name="su_request_allow_forever">允许并记住</string>
-    <string name="su_request_allow_once">仅允许一次</string>
-    <string name="su_request_deny">拒绝</string>
-    <string name="su_request_failed">Root 请求已失效或提交失败。</string>
-    <string name="su_request_deny_hide">拒绝并隐藏</string>
     <string name="yukizygisk_injected_zygotes">Zygote 监视器</string>
     <string name="yukizygisk_no_zygotes">无 Zygote</string>
     <string name="yukizygisk_modules">Zygisk 模块</string>

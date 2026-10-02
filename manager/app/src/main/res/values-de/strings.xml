@@ -470,11 +470,6 @@
     <string name="settings_auto_update_ksud">ksud-Daemon automatisch aktualisieren</string>
     <string name="settings_auto_update_ksud_summary">Die gebündelte ksud-Binärdatei beim Kaltstart der App nach /data/adb/ksud synchronisieren. Standardmäßig deaktiviert; verwende sonst die manuelle Schaltfläche auf der Startseite.</string>
 
-    <string name="su_request_desc">Eine App fordert Superuser-Zugriff (su) an.</string>
-    <string name="su_request_allow_forever">Immer erlauben</string>
-    <string name="su_request_allow_once">Einmal erlauben</string>
-    <string name="su_request_deny">Ablehnen</string>
-    <string name="su_request_deny_hide">Ablehnen &amp; verbergen</string>
     <string name="settings_unshare_mnt">Mount-Ansicht bereinigen</string>
     <string name="settings_unshare_mnt_summary">Erstellt nach dem Aushängen den Namensraum neu und ordnet sichtbare IDs. App zum Anwenden neu starten.</string>
     <string name="home_lkm_update_available">Eine neuere Version des mitgelieferten LKM ist verfügbar. Zum Aktualisieren tippen.</string>
@@ -552,7 +547,6 @@
     <string name="settings_yukizygisk_toast_on">Aktiviert. Wird nach einem Neustart wirksam.</string>
     <string name="settings_yukizygisk_toast_off">Deaktiviert. Wird nach einem Neustart wirksam.</string>
     <string name="settings_yukizygisk_toast_failed">Umschalten fehlgeschlagen</string>
-    <string name="su_compact_magisk_summary">Berechtigungsdialog</string>
     <string name="settings_check_ci_update">Nach CI-Updates suchen</string>
     <string name="settings_check_ci_update_summary">Beim Öffnen der App nach signierten Nightly-Versionen des Managers suchen. Standardmäßig deaktiviert.</string>
     <string name="ci_update_title">Neue CI-Version verfügbar</string>
@@ -738,7 +732,6 @@
     <string name="ksud_integrity_notification_title">ksud wurde ersetzt</string>
     <string name="ksud_integrity_notification_channel">ksud-Sicherheitswarnungen</string>
     <string name="ksud_integrity_notification_channel_summary">Warnen, wenn /data/adb/ksud nicht mit dem aktuellen Manager übereinstimmt.</string>
-    <string name="su_request_failed">Die Root-Anfrage ist nicht mehr gültig oder konnte nicht übermittelt werden.</string>
     <string name="yukizygisk_injected_zygotes">Zygote-Überwachung</string>
     <string name="yukizygisk_no_zygotes">Keine Zygotes</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

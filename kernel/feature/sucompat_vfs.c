@@ -9,7 +9,6 @@
 #include <linux/version.h>
 
 #include "feature/sucompat_exec.h"
-#include "feature/sucompat_prompt.h"
 #include "feature/sucompat_vfs.h"
 #include "kasumi_bootstrap.h"
 #include "kasumi_dirhijack.h"
@@ -21,7 +20,6 @@
 static DEFINE_MUTEX(su_view_lock);
 static bool su_ready;
 static bool su_enabled;
-static bool su_prompt_enabled;
 static char su_path[KSU_SU_PATH_MAX] = KSU_SU_PATH_DEFAULT;
 static struct path su_parent;
 static char su_name[NAME_MAX + 1];
@@ -42,24 +40,6 @@ bool ksu_sucompat_vfs_current_ino(unsigned long ino)
 {
 	return ksu_sucompat_vfs_enabled() && ino && ino == READ_ONCE(su_ino);
 }
-bool ksu_sucompat_vfs_prompt_enabled(void)
-{
-	return READ_ONCE(su_prompt_enabled);
-}
-
-bool ksu_sucompat_vfs_prompt_visible(void)
-{
-	uid_t uid = current_uid().val;
-
-#ifdef CONFIG_COMPAT
-	if (is_compat_task())
-		return false;
-#endif
-	return ksu_sucompat_vfs_enabled() && READ_ONCE(su_prompt_enabled) &&
-	       ksu_sucompat_prompt_consumer_ready() && is_appuid(uid) &&
-	       !is_isolated_process(uid) && !ksu_uid_should_umount(uid) &&
-	       !ksu_is_allow_uid_for_current(uid);
-}
 
 bool ksu_sucompat_vfs_visible(void)
 {
@@ -68,8 +48,7 @@ bool ksu_sucompat_vfs_visible(void)
 		return false;
 #endif
 	return ksu_sucompat_vfs_enabled() &&
-	       (ksu_is_allow_uid_for_current(current_uid().val) ||
-		ksu_sucompat_vfs_prompt_visible());
+	       ksu_is_allow_uid_for_current(current_uid().val);
 }
 
 bool ksu_sucompat_vfs_is_inode(const struct inode *inode)
@@ -273,14 +252,6 @@ out:
 	return ret;
 }
 
-int ksu_sucompat_vfs_set_prompt_enabled(bool enabled)
-{
-	if (enabled && (!READ_ONCE(su_ready) || !kasumi_is_ready()))
-		return -EOPNOTSUPP;
-	WRITE_ONCE(su_prompt_enabled, enabled);
-	return 0;
-}
-
 int ksu_sucompat_vfs_init(void)
 {
 	WRITE_ONCE(su_ready, true);
@@ -291,7 +262,6 @@ void ksu_sucompat_vfs_exit(void)
 {
 	mutex_lock(&su_view_lock);
 	WRITE_ONCE(su_enabled, false);
-	WRITE_ONCE(su_prompt_enabled, false);
 	if (su_parent.dentry) {
 		kasumi_dirhijack_del_su(&su_parent, su_name, READ_ONCE(su_ino));
 		path_put(&su_parent);

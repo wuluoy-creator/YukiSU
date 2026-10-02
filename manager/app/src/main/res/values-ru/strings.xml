@@ -471,11 +471,6 @@
     <string name="settings_auto_update_ksud">Автообновление демона ksud</string>
     <string name="settings_auto_update_ksud_summary">Синхронизировать встроенный бинарный файл ksud в /data/adb/ksud при холодном запуске приложения. По умолчанию отключено; иначе используйте кнопку ручного обновления на главной странице.</string>
 
-    <string name="su_request_desc">Приложение запрашивает права суперпользователя (su).</string>
-    <string name="su_request_allow_forever">Разрешить всегда</string>
-    <string name="su_request_allow_once">Разрешить один раз</string>
-    <string name="su_request_deny">Отклонить</string>
-    <string name="su_request_deny_hide">Отклонить и скрыть</string>
     <string name="settings_unshare_mnt">Упорядочить вид монтирований</string>
     <string name="settings_unshare_mnt_summary">Пересоздаёт пространство имён и упорядочивает видимые ID после размонтирования. Перезапустите приложение для применения.</string>
     <string name="home_lkm_update_available">Доступна новая версия встроенного LKM. Нажмите, чтобы обновить.</string>
@@ -553,7 +548,6 @@
     <string name="settings_yukizygisk_toast_on">Включено. Вступит в силу после перезагрузки</string>
     <string name="settings_yukizygisk_toast_off">Выключено. Вступит в силу после перезагрузки</string>
     <string name="settings_yukizygisk_toast_failed">Не удалось переключить</string>
-    <string name="su_compact_magisk_summary">Диалог предоставления прав</string>
     <string name="settings_check_ci_update">Проверять обновления CI</string>
     <string name="settings_check_ci_update_summary">Проверять подписанные ночные сборки менеджера при открытии приложения. По умолчанию выключено</string>
     <string name="ci_update_title">Найдена новая сборка CI</string>
@@ -739,7 +733,6 @@
     <string name="ksud_integrity_notification_title">ksud заменён</string>
     <string name="ksud_integrity_notification_channel">Оповещения безопасности ksud</string>
     <string name="ksud_integrity_notification_channel_summary">Предупреждать, когда /data/adb/ksud не соответствует текущему менеджеру.</string>
-    <string name="su_request_failed">Запрос Root больше недействителен или не удалось его отправить.</string>
     <string name="yukizygisk_injected_zygotes">Монитор Zygote</string>
     <string name="yukizygisk_no_zygotes">Нет Zygote</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

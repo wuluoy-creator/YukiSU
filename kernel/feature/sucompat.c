@@ -27,76 +27,21 @@
 #include "runtime/ksud.h"
 #include "sulog/event.h"
 #include "supercall/supercall.h"
-#include "uapi/supercall.h"
 #include "feature/sucompat.h"
 #include "feature/sucompat_exec.h"
-#include "feature/sucompat_prompt.h"
 #include "feature/sucompat_vfs.h"
 
 #define SU_PATH "/system/bin/su"
 
 /* Kasumi is the only sucompat provider; the legacy route stays disabled. */
 const bool ksu_su_compat_enabled = false;
-static bool magisk_compat_enabled __read_mostly;
 static const char su_path[] = SU_PATH;
 static bool kasumi_sucompat_feature_registered;
-static bool magisk_compat_feature_registered;
 static bool kasumi_sucompat_started;
 
 #ifndef fd_file
 #define fd_file(fd) ((fd).file)
 #endif
-
-static int magisk_compat_feature_get(u64 *value)
-{
-	*value = READ_ONCE(magisk_compat_enabled) ? 1 : 0;
-	return 0;
-}
-
-static int magisk_compat_feature_set(u64 value)
-{
-	bool enable = value != 0;
-	int ret;
-
-	if (enable && !ksu_sucompat_vfs_enabled())
-		return -EOPNOTSUPP;
-	ret = ksu_sucompat_prompt_set_gate(enable);
-	if (ret)
-		return ret;
-	WRITE_ONCE(magisk_compat_enabled, enable);
-	pr_info("magisk_compat: set to %d\n", enable);
-	return 0;
-}
-
-static const struct ksu_feature_handler magisk_compat_handler = {
-    .feature_id = KSU_FEATURE_MAGISK_COMPAT,
-    .name = "magisk_compat",
-    .get_handler = magisk_compat_feature_get,
-    .set_handler = magisk_compat_feature_set,
-};
-
-void ksu_magisk_compat_init(void)
-{
-	if (!kasumi_sucompat_feature_registered) {
-		pr_warn("magisk_compat: Kasumi VFS provider unavailable\n");
-		return;
-	}
-	if (ksu_register_feature_handler(&magisk_compat_handler)) {
-		pr_err("magisk_compat: failed to register feature handler\n");
-	} else {
-		magisk_compat_feature_registered = true;
-	}
-}
-
-void ksu_magisk_compat_exit(void)
-{
-	if (!magisk_compat_feature_registered)
-		return;
-	WRITE_ONCE(magisk_compat_enabled, false);
-	ksu_sucompat_prompt_set_gate(false);
-	ksu_unregister_feature_handler(KSU_FEATURE_MAGISK_COMPAT);
-	magisk_compat_feature_registered = false;
-}
 
 static int su_compat_feature_get(u64 *value)
 {
@@ -314,21 +259,6 @@ static void close_tmp_fd(unsigned int fd)
 	close_fd(fd);
 }
 
-static bool prompt_grant_still_valid(uid_t uid, u32 choice, u64 generation)
-{
-	if (!ksu_sucompat_prompt_grant_valid(generation) ||
-	    current_uid().val != uid || !ksu_sucompat_vfs_enabled() ||
-	    !ksu_sucompat_vfs_prompt_enabled() ||
-	    !ksu_sucompat_prompt_consumer_ready() || !is_appuid(uid) ||
-	    is_isolated_process(uid))
-		return false;
-	if (choice == KSU_SU_CHOICE_ALLOW_FOREVER)
-		return ksu_is_allow_uid_for_current(uid);
-	if (choice == KSU_SU_CHOICE_ALLOW_ONCE)
-		return !ksu_uid_should_umount(uid);
-	return false;
-}
-
 static long
 ksu_handle_execve_sucompat_common(const char __user **filename_user,
 				  const char __user *const __user *argv_user,
@@ -344,11 +274,7 @@ ksu_handle_execve_sucompat_common(const char __user **filename_user,
 	int tmp_fd;
 	long ret;
 	bool vfs_match = false;
-	bool prompt_granted = false;
 	bool allowed;
-	uid_t prompt_uid = 0;
-	u32 prompt_choice = 0;
-	u64 prompt_generation = 0;
 
 	if (unlikely(!filename_user || !*filename_user))
 		goto do_orig_execve;
@@ -360,22 +286,8 @@ ksu_handle_execve_sucompat_common(const char __user **filename_user,
 		if (vfs_match && !ksu_sucompat_vfs_enabled())
 			vfs_match = false;
 	}
-	if (vfs_match && !allowed) {
-		allowed = ksu_is_allow_uid_for_current(current_uid().val);
-		if (!allowed) {
-			if (!ksu_sucompat_vfs_prompt_visible())
-				return -EACCES;
-			prompt_uid = current_uid().val;
-			ret = ksu_sucompat_prompt_request(&prompt_choice,
-							  &prompt_generation);
-			if (ret)
-				return ret;
-			if (!prompt_grant_still_valid(prompt_uid, prompt_choice,
-						      prompt_generation))
-				return -EACCES;
-			prompt_granted = true;
-		}
-	}
+	if (vfs_match && !allowed)
+		return -EACCES;
 	if (!vfs_match) {
 		if (!allowed)
 			goto do_orig_execve;
@@ -393,10 +305,7 @@ ksu_handle_execve_sucompat_common(const char __user **filename_user,
 		pr_err("exec su: KernelSU credential is unavailable\n");
 		goto do_orig_execve;
 	}
-	if ((prompt_granted
-		 ? !prompt_grant_still_valid(prompt_uid, prompt_choice,
-					     prompt_generation)
-		 : !ksu_is_allow_uid_for_current(current_uid().val)) ||
+	if (!ksu_is_allow_uid_for_current(current_uid().val) ||
 	    (vfs_match ? !ksu_sucompat_vfs_enabled()
 		       : !READ_ONCE(ksu_su_compat_enabled)))
 		return -EACCES;
@@ -435,10 +344,7 @@ ksu_handle_execve_sucompat_common(const char __user **filename_user,
 
 	/* Policy and feature state can change while the executable is opened.
 	 */
-	if ((prompt_granted
-		 ? !prompt_grant_still_valid(prompt_uid, prompt_choice,
-					     prompt_generation)
-		 : !ksu_is_allow_uid_for_current(current_uid().val)) ||
+	if (!ksu_is_allow_uid_for_current(current_uid().val) ||
 	    (vfs_match ? !ksu_sucompat_vfs_enabled()
 		       : !READ_ONCE(ksu_su_compat_enabled))) {
 		ret = -EACCES;
@@ -500,7 +406,6 @@ void ksu_sucompat_init(void)
 	} else {
 		kasumi_sucompat_feature_registered = true;
 	}
-	ksu_magisk_compat_init();
 }
 
 int ksu_sucompat_ksm_init(void)
@@ -514,7 +419,6 @@ int ksu_sucompat_ksm_init(void)
 		ksu_sucompat_vfs_exit();
 		return ret;
 	}
-	ksu_sucompat_prompt_init();
 	kasumi_sucompat_started = true;
 	return 0;
 }
@@ -522,7 +426,6 @@ int ksu_sucompat_ksm_init(void)
 void ksu_sucompat_ksm_exit(void)
 {
 	if (kasumi_sucompat_started) {
-		ksu_sucompat_prompt_exit();
 		ksu_sucompat_exec_exit();
 		ksu_sucompat_vfs_exit();
 		kasumi_sucompat_started = false;
@@ -532,7 +435,6 @@ void ksu_sucompat_ksm_exit(void)
 void ksu_sucompat_exit(void)
 {
 	ksu_sucompat_ksm_exit();
-	ksu_magisk_compat_exit();
 	if (kasumi_sucompat_feature_registered) {
 		ksu_unregister_feature_handler(KSU_FEATURE_KASUMI_SUCOMPAT);
 		kasumi_sucompat_feature_registered = false;

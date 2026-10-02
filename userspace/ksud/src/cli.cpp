@@ -16,7 +16,6 @@
 #include "flash/flash_partition.hpp"
 #include "init_event.hpp"
 #include "log.hpp"
-#include "magisk_compat/msud.hpp"
 #include "module/module.hpp"
 #include "module/module_config.hpp"
 #include "plugin/plugin.hpp"
@@ -34,7 +33,6 @@
 #include <unistd.h>
 #include <algorithm>
 #include <cerrno>
-#include <climits>
 #include <cstdlib>
 #include <cstring>
 #include <vector>
@@ -647,8 +645,6 @@ int cli_run(int argc, char** argv) {
         args.insert(args.begin() + 1, "--json");
     if (cmd == "yzctl" && cli.has("--json"))
         args.emplace_back("--json");
-    if (cmd == "msud" && cli.has("--ready-fd"))
-        args = {"--ready-fd", cli.value("--ready-fd")};
     if (cli.path == "plugin daemon") {
         args.emplace_back("--ready-fd");
         args.push_back(cli.value("--ready-fd"));
@@ -726,23 +722,6 @@ int cli_run(int argc, char** argv) {
         return cmd_initrc(args);
     } else if (cmd == "sulogd") {
         return run_sulogd();
-    } else if (cmd == "msud") {
-        if (args.empty()) {
-            return run_msud();
-        }
-        uint32_t ready_fd = 0;
-        if (args.size() == 2 && args[0] == "--ready-fd" && parse_uint32(args[1], &ready_fd) &&
-            ready_fd <= INT_MAX) {
-            return run_msud(static_cast<int>(ready_fd));
-        }
-        LOGE("Usage: ksud msud");
-        return 1;
-    } else if (cmd == "magisk-compat") {
-        if (!args.empty() && args[0] == "apply") {
-            return apply_magisk_compat_now();
-        }
-        LOGE("Usage: ksud magisk-compat apply");
-        return 1;
     } else if (cmd == "boot-patch") {
         return boot_patch(args);
     } else if (cmd == "boot-patch-v2") {

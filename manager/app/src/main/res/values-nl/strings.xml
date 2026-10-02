@@ -470,11 +470,6 @@
     <string name="settings_auto_update_ksud">ksud-daemon automatisch bijwerken</string>
     <string name="settings_auto_update_ksud_summary">Synchroniseer het gebundelde ksud-binaire bestand naar /data/adb/ksud bij de koude start van de app. Standaard uitgeschakeld; gebruik anders de handmatige knop op de startpagina.</string>
 
-    <string name="su_request_desc">Een app vraagt om supergebruiker-toegang (su).</string>
-    <string name="su_request_allow_forever">Altijd toestaan</string>
-    <string name="su_request_allow_once">Eén keer toestaan</string>
-    <string name="su_request_deny">Weigeren</string>
-    <string name="su_request_deny_hide">Weigeren en verbergen</string>
     <string name="settings_unshare_mnt">Mount-weergave opschonen</string>
     <string name="settings_unshare_mnt_summary">Maakt de naamruimte opnieuw aan en ordent zichtbare ID’s na ontkoppelen. Herstart de app om toe te passen.</string>
     <string name="home_lkm_update_available">Er is een nieuwere versie van de ingebouwde LKM beschikbaar. Tik om bij te werken.</string>
@@ -552,7 +547,6 @@
     <string name="settings_yukizygisk_toast_on">Ingeschakeld. Wordt actief na opnieuw opstarten.</string>
     <string name="settings_yukizygisk_toast_off">Uitgeschakeld. Wordt actief na opnieuw opstarten.</string>
     <string name="settings_yukizygisk_toast_failed">Omschakelen mislukt</string>
-    <string name="su_compact_magisk_summary">Toestemmingsvenster</string>
     <string name="settings_check_ci_update">Controleren op CI-updates</string>
     <string name="settings_check_ci_update_summary">Bij het openen van de app controleren op ondertekende nachtelijke beheerdersversies. Standaard uitgeschakeld.</string>
     <string name="ci_update_title">Nieuwe CI-versie gevonden</string>
@@ -738,7 +732,6 @@
     <string name="ksud_integrity_notification_title">ksud is vervangen</string>
     <string name="ksud_integrity_notification_channel">ksud-beveiligingswaarschuwingen</string>
     <string name="ksud_integrity_notification_channel_summary">Waarschuwen wanneer /data/adb/ksud niet overeenkomt met de huidige beheerder.</string>
-    <string name="su_request_failed">Het Root-verzoek is verlopen of kon niet worden verzonden.</string>
     <string name="yukizygisk_injected_zygotes">Zygote-monitor</string>
     <string name="yukizygisk_no_zygotes">Geen Zygote</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

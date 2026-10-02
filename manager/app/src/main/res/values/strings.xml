@@ -139,8 +139,6 @@
     <string name="settings_yukizygisk_toast_on" tools:ignore="MissingTranslation">Enabled; reboot required</string>
     <string name="settings_yukizygisk_toast_off" tools:ignore="MissingTranslation">Disabled; reboot required</string>
     <string name="settings_yukizygisk_toast_failed" tools:ignore="MissingTranslation">Toggle failed</string>
-    <string name="su_compact_magisk_title" translatable="false">Magisk su compact</string>
-    <string name="su_compact_magisk_summary" tools:ignore="MissingTranslation">Authorization prompt</string>
     <string name="profile_umount_modules_summary">Enabling this option will allow KernelSU to restore any modified files by the modules for this app</string>
     <string name="profile_selinux_domain">Domain</string>
     <string name="profile_selinux_rules">Rules</string>
@@ -735,12 +733,6 @@
     <string name="settings_auto_update_ksud">Auto-update ksud daemon</string>
     <string name="settings_auto_update_ksud_summary">Sync the bundled ksud binary to /data/adb/ksud on app cold-start. Off by default; otherwise use the manual button on the home page.</string>
 
-    <string name="su_request_desc">An app is requesting superuser (su) access.</string>
-    <string name="su_request_allow_forever">Allow always</string>
-    <string name="su_request_allow_once">Allow once</string>
-    <string name="su_request_deny">Deny</string>
-    <string name="su_request_failed" tools:ignore="MissingTranslation">The root request expired or could not be submitted.</string>
-    <string name="su_request_deny_hide">Deny &amp; hide</string>
     <string name="yukizygisk_injected_zygotes" tools:ignore="MissingTranslation">Zygote monitor</string>
     <string name="yukizygisk_no_zygotes" tools:ignore="MissingTranslation">No Zygote</string>
     <string name="yukizygisk_modules" tools:ignore="MissingTranslation">Zygisk modules</string>

@@ -470,11 +470,6 @@
     <string name="settings_auto_update_ksud">ksud デーモンを自動更新</string>
     <string name="settings_auto_update_ksud_summary">アプリのコールドスタート時に同梱の ksud バイナリを /data/adb/ksud に同期します。デフォルトはオフです。それ以外はホーム画面の手動ボタンを使用してください。</string>
 
-    <string name="su_request_desc">アプリがスーパーユーザー (su) アクセスを要求しています。</string>
-    <string name="su_request_allow_forever">常に許可</string>
-    <string name="su_request_allow_once">1 回だけ許可</string>
-    <string name="su_request_deny">拒否</string>
-    <string name="su_request_deny_hide">拒否して非表示</string>
     <string name="settings_unshare_mnt">マウント表示の整理</string>
     <string name="settings_unshare_mnt_summary">アンマウント後に名前空間を再作成し、表示される ID を整理します。アプリの再起動後に反映されます。</string>
     <string name="home_lkm_update_available">内蔵 LKM の新しいバージョンが利用可能です。タップして更新します。</string>
@@ -571,7 +566,6 @@
     <string name="settings_yukizygisk_toast_on">有効にしました。再起動後に反映されます</string>
     <string name="settings_yukizygisk_toast_off">無効にしました。再起動後に反映されます</string>
     <string name="settings_yukizygisk_toast_failed">切り替えに失敗しました</string>
-    <string name="su_compact_magisk_summary">権限許可ダイアログ</string>
     <string name="settings_check_ci_update">CI 更新を確認</string>
     <string name="settings_check_ci_update_summary">アプリ起動時に署名済みの nightly マネージャーを確認します。デフォルトではオフです</string>
     <string name="ci_update_title">新しい CI バージョンがあります</string>
@@ -745,7 +739,6 @@
     <string name="ksud_integrity_notification_title">ksud が置き換えられました</string>
     <string name="ksud_integrity_notification_channel">ksud セキュリティ警告</string>
     <string name="ksud_integrity_notification_channel_summary">/data/adb/ksud が現在のマネージャーと一致しない場合に警告します。</string>
-    <string name="su_request_failed">Root リクエストが無効になったか、送信に失敗しました。</string>
     <string name="yukizygisk_injected_zygotes">Zygote モニター</string>
     <string name="yukizygisk_no_zygotes">Zygote なし</string>
     <string name="yukizygisk_no_native_modules">Native モジュールなし</string>

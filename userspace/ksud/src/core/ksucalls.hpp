@@ -25,7 +25,6 @@ using GetFeatureCmd = ksu_get_feature_cmd;
 using SetFeatureCmd = ksu_set_feature_cmd;
 using GetWrapperFdCmd = ksu_get_wrapper_fd_cmd;
 using GetSulogFdCmd = ksu_get_sulog_fd_cmd;
-using GetSuPromptFdCmd = ksu_get_su_prompt_fd_cmd;
 using ManageMarkCmd = ksu_manage_mark_cmd;
 using NukeExt4SysfsCmd = ksu_nuke_ext4_sysfs_cmd;
 using AddTryUmountCmd = ksu_add_try_umount_cmd;
@@ -80,7 +79,6 @@ int set_su_path_config(const ksu_su_path_config& config);
 
 int get_wrapped_fd(int fd);
 int get_sulog_fd();
-int get_su_prompt_fd();
 
 // Mark management
 uint32_t mark_get(int32_t pid);

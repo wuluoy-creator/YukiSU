@@ -468,11 +468,6 @@
     <string name="settings_auto_update_ksud">Atualizar automaticamente o daemon ksud</string>
     <string name="settings_auto_update_ksud_summary">Sincronizar o binário ksud incluído para /data/adb/ksud na inicialização a frio do aplicativo. Desativado por padrão; caso contrário, use o botão manual na página inicial.</string>
 
-    <string name="su_request_desc">Um aplicativo está solicitando acesso de superusuário (su).</string>
-    <string name="su_request_allow_forever">Permitir sempre</string>
-    <string name="su_request_allow_once">Permitir uma vez</string>
-    <string name="su_request_deny">Negar</string>
-    <string name="su_request_deny_hide">Negar e ocultar</string>
     <string name="settings_unshare_mnt">Organizar vista de montagens</string>
     <string name="settings_unshare_mnt_summary">Recria o espaço de nomes e organiza os ID visíveis após desmontar. Reinicie a aplicação para aplicar.</string>
     <string name="home_lkm_update_available">Está disponível uma versão mais recente do LKM integrado. Toque para atualizar.</string>
@@ -550,7 +545,6 @@
     <string name="settings_yukizygisk_toast_on">Ativado. Entra em vigor após reiniciar.</string>
     <string name="settings_yukizygisk_toast_off">Desativado. Entra em vigor após reiniciar.</string>
     <string name="settings_yukizygisk_toast_failed">Falha ao alternar</string>
-    <string name="su_compact_magisk_summary">Janela de autorização</string>
     <string name="settings_check_ci_update">Verificar atualizações CI</string>
     <string name="settings_check_ci_update_summary">Verificar versões noturnas assinadas do gerenciador ao abrir o aplicativo. Desativado por padrão.</string>
     <string name="ci_update_title">Nova versão CI disponível</string>
@@ -736,7 +730,6 @@
     <string name="ksud_integrity_notification_title">ksud foi substituído</string>
     <string name="ksud_integrity_notification_channel">Alertas de segurança do ksud</string>
     <string name="ksud_integrity_notification_channel_summary">Alertar quando /data/adb/ksud não corresponder ao gerenciador atual.</string>
-    <string name="su_request_failed">A solicitação Root expirou ou não pôde ser enviada.</string>
     <string name="yukizygisk_injected_zygotes">Monitor do Zygote</string>
     <string name="yukizygisk_no_zygotes">Sem Zygote</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

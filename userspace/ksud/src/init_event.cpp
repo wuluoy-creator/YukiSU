@@ -9,7 +9,6 @@
 #include "dynamic_manager.hpp"
 #include "integrity_monitor.hpp"
 #include "log.hpp"
-#include "magisk_compat/msud.hpp"
 #include "module/metamodule.hpp"
 #include "module/module.hpp"
 #include "module/module_config.hpp"
@@ -466,8 +465,6 @@ void on_boot_completed() {
     // Report to kernel
     report_boot_complete();
     kagami::embedded_boot_completed();
-
-    ensure_msud_running_if_enabled();
 
     // Run boot-completed stage
     run_stage("boot-completed", false);

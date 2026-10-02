@@ -1,4 +1,4 @@
-#include "magisk_compat/su_transition.hpp"
+#include "su_transition.hpp"
 
 #include "defs.hpp"
 #include "log.hpp"

@@ -468,11 +468,6 @@
     <string name="settings_auto_update_ksud">ksud daemon স্বয়ংক্রিয়-আপডেট করুন</string>
     <string name="settings_auto_update_ksud_summary">অ্যাপ কোল্ড-স্টার্টে বান্ডিল করা ksud বাইনারি /data/adb/ksud এ সিঙ্ক করুন। ডিফল্টরূপে বন্ধ; অন্যথায় হোম পৃষ্ঠায় ম্যানুয়াল বোতাম ব্যবহার করুন।</string>
 
-    <string name="su_request_desc">একটি অ্যাপ সুপারইউজার (su) অ্যাক্সেস অনুরোধ করছে।</string>
-    <string name="su_request_allow_forever">সর্বদা অনুমতি দিন</string>
-    <string name="su_request_allow_once">একবার অনুমতি দিন</string>
-    <string name="su_request_deny">প্রত্যাখ্যান করুন</string>
-    <string name="su_request_deny_hide">প্রত্যাখ্যান করুন এবং লুকান</string>
     <string name="settings_unshare_mnt">মাউন্ট ভিউ বিন্যাস</string>
     <string name="settings_unshare_mnt_summary">আনমাউন্টের পরে নেমস্পেস পুনরায় তৈরি করে দৃশ্যমান ID সাজায়। কার্যকর করতে অ্যাপ পুনরায় চালু করুন।</string>
     <string name="home_lkm_update_available">একটি নতুন বিল্ট-ইন LKM উপলভ্য। আপডেট করতে চাপুন।</string>
@@ -569,7 +564,6 @@
     <string name="settings_yukizygisk_toast_on">চালু হয়েছে, পুনরায় চালুর পর কার্যকর হবে</string>
     <string name="settings_yukizygisk_toast_off">বন্ধ হয়েছে, পুনরায় চালুর পর কার্যকর হবে</string>
     <string name="settings_yukizygisk_toast_failed">পরিবর্তন ব্যর্থ</string>
-    <string name="su_compact_magisk_summary">অনুমতি দেওয়ার ডায়ালগ</string>
     <string name="settings_check_ci_update">CI আপডেট পরীক্ষা করুন</string>
     <string name="settings_check_ci_update_summary">অ্যাপ খোলার সময় স্বাক্ষরিত nightly ম্যানেজার সংস্করণ পরীক্ষা করুন। ডিফল্টভাবে বন্ধ</string>
     <string name="ci_update_title">নতুন CI সংস্করণ পাওয়া গেছে</string>
@@ -743,7 +737,6 @@
     <string name="ksud_integrity_notification_title">ksud প্রতিস্থাপিত হয়েছে</string>
     <string name="ksud_integrity_notification_channel">ksud নিরাপত্তা সতর্কতা</string>
     <string name="ksud_integrity_notification_channel_summary">/data/adb/ksud বর্তমান ম্যানেজারের সঙ্গে না মিললে সতর্ক করুন।</string>
-    <string name="su_request_failed">Root অনুরোধের মেয়াদ শেষ বা জমা দেওয়া ব্যর্থ।</string>
     <string name="yukizygisk_injected_zygotes">Zygote পর্যবেক্ষক</string>
     <string name="yukizygisk_no_zygotes">Zygote নেই</string>
     <string name="yukizygisk_no_native_modules">Native মডিউল নেই</string>

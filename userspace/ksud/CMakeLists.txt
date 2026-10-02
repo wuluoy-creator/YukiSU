@@ -384,6 +384,7 @@ set(KSUD_OUR_SOURCES
     src/core/ksucalls.cpp
     src/core/feature.cpp
     src/core/su_path.cpp
+    src/core/su_transition.cpp
     src/core/restorecon.cpp
     src/core/assets.cpp
     src/module/module.cpp
@@ -412,8 +413,6 @@ set(KSUD_OUR_SOURCES
     src/umount.cpp
     src/debug.cpp
     src/sulog.cpp
-    src/magisk_compat/msud.cpp
-    src/magisk_compat/su_transition.cpp
     src/core/hide_bootloader.cpp
     src/flash/flash_ak3.cpp
     src/flash/flash_partition.cpp

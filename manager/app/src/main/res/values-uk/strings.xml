@@ -468,11 +468,6 @@
     <string name="settings_auto_update_ksud">Автоматично оновлювати демон ksud</string>
     <string name="settings_auto_update_ksud_summary">Синхронізувати вбудований бінарний файл ksud у /data/adb/ksud під час холодного запуску застосунку. Вимкнено за замовчуванням; інакше використовуйте ручну кнопку на головній сторінці.</string>
 
-    <string name="su_request_desc">Застосунок запитує доступ суперкористувача (su).</string>
-    <string name="su_request_allow_forever">Завжди дозволяти</string>
-    <string name="su_request_allow_once">Дозволити один раз</string>
-    <string name="su_request_deny">Відхилити</string>
-    <string name="su_request_deny_hide">Відхилити та приховати</string>
     <!-- locale-only keys -->
     <string name="profile">Профіль додатку</string>
     <string name="settings_unshare_mnt">Упорядкування вигляду монтувань</string>
@@ -552,7 +547,6 @@
     <string name="settings_yukizygisk_toast_on">Увімкнено. Набуде чинності після перезавантаження</string>
     <string name="settings_yukizygisk_toast_off">Вимкнено. Набуде чинності після перезавантаження</string>
     <string name="settings_yukizygisk_toast_failed">Не вдалося перемкнути</string>
-    <string name="su_compact_magisk_summary">Діалог надання прав</string>
     <string name="settings_check_ci_update">Перевіряти оновлення CI</string>
     <string name="settings_check_ci_update_summary">Перевіряти підписані нічні збірки менеджера при відкритті застосунку. Типово вимкнено</string>
     <string name="ci_update_title">Знайдено нову збірку CI</string>
@@ -738,7 +732,6 @@
     <string name="ksud_integrity_notification_title">ksud замінено</string>
     <string name="ksud_integrity_notification_channel">Сповіщення безпеки ksud</string>
     <string name="ksud_integrity_notification_channel_summary">Попереджати, коли /data/adb/ksud не відповідає поточному менеджеру.</string>
-    <string name="su_request_failed">Запит Root більше недійсний або не вдалося його надіслати.</string>
     <string name="yukizygisk_injected_zygotes">Монітор Zygote</string>
     <string name="yukizygisk_no_zygotes">Немає Zygote</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

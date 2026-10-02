@@ -468,11 +468,6 @@
     <string name="settings_auto_update_ksud">Auto-opdater ksud daemon</string>
     <string name="settings_auto_update_ksud_summary">Synkronisér den medfølgende ksud-binærfil til /data/adb/ksud ved appens koldstart. Fra som standard; ellers brug den manuelle knap på startsiden.</string>
 
-    <string name="su_request_desc">En app anmoder om superbruger (su)-adgang.</string>
-    <string name="su_request_allow_forever">Tillad altid</string>
-    <string name="su_request_allow_once">Tillad én gang</string>
-    <string name="su_request_deny">Afvis</string>
-    <string name="su_request_deny_hide">Afvis og skjul</string>
     <string name="settings_unshare_mnt">Oprydning i monteringsvisning</string>
     <string name="settings_unshare_mnt_summary">Genskab navnerummet og ordn synlige id’er efter afmontering. Genstart appen for at anvende.</string>
     <string name="home_lkm_update_available">En nyere version af den medfølgende LKM er tilgængelig. Tryk for at opdatere.</string>
@@ -550,7 +545,6 @@
     <string name="settings_yukizygisk_toast_on">Aktiveret. Træder i kraft efter genstart.</string>
     <string name="settings_yukizygisk_toast_off">Deaktiveret. Træder i kraft efter genstart.</string>
     <string name="settings_yukizygisk_toast_failed">Kunne ikke skifte</string>
-    <string name="su_compact_magisk_summary">Godkendelsesdialog</string>
     <string name="settings_check_ci_update">Søg efter CI-opdateringer</string>
     <string name="settings_check_ci_update_summary">Søg efter signerede natlige versioner af administratoren, når appen åbnes. Deaktiveret som standard.</string>
     <string name="ci_update_title">Ny CI-version fundet</string>
@@ -736,7 +730,6 @@
     <string name="ksud_integrity_notification_title">ksud er blevet erstattet</string>
     <string name="ksud_integrity_notification_channel">ksud-sikkerhedsadvarsler</string>
     <string name="ksud_integrity_notification_channel_summary">Advar, når /data/adb/ksud ikke matcher den aktuelle administrator.</string>
-    <string name="su_request_failed">Root-anmodningen er udløbet eller kunne ikke sendes.</string>
     <string name="yukizygisk_injected_zygotes">Zygote-overvågning</string>
     <string name="yukizygisk_no_zygotes">Ingen Zygote</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

@@ -468,11 +468,6 @@
     <string name="settings_auto_update_ksud">ksud daemonను స్వయంచాలకంగా అప్‌డేట్ చేయండి</string>
     <string name="settings_auto_update_ksud_summary">యాప్ కోల్డ్-స్టార్ట్‌లో బండిల్ చేసిన ksud బైనరీని /data/adb/ksudకు సింక్ చేయండి. డిఫాల్ట్‌గా ఆఫ్; లేకపోతే హోమ్ పేజీలో మాన్యువల్ బటన్‌ను ఉపయోగించండి.</string>
 
-    <string name="su_request_desc">ఒక యాప్ సూపర్‌యూజర్ (su) యాక్సెస్‌ను అభ్యర్థిస్తోంది.</string>
-    <string name="su_request_allow_forever">ఎల్లప్పుడూ అనుమతించండి</string>
-    <string name="su_request_allow_once">ఒకసారి అనుమతించండి</string>
-    <string name="su_request_deny">తిరస్కరించండి</string>
-    <string name="su_request_deny_hide">తిరస్కరించి దాచండి</string>
     <string name="settings_unshare_mnt">మౌంట్ వీక్షణ క్రమబద్ధీకరణ</string>
     <string name="settings_unshare_mnt_summary">అన్‌మౌంట్ తర్వాత నేమ్‌స్పేస్‌ను తిరిగి సృష్టించి కనిపించే IDలను క్రమబద్ధీకరిస్తుంది. వర్తింపజేయడానికి యాప్‌ను మళ్లీ ప్రారంభించండి.</string>
     <string name="home_lkm_update_available">అంతర్నిర్మిత LKM కొత్త వెర్షన్ అందుబాటులో ఉంది. అప్‌డేట్ చేయడానికి నొక్కండి.</string>
@@ -569,7 +564,6 @@
     <string name="settings_yukizygisk_toast_on">ప్రారంభించబడింది, పునఃప్రారంభం తర్వాత అమలవుతుంది</string>
     <string name="settings_yukizygisk_toast_off">నిలిపివేయబడింది, పునఃప్రారంభం తర్వాత అమలవుతుంది</string>
     <string name="settings_yukizygisk_toast_failed">మార్చడం విఫలమైంది</string>
-    <string name="su_compact_magisk_summary">అనుమతి మంజూరు డైలాగ్</string>
     <string name="settings_check_ci_update">CI నవీకరణలను తనిఖీ చేయండి</string>
     <string name="settings_check_ci_update_summary">యాప్ తెరిచినప్పుడు సంతకం చేసిన nightly మేనేజర్ వెర్షన్‌ను తనిఖీ చేయండి. డిఫాల్ట్‌గా ఆఫ్</string>
     <string name="ci_update_title">కొత్త CI వెర్షన్ కనబడింది</string>
@@ -743,7 +737,6 @@
     <string name="ksud_integrity_notification_title">ksud భర్తీ చేయబడింది</string>
     <string name="ksud_integrity_notification_channel">ksud భద్రతా హెచ్చరిక</string>
     <string name="ksud_integrity_notification_channel_summary">/data/adb/ksud ప్రస్తుత మేనేజర్‌తో సరిపోలనప్పుడు హెచ్చరించండి.</string>
-    <string name="su_request_failed">Root అభ్యర్థన గడువు ముగిసింది లేదా సమర్పణ విఫలమైంది.</string>
     <string name="yukizygisk_injected_zygotes">Zygote పర్యవేక్షకుడు</string>
     <string name="yukizygisk_no_zygotes">Zygote లేదు</string>
     <string name="yukizygisk_no_native_modules">Native మాడ్యూల్‌లు లేవు</string>

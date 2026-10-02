@@ -468,11 +468,6 @@
     <string name="settings_auto_update_ksud">Auto-update ng ksud daemon</string>
     <string name="settings_auto_update_ksud_summary">I-sync ang kasamang ksud binary sa /data/adb/ksud sa app cold-start. Naka-off bilang default; kung hindi, gamitin ang manu-manong button sa home page.</string>
 
-    <string name="su_request_desc">May app na humihiling ng superuser (su) access.</string>
-    <string name="su_request_allow_forever">Laging payagan</string>
-    <string name="su_request_allow_once">Payagan minsan</string>
-    <string name="su_request_deny">Tanggihan</string>
-    <string name="su_request_deny_hide">Tanggihan at itago</string>
     <string name="settings_unshare_mnt">Ayusin ang mount view</string>
     <string name="settings_unshare_mnt_summary">Gumawa muli ng namespace at ayusin ang mga nakikitang ID pagkatapos mag-unmount. I-restart ang app upang mailapat.</string>
     <string name="home_lkm_update_available">May available na mas bagong naka-bundle na LKM. I-tap para mag-update.</string>
@@ -569,7 +564,6 @@
     <string name="settings_yukizygisk_toast_on">Pinagana, magkakabisa pagkatapos mag-restart</string>
     <string name="settings_yukizygisk_toast_off">Hindi pinagana, magkakabisa pagkatapos mag-restart</string>
     <string name="settings_yukizygisk_toast_failed">Hindi napalitan</string>
-    <string name="su_compact_magisk_summary">Dialog ng pagbibigay ng pahintulot</string>
     <string name="settings_check_ci_update">Suriin ang mga update sa CI</string>
     <string name="settings_check_ci_update_summary">Suriin ang nilagdaang nightly na bersyon ng manager sa pagbukas ng app. Naka-off bilang default</string>
     <string name="ci_update_title">May bagong bersyon ng CI</string>
@@ -743,7 +737,6 @@
     <string name="ksud_integrity_notification_title">Napalitan ang ksud</string>
     <string name="ksud_integrity_notification_channel">Babala sa seguridad ng ksud</string>
     <string name="ksud_integrity_notification_channel_summary">Magbabala kapag hindi tumutugma ang /data/adb/ksud sa kasalukuyang manager.</string>
-    <string name="su_request_failed">Wala nang bisa ang kahilingan sa Root o hindi ito naisumite.</string>
     <string name="yukizygisk_injected_zygotes">Tagasubaybay ng Zygote</string>
     <string name="yukizygisk_no_zygotes">Walang Zygote</string>
     <string name="yukizygisk_no_native_modules">Walang Native na module</string>

@@ -253,50 +253,6 @@ struct ksu_get_dynamic_managers_cmd {
   __aligned_u64 apps;
 };
 
-#define KSU_SU_CHOICE_ALLOW_FOREVER 1
-#define KSU_SU_CHOICE_ALLOW_ONCE 2
-#define KSU_SU_CHOICE_DENY 3
-#define KSU_SU_CHOICE_DENY_HIDE 4
-
-/* Root-only, constrained to allowlist or module-umount profiles. */
-struct ksu_magisk_persist_cmd {
-  __u32 uid;
-  __u8 allow;
-  char package[KSU_MAX_PACKAGE_NAME];
-};
-
-#define KSU_SU_PROMPT_VERSION 1
-#define KSU_SU_PROMPT_COMM_LEN 16
-
-struct ksu_su_prompt_request {
-  __u32 version;
-  __u32 size;
-  __aligned_u64 request_id;
-  __aligned_u64 nonce;
-  __u32 uid;
-  __u32 pid;
-  __u32 tgid;
-  __u32 reserved;
-  char comm[KSU_SU_PROMPT_COMM_LEN];
-};
-
-struct ksu_su_prompt_verdict {
-  __aligned_u64 request_id;
-  __aligned_u64 nonce;
-  __u32 choice;
-  __u32 reserved;
-  char package[KSU_MAX_PACKAGE_NAME];
-};
-
-struct ksu_get_su_prompt_fd_cmd {
-  __u32 flags;
-};
-
-struct ksu_su_prompt_key {
-  __aligned_u64 request_id;
-  __aligned_u64 nonce;
-};
-
 // IOCTL definitions
 #define KSU_IOCTL_GRANT_ROOT _IOC(_IOC_NONE, 'K', 1, 0)
 #define KSU_IOCTL_GET_INFO _IOC(_IOC_READ, 'K', 2, 0)
@@ -333,16 +289,9 @@ struct ksu_su_prompt_key {
 #define KSU_IOCTL_SET_DYNAMIC_MANAGERS _IOC(_IOC_WRITE, 'K', 240, 0)
 #define KSU_IOCTL_GET_DYNAMIC_MANAGERS                                         \
   _IOWR('K', 241, struct ksu_get_dynamic_managers_cmd)
-#define KSU_IOCTL_MAGISK_PERSIST _IOW('K', 242, struct ksu_magisk_persist_cmd)
-/* Commands 243-245 are retired; do not reuse them. */
+/* Commands 242-245 are retired; do not reuse them. */
 #define KSU_IOCTL_GET_LOAD_MODE _IOR('K', 246, struct ksu_get_load_mode_cmd)
-#define KSU_IOCTL_GET_SU_PROMPT_FD                                             \
-  _IOW('K', 247, struct ksu_get_su_prompt_fd_cmd)
-#define KSU_IOCTL_SUBMIT_SU_PROMPT _IOW('K', 248, struct ksu_su_prompt_verdict)
-/* READY returns the remaining decision budget in milliseconds. */
-#define KSU_IOCTL_SU_PROMPT_READY _IOW('K', 249, struct ksu_su_prompt_key)
-/* Available only on the prompt consumer fd; never grants permission. */
-#define KSU_IOCTL_CANCEL_SU_PROMPT _IOW('K', 250, struct ksu_su_prompt_key)
+/* Commands 247-250 are retired; do not reuse them. */
 
 #define KSU_IOCTL_GET_SU_PATH _IOR('K', 251, struct ksu_su_path_config)
 #define KSU_IOCTL_SET_SU_PATH _IOW('K', 252, struct ksu_su_path_config)

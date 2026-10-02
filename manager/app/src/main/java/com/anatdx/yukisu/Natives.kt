@@ -104,16 +104,6 @@ object Natives {
     external fun readAppProfile(uid: Int): Profile?
     external fun getProtectedProfileAppIds(): IntArray
 
-    external fun isMagiskCompatEnabled(): Boolean
-    external fun setMagiskCompatEnabled(enabled: Boolean): Boolean
-    external fun submitSuPrompt(
-        requestId: Long,
-        nonce: Long,
-        choice: Int,
-        packageName: String,
-    ): Boolean
-    external fun suPromptReady(requestId: Long, nonce: Long): Int
-
     /**
      * Kernel module umount can be disabled temporarily.
      *  0: disabled
@@ -174,7 +164,6 @@ object Natives {
     const val FEATURE_SELINUX_HIDE = 4
     const val FEATURE_WEBVIEW_ZYGOTE_UMOUNT = 5
     const val FEATURE_ENHANCED_SECURITY = 100
-    const val FEATURE_MAGISK_COMPAT = 101
     const val FEATURE_DEFAULT_NO_NEW_PRIVS = 102
     const val FEATURE_YUKIZYGISK = 103
     const val FEATURE_HIDE_BOOTLOADER = 104

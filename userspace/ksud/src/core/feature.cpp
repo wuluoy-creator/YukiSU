@@ -2,8 +2,6 @@
 #include "../../kagami/include/kagami/kasumi_client.hpp"
 #include "../defs.hpp"
 #include "../log.hpp"
-#include "../magisk_compat/msud.hpp"
-#include "../magisk_compat/su_transition.hpp"
 #include "../module/module.hpp"
 #include "../sulog.hpp"
 #include "../terminal.hpp"
@@ -11,6 +9,7 @@
 #include "../yukizygisk_snapshot.hpp"
 #include "ksucalls.hpp"
 #include "su_path.hpp"
+#include "su_transition.hpp"
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -53,7 +52,6 @@ const std::map<std::string, uint32_t>& get_feature_map() {
         {"webview_zygote_umount", KSU_FEATURE_WEBVIEW_ZYGOTE_UMOUNT},
         {"default_no_new_privs", KSU_FEATURE_DEFAULT_NO_NEW_PRIVS},
         {"sulog", KSU_FEATURE_SULOG},
-        {"magisk_compat", KSU_FEATURE_MAGISK_COMPAT},
         {"yukizygisk", KSU_FEATURE_YUKIZYGISK},
         {"hide_bootloader", KSU_FEATURE_HIDE_BOOTLOADER},
         {"kasumi_sucompat", KSU_FEATURE_KASUMI_SUCOMPAT},
@@ -84,9 +82,6 @@ const std::map<uint32_t, const char*>& get_feature_descriptions() {
          "block re-escalation (anti-escape)"},
         {KSU_FEATURE_SULOG,
          "SU Log - streams kernel sulog events to userspace and persists them to disk"},
-        {KSU_FEATURE_MAGISK_COMPAT,
-         "Magisk-compat su prompt - shows a visible su and asks for authorization on first use "
-         "for apps that are not in the allowlist; uses the fixed Kasumi provider"},
         {KSU_FEATURE_YUKIZYGISK,
          "YukiZygisk - kernel captures zygote and injects Zygisk modules; the daemon is brought "
          "up at post-fs-data when enabled (off by default)"},
@@ -111,25 +106,29 @@ bool is_fixed_feature_id(uint32_t id) {
            id == KSU_FEATURE_DEFAULT_NO_NEW_PRIVS;
 }
 
-bool discard_fixed_features(std::map<uint32_t, uint64_t>& features) {
-    const auto count = features.size();
-    features.erase(KSU_FEATURE_KASUMI);
-    features.erase(KSU_FEATURE_SU_COMPAT);
-    features.erase(KSU_FEATURE_KASUMI_SUCOMPAT);
-    features.erase(KSU_FEATURE_ENHANCED_SECURITY);
-    features.erase(KSU_FEATURE_DEFAULT_NO_NEW_PRIVS);
-    return features.size() != count;
+bool is_configurable_feature_id(uint32_t id) {
+    if (is_fixed_feature_id(id))
+        return false;
+    // Removed feature IDs in old binary configs must never be restored or saved.
+    const auto& known_features = get_feature_map();
+    return std::any_of(known_features.begin(), known_features.end(),
+                       [id](const auto& feature) { return feature.second == id; });
 }
 
-void close_prompt_after_path_failure() {
-    (void)set_feature(KSU_FEATURE_MAGISK_COMPAT, 0);
-    kill_msud_locked();
-    LOGE("Saved su path is unavailable; retaining the current Kasumi binding and saved path");
+bool discard_non_configurable_features(std::map<uint32_t, uint64_t>& features) {
+    const auto count = features.size();
+    for (auto it = features.begin(); it != features.end();) {
+        if (!is_configurable_feature_id(it->first))
+            it = features.erase(it);
+        else
+            ++it;
+    }
+    return features.size() != count;
 }
 
 int refresh_sucompat_vfs_locked() {
     if (restore_su_path() != 0) {
-        close_prompt_after_path_failure();
+        LOGE("Saved su path is unavailable; retaining the current Kasumi binding and saved path");
         return -1;
     }
     if (!get_feature(KSU_FEATURE_KASUMI_SUCOMPAT).second || !kagami::kasumi::is_available()) {
@@ -143,45 +142,6 @@ int refresh_sucompat_vfs_locked() {
         return ret;
     }
     return 0;
-}
-
-int apply_sucompat_config(std::map<uint32_t, uint64_t>& features) {
-    // Old configs cannot change the fixed SU provider or security protections.
-    discard_fixed_features(features);
-    if (refresh_sucompat_vfs_locked() != 0)
-        return -1;
-
-    const auto magisk = features.find(KSU_FEATURE_MAGISK_COMPAT);
-    if (magisk == features.end())
-        return 0;
-
-    const bool enable = magisk->second != 0;
-    const auto [current, supported] = get_feature(KSU_FEATURE_MAGISK_COMPAT);
-    if (!supported) {
-        kill_msud_locked();
-        if (enable) {
-            LOGE("Magisk-compatible authorization is unsupported");
-            return -1;
-        }
-        return 0;
-    }
-    if (enable && ensure_msud_running_locked() != 0) {
-        if (current == 0)
-            kill_msud_locked();
-        LOGE("Failed to start msud before enabling magisk_compat");
-        return -1;
-    }
-    const int ret = set_feature(KSU_FEATURE_MAGISK_COMPAT, enable ? 1 : 0);
-    if (ret < 0) {
-        if (current == 0)
-            kill_msud_locked();
-        LOGE("Failed to set magisk_compat: %d", ret);
-        return -1;
-    }
-    if (!enable)
-        kill_msud_locked();
-    magisk->second = enable ? 1 : 0;
-    return 1;
 }
 
 std::pair<uint32_t, bool> parse_feature_id(const std::string& id) {
@@ -263,8 +223,7 @@ int save_feature_config_files(const std::map<uint32_t, uint64_t>& features) {
 }
 
 bool is_sucompat_feature_id(uint32_t feature_id) {
-    return feature_id == KSU_FEATURE_SU_COMPAT || feature_id == KSU_FEATURE_MAGISK_COMPAT ||
-           feature_id == KSU_FEATURE_KASUMI_SUCOMPAT;
+    return feature_id == KSU_FEATURE_SU_COMPAT || feature_id == KSU_FEATURE_KASUMI_SUCOMPAT;
 }
 
 int feature_save_config_locked() {
@@ -285,46 +244,23 @@ int feature_set_impl(const std::string& id, uint32_t feature_id, uint64_t value)
             return 1;
         }
     }
-    if (value != 0 &&
-        (feature_id == KSU_FEATURE_MAGISK_COMPAT || feature_id == KSU_FEATURE_KASUMI_SUCOMPAT) &&
-        restore_su_path() != 0) {
+    if (value != 0 && feature_id == KSU_FEATURE_KASUMI_SUCOMPAT && restore_su_path() != 0) {
         LOGE("Failed to restore su path before enabling KSM");
         return 1;
     }
-    if (value != 0 &&
-        (feature_id == KSU_FEATURE_MAGISK_COMPAT || feature_id == KSU_FEATURE_KASUMI_SUCOMPAT) &&
+    if (value != 0 && feature_id == KSU_FEATURE_KASUMI_SUCOMPAT &&
         get_feature(KSU_FEATURE_KASUMI).second && !kagami::kasumi::is_available()) {
         LOGE("Kasumi initialization failed; check the kernel log");
         return 1;
     }
-    if (feature_id == KSU_FEATURE_MAGISK_COMPAT && value != 0 &&
-        ensure_msud_running_locked() != 0) {
-        const auto [current, supported] = get_feature(KSU_FEATURE_MAGISK_COMPAT);
-        if (!supported || current == 0) {
-            kill_msud_locked();
-        }
-        LOGE("Failed to start msud before enabling magisk_compat");
-        return 1;
-    }
-
     const int ret = set_feature(feature_id, value);
     if (ret < 0) {
-        if (feature_id == KSU_FEATURE_MAGISK_COMPAT && value != 0) {
-            const auto [current, supported] = get_feature(KSU_FEATURE_MAGISK_COMPAT);
-            if (!supported || current == 0) {
-                kill_msud_locked();
-            }
-        }
         LOGE("Failed to set feature %s to %" PRIu64, id.c_str(), value);
         return 1;
     }
 
     if (feature_id == KSU_FEATURE_SULOG && value != 0 && ensure_sulogd_running() != 0) {
         LOGW("Failed to ensure sulogd is running after enabling sulog");
-    }
-
-    if (feature_id == KSU_FEATURE_MAGISK_COMPAT && value == 0) {
-        kill_msud_locked();
     }
 
     if (feature_id == KSU_FEATURE_YUKIZYGISK && refresh_yukizygisk_early_snapshot() != 0) {
@@ -392,15 +328,10 @@ int feature_set_and_save(const std::string& id, uint64_t value) {
         return 1;
     }
 
-    const bool coupled = feature_id == KSU_FEATURE_MAGISK_COMPAT;
-    auto previous_sucompat = get_current_feature_values();
     const auto [previous_value, previous_supported] = get_feature(feature_id);
     const auto previous_text_config = read_file(FEATURE_CONFIG_PATH);
     const auto previous_binary_config = read_file(get_feature_config_path());
     if (feature_set_impl(id, feature_id, value) != 0) {
-        if (coupled) {
-            apply_sucompat_config(previous_sucompat);
-        }
         return 1;
     }
     if (feature_save_config_locked() == 0) {
@@ -408,9 +339,7 @@ int feature_set_and_save(const std::string& id, uint64_t value) {
     }
 
     LOGW("Failed to persist feature %s; restoring previous runtime state", id.c_str());
-    if (coupled) {
-        apply_sucompat_config(previous_sucompat);
-    } else if (previous_supported) {
+    if (previous_supported) {
         (void)feature_set_impl(id, feature_id, previous_value);
     }
     const auto restore_file = [](const std::string& path, const auto& previous) {
@@ -512,23 +441,19 @@ int feature_load_config() {
     }
 
     auto loaded_features = parse_text_feature_config(*content);
-    const auto requested_features = loaded_features;
-    discard_fixed_features(loaded_features);
+    discard_non_configurable_features(loaded_features);
     for (const auto& [id, value] : loaded_features) {
-        if (id == KSU_FEATURE_MAGISK_COMPAT)
-            continue;
         if (set_feature(id, value) < 0) {
             LOGW("Failed to load feature %s", feature_id_to_name(id));
         } else {
             LOGI("Loaded feature %s = %" PRIu64, feature_id_to_name(id), value);
         }
     }
-    if (apply_sucompat_config(loaded_features) < 0)
+    if (refresh_sucompat_vfs_locked() != 0)
         return 1;
 
-    const int save_result = loaded_features != requested_features
-                                ? save_feature_config_files(loaded_features)
-                                : save_binary_config(loaded_features);
+    // Rewrite both formats so entries for removed features are discarded.
+    const int save_result = save_feature_config_files(loaded_features);
     if (save_result != 0) {
         LOGW("Failed to sync loaded feature configuration");
     }
@@ -631,12 +556,12 @@ int save_binary_config(const std::map<uint32_t, uint64_t>& features) {
     put(&magic, sizeof(magic));
     const uint32_t version = FEATURE_VERSION;
     put(&version, sizeof(version));
-    const uint32_t count = static_cast<uint32_t>(
-        std::count_if(features.begin(), features.end(),
-                      [](const auto& feature) { return !is_fixed_feature_id(feature.first); }));
+    const uint32_t count = static_cast<uint32_t>(std::count_if(
+        features.begin(), features.end(),
+        [](const auto& feature) { return is_configurable_feature_id(feature.first); }));
     put(&count, sizeof(count));
     for (const auto& [id, value] : features) {
-        if (is_fixed_feature_id(id))
+        if (!is_configurable_feature_id(id))
             continue;
         put(&id, sizeof(id));
         put(&value, sizeof(value));
@@ -656,13 +581,9 @@ namespace {
 int apply_config_locked(std::map<uint32_t, uint64_t>& features) {
     LOGI("Applying feature configuration to kernel...");
 
-    discard_fixed_features(features);
+    discard_non_configurable_features(features);
     int applied = 0;
     for (const auto& [id, value] : features) {
-        if (id == KSU_FEATURE_SU_COMPAT || id == KSU_FEATURE_MAGISK_COMPAT ||
-            id == KSU_FEATURE_KASUMI_SUCOMPAT) {
-            continue;
-        }
         const int ret = set_feature(id, value);
         if (ret >= 0) {
             if (id == KSU_FEATURE_SULOG && value != 0 && ensure_sulogd_running() != 0) {
@@ -675,10 +596,8 @@ int apply_config_locked(std::map<uint32_t, uint64_t>& features) {
         }
     }
 
-    const int su_applied = apply_sucompat_config(features);
-    if (su_applied < 0)
+    if (refresh_sucompat_vfs_locked() != 0)
         return 1;
-    applied += su_applied;
 
     LOGI("Applied %d features successfully", applied);
     return 0;
@@ -708,11 +627,10 @@ int init_features() {
         const auto text_config = read_file(FEATURE_CONFIG_PATH);
         if (text_config) {
             auto text_features = parse_text_feature_config(*text_config);
-            if (!text_features.empty()) {
-                LOGW("Recovering feature configuration from %s", FEATURE_CONFIG_PATH);
-                binary_features = std::move(text_features);
-                recovered_from_text = true;
-            }
+            // A text backup containing only removed features now represents an empty config.
+            LOGW("Recovering feature configuration from %s", FEATURE_CONFIG_PATH);
+            binary_features = std::move(text_features);
+            recovered_from_text = true;
         }
     }
     if (!binary_features) {
@@ -725,7 +643,7 @@ int init_features() {
         binary_features.emplace();
     }
     auto features = std::move(*binary_features);
-    const bool removed_fixed_features = discard_fixed_features(features);
+    const bool removed_non_configurable_features = discard_non_configurable_features(features);
 
     // Versions before KSU_FEATURE_HIDE_BOOTLOADER used a standalone marker.
     // Import it only when the running kernel supports the formal feature, then
@@ -788,7 +706,8 @@ int init_features() {
     // updates the human-readable config too, so a later `feature load` cannot
     // silently drop the migrated value.
     const int save_result = recovered_from_text || consume_legacy_hide_bootloader ||
-                                    removed_fixed_features || features != requested_features
+                                    removed_non_configurable_features ||
+                                    features != requested_features
                                 ? save_feature_config_files(features)
                                 : save_binary_config(features);
     if (save_result != 0) {

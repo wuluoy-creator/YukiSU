@@ -468,11 +468,6 @@
     <string name="settings_auto_update_ksud">Аутоматско ажурирање ksud демона</string>
     <string name="settings_auto_update_ksud_summary">Синхронизујте бинарни ksud у пакету са /data/adb/ksud при хладном покретању апликације. Подразумевано искључено; у супротном користите ручно дугме на почетној страници.</string>
 
-    <string name="su_request_desc">Апликација захтева приступ суперкориснику (su).</string>
-    <string name="su_request_allow_forever">Дозволи увек</string>
-    <string name="su_request_allow_once">Дозволи једном</string>
-    <string name="su_request_deny">Одбити</string>
-    <string name="su_request_deny_hide">Одбиј и сакриј</string>
     <string name="settings_unshare_mnt">Уређивање приказа монтирања</string>
     <string name="settings_unshare_mnt_summary">Након демонтирања поново прави именски простор и уређује видљиве ID-ове. Поново покрените апликацију.</string>
     <string name="home_lkm_update_available">Доступна је новија верзија уграђеног LKM-а. Додирните за ажурирање.</string>
@@ -550,7 +545,6 @@
     <string name="settings_yukizygisk_toast_on">Укључено. Примењује се након поновног покретања</string>
     <string name="settings_yukizygisk_toast_off">Искључено. Примењује се након поновног покретања</string>
     <string name="settings_yukizygisk_toast_failed">Пребацивање није успело</string>
-    <string name="su_compact_magisk_summary">Дијалог за доделу привилегије</string>
     <string name="settings_check_ci_update">Проверавај CI ажурирања</string>
     <string name="settings_check_ci_update_summary">Проверава потписане ноћне верзије менаџера при отварању апликације. Подразумевано је искључено</string>
     <string name="ci_update_title">Пронађена је нова CI верзија</string>
@@ -736,7 +730,6 @@
     <string name="ksud_integrity_notification_title">ksud је замењен</string>
     <string name="ksud_integrity_notification_channel">Сигурносна упозорења ksud-а</string>
     <string name="ksud_integrity_notification_channel_summary">Упозорава кад /data/adb/ksud не одговара тренутном менаџеру.</string>
-    <string name="su_request_failed">Root захтев више није ваљан или слање није успело.</string>
     <string name="yukizygisk_injected_zygotes">Надзор Zygote-а</string>
     <string name="yukizygisk_no_zygotes">Нема Zygote-а</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

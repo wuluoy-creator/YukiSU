@@ -17,9 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.anatdx.yukisu.Natives
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.KsuIsValid
@@ -28,7 +25,6 @@ import com.anatdx.yukisu.ui.theme.isExpressiveUi
 import com.anatdx.yukisu.ui.util.LocalSnackbarHost
 import com.anatdx.yukisu.ui.util.getFeatureStatus
 import com.anatdx.yukisu.ui.util.getFeatureValue
-import com.anatdx.yukisu.ui.util.getFeatureValueOrNull
 import com.anatdx.yukisu.ui.util.restartAdbd
 import com.anatdx.yukisu.ui.util.setFeatureValue
 import com.ramcosta.composedestinations.annotation.Destination
@@ -142,9 +138,6 @@ fun FeatureControlContent(
     val snackbarHost = LocalSnackbarHost.current
 
     val selinuxHide = rememberFeatureToggleState(Natives.FEATURE_SELINUX_HIDE)
-    var ksmEnabled by remember { mutableStateOf(getFeatureValue(Natives.FEATURE_KASUMI_SUCOMPAT)) }
-    val kasumiSupported = remember { getFeatureValueOrNull(Natives.FEATURE_KASUMI) != null }
-    val kasumiInitialized = remember { Natives.kasumiIsInitialized() }
     val kernelUmountDisabled = rememberFeatureToggleState(
         Natives.FEATURE_KERNEL_UMOUNT,
         displayInverted = true
@@ -154,30 +147,16 @@ fun FeatureControlContent(
     )
     val suLog = rememberFeatureToggleState(Natives.FEATURE_SULOG)
     val adbRoot = rememberFeatureToggleState(Natives.FEATURE_ADB_ROOT)
-    val magiskCompat = rememberFeatureToggleState(Natives.FEATURE_MAGISK_COMPAT)
     val hideBootloader = rememberFeatureToggleState(Natives.FEATURE_HIDE_BOOTLOADER)
 
     val saving = listOf(
         selinuxHide, kernelUmountDisabled, webViewZygoteUmount, suLog,
-        adbRoot, magiskCompat, hideBootloader,
+        adbRoot, hideBootloader,
     ).any { it.saving }
     val savingCallback by rememberUpdatedState(onSavingChanged)
     SideEffect { savingCallback(saving) }
     DisposableEffect(Unit) {
         onDispose { savingCallback(false) }
-    }
-
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val currentlySaving by rememberUpdatedState(saving)
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME && !currentlySaving) {
-                ksmEnabled = getFeatureValue(Natives.FEATURE_KASUMI_SUCOMPAT)
-                magiskCompat.checked = getFeatureValue(Natives.FEATURE_MAGISK_COMPAT)
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
     val savedRebootMessage = stringResource(R.string.setting_change_saved_reboot)
@@ -292,26 +271,6 @@ fun FeatureControlContent(
 
             SettingsCard(title = stringResource(R.string.yukisu_features)) {
                 FeatureSwitchItem(
-                    featureId = Natives.FEATURE_MAGISK_COMPAT,
-                    icon = Icons.Filled.Security,
-                    title = stringResource(R.string.su_compact_magisk_title),
-                    summary = stringResource(R.string.su_compact_magisk_summary),
-                    state = magiskCompat,
-                    groupPosition = MoreSettingsItemPosition.First,
-                    enabled = ksmEnabled &&
-                        (!kasumiSupported || kasumiInitialized),
-                    onChange = { enabled ->
-                        scope.persistFeature(
-                            state = magiskCompat,
-                            featureId = Natives.FEATURE_MAGISK_COMPAT,
-                            featureName = "magisk_compat",
-                            kernelEnabled = enabled,
-                            onFailure = { snackbarHost.showSnackbar(failedMessage) },
-                        )
-                    },
-                )
-
-                FeatureSwitchItem(
                     featureId = Natives.FEATURE_HIDE_BOOTLOADER,
                     icon = Icons.Filled.Lock,
                     title = stringResource(R.string.hide_bl_title),
@@ -321,7 +280,7 @@ fun FeatureControlContent(
                         stringResource(R.string.hide_bl_disabled)
                     },
                     state = hideBootloader,
-                    groupPosition = MoreSettingsItemPosition.Last,
+                    groupPosition = MoreSettingsItemPosition.Only,
                     onChange = { enabled ->
                         scope.persistFeature(
                             state = hideBootloader,

@@ -468,11 +468,6 @@
     <string name="settings_auto_update_ksud">Tự động cập nhật daemon ksud</string>
     <string name="settings_auto_update_ksud_summary">Đồng bộ tệp nhị phân ksud đi kèm vào /data/adb/ksud khi khởi động nguội ứng dụng. Mặc định tắt; nếu không hãy dùng nút thủ công ở trang chính.</string>
 
-    <string name="su_request_desc">Một ứng dụng đang yêu cầu quyền truy cập siêu người dùng (su).</string>
-    <string name="su_request_allow_forever">Luôn cho phép</string>
-    <string name="su_request_allow_once">Cho phép một lần</string>
-    <string name="su_request_deny">Từ chối</string>
-    <string name="su_request_deny_hide">Từ chối và ẩn</string>
     <string name="settings_unshare_mnt">Sắp xếp chế độ xem gắn kết</string>
     <string name="settings_unshare_mnt_summary">Tạo lại không gian tên và sắp xếp ID hiển thị sau khi tháo gắn kết. Khởi động lại ứng dụng để áp dụng.</string>
     <string name="home_lkm_update_available">Hiện có phiên bản LKM tích hợp mới hơn. Nhấn để cập nhật.</string>
@@ -569,7 +564,6 @@
     <string name="settings_yukizygisk_toast_on">Đã bật, có hiệu lực sau khi khởi động lại</string>
     <string name="settings_yukizygisk_toast_off">Đã tắt, có hiệu lực sau khi khởi động lại</string>
     <string name="settings_yukizygisk_toast_failed">Không thể chuyển đổi</string>
-    <string name="su_compact_magisk_summary">Hộp thoại cấp quyền</string>
     <string name="settings_check_ci_update">Kiểm tra cập nhật CI</string>
     <string name="settings_check_ci_update_summary">Kiểm tra bản nightly của trình quản lý đã được ký khi mở ứng dụng. Mặc định tắt</string>
     <string name="ci_update_title">Có phiên bản CI mới</string>
@@ -743,7 +737,6 @@
     <string name="ksud_integrity_notification_title">ksud đã bị thay thế</string>
     <string name="ksud_integrity_notification_channel">Cảnh báo bảo mật ksud</string>
     <string name="ksud_integrity_notification_channel_summary">Cảnh báo khi /data/adb/ksud không khớp với trình quản lý hiện tại.</string>
-    <string name="su_request_failed">Yêu cầu Root đã hết hiệu lực hoặc gửi thất bại.</string>
     <string name="yukizygisk_injected_zygotes">Trình theo dõi Zygote</string>
     <string name="yukizygisk_no_zygotes">Không có Zygote</string>
     <string name="yukizygisk_no_native_modules">Không có mô-đun Native</string>

@@ -468,11 +468,6 @@
     <string name="settings_auto_update_ksud">ksud arka plan hizmetini otomatik güncelle</string>
     <string name="settings_auto_update_ksud_summary">Uygulama soğuk başlangıcında birlikte gelen ksud ikili dosyasını /data/adb/ksud konumuna eşitle. Varsayılan olarak kapalı; aksi takdirde ana sayfadaki elle düğmesini kullanın.</string>
 
-    <string name="su_request_desc">Bir uygulama süper kullanıcı (su) erişimi istiyor.</string>
-    <string name="su_request_allow_forever">Her zaman izin ver</string>
-    <string name="su_request_allow_once">Bir kez izin ver</string>
-    <string name="su_request_deny">Reddet</string>
-    <string name="su_request_deny_hide">Reddet ve gizle</string>
     <string name="settings_unshare_mnt">Bağlama görünümünü düzenle</string>
     <string name="settings_unshare_mnt_summary">Ayırma sonrası ad alanını yeniden oluşturur ve görünen kimlikleri düzenler. Uygulamak için uygulamayı yeniden başlatın.</string>
     <string name="home_lkm_update_available">Yerleşik LKM\'nin daha yeni bir sürümü mevcut. Güncellemek için dokunun.</string>
@@ -550,7 +545,6 @@
     <string name="settings_yukizygisk_toast_on">Açıldı. Yeniden başlatınca uygulanır</string>
     <string name="settings_yukizygisk_toast_off">Kapatıldı. Yeniden başlatınca uygulanır</string>
     <string name="settings_yukizygisk_toast_failed">Değiştirilemedi</string>
-    <string name="su_compact_magisk_summary">Yetkilendirme iletişim kutusu</string>
     <string name="settings_check_ci_update">CI güncellemelerini denetle</string>
     <string name="settings_check_ci_update_summary">Uygulama açıldığında imzalı gecelik yönetici sürümlerini denetler. Varsayılan olarak kapalıdır</string>
     <string name="ci_update_title">Yeni CI sürümü bulundu</string>
@@ -736,7 +730,6 @@
     <string name="ksud_integrity_notification_title">ksud değiştirilmiş</string>
     <string name="ksud_integrity_notification_channel">ksud güvenlik uyarıları</string>
     <string name="ksud_integrity_notification_channel_summary">/data/adb/ksud geçerli yöneticiyle eşleşmediğinde uyarır.</string>
-    <string name="su_request_failed">Root isteğinin süresi doldu veya gönderilemedi.</string>
     <string name="yukizygisk_injected_zygotes">Zygote izleyici</string>
     <string name="yukizygisk_no_zygotes">Zygote yok</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

@@ -470,11 +470,6 @@
     <string name="settings_auto_update_ksud">Automatycznie aktualizuj demona ksud</string>
     <string name="settings_auto_update_ksud_summary">Synchronizuj dołączony plik binarny ksud do /data/adb/ksud przy zimnym starcie aplikacji. Domyślnie wyłączone; w przeciwnym razie użyj przycisku ręcznego na stronie głównej.</string>
 
-    <string name="su_request_desc">Aplikacja żąda dostępu superużytkownika (su).</string>
-    <string name="su_request_allow_forever">Zezwalaj zawsze</string>
-    <string name="su_request_allow_once">Zezwól raz</string>
-    <string name="su_request_deny">Odmów</string>
-    <string name="su_request_deny_hide">Odmów i ukryj</string>
     <string name="settings_unshare_mnt">Porządkowanie widoku montowań</string>
     <string name="settings_unshare_mnt_summary">Po odmontowaniu odtwarza przestrzeń nazw i porządkuje widoczne identyfikatory. Uruchom aplikację ponownie, aby zastosować.</string>
     <string name="home_lkm_update_available">Dostępna jest nowsza wersja wbudowanego LKM. Kliknij, aby zaktualizować.</string>
@@ -552,7 +547,6 @@
     <string name="settings_yukizygisk_toast_on">Włączono; zmiana wymaga ponownego uruchomienia</string>
     <string name="settings_yukizygisk_toast_off">Wyłączono; zmiana wymaga ponownego uruchomienia</string>
     <string name="settings_yukizygisk_toast_failed">Nie udało się przełączyć</string>
-    <string name="su_compact_magisk_summary">Okno przyznawania uprawnień</string>
     <string name="settings_check_ci_update">Sprawdzaj aktualizacje CI</string>
     <string name="settings_check_ci_update_summary">Przy otwieraniu aplikacji sprawdzaj podpisane nocne wersje menedżera. Domyślnie wyłączone.</string>
     <string name="ci_update_title">Znaleziono nową wersję CI</string>
@@ -738,7 +732,6 @@
     <string name="ksud_integrity_notification_title">ksud został zastąpiony</string>
     <string name="ksud_integrity_notification_channel">Alerty bezpieczeństwa ksud</string>
     <string name="ksud_integrity_notification_channel_summary">Ostrzegaj, gdy /data/adb/ksud nie odpowiada bieżącemu menedżerowi.</string>
-    <string name="su_request_failed">Żądanie Root wygasło lub nie udało się go przesłać.</string>
     <string name="yukizygisk_injected_zygotes">Monitor Zygote</string>
     <string name="yukizygisk_no_zygotes">Brak Zygote</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

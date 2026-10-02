@@ -468,11 +468,6 @@
     <string name="settings_auto_update_ksud">ksud daemon स्वयं-अपडेट करा</string>
     <string name="settings_auto_update_ksud_summary">अॅप कोल्ड-स्टार्टवर बंडल केलेले ksud बायनरी /data/adb/ksud मध्ये सिंक करा. डीफॉल्टनुसार बंद; अन्यथा होम पृष्ठावरील व्यक्तिचलित बटण वापरा.</string>
 
-    <string name="su_request_desc">एक अॅप सुपरयूजर (su) प्रवेशाची विनंती करत आहे.</string>
-    <string name="su_request_allow_forever">नेहमी परवानगी द्या</string>
-    <string name="su_request_allow_once">एकदा परवानगी द्या</string>
-    <string name="su_request_deny">नाकारा</string>
-    <string name="su_request_deny_hide">नाकारा आणि लपवा</string>
     <string name="settings_unshare_mnt">माउंट दृश्य नीटनेटके करा</string>
     <string name="settings_unshare_mnt_summary">अनमाउंटनंतर नेमस्पेस पुन्हा तयार करून दिसणारे ID क्रमाने लावते. लागू करण्यासाठी ॲप पुन्हा सुरू करा.</string>
     <string name="home_lkm_update_available">अंगभूत LKM ची नवीन आवृत्ती उपलब्ध आहे. अपडेट करण्यासाठी टॅप करा.</string>
@@ -569,7 +564,6 @@
     <string name="settings_yukizygisk_toast_on">सुरू केले. रीस्टार्टनंतर लागू होईल.</string>
     <string name="settings_yukizygisk_toast_off">बंद केले. रीस्टार्टनंतर लागू होईल.</string>
     <string name="settings_yukizygisk_toast_failed">बदल अयशस्वी झाला</string>
-    <string name="su_compact_magisk_summary">परवानगी पॉपअप</string>
     <string name="settings_check_ci_update">CI अपडेट तपासा</string>
     <string name="settings_check_ci_update_summary">अॅप उघडताना व्यवस्थापकाच्या स्वाक्षरी केलेल्या नाइटली आवृत्त्या तपासा. डीफॉल्टनुसार बंद आहे.</string>
     <string name="ci_update_title">नवीन CI आवृत्ती आढळली</string>
@@ -743,7 +737,6 @@
     <string name="ksud_integrity_notification_title">ksud बदलले आहे</string>
     <string name="ksud_integrity_notification_channel">ksud सुरक्षा इशारे</string>
     <string name="ksud_integrity_notification_channel_summary">/data/adb/ksud सध्याच्या व्यवस्थापकाशी जुळत नसल्यास इशारा द्या.</string>
-    <string name="su_request_failed">Root विनंती अवैध झाली किंवा पाठवता आली नाही.</string>
     <string name="yukizygisk_injected_zygotes">Zygote मॉनिटर</string>
     <string name="yukizygisk_no_zygotes">Zygote नाही</string>
     <string name="yukizygisk_no_native_modules">नेटिव्ह मॉड्यूल नाही</string>

@@ -468,11 +468,6 @@
     <string name="settings_auto_update_ksud">עדכון אוטומטי של ה-daemon של ksud</string>
     <string name="settings_auto_update_ksud_summary">סנכרן את קובץ ה-ksud המצורף אל /data/adb/ksud בהפעלה קרה של האפליקציה. כבוי כברירת מחדל; אחרת, השתמש בכפתור הידני בדף הבית.</string>
 
-    <string name="su_request_desc">אפליקציה מבקשת גישת משתמש-על (su).</string>
-    <string name="su_request_allow_forever">אפשר תמיד</string>
-    <string name="su_request_allow_once">אפשר פעם אחת</string>
-    <string name="su_request_deny">דחה</string>
-    <string name="su_request_deny_hide">דחה והסתר</string>
     <string name="settings_unshare_mnt">סידור תצוגת העגינות</string>
     <string name="settings_unshare_mnt_summary">יוצר מחדש את מרחב השמות ומסדר את המזהים הגלויים לאחר ביטול העגינה. יש להפעיל מחדש את האפליקציה.</string>
     <string name="home_lkm_update_available">גרסה חדשה יותר של ה-LKM המובנה זמינה. הקש כדי לעדכן.</string>
@@ -550,7 +545,6 @@
     <string name="settings_yukizygisk_toast_on">הופעל. ייכנס לתוקף לאחר הפעלה מחדש</string>
     <string name="settings_yukizygisk_toast_off">כובה. ייכנס לתוקף לאחר הפעלה מחדש</string>
     <string name="settings_yukizygisk_toast_failed">ההחלפה נכשלה</string>
-    <string name="su_compact_magisk_summary">חלון בקשת הרשאה</string>
     <string name="settings_check_ci_update">בדיקת עדכוני CI</string>
     <string name="settings_check_ci_update_summary">בדיקת גרסאות לילה חתומות של המנהל בעת פתיחת היישום. כבוי כברירת מחדל</string>
     <string name="ci_update_title">נמצאה גרסת CI חדשה</string>
@@ -736,7 +730,6 @@
     <string name="ksud_integrity_notification_title">ksud הוחלף</string>
     <string name="ksud_integrity_notification_channel">התראות אבטחה של ksud</string>
     <string name="ksud_integrity_notification_channel_summary">אזהרה כאשר /data/adb/ksud אינו תואם למנהל הנוכחי.</string>
-    <string name="su_request_failed">בקשת Root אינה תקפה עוד או ששליחתה נכשלה.</string>
     <string name="yukizygisk_injected_zygotes">מנטר Zygote</string>
     <string name="yukizygisk_no_zygotes">אין Zygote</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>

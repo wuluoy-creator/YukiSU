@@ -16,7 +16,6 @@ kernelsu-objs += policy/app_profile.o
 kernelsu-objs += feature/sucompat.o
 kernelsu-objs += feature/sucompat_exec.o
 kernelsu-objs += feature/sucompat_vfs.o
-kernelsu-objs += feature/sucompat_prompt.o
 kernelsu-objs += feature/sucompat_module_guard.o
 include $(src)/kasumi/Kbuild
 

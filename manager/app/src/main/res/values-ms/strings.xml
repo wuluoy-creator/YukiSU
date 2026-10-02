@@ -468,11 +468,6 @@
     <string name="settings_auto_update_ksud">Kemas kini automatik daemon ksud</string>
     <string name="settings_auto_update_ksud_summary">Segerakkan binari ksud yang disertakan ke /data/adb/ksud semasa permulaan sejuk aplikasi. Dilumpuhkan secara lalai; jika tidak, gunakan butang manual di halaman utama.</string>
 
-    <string name="su_request_desc">Sebuah aplikasi meminta akses superuser (su).</string>
-    <string name="su_request_allow_forever">Sentiasa benarkan</string>
-    <string name="su_request_allow_once">Benarkan sekali</string>
-    <string name="su_request_deny">Tolak</string>
-    <string name="su_request_deny_hide">Tolak dan sembunyikan</string>
     <string name="settings_unshare_mnt">Kemas paparan lekapan</string>
     <string name="settings_unshare_mnt_summary">Cipta semula ruang nama dan susun ID yang kelihatan selepas nyahlekap. Mulakan semula aplikasi untuk menerapkan.</string>
     <string name="home_lkm_update_available">Versi lebih baharu bagi LKM terbina dalam tersedia. Ketik untuk mengemas kini.</string>
@@ -569,7 +564,6 @@
     <string name="settings_yukizygisk_toast_on">Didayakan, berkuat kuasa selepas but semula</string>
     <string name="settings_yukizygisk_toast_off">Dilumpuhkan, berkuat kuasa selepas but semula</string>
     <string name="settings_yukizygisk_toast_failed">Gagal menukar</string>
-    <string name="su_compact_magisk_summary">Dialog pemberian kebenaran</string>
     <string name="settings_check_ci_update">Semak kemas kini CI</string>
     <string name="settings_check_ci_update_summary">Semak versi nightly pengurus yang ditandatangani semasa membuka aplikasi. Dimatikan secara lalai</string>
     <string name="ci_update_title">Versi CI baharu ditemui</string>
@@ -743,7 +737,6 @@
     <string name="ksud_integrity_notification_title">ksud telah digantikan</string>
     <string name="ksud_integrity_notification_channel">Amaran keselamatan ksud</string>
     <string name="ksud_integrity_notification_channel_summary">Beri amaran apabila /data/adb/ksud tidak sepadan dengan pengurus semasa.</string>
-    <string name="su_request_failed">Permintaan Root sudah tidak sah atau gagal dihantar.</string>
     <string name="yukizygisk_injected_zygotes">Pemantau Zygote</string>
     <string name="yukizygisk_no_zygotes">Tiada Zygote</string>
     <string name="yukizygisk_no_native_modules">Tiada modul Native</string>

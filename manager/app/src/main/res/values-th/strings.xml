@@ -470,11 +470,6 @@
     <string name="settings_auto_update_ksud">อัปเดตเดมอน ksud อัตโนมัติ</string>
     <string name="settings_auto_update_ksud_summary">ซิงค์ไฟล์ไบนารี ksud ที่มาพร้อมไปยัง /data/adb/ksud เมื่อแอปเริ่มทำงานแบบเย็น ปิดตามค่าเริ่มต้น มิฉะนั้นใช้ปุ่มด้วยตนเองในหน้าหลัก</string>
 
-    <string name="su_request_desc">แอปกำลังขอสิทธิ์การเข้าถึงซูเปอร์ยูเซอร์ (su)</string>
-    <string name="su_request_allow_forever">อนุญาตเสมอ</string>
-    <string name="su_request_allow_once">อนุญาตครั้งเดียว</string>
-    <string name="su_request_deny">ปฏิเสธ</string>
-    <string name="su_request_deny_hide">ปฏิเสธและซ่อน</string>
     <string name="settings_unshare_mnt">จัดระเบียบมุมมองการเมานต์</string>
     <string name="settings_unshare_mnt_summary">สร้างเนมสเปซใหม่และจัดเรียง ID ที่มองเห็นหลังเลิกเมานต์ เริ่มแอปใหม่เพื่อให้มีผล</string>
     <string name="home_lkm_update_available">มี LKM ในตัวเวอร์ชันใหม่กว่า แตะเพื่ออัปเดต</string>
@@ -571,7 +566,6 @@
     <string name="settings_yukizygisk_toast_on">เปิดแล้ว มีผลหลังรีสตาร์ต</string>
     <string name="settings_yukizygisk_toast_off">ปิดแล้ว มีผลหลังรีสตาร์ต</string>
     <string name="settings_yukizygisk_toast_failed">สลับไม่สำเร็จ</string>
-    <string name="su_compact_magisk_summary">กล่องโต้ตอบอนุญาตสิทธิ์</string>
     <string name="settings_check_ci_update">ตรวจสอบการอัปเดต CI</string>
     <string name="settings_check_ci_update_summary">ตรวจสอบตัวจัดการรุ่น nightly ที่ลงลายเซ็นเมื่อเปิดแอป ปิดไว้โดยค่าเริ่มต้น</string>
     <string name="ci_update_title">พบเวอร์ชัน CI ใหม่</string>
@@ -745,7 +739,6 @@
     <string name="ksud_integrity_notification_title">ksud ถูกแทนที่แล้ว</string>
     <string name="ksud_integrity_notification_channel">การแจ้งเตือนความปลอดภัย ksud</string>
     <string name="ksud_integrity_notification_channel_summary">แจ้งเตือนเมื่อ /data/adb/ksud ไม่ตรงกับตัวจัดการปัจจุบัน</string>
-    <string name="su_request_failed">คำขอ Root หมดอายุหรือส่งไม่สำเร็จ</string>
     <string name="yukizygisk_injected_zygotes">ตัวตรวจสอบ Zygote</string>
     <string name="yukizygisk_no_zygotes">ไม่มี Zygote</string>
     <string name="yukizygisk_no_native_modules">ไม่มีโมดูล Native</string>

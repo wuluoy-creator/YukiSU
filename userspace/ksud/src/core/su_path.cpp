@@ -2,10 +2,10 @@
 #include "../../../common/su_path.hpp"
 #include "../defs.hpp"
 #include "../log.hpp"
-#include "../magisk_compat/su_transition.hpp"
 #include "../terminal.hpp"
 #include "../utils.hpp"
 #include "ksucalls.hpp"
+#include "su_transition.hpp"
 
 #include <fcntl.h>
 #include <sys/stat.h>

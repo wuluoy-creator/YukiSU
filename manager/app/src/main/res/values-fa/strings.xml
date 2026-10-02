@@ -468,11 +468,6 @@
     <string name="settings_auto_update_ksud">به‌روزرسانی خودکار daemon مربوط به ksud</string>
     <string name="settings_auto_update_ksud_summary">فایل اجرایی ksud همراه را هنگام شروع سرد برنامه با /data/adb/ksud همگام کن. به‌طور پیش‌فرض خاموش؛ در غیر این صورت از دکمه دستی در صفحه اصلی استفاده کنید.</string>
 
-    <string name="su_request_desc">یک برنامه درخواست دسترسی superuser (su) دارد.</string>
-    <string name="su_request_allow_forever">همیشه اجازه بده</string>
-    <string name="su_request_allow_once">یک بار اجازه بده</string>
-    <string name="su_request_deny">رد کردن</string>
-    <string name="su_request_deny_hide">رد کردن و پنهان کردن</string>
     <string name="settings_unshare_mnt">مرتب‌سازی نمای اتصال‌ها</string>
     <string name="settings_unshare_mnt_summary">پس از جدا کردن اتصال‌ها، فضای نام را بازسازی و شناسه‌های قابل مشاهده را مرتب می‌کند. برنامه را دوباره اجرا کنید.</string>
     <string name="home_lkm_update_available">نسخه جدیدتری از LKM داخلی موجود است. برای به‌روزرسانی ضربه بزنید.</string>
@@ -550,7 +545,6 @@
     <string name="settings_yukizygisk_toast_on">روشن شد؛ پس از راه‌اندازی مجدد اعمال می‌شود</string>
     <string name="settings_yukizygisk_toast_off">خاموش شد؛ پس از راه‌اندازی مجدد اعمال می‌شود</string>
     <string name="settings_yukizygisk_toast_failed">تغییر ناموفق بود</string>
-    <string name="su_compact_magisk_summary">پنجره اعطای دسترسی</string>
     <string name="settings_check_ci_update">بررسی به‌روزرسانی‌های CI</string>
     <string name="settings_check_ci_update_summary">هنگام باز شدن برنامه، نسخه‌های شبانه امضاشده مدیر را بررسی می‌کند. به‌طور پیش‌فرض خاموش است</string>
     <string name="ci_update_title">نسخه جدید CI پیدا شد</string>
@@ -736,7 +730,6 @@
     <string name="ksud_integrity_notification_title">ksud جایگزین شده است</string>
     <string name="ksud_integrity_notification_channel">هشدارهای امنیتی ksud</string>
     <string name="ksud_integrity_notification_channel_summary">وقتی /data/adb/ksud با مدیر فعلی مطابقت ندارد هشدار می‌دهد.</string>
-    <string name="su_request_failed">درخواست Root دیگر معتبر نیست یا ارسال آن ناموفق بود.</string>
     <string name="yukizygisk_injected_zygotes">پایشگر Zygote</string>
     <string name="yukizygisk_no_zygotes">Zygote وجود ندارد</string>
     <string name="yukizygisk_zygote_detail">%1$s · pid %2$d</string>
