@@ -8,7 +8,6 @@
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
     <string name="kasumi_info_active_mounts">सक्रिय माउंट:</string>
     <string name="kasumi_info_kernel">कर्नल</string>
-    <string name="kasumi_info_mount_base">माउंट बेस</string>
     <string name="kasumi_kernel_debug">कर्नल डीबग</string>
     <string name="kasumi_kernel_debug_desc">Kasumi कर्नल डीबग लॉगिंग सक्षम करा</string>
     <string name="kasumi_kernel_title">Kasumi कर्नल</string>
@@ -70,7 +69,6 @@
     <string name="kasumi_storage">संचयन</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">माउंट केलेले नाही</string>
-    <string name="kasumi_system_info">सिस्टम माहिती</string>
     <string name="kasumi_tempdir">तात्पुरते माउंट पॉइंट</string>
     <string name="kasumi_tempdir_desc">तात्पुरत्या माउंटसाठी बेस पथ (स्वयंचलितसाठी रिकामे ठेवा)</string>
     <string name="kasumi_title">Kasumi कॉन्फिगरेशन</string>
@@ -94,10 +92,6 @@
     <string name="kasumi_global_override">जागतिक ओव्हरराइड: %1$s</string>
     <string name="kasumi_hide_aggressive">आक्रमक</string>
     <string name="kasumi_hide_normal">सामान्य</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… आणि आणखी %d माउंट</item>
-        <item quantity="other">… आणि आणखी %d माउंट</item>
-    </plurals>
     <string name="kasumi_kernel_hooks">कर्नल हुक</string>
     <string name="kasumi_logs_clear">डिमन लॉग साफ करा</string>
     <string name="kasumi_logs_clear_confirm">डिमन लॉग साफ करायचे? कर्नल लॉग बदलणार नाहीत.</string>

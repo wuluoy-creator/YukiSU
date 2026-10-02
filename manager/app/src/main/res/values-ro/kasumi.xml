@@ -20,12 +20,6 @@
     <string name="kasumi_hide_normal">Normal</string>
     <string name="kasumi_info_active_mounts">Montări active:</string>
     <string name="kasumi_info_kernel">Kernel</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… și încă %d montare</item>
-        <item quantity="other">… și încă %d de montări</item>
-        <item quantity="few">… și încă %d montări</item>
-    </plurals>
-    <string name="kasumi_info_mount_base">Bază de montare</string>
     <string name="kasumi_kernel_debug">Depanare kernel</string>
     <string name="kasumi_kernel_debug_desc">Activează jurnalizarea depanării kernelului Kasumi</string>
     <string name="kasumi_kernel_hooks">Hook-uri ale nucleului</string>
@@ -126,7 +120,6 @@
     <string name="kasumi_storage">Stocare</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Nemontat</string>
-    <string name="kasumi_system_info">Informații despre sistem</string>
     <string name="kasumi_tempdir">Punct de montare temporar</string>
     <string name="kasumi_tempdir_desc">Calea de bază pentru montările temporare (lăsați gol pentru automat)</string>
     <string name="kasumi_title">Configurare Kasumi</string>

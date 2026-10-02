@@ -20,12 +20,6 @@
     <string name="kasumi_hide_normal">רגיל</string>
     <string name="kasumi_info_active_mounts">עיגונים פעילים:</string>
     <string name="kasumi_info_kernel">ליבה</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… ועוד %d</item>
-        <item quantity="two">… ועוד %d</item>
-        <item quantity="other">… ועוד %d</item>
-    </plurals>
-    <string name="kasumi_info_mount_base">בסיס עיגון</string>
     <string name="kasumi_kernel_debug">ניפוי שגיאות ליבה</string>
     <string name="kasumi_kernel_debug_desc">הפעל רישום ניפוי שגיאות של ליבת Kasumi</string>
     <string name="kasumi_kernel_hooks">נקודות יירוט בליבה</string>
@@ -126,7 +120,6 @@
     <string name="kasumi_storage">אחסון</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">לא מעוגן</string>
-    <string name="kasumi_system_info">מידע על המערכת</string>
     <string name="kasumi_tempdir">נקודת עיגון זמנית</string>
     <string name="kasumi_tempdir_desc">נתיב בסיס לעיגונים זמניים (השאר ריק לאוטומטי)</string>
     <string name="kasumi_title">תצורת Kasumi</string>

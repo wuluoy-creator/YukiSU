@@ -4,9 +4,6 @@
     <string name="nav_authorization" tools:ignore="MissingTranslation">Authorization</string>
     <string name="nav_extensions" tools:ignore="MissingTranslation">Extensions</string>
     <string name="nav_repository" tools:ignore="MissingTranslation">Repository</string>
-    <string name="nav_home_overview" tools:ignore="MissingTranslation">Overview</string>
-    <string name="nav_home_system" tools:ignore="MissingTranslation">System</string>
-    <string name="nav_apps" tools:ignore="MissingTranslation">Apps</string>
     <string name="nav_policies" tools:ignore="MissingTranslation">Policies &amp; templates</string>
     <string name="nav_records" tools:ignore="MissingTranslation">Authorization records</string>
     <string name="nav_records_summary" tools:ignore="MissingTranslation">Review application Root requests and command records</string>

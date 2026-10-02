@@ -8,7 +8,6 @@
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
     <string name="kasumi_info_active_mounts">Mga Aktibong Mount:</string>
     <string name="kasumi_info_kernel">Kernel</string>
-    <string name="kasumi_info_mount_base">Mount Base</string>
     <string name="kasumi_kernel_debug">Kernel Debug</string>
     <string name="kasumi_kernel_debug_desc">I-enable ang Kasumi kernel debug logging</string>
     <string name="kasumi_kernel_title">Kasumi Kernel</string>
@@ -70,7 +69,6 @@
     <string name="kasumi_storage">Storage</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Hindi naka-mount</string>
-    <string name="kasumi_system_info">System Info</string>
     <string name="kasumi_tempdir">Pansamantalang Mount Point</string>
     <string name="kasumi_tempdir_desc">Base path para sa mga pansamantalang mount (iwang blangko para sa auto)</string>
     <string name="kasumi_title">Configuration ng Kasumi</string>
@@ -94,10 +92,6 @@
     <string name="kasumi_global_override">Pangkalahatang override: %1$s</string>
     <string name="kasumi_hide_aggressive">Agresibo</string>
     <string name="kasumi_hide_normal">Karaniwan</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">…at %d pa</item>
-        <item quantity="other">…at %d pa</item>
-    </plurals>
     <string name="kasumi_kernel_hooks">Mga hook ng kernel</string>
     <string name="kasumi_logs_clear">Burahin ang mga log ng daemon</string>
     <string name="kasumi_logs_clear_confirm">Burahin ang mga log ng daemon? Hindi mababago ang mga log ng kernel.</string>

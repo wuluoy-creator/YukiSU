@@ -14,6 +14,7 @@ import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -25,6 +26,7 @@ import com.anatdx.yukisu.ui.component.KsuIsValid
 import com.anatdx.yukisu.ui.component.YukiIcon
 import com.anatdx.yukisu.ui.kasumi.KasumiSection
 import com.anatdx.yukisu.ui.kasumi.KasumiWorkspace
+import com.anatdx.yukisu.ui.kasumi.ConfigSection
 import com.anatdx.yukisu.ui.util.LocalNavigationLeaveGuard
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
@@ -47,22 +49,29 @@ internal fun WorkspaceTabs(
     enabled: Boolean = true,
 ) {
     val focusManager = LocalFocusManager.current
-    SecondaryScrollableTabRow(
+    SecondaryTabRow(
+        modifier = Modifier.fillMaxWidth(),
         selectedTabIndex = selected,
         containerColor = MaterialTheme.colorScheme.background,
-        edgePadding = 16.dp,
         divider = { HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant) },
     ) {
         labels.forEachIndexed { index, label ->
             Tab(
                 selected = index == selected,
                 enabled = enabled,
+                modifier = Modifier.heightIn(min = 48.dp),
                 onClick = {
                     focusManager.clearFocus()
                     onSelected(index)
                 },
-                text = { Text(label, style = MaterialTheme.typography.titleSmall) },
-            )
+            ) {
+                Text(
+                    label,
+                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 12.dp),
+                    style = MaterialTheme.typography.titleSmall,
+                    textAlign = TextAlign.Center,
+                )
+            }
         }
     }
 }
@@ -102,29 +111,30 @@ private fun WorkspaceScaffold(
 
 @Composable
 internal fun AuthorizationWorkspace(navigator: DestinationsNavigator) {
-    var selected by rememberSaveable { mutableIntStateOf(0) }
-    val pages = rememberSaveableStateHolder()
-    val labels = listOf(stringResource(R.string.nav_apps), stringResource(R.string.nav_policies), stringResource(R.string.nav_records))
-    val tabs: @Composable () -> Unit = { WorkspaceTabs(labels, selected, { selected = it }) }
-    BackHandler(selected != 0) { selected = 0 }
-    pages.SaveableStateProvider(selected) {
-        when (selected) {
-            0 -> SuperUserPage(navigator, sectionNavigation = tabs)
-            1 -> WorkspaceScaffold(stringResource(R.string.nav_authorization), navigator, showBack = false, tabs = tabs) {
-                AuthorizationSettingsContent(navigator)
-            }
-            else -> KsuIsValid {
-                if (rememberAuthorizationLogsEnabled()) {
-                    LogViewerPage(navigator, showBack = false, sectionNavigation = tabs)
-                } else {
-                    WorkspaceScaffold(stringResource(R.string.nav_authorization), navigator, showBack = false, tabs = tabs) {
-                        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
-                            Text(stringResource(R.string.nav_records_disabled), style = MaterialTheme.typography.bodyLarge)
-                            Spacer(Modifier.height(16.dp))
-                            OutlinedButton(onClick = { navigator.navigate(KernelPolicyScreenDestination) }) {
-                                Text(stringResource(R.string.nav_manage_kernel_features))
-                            }
-                        }
+    SuperUserPage(navigator)
+}
+
+@Destination<RootGraph>
+@Composable
+fun AuthorizationPoliciesScreen(navigator: DestinationsNavigator) {
+    WorkspaceScaffold(stringResource(R.string.nav_policies), navigator) {
+        AuthorizationSettingsContent(navigator)
+    }
+}
+
+@Destination<RootGraph>
+@Composable
+fun AuthorizationRecordsScreen(navigator: DestinationsNavigator) {
+    KsuIsValid {
+        if (rememberAuthorizationLogsEnabled()) {
+            LogViewerPage(navigator)
+        } else {
+            WorkspaceScaffold(stringResource(R.string.nav_records), navigator) {
+                Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
+                    Text(stringResource(R.string.nav_records_disabled), style = MaterialTheme.typography.bodyLarge)
+                    Spacer(Modifier.height(16.dp))
+                    OutlinedButton(onClick = { navigator.navigate(KernelPolicyScreenDestination(initialPage = 2)) }) {
+                        Text(stringResource(R.string.nav_manage_kernel_features))
                     }
                 }
             }
@@ -187,8 +197,8 @@ fun ExtensionRuntimeScreen(navigator: DestinationsNavigator, initialPage: Int = 
 
 @Destination<RootGraph>
 @Composable
-fun KernelPolicyScreen(navigator: DestinationsNavigator) {
-    var selected by rememberSaveable { mutableIntStateOf(0) }
+fun KernelPolicyScreen(navigator: DestinationsNavigator, initialPage: Int = 0) {
+    var selected by rememberSaveable { mutableIntStateOf(initialPage.coerceIn(0, 3)) }
     var saving by remember { mutableStateOf(false) }
     val pages = rememberSaveableStateHolder()
     WorkspaceOperationGuard(saving, KernelPolicyScreenDestination.route)
@@ -203,13 +213,16 @@ fun KernelPolicyScreen(navigator: DestinationsNavigator) {
                     section = if (selected == 0) KasumiSection.Isolation else KasumiSection.Rules,
                     onSavingChanged = { saving = it },
                     settingsHeader = {
-                        if (selected == 0) SettingItem(
-                            icon = Icons.Outlined.FolderOff,
-                            title = stringResource(R.string.nav_umount_paths),
-                            summary = stringResource(R.string.nav_umount_paths_summary),
-                            enabled = !saving,
-                            onClick = { navigator.navigate(UmountManagerScreenDestination) },
-                        )
+                        if (selected == 0) ConfigSection(title = "", segmented = true) {
+                            SettingItem(
+                                icon = Icons.Outlined.FolderOff,
+                                title = stringResource(R.string.nav_umount_paths),
+                                summary = stringResource(R.string.nav_umount_paths_summary),
+                                enabled = !saving,
+                                groupPosition = SettingsItemPosition.Only,
+                                onClick = { navigator.navigate(UmountManagerScreenDestination) },
+                            )
+                        }
                     },
                 )
                 2 -> FeatureControlContent(navigator, onSavingChanged = { saving = it })
@@ -244,15 +257,20 @@ fun DiagnosticsScreen(navigator: DestinationsNavigator) {
         pages.SaveableStateProvider(currentPage) {
         when (currentPage) {
             0 -> Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 16.dp)) {
-                DiagnosticExportActions()
+                val logsEnabled = if (rootAvailable) rememberAuthorizationLogsEnabled() else false
+                DiagnosticExportActions(additionalActions = if (logsEnabled) {
+                    {
+                        SettingItem(
+                            icon = Icons.Outlined.History,
+                            title = stringResource(R.string.nav_records),
+                            summary = stringResource(R.string.nav_records_summary),
+                            enabled = !saving,
+                            groupPosition = SettingsItemPosition.Last,
+                            onClick = { navigator.navigate(AuthorizationRecordsScreenDestination) },
+                        )
+                    }
+                } else null)
                 KsuIsValid {
-                    if (rememberAuthorizationLogsEnabled()) SettingItem(
-                        icon = Icons.Outlined.History,
-                        title = stringResource(R.string.nav_records),
-                        summary = stringResource(R.string.nav_records_summary),
-                        enabled = !saving,
-                        onClick = { navigator.navigate(LogViewerScreenDestination) },
-                    )
                     KasumiWorkspace(KasumiSection.Debug, scrollable = false, onSavingChanged = { kasumiSaving = it })
                     InjectionWorkspace(InjectionSection.Diagnostics, scrollable = false, onSavingChanged = { injectionSaving = it })
                 }

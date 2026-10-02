@@ -12,6 +12,7 @@ import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.anatdx.yukisu.R
@@ -33,19 +34,26 @@ enum class KasumiSection(val displayNameRes: Int) {
     Debug(R.string.kasumi_workspace_debug),
 }
 
-/** Content for a bounded host page. The host owns navigation and system/IME insets. */
+/** The host owns navigation and insets; status and debug may join a host's single scroll. */
 @Composable
 fun KasumiWorkspace(
     section: KasumiSection,
     scrollable: Boolean = true,
     onSavingChanged: (Boolean) -> Unit = {},
     settingsHeader: @Composable () -> Unit = {},
+    contentPadding: PaddingValues = PaddingValues(16.dp),
+    refreshKey: Int = 0,
 ) {
     val resources = LocalResources.current
     val scope = rememberCoroutineScope()
-    val inlineDebug = section == KasumiSection.Debug && !scrollable
+    val inlineContent = !scrollable && (section == KasumiSection.Debug || section == KasumiSection.Status)
     val localSnackbar = rememberSnackbarController()
-    val snackbar = if (inlineDebug) LocalSnackbarHost.current else localSnackbar
+    val snackbar = if (inlineContent) LocalSnackbarHost.current else localSnackbar
+    val layoutDirection = LocalLayoutDirection.current
+    val horizontalPadding = PaddingValues(
+        start = contentPadding.calculateStartPadding(layoutDirection),
+        end = contentPadding.calculateEndPadding(layoutDirection),
+    )
     val sectionState = rememberSaveableStateHolder()
     var isLoading by remember { mutableStateOf(false) }
     var configSaving by remember { mutableStateOf(false) }
@@ -192,7 +200,7 @@ fun KasumiWorkspace(
         }
     }
 
-    LaunchedEffect(Unit) { loadData() }
+    LaunchedEffect(refreshKey) { loadData() }
     LaunchedEffect(section, showKernelLog, logRefresh) {
         if (section != KasumiSection.Logs) return@LaunchedEffect
         logLoading = true
@@ -207,20 +215,19 @@ fun KasumiWorkspace(
         }
     }
 
-    Box(if (inlineDebug) Modifier.fillMaxWidth() else Modifier.fillMaxSize()) {
-        Column(if (inlineDebug) Modifier.fillMaxWidth() else Modifier.fillMaxSize()) {
-            val hasOwnRefresh = section == KasumiSection.Logs || section == KasumiSection.Rules
-            if (!hasOwnRefresh || loadError != null || (!dataReady && section != KasumiSection.Logs)) {
+    Box(if (inlineContent) Modifier.fillMaxWidth() else Modifier.fillMaxSize()) {
+        Column(if (inlineContent) Modifier.fillMaxWidth() else Modifier.fillMaxSize()) {
+            if (loadError != null) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 8.dp),
+                    modifier = Modifier.fillMaxWidth().padding(horizontalPadding),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     Text(
-                        text = loadError ?: stringResource(section.displayNameRes),
+                        text = loadError.orEmpty(),
                         modifier = Modifier.weight(1f),
                         style = MaterialTheme.typography.bodySmall,
-                        color = if (loadError == null) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.error,
                     )
                     IconButton(onClick = ::loadData, enabled = !isLoading && !configSaving) {
                         YukiIcon(Icons.Filled.Refresh, stringResource(R.string.kasumi_rules_refresh))
@@ -230,18 +237,23 @@ fun KasumiWorkspace(
             if (isLoading || configSaving || rulesRefreshing || logLoading || logClearing) {
                 LinearProgressIndicator(Modifier.fillMaxWidth())
             }
-            Box(if (inlineDebug) Modifier.fillMaxWidth() else Modifier.weight(1f).fillMaxWidth()) {
+            Box(if (inlineContent) Modifier.fillMaxWidth() else Modifier.weight(1f).fillMaxWidth()) {
                 sectionState.SaveableStateProvider(section.name) {
                     if (!dataReady && section != KasumiSection.Logs) {
-                        if (!inlineDebug) Column(
-                            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
+                        if (!inlineContent) Column(
+                            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(contentPadding),
                             horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
                             settingsHeader()
                             if (isLoading) CircularProgressIndicator(Modifier.padding(16.dp))
                         }
                     } else when (section) {
-                        KasumiSection.Status -> StatusTab(status, true, version, system, storage, modules, ::loadData)
+                        KasumiSection.Status -> StatusTab(
+                            status, true, version, system, storage, modules, ::loadData,
+                            scrollable = !inlineContent,
+                            contentPadding = contentPadding,
+                            refreshEnabled = !isLoading && !configSaving,
+                        )
                         KasumiSection.Mount, KasumiSection.Isolation, KasumiSection.Debug -> SettingsTab(
                             config = config,
                             kasumiStatus = status,
@@ -262,8 +274,14 @@ fun KasumiWorkspace(
                                 }
                             },
                             section = section,
-                            scrollable = !inlineDebug,
+                            scrollable = !inlineContent,
                             header = settingsHeader,
+                            contentPadding = contentPadding,
+                            headingActions = {
+                                IconButton(onClick = ::loadData, enabled = !isLoading && !configSaving) {
+                                    YukiIcon(Icons.Filled.Refresh, stringResource(R.string.kasumi_rules_refresh))
+                                }
+                            },
                         )
                         KasumiSection.Rules -> RulesTab(
                             rules, status, dataReady && !configSaving && !rulesRefreshing && !isLoading,
@@ -290,6 +308,6 @@ fun KasumiWorkspace(
                 }
             }
         }
-        if (!inlineDebug) SnackbarHost(snackbar.hostState, Modifier.align(Alignment.BottomCenter))
+        if (!inlineContent) SnackbarHost(snackbar.hostState, Modifier.align(Alignment.BottomCenter))
     }
 }

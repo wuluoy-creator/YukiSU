@@ -20,13 +20,6 @@
     <string name="kasumi_hide_normal">Zwykłe</string>
     <string name="kasumi_info_active_mounts">Aktywne montowania:</string>
     <string name="kasumi_info_kernel">Jądro</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… i jeszcze %d</item>
-        <item quantity="few">… i jeszcze %d</item>
-        <item quantity="many">… i jeszcze %d</item>
-        <item quantity="other">… i jeszcze %d</item>
-    </plurals>
-    <string name="kasumi_info_mount_base">Baza montowania</string>
     <string name="kasumi_kernel_debug">Debugowanie jądra</string>
     <string name="kasumi_kernel_debug_desc">Włącz dziennik debugowania jądra Kasumi</string>
     <string name="kasumi_kernel_hooks">Punkty przechwytywania jądra</string>
@@ -128,7 +121,6 @@
     <string name="kasumi_storage">Pamięć</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Niezamontowane</string>
-    <string name="kasumi_system_info">Informacje o systemie</string>
     <string name="kasumi_tempdir">Tymczasowy punkt montowania</string>
     <string name="kasumi_tempdir_desc">Ścieżka bazowa dla tymczasowych montowań (pozostaw puste dla automatycznego)</string>
     <string name="kasumi_title">Konfiguracja Kasumi</string>

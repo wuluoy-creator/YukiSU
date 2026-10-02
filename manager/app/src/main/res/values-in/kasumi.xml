@@ -8,7 +8,6 @@
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
     <string name="kasumi_info_active_mounts">Pemasangan aktif:</string>
     <string name="kasumi_info_kernel">Kernel</string>
-    <string name="kasumi_info_mount_base">Dasar pemasangan</string>
     <string name="kasumi_kernel_debug">Debug kernel</string>
     <string name="kasumi_kernel_debug_desc">Aktifkan pencatatan debug kernel Kasumi</string>
     <string name="kasumi_kernel_title">Kernel Kasumi</string>
@@ -70,7 +69,6 @@
     <string name="kasumi_storage">Penyimpanan</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Tidak terpasang</string>
-    <string name="kasumi_system_info">Info sistem</string>
     <string name="kasumi_tempdir">Titik pemasangan sementara</string>
     <string name="kasumi_tempdir_desc">Jalur dasar untuk pemasangan sementara (biarkan kosong untuk otomatis)</string>
     <string name="kasumi_title">Konfigurasi Kasumi</string>
@@ -94,9 +92,6 @@
     <string name="kasumi_global_override">Penimpaan global: %1$s</string>
     <string name="kasumi_hide_aggressive">Agresif</string>
     <string name="kasumi_hide_normal">Normal</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="other">…dan %d lainnya</item>
-    </plurals>
     <string name="kasumi_kernel_hooks">Hook kernel</string>
     <string name="kasumi_logs_clear">Bersihkan log daemon</string>
     <string name="kasumi_logs_clear_confirm">Bersihkan log daemon? Log kernel tidak akan berubah.</string>

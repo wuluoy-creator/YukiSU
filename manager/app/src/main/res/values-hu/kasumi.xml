@@ -20,11 +20,6 @@
     <string name="kasumi_hide_normal">Normál</string>
     <string name="kasumi_info_active_mounts">Aktív csatolások:</string>
     <string name="kasumi_info_kernel">Kernel</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… és még %d</item>
-        <item quantity="other">… és még %d</item>
-    </plurals>
-    <string name="kasumi_info_mount_base">Csatolási alap</string>
     <string name="kasumi_kernel_debug">Kernel hibakeresés</string>
     <string name="kasumi_kernel_debug_desc">A Kasumi kernel hibakeresési naplózásának engedélyezése</string>
     <string name="kasumi_kernel_hooks">Kernelhorgok</string>
@@ -124,7 +119,6 @@
     <string name="kasumi_storage">Tárhely</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Nincs csatolva</string>
-    <string name="kasumi_system_info">Rendszerinformáció</string>
     <string name="kasumi_tempdir">Ideiglenes csatolási pont</string>
     <string name="kasumi_tempdir_desc">Az ideiglenes csatolások alapútvonala (hagyja üresen az automatikushoz)</string>
     <string name="kasumi_title">Kasumi konfiguráció</string>

@@ -47,18 +47,20 @@ internal fun SettingsTab(
     section: KasumiSection,
     scrollable: Boolean = true,
     header: @Composable () -> Unit = {},
+    contentPadding: PaddingValues = PaddingValues(16.dp),
+    headingActions: (@Composable RowScope.() -> Unit)? = null,
 ) {
     val enabled = controlsEnabled
     val mountEnabled = enabled && config.externalOwner.isEmpty()
     val kernelEnabled = enabled && kasumiStatus == Controller.KasumiStatus.AVAILABLE
     Column(
         modifier = (if (scrollable) Modifier.fillMaxSize().verticalScroll(rememberScrollState()) else Modifier.fillMaxWidth())
-            .padding(16.dp),
+            .padding(contentPadding),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         header()
         when (section) {
-            KasumiSection.Mount -> ConfigSection(stringResource(R.string.kasumi_workspace_mount), segmented = true) {
+            KasumiSection.Mount -> ConfigSection(stringResource(R.string.kasumi_workspace_mount), segmented = true, actions = headingActions) {
                 if (config.externalOwner.isNotEmpty()) {
                     KasumiControlGroup {
                         Text(stringResource(R.string.kasumi_external_mount, config.externalOwner),
@@ -82,7 +84,7 @@ internal fun SettingsTab(
                 }
             }
             KasumiSection.Isolation -> {
-                ConfigSection(stringResource(R.string.kasumi_workspace_isolation), segmented = true) {
+                ConfigSection(stringResource(R.string.kasumi_workspace_isolation), segmented = true, actions = headingActions) {
                     SettingSwitch(stringResource(R.string.kasumi_stealth), stringResource(R.string.kasumi_stealth_desc), config.enableStealth,
                         { onConfigChanged(config.copy(enableStealth = it)) }, kernelEnabled, Icons.Filled.VisibilityOff,
                         MoreSettingsItemPosition.First)
@@ -122,7 +124,7 @@ internal fun SettingsTab(
                     MapsSpoofCard(enabled, onClearMapRules, onAddMapRule)
                 }
             }
-            KasumiSection.Debug -> ConfigSection(stringResource(R.string.kasumi_workspace_debug), segmented = true) {
+            KasumiSection.Debug -> ConfigSection(stringResource(R.string.kasumi_workspace_debug), segmented = true, actions = headingActions) {
                 SettingSwitch(stringResource(R.string.kasumi_debug), stringResource(R.string.kasumi_debug_desc),
                     config.debug, { onConfigChanged(config.copy(debug = it)) }, enabled,
                     Icons.Filled.BugReport, MoreSettingsItemPosition.First)
@@ -184,7 +186,7 @@ private data class FeatureToggle(val capability: String, val title: Int, val sub
 
 @Composable
 internal fun ConfigSection(
-    title: String,
+    title: String = "",
     segmented: Boolean = false,
     actions: (@Composable RowScope.() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
@@ -233,6 +235,7 @@ internal fun ConfigChoice(title: String, value: String, values: List<String>, en
         ExposedDropdownMenuBox(expanded = expanded && enabled, onExpandedChange = { if (enabled) expanded = it }) {
             OutlinedTextField(value = labels[value] ?: value, onValueChange = {}, readOnly = true, enabled = enabled,
                 modifier = Modifier.fillMaxWidth().menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
+                shape = MaterialTheme.shapes.small,
                 label = { Text(title) },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) })
             ExposedDropdownMenu(expanded = expanded && enabled, onDismissRequest = { expanded = false }) {
@@ -260,6 +263,7 @@ internal fun MountSourceInput(value: String, enabled: Boolean, onSave: (String) 
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true,
+            shape = MaterialTheme.shapes.small,
             isError = changed && !valid,
             label = { Text(stringResource(R.string.kasumi_mountsource)) },
             placeholder = { Text("KSU") },

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="home_runtime_details" tools:ignore="MissingTranslation">Runtime details</string>
+    <string name="home_runtime_expand" tools:ignore="MissingTranslation">Show runtime details</string>
+    <string name="home_runtime_collapse" tools:ignore="MissingTranslation">Hide runtime details</string>
+    <string name="home_runtime_expanded" tools:ignore="MissingTranslation">Expanded</string>
+    <string name="home_runtime_collapsed" tools:ignore="MissingTranslation">Collapsed</string>
+</resources>

@@ -20,13 +20,6 @@
     <string name="kasumi_hide_normal">Įprastas</string>
     <string name="kasumi_info_active_mounts">Aktyvūs prijungimai:</string>
     <string name="kasumi_info_kernel">Branduolys</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… ir dar %d prijungimas</item>
-        <item quantity="other">… ir dar %d prijungimų</item>
-        <item quantity="few">… ir dar %d prijungimai</item>
-        <item quantity="many">… ir dar %d prijungimo</item>
-    </plurals>
-    <string name="kasumi_info_mount_base">Prijungimo bazė</string>
     <string name="kasumi_kernel_debug">Branduolio derinimas</string>
     <string name="kasumi_kernel_debug_desc">Įjungti Kasumi branduolio derinimo registravimą</string>
     <string name="kasumi_kernel_hooks">Branduolio perėmimo taškai</string>
@@ -128,7 +121,6 @@
     <string name="kasumi_storage">Saugykla</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Neprijungta</string>
-    <string name="kasumi_system_info">Sistemos informacija</string>
     <string name="kasumi_tempdir">Laikinasis prijungimo taškas</string>
     <string name="kasumi_tempdir_desc">Laikinųjų prijungimų pagrindinis kelias (palikite tuščią automatiniam)</string>
     <string name="kasumi_title">Kasumi konfigūracija</string>

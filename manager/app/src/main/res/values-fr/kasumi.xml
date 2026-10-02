@@ -20,12 +20,6 @@
     <string name="kasumi_hide_normal">Normal</string>
     <string name="kasumi_info_active_mounts">Montages actifs :</string>
     <string name="kasumi_info_kernel">Noyau</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… et %d autre montage</item>
-        <item quantity="other">… et %d autres montages</item>
-        <item quantity="many">… et %d autres montages</item>
-    </plurals>
-    <string name="kasumi_info_mount_base">Base de montage</string>
     <string name="kasumi_kernel_debug">Débogage du noyau</string>
     <string name="kasumi_kernel_debug_desc">Activer la journalisation de débogage du noyau Kasumi</string>
     <string name="kasumi_kernel_hooks">Hooks du noyau</string>
@@ -126,7 +120,6 @@
     <string name="kasumi_storage">Stockage</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Non monté</string>
-    <string name="kasumi_system_info">Infos système</string>
     <string name="kasumi_tempdir">Point de montage temporaire</string>
     <string name="kasumi_tempdir_desc">Chemin de base des montages temporaires (laissez vide pour automatique)</string>
     <string name="kasumi_title">Configuration Kasumi</string>

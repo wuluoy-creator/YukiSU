@@ -45,7 +45,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.PrimaryScrollableTabRow
+import com.anatdx.yukisu.ui.screen.WorkspaceTabs
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -543,24 +543,16 @@ fun YukiZygiskScreen(navigator: DestinationsNavigator) {
         contentWindowInsets = WindowInsets.safeDrawing,
     ) { padding ->
         Column(Modifier.fillMaxSize().padding(padding).consumeWindowInsets(padding)) {
-            PrimaryScrollableTabRow(
-                selectedTabIndex = section.ordinal,
-                edgePadding = 0.dp,
-                containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-            ) {
-                InjectionSection.entries.forEach { item ->
-                    Tab(
-                        selected = section == item,
-                        enabled = !saving,
-                        onClick = { section = item },
-                        text = { Text(stringResource(when (item) {
-                            InjectionSection.Overview -> R.string.injection_section_overview
-                            InjectionSection.Configuration -> R.string.injection_section_configuration
-                            InjectionSection.Diagnostics -> R.string.injection_section_diagnostics
-                        })) },
-                    )
-                }
-            }
+            WorkspaceTabs(
+                labels = InjectionSection.entries.map { item -> stringResource(when (item) {
+                    InjectionSection.Overview -> R.string.injection_section_overview
+                    InjectionSection.Configuration -> R.string.injection_section_configuration
+                    InjectionSection.Diagnostics -> R.string.injection_section_diagnostics
+                }) },
+                selected = section.ordinal,
+                onSelected = { section = InjectionSection.entries[it] },
+                enabled = !saving,
+            )
             InjectionWorkspace(section, onSavingChanged = { saving = it })
         }
     }
@@ -702,7 +694,7 @@ fun InjectionWorkspace(
                 })
                 .padding(horizontal = 16.dp)
                 .padding(top = 8.dp, bottom = 8.dp)
-                else Modifier.fillMaxWidth(),
+                else Modifier.fillMaxWidth().padding(horizontal = 16.dp),
         ) {
             if (saving) {
                 LinearProgressIndicator(

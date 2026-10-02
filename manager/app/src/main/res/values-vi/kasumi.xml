@@ -8,7 +8,6 @@
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
     <string name="kasumi_info_active_mounts">Gắn kết đang hoạt động:</string>
     <string name="kasumi_info_kernel">Kernel</string>
-    <string name="kasumi_info_mount_base">Cơ sở gắn kết</string>
     <string name="kasumi_kernel_debug">Gỡ lỗi kernel</string>
     <string name="kasumi_kernel_debug_desc">Bật nhật ký gỡ lỗi kernel Kasumi</string>
     <string name="kasumi_kernel_title">Kernel Kasumi</string>
@@ -70,7 +69,6 @@
     <string name="kasumi_storage">Bộ nhớ</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Chưa gắn kết</string>
-    <string name="kasumi_system_info">Thông tin hệ thống</string>
     <string name="kasumi_tempdir">Điểm gắn kết tạm thời</string>
     <string name="kasumi_tempdir_desc">Đường dẫn gốc cho các gắn kết tạm thời (để trống để tự động)</string>
     <string name="kasumi_title">Cấu hình Kasumi</string>
@@ -94,9 +92,6 @@
     <string name="kasumi_global_override">Ghi đè toàn cục: %1$s</string>
     <string name="kasumi_hide_aggressive">Mạnh</string>
     <string name="kasumi_hide_normal">Thông thường</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="other">…và %d mục khác</item>
-    </plurals>
     <string name="kasumi_kernel_hooks">Hook nhân</string>
     <string name="kasumi_logs_clear">Xóa nhật ký daemon</string>
     <string name="kasumi_logs_clear_confirm">Xóa nhật ký daemon? Nhật ký nhân sẽ không thay đổi.</string>

@@ -20,15 +20,6 @@
     <string name="kasumi_hide_normal">عادي</string>
     <string name="kasumi_info_active_mounts">عمليات التركيب النشطة:</string>
     <string name="kasumi_info_kernel">النواة</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="zero">… و%d إضافية</item>
-        <item quantity="one">… وواحدة إضافية (%d)</item>
-        <item quantity="two">… واثنتان إضافيتان (%d)</item>
-        <item quantity="few">… و%d إضافية</item>
-        <item quantity="many">… و%d إضافية</item>
-        <item quantity="other">… و%d إضافية</item>
-    </plurals>
-    <string name="kasumi_info_mount_base">قاعدة التركيب</string>
     <string name="kasumi_kernel_debug">تصحيح أخطاء النواة</string>
     <string name="kasumi_kernel_debug_desc">تفعيل تسجيل تصحيح أخطاء نواة Kasumi</string>
     <string name="kasumi_kernel_hooks">خطافات النواة</string>
@@ -132,7 +123,6 @@
     <string name="kasumi_storage">التخزين</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">غير مركّب</string>
-    <string name="kasumi_system_info">معلومات النظام</string>
     <string name="kasumi_tempdir">نقطة تركيب مؤقتة</string>
     <string name="kasumi_tempdir_desc">المسار الأساسي لعمليات التركيب المؤقتة (اتركه فارغاً للتلقائي)</string>
     <string name="kasumi_title">إعداد Kasumi</string>

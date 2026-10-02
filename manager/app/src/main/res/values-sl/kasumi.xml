@@ -20,13 +20,6 @@
     <string name="kasumi_hide_normal">Običajno</string>
     <string name="kasumi_info_active_mounts">Aktivni priklopi:</string>
     <string name="kasumi_info_kernel">Jedro</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… in še %d</item>
-        <item quantity="two">… in še %d</item>
-        <item quantity="few">… in še %d</item>
-        <item quantity="other">… in še %d</item>
-    </plurals>
-    <string name="kasumi_info_mount_base">Osnova priklopa</string>
     <string name="kasumi_kernel_debug">Razhroščevanje jedra</string>
     <string name="kasumi_kernel_debug_desc">Omogoči beleženje razhroščevanja jedra Kasumi</string>
     <string name="kasumi_kernel_hooks">Prestrezne točke jedra</string>
@@ -128,7 +121,6 @@
     <string name="kasumi_storage">Shramba</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Ni priklopljeno</string>
-    <string name="kasumi_system_info">Informacije o sistemu</string>
     <string name="kasumi_tempdir">Začasna priklopna točka</string>
     <string name="kasumi_tempdir_desc">Osnovna pot za začasne priklope (pustite prazno za samodejno)</string>
     <string name="kasumi_title">Konfiguracija Kasumi</string>

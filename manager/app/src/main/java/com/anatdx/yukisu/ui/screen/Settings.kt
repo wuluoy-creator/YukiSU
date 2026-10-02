@@ -165,7 +165,7 @@ private fun SettingsWorkspaceIndex(
                     icon = Icons.Filled.Security,
                     title = stringResource(R.string.settings_category_kernel),
                     summary = stringResource(R.string.settings_category_kernel_summary),
-                    onClick = { navigator.navigate(KernelPolicyScreenDestination) },
+                    onClick = { navigator.navigate(KernelPolicyScreenDestination()) },
                 )
             }
             SettingItem(
@@ -317,7 +317,7 @@ private fun MaintenanceSettingsContent(navigator: DestinationsNavigator) {
 
 /** Non-scrolling report-export group for the shared diagnostics page. */
 @Composable
-fun DiagnosticExportActions() {
+fun DiagnosticExportActions(additionalActions: (@Composable () -> Unit)? = null) {
     val context = LocalContext.current
     val resources = LocalResources.current
     val scope = rememberCoroutineScope()
@@ -349,13 +349,14 @@ fun DiagnosticExportActions() {
             snackBarHost.showSnackbar(resources.getString(message))
         }
     }
-    SettingsGroupCard(stringResource(R.string.send_log)) {
+    SettingsGroupCard(stringResource(R.string.nav_diagnostic_options)) {
         SettingItem(
             icon = Icons.Filled.BugReport,
             title = stringResource(R.string.send_log),
-            groupPosition = SettingsItemPosition.Only,
+            groupPosition = if (additionalActions == null) SettingsItemPosition.Only else SettingsItemPosition.First,
             onClick = { showBottomsheet = true },
         )
+        additionalActions?.invoke()
     }
     if (showBottomsheet) {
         LogBottomSheet(

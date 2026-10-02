@@ -8,7 +8,6 @@
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
     <string name="kasumi_info_active_mounts">క్రియాశీల మౌంట్‌లు:</string>
     <string name="kasumi_info_kernel">కెర్నల్</string>
-    <string name="kasumi_info_mount_base">మౌంట్ బేస్</string>
     <string name="kasumi_kernel_debug">కెర్నల్ డీబగ్</string>
     <string name="kasumi_kernel_debug_desc">Kasumi కెర్నల్ డీబగ్ లాగింగ్‌ను ప్రారంభించండి</string>
     <string name="kasumi_kernel_title">Kasumi కెర్నల్</string>
@@ -70,7 +69,6 @@
     <string name="kasumi_storage">నిల్వ</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">మౌంట్ చేయబడలేదు</string>
-    <string name="kasumi_system_info">సిస్టమ్ సమాచారం</string>
     <string name="kasumi_tempdir">తాత్కాలిక మౌంట్ పాయింట్</string>
     <string name="kasumi_tempdir_desc">తాత్కాలిక మౌంట్‌ల కోసం బేస్ పాత్ (స్వయంచాలకం కోసం ఖాళీగా ఉంచండి)</string>
     <string name="kasumi_title">Kasumi కాన్ఫిగరేషన్</string>
@@ -94,10 +92,6 @@
     <string name="kasumi_global_override">గ్లోబల్ ఓవర్‌రైడ్: %1$s</string>
     <string name="kasumi_hide_aggressive">దూకుడు</string>
     <string name="kasumi_hide_normal">సాధారణం</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">…మరియు మరో %d</item>
-        <item quantity="other">…మరియు మరో %d</item>
-    </plurals>
     <string name="kasumi_kernel_hooks">కెర్నల్ హుక్‌లు</string>
     <string name="kasumi_logs_clear">డీమన్ లాగ్‌లను క్లియర్ చేయండి</string>
     <string name="kasumi_logs_clear_confirm">డీమన్ లాగ్‌లను క్లియర్ చేయాలా? కెర్నల్ లాగ్‌లు మారవు.</string>

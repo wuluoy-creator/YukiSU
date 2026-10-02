@@ -34,6 +34,7 @@ fun SearchAppBar(
     onConfirm: (() -> Unit)? = null,
     dropdownContent: @Composable (() -> Unit)? = null,
     scrollBehavior: TopAppBarScrollBehavior? = null,
+    navigationActions: @Composable (() -> Unit)? = null,
 ) {
     var searching by rememberSaveable { mutableStateOf(searchText.isNotEmpty()) }
     val keyboard = LocalSoftwareKeyboardController.current
@@ -93,6 +94,7 @@ fun SearchAppBar(
                 IconButton(onClick = { searching = true }) {
                     YukiIcon(Icons.Outlined.Search, stringResource(R.string.log_viewer_search))
                 }
+                navigationActions?.invoke()
             }
             dropdownContent?.invoke()
         },

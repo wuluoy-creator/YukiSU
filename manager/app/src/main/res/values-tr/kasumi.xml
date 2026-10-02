@@ -20,11 +20,6 @@
     <string name="kasumi_hide_normal">Normal</string>
     <string name="kasumi_info_active_mounts">Etkin bağlamalar:</string>
     <string name="kasumi_info_kernel">Kernel</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… ve %d tane daha</item>
-        <item quantity="other">… ve %d tane daha</item>
-    </plurals>
-    <string name="kasumi_info_mount_base">Bağlama temeli</string>
     <string name="kasumi_kernel_debug">Kernel hata ayıklama</string>
     <string name="kasumi_kernel_debug_desc">Kasumi kernel hata ayıklama günlüğünü etkinleştir</string>
     <string name="kasumi_kernel_hooks">Çekirdek kancaları</string>
@@ -124,7 +119,6 @@
     <string name="kasumi_storage">Depolama</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Bağlanmadı</string>
-    <string name="kasumi_system_info">Sistem bilgisi</string>
     <string name="kasumi_tempdir">Geçici bağlama noktası</string>
     <string name="kasumi_tempdir_desc">Geçici bağlamalar için temel yol (otomatik için boş bırakın)</string>
     <string name="kasumi_title">Kasumi yapılandırması</string>

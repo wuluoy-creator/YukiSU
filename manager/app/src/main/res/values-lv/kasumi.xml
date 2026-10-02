@@ -20,12 +20,6 @@
     <string name="kasumi_hide_normal">Parasts</string>
     <string name="kasumi_info_active_mounts">Aktīvie montējumi:</string>
     <string name="kasumi_info_kernel">Kodols</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… un vēl %d montējums</item>
-        <item quantity="other">… un vēl %d montējumi</item>
-        <item quantity="zero">… un vēl %d montējumu</item>
-    </plurals>
-    <string name="kasumi_info_mount_base">Montēšanas bāze</string>
     <string name="kasumi_kernel_debug">Kodola atkļūdošana</string>
     <string name="kasumi_kernel_debug_desc">Iespējot Kasumi kodola atkļūdošanas reģistrēšanu</string>
     <string name="kasumi_kernel_hooks">Kodola pārtvērēji</string>
@@ -126,7 +120,6 @@
     <string name="kasumi_storage">Krātuve</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Nav montēts</string>
-    <string name="kasumi_system_info">Sistēmas informācija</string>
     <string name="kasumi_tempdir">Pagaidu montēšanas punkts</string>
     <string name="kasumi_tempdir_desc">Pagaidu montējumu bāzes ceļš (atstājiet tukšu automātiskajam)</string>
     <string name="kasumi_title">Kasumi konfigurācija</string>

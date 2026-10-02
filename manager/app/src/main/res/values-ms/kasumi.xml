@@ -8,7 +8,6 @@
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
     <string name="kasumi_info_active_mounts">Lekapan aktif:</string>
     <string name="kasumi_info_kernel">Kernel</string>
-    <string name="kasumi_info_mount_base">Asas Lekapan</string>
     <string name="kasumi_kernel_debug">Nyahpepijat Kernel</string>
     <string name="kasumi_kernel_debug_desc">Dayakan pengelogan nyahpepijat kernel Kasumi</string>
     <string name="kasumi_kernel_title">Kernel Kasumi</string>
@@ -70,7 +69,6 @@
     <string name="kasumi_storage">Storan</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Tidak dilekap</string>
-    <string name="kasumi_system_info">Maklumat Sistem</string>
     <string name="kasumi_tempdir">Titik Lekapan Sementara</string>
     <string name="kasumi_tempdir_desc">Laluan asas untuk lekapan sementara (biarkan kosong untuk automatik)</string>
     <string name="kasumi_title">Konfigurasi Kasumi</string>
@@ -94,9 +92,6 @@
     <string name="kasumi_global_override">Penggantian global: %1$s</string>
     <string name="kasumi_hide_aggressive">Agresif</string>
     <string name="kasumi_hide_normal">Biasa</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="other">…dan %d lagi</item>
-    </plurals>
     <string name="kasumi_kernel_hooks">Cangkuk kernel</string>
     <string name="kasumi_logs_clear">Kosongkan log daemon</string>
     <string name="kasumi_logs_clear_confirm">Kosongkan log daemon? Log kernel tidak akan berubah.</string>

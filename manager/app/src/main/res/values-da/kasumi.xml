@@ -20,11 +20,6 @@
     <string name="kasumi_hide_normal">Normal</string>
     <string name="kasumi_info_active_mounts">Aktive monteringer:</string>
     <string name="kasumi_info_kernel">Kerne</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… og %d mere</item>
-        <item quantity="other">… og %d mere</item>
-    </plurals>
-    <string name="kasumi_info_mount_base">Monteringsbasis</string>
     <string name="kasumi_kernel_debug">Kerne-fejlfinding</string>
     <string name="kasumi_kernel_debug_desc">Aktivér Kasumi-kerne-fejlfindingslogning</string>
     <string name="kasumi_kernel_hooks">Kernehooks</string>
@@ -124,7 +119,6 @@
     <string name="kasumi_storage">Lager</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Ikke monteret</string>
-    <string name="kasumi_system_info">Systeminfo</string>
     <string name="kasumi_tempdir">Midlertidigt monteringspunkt</string>
     <string name="kasumi_tempdir_desc">Basissti for midlertidige monteringer (lad være tom for auto)</string>
     <string name="kasumi_title">Kasumi-konfiguration</string>

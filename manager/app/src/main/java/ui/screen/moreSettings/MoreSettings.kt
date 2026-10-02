@@ -39,6 +39,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.BuildConfig
 import com.anatdx.yukisu.ui.component.KsuIsValid
+import com.anatdx.yukisu.ui.screen.WorkspaceTabs
 import com.anatdx.yukisu.ui.component.YukiIcon
 import com.anatdx.yukisu.ui.theme.*
 import com.yalantis.ucrop.UCrop
@@ -79,15 +80,11 @@ fun MoreSettingsScreen(navigator: DestinationsNavigator) {
         contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
     ) { padding ->
         Column(Modifier.fillMaxSize().padding(padding).consumeWindowInsets(padding)) {
-            PrimaryScrollableTabRow(selectedTabIndex = selectedCategory.ordinal) {
-                PreferenceCategory.entries.forEach { category ->
-                    Tab(
-                        selected = selectedCategory == category,
-                        onClick = { selectedCategory = category },
-                        text = { Text(stringResource(category.titleRes)) },
-                    )
-                }
-            }
+            WorkspaceTabs(
+                labels = PreferenceCategory.entries.map { stringResource(it.titleRes) },
+                selected = selectedCategory.ordinal,
+                onSelected = { selectedCategory = PreferenceCategory.entries[it] },
+            )
             MoreSettingsContent(selectedCategory)
         }
     }

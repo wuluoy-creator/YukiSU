@@ -8,7 +8,6 @@
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
     <string name="kasumi_info_active_mounts">アクティブなマウント:</string>
     <string name="kasumi_info_kernel">カーネル</string>
-    <string name="kasumi_info_mount_base">マウントベース</string>
     <string name="kasumi_kernel_debug">カーネルデバッグ</string>
     <string name="kasumi_kernel_debug_desc">Kasumi カーネルデバッグログを有効にします</string>
     <string name="kasumi_kernel_title">Kasumi カーネル</string>
@@ -70,7 +69,6 @@
     <string name="kasumi_storage">ストレージ</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">未マウント</string>
-    <string name="kasumi_system_info">システム情報</string>
     <string name="kasumi_tempdir">一時マウントポイント</string>
     <string name="kasumi_tempdir_desc">一時マウントのベースパス（空欄で自動）</string>
     <string name="kasumi_title">Kasumi 設定</string>
@@ -94,9 +92,6 @@
     <string name="kasumi_global_override">グローバル上書き：%1$s</string>
     <string name="kasumi_hide_aggressive">積極的</string>
     <string name="kasumi_hide_normal">通常</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="other">…ほか %d 件</item>
-    </plurals>
     <string name="kasumi_kernel_hooks">カーネルフック</string>
     <string name="kasumi_logs_clear">デーモンログを消去</string>
     <string name="kasumi_logs_clear_confirm">デーモンログを消去しますか？カーネルログは変更されません。</string>

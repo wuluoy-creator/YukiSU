@@ -8,7 +8,6 @@
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
     <string name="kasumi_info_active_mounts">ಸಕ್ರಿಯ ಮೌಂಟ್‌ಗಳು:</string>
     <string name="kasumi_info_kernel">ಕರ್ನಲ್</string>
-    <string name="kasumi_info_mount_base">ಮೌಂಟ್ ಬೇಸ್</string>
     <string name="kasumi_kernel_debug">ಕರ್ನಲ್ ಡೀಬಗ್</string>
     <string name="kasumi_kernel_debug_desc">Kasumi ಕರ್ನಲ್ ಡೀಬಗ್ ಲಾಗಿಂಗ್ ಸಕ್ರಿಯಗೊಳಿಸಿ</string>
     <string name="kasumi_kernel_title">Kasumi ಕರ್ನಲ್</string>
@@ -70,7 +69,6 @@
     <string name="kasumi_storage">ಸಂಗ್ರಹಣೆ</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">ಮೌಂಟ್ ಮಾಡಿಲ್ಲ</string>
-    <string name="kasumi_system_info">ಸಿಸ್ಟಂ ಮಾಹಿತಿ</string>
     <string name="kasumi_tempdir">ತಾತ್ಕಾಲಿಕ ಮೌಂಟ್ ಪಾಯಿಂಟ್</string>
     <string name="kasumi_tempdir_desc">ತಾತ್ಕಾಲಿಕ ಮೌಂಟ್‌ಗಳಿಗಾಗಿ ಬೇಸ್ ಪಥ (ಸ್ವಯಂಚಾಲಿತಕ್ಕಾಗಿ ಖಾಲಿ ಬಿಡಿ)</string>
     <string name="kasumi_title">Kasumi ಕಾನ್ಫಿಗರೇಶನ್</string>
@@ -94,10 +92,6 @@
     <string name="kasumi_global_override">ಜಾಗತಿಕ ಬದಲಾವಣೆ: %1$s</string>
     <string name="kasumi_hide_aggressive">ಆಕ್ರಮಣಕಾರಿ</string>
     <string name="kasumi_hide_normal">ಸಾಮಾನ್ಯ</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">…ಮತ್ತು ಇನ್ನೂ %d</item>
-        <item quantity="other">…ಮತ್ತು ಇನ್ನೂ %d</item>
-    </plurals>
     <string name="kasumi_kernel_hooks">ಕರ್ನಲ್ ಹುಕ್‌ಗಳು</string>
     <string name="kasumi_logs_clear">ಡೀಮನ್ ಲಾಗ್‌ಗಳನ್ನು ತೆರವುಗೊಳಿಸಿ</string>
     <string name="kasumi_logs_clear_confirm">ಡೀಮನ್ ಲಾಗ್‌ಗಳನ್ನು ತೆರವುಗೊಳಿಸಬೇಕೆ? ಕರ್ನಲ್ ಲಾಗ್‌ಗಳು ಬದಲಾಗುವುದಿಲ್ಲ.</string>

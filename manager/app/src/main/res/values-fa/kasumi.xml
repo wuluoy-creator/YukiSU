@@ -20,11 +20,6 @@
     <string name="kasumi_hide_normal">عادی</string>
     <string name="kasumi_info_active_mounts">مانت‌های فعال:</string>
     <string name="kasumi_info_kernel">کرنل</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… و %d مورد دیگر</item>
-        <item quantity="other">… و %d مورد دیگر</item>
-    </plurals>
-    <string name="kasumi_info_mount_base">پایه مانت</string>
     <string name="kasumi_kernel_debug">اشکال‌زدایی کرنل</string>
     <string name="kasumi_kernel_debug_desc">ثبت لاگ اشکال‌زدایی کرنل Kasumi را فعال کن</string>
     <string name="kasumi_kernel_hooks">قلاب‌های هسته</string>
@@ -124,7 +119,6 @@
     <string name="kasumi_storage">فضای ذخیره‌سازی</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">مانت نشده</string>
-    <string name="kasumi_system_info">اطلاعات سیستم</string>
     <string name="kasumi_tempdir">نقطه مانت موقت</string>
     <string name="kasumi_tempdir_desc">مسیر پایه برای مانت‌های موقت (برای خودکار خالی بگذارید)</string>
     <string name="kasumi_title">پیکربندی Kasumi</string>

@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.system.Os
 import androidx.annotation.DrawableRes
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
@@ -28,7 +27,6 @@ import androidx.compose.material.icons.outlined.TaskAlt
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -125,11 +123,7 @@ fun HomeScreen(navigator: DestinationsNavigator) {
         }
     }
 
-    LaunchedEffect(viewModel.dataRefreshTrigger) {
-        viewModel.dataRefreshTrigger.collect { _ ->
-            // 数据刷新时的额外处理可以在这里添加
-        }
-    }
+    val homeRefreshKey by viewModel.dataRefreshTrigger.collectAsState()
 
     // SuperKey 对话框
     val superKeyDialog = rememberSuperKeyDialog()
@@ -248,7 +242,6 @@ fun HomeScreen(navigator: DestinationsNavigator) {
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val scrollState = rememberScrollState()
-    var homePage by rememberSaveable { mutableIntStateOf(0) }
 
     Scaffold(
         topBar = {
@@ -262,141 +255,134 @@ fun HomeScreen(navigator: DestinationsNavigator) {
             WindowInsetsSides.Top + WindowInsetsSides.Horizontal
         )
     ) { innerPadding ->
-        Column(
-            Modifier.fillMaxSize().padding(innerPadding).consumeWindowInsets(innerPadding)
+        YukiPullToRefreshBox(
+            isRefreshing = viewModel.isRefreshing,
+            onRefresh = { viewModel.onPullRefresh(context) },
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding)
         ) {
-            val canShowSystem = viewModel.isCoreDataLoaded &&
-                viewModel.systemStatus.isManager && viewModel.systemStatus.ksuVersion != null
-            val selectedHomePage = if (canShowSystem) homePage else 0
-            if (canShowSystem) {
-                BackHandler(selectedHomePage != 0) { homePage = 0 }
-                KsuIsValid {
-                    WorkspaceTabs(
-                        labels = listOf(stringResource(R.string.nav_home_overview), stringResource(R.string.nav_home_system)),
-                        selected = selectedHomePage,
-                        onSelected = { homePage = it },
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
+                    .padding(top = 12.dp, start = 16.dp, end = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                // 状态卡片
+                if (viewModel.isCoreDataLoaded) {
+                    val isNotManager = !viewModel.systemStatus.isManager
+                    val needsSuperKeyAuth = isNotManager && !superKeyAuthSuccess && viewModel.systemStatus.ksuVersion == null
+
+                    StatusCard(
+                        systemStatus = viewModel.systemStatus,
+                        // SuperKey 模式用于表示「主要依赖 SuperKey」，
+                        // 显示规则交给 StatusCard 内部根据 isSuperKeyMode + isSignatureOk 决定徽章组合。
+                        isSuperKeyMode = isSuperKeyConfigured || superKeyAuthSuccess,
+                        needsSuperKeyAuth = needsSuperKeyAuth,
+                        onClickInstall = {
+                            navigator.navigate(InstallScreenDestination)
+                        },
+                        onSuperKeyAuth = {
+                            superKeyDialog.show()
+                        },
+                        isSignatureOk = isSignatureOk,
                     )
+
+                    CiUpdateCard()
+
+                    if (ksudIntegrityStatus == KsudIntegrityStatus.MISMATCH) {
+                        WarningCard(stringResource(R.string.ksud_integrity_warning))
+                    }
+
+                    if (viewModel.systemStatus.requireNewKernel) {
+                        WarningCard(
+                            message = stringResource(R.string.require_kernel_version),
+                            onClick = { navigator.navigate(InstallScreenDestination) },
+                        )
+                    }
+                    if (viewModel.systemStatus.requireNewManager) {
+                        WarningCard(stringResource(R.string.require_manager_version))
+                    }
+                    if (viewModel.systemStatus.showLkmUpdate) {
+                        WarningCard(
+                            message = stringResource(R.string.home_lkm_update_available),
+                            color = MaterialTheme.colorScheme.primary,
+                            onClick = { navigator.navigate(InstallScreenDestination) },
+                        )
+                    }
+
+                    if (viewModel.systemStatus.ksuVersion != null && !viewModel.systemStatus.isRootAvailable) {
+                        WarningCard(
+                            stringResource(id = R.string.grant_root_failed)
+                        )
+                    }
+
                 }
-            }
-            Box(Modifier.fillMaxWidth().weight(1f)) {
-                if (selectedHomePage == 1) {
-                    KsuIsValid { KasumiWorkspace(KasumiSection.Status) }
-                } else {
-                    YukiPullToRefreshBox(
-                        isRefreshing = viewModel.isRefreshing,
-                        onRefresh = { viewModel.onPullRefresh(context) },
-                        modifier = Modifier
-                            .fillMaxSize()
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .verticalScroll(scrollState)
-                                .padding(top = 12.dp, start = 16.dp, end = 16.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
+
+                if (viewModel.isExtendedDataLoaded) {
+                    val checkUpdate = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
+                        .getBoolean("check_update", true)
+                    if (checkUpdate) {
+                        UpdateCard()
+                    }
+
+                    // 信息卡片
+                    InfoCard(
+                        systemInfo = viewModel.systemInfo,
+                        isSimpleMode = viewModel.isSimpleMode,
+                        canReadHookType = viewModel.systemStatus.isManager &&
+                            viewModel.systemStatus.ksuVersion != null,
+                        isHideZygiskImplement = viewModel.isHideZygiskImplement,
+                        isHideMetaModuleImplement = viewModel.isHideMetaModuleImplement,
+                        isHideSeccompStatus = viewModel.isHideSeccompStatus,
+                        ksudIntegrityStatus = ksudIntegrityStatus,
+                        onYukiZygiskClick = { navigator.navigate(ExtensionRuntimeScreenDestination(initialPage = 1)) },
+                    )
+
+                }
+
+                if (viewModel.systemStatus.isManager && viewModel.systemStatus.ksuVersion != null) {
+                    KsuIsValid {
+                        KasumiWorkspace(
+                            section = KasumiSection.Status,
+                            scrollable = false,
+                            contentPadding = PaddingValues(0.dp),
+                            refreshKey = homeRefreshKey.toInt(),
+                        )
+                    }
+                }
+
+                if (viewModel.isExtendedDataLoaded) {
+                    // 链接卡片
+                    if (!viewModel.isSimpleMode && !viewModel.isHideLinkCard) {
+                        ElevatedCard(
+                            colors = getCardColors(MaterialTheme.colorScheme.surfaceContainerLow),
+                            elevation = getCardElevation(),
                         ) {
-                            // 状态卡片
-                            if (viewModel.isCoreDataLoaded) {
-                                val isNotManager = !viewModel.systemStatus.isManager
-                                val needsSuperKeyAuth = isNotManager && !superKeyAuthSuccess && viewModel.systemStatus.ksuVersion == null
-
-                                StatusCard(
-                                    systemStatus = viewModel.systemStatus,
-                                    // SuperKey 模式用于表示「主要依赖 SuperKey」，
-                                    // 显示规则交给 StatusCard 内部根据 isSuperKeyMode + isSignatureOk 决定徽章组合。
-                                    isSuperKeyMode = isSuperKeyConfigured || superKeyAuthSuccess,
-                                    needsSuperKeyAuth = needsSuperKeyAuth,
-                                    onClickInstall = {
-                                        navigator.navigate(InstallScreenDestination)
-                                    },
-                                    onSuperKeyAuth = {
-                                        superKeyDialog.show()
-                                    },
-                                    isSignatureOk = isSignatureOk,
-                                )
-
-                                CiUpdateCard()
-
-                                if (ksudIntegrityStatus == KsudIntegrityStatus.MISMATCH) {
-                                    WarningCard(stringResource(R.string.ksud_integrity_warning))
-                                }
-
-                                if (viewModel.systemStatus.requireNewKernel) {
-                                    WarningCard(
-                                        message = stringResource(R.string.require_kernel_version),
-                                        onClick = { navigator.navigate(InstallScreenDestination) },
-                                    )
-                                }
-                                if (viewModel.systemStatus.requireNewManager) {
-                                    WarningCard(stringResource(R.string.require_manager_version))
-                                }
-                                if (viewModel.systemStatus.showLkmUpdate) {
-                                    WarningCard(
-                                        message = stringResource(R.string.home_lkm_update_available),
-                                        color = MaterialTheme.colorScheme.primary,
-                                        onClick = { navigator.navigate(InstallScreenDestination) },
-                                    )
-                                }
-
-                                if (viewModel.systemStatus.ksuVersion != null && !viewModel.systemStatus.isRootAvailable) {
-                                    WarningCard(
-                                        stringResource(id = R.string.grant_root_failed)
-                                    )
-                                }
-
-                            }
-
-                            if (viewModel.isExtendedDataLoaded) {
-                                val checkUpdate = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
-                                    .getBoolean("check_update", true)
-                                if (checkUpdate) {
-                                    UpdateCard()
-                                }
-
-                                // 信息卡片
-                                InfoCard(
-                                    systemInfo = viewModel.systemInfo,
-                                    isSimpleMode = viewModel.isSimpleMode,
-                                    canReadHookType = viewModel.systemStatus.isManager &&
-                                        viewModel.systemStatus.ksuVersion != null,
-                                    isHideZygiskImplement = viewModel.isHideZygiskImplement,
-                                    isHideMetaModuleImplement = viewModel.isHideMetaModuleImplement,
-                                    isHideSeccompStatus = viewModel.isHideSeccompStatus,
-                                    ksudIntegrityStatus = ksudIntegrityStatus,
-                                    onYukiZygiskClick = { navigator.navigate(ExtensionRuntimeScreenDestination(initialPage = 1)) },
-                                )
-
-                                // 链接卡片
-                                if (!viewModel.isSimpleMode && !viewModel.isHideLinkCard) {
-                                    ElevatedCard(
-                                        colors = getCardColors(MaterialTheme.colorScheme.surfaceContainerLow),
-                                        elevation = getCardElevation(),
-                                    ) {
-                                        ContributionCard()
-                                        HorizontalDivider(
-                                            modifier = Modifier.padding(start = 56.dp, end = 16.dp),
-                                            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f),
-                                        )
-                                        DonateCard()
-                                    }
-                                }
-                            }
-
-                            if (!viewModel.isExtendedDataLoaded) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(24.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    CircularProgressIndicator()
-                                }
-                            }
-
-                            Spacer(Modifier.height(16.dp))
+                            ContributionCard()
+                            HorizontalDivider(
+                                modifier = Modifier.padding(start = 56.dp, end = 16.dp),
+                                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f),
+                            )
+                            DonateCard()
                         }
                     }
                 }
+
+                if (!viewModel.isExtendedDataLoaded) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+
+                Spacer(Modifier.height(16.dp))
             }
         }
     }

@@ -20,12 +20,6 @@
     <string name="kasumi_hide_normal">Уобичајено</string>
     <string name="kasumi_info_active_mounts">Активни носачи:</string>
     <string name="kasumi_info_kernel">Језгро</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… и још %d</item>
-        <item quantity="few">… и још %d</item>
-        <item quantity="other">… и још %d</item>
-    </plurals>
-    <string name="kasumi_info_mount_base">Основа монтирања</string>
     <string name="kasumi_kernel_debug">Отклањање грешака језгра</string>
     <string name="kasumi_kernel_debug_desc">Омогући Kasumi евиденцију отклањања грешака у кернелу</string>
     <string name="kasumi_kernel_hooks">Куке језгра</string>
@@ -126,7 +120,6 @@
     <string name="kasumi_storage">Складиштење</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Није монтирано</string>
-    <string name="kasumi_system_info">Информације о систему</string>
     <string name="kasumi_tempdir">Привремена тачка постављања</string>
     <string name="kasumi_tempdir_desc">Основна путања за привремене монтаже (оставите празно за ауто)</string>
     <string name="kasumi_title">Kasumi Конфигурација</string>

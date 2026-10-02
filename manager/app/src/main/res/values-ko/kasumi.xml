@@ -8,7 +8,6 @@
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
     <string name="kasumi_info_active_mounts">활성 마운트:</string>
     <string name="kasumi_info_kernel">커널</string>
-    <string name="kasumi_info_mount_base">마운트 베이스</string>
     <string name="kasumi_kernel_debug">커널 디버그</string>
     <string name="kasumi_kernel_debug_desc">Kasumi 커널 디버그 로깅을 활성화합니다</string>
     <string name="kasumi_kernel_title">Kasumi 커널</string>
@@ -70,7 +69,6 @@
     <string name="kasumi_storage">저장소</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">마운트되지 않음</string>
-    <string name="kasumi_system_info">시스템 정보</string>
     <string name="kasumi_tempdir">임시 마운트 지점</string>
     <string name="kasumi_tempdir_desc">임시 마운트의 기본 경로(자동을 위해 비워 두세요)</string>
     <string name="kasumi_title">Kasumi 구성</string>
@@ -94,9 +92,6 @@
     <string name="kasumi_global_override">전역 재정의: %1$s</string>
     <string name="kasumi_hide_aggressive">적극적</string>
     <string name="kasumi_hide_normal">일반</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="other">…외 %d개</item>
-    </plurals>
     <string name="kasumi_kernel_hooks">커널 후크</string>
     <string name="kasumi_logs_clear">데몬 로그 지우기</string>
     <string name="kasumi_logs_clear_confirm">데몬 로그를 지울까요? 커널 로그는 변경되지 않습니다.</string>

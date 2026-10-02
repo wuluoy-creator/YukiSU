@@ -20,11 +20,6 @@
     <string name="kasumi_hide_normal">Normaal</string>
     <string name="kasumi_info_active_mounts">Actieve koppelingen:</string>
     <string name="kasumi_info_kernel">Kernel</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… en nog %d koppelpunt</item>
-        <item quantity="other">… en nog %d koppelpunten</item>
-    </plurals>
-    <string name="kasumi_info_mount_base">Koppelbasis</string>
     <string name="kasumi_kernel_debug">Kernel-foutopsporing</string>
     <string name="kasumi_kernel_debug_desc">Schakel het foutopsporingslogboek van de Kasumi-kernel in</string>
     <string name="kasumi_kernel_hooks">Kernelhooks</string>
@@ -124,7 +119,6 @@
     <string name="kasumi_storage">Opslag</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Niet gekoppeld</string>
-    <string name="kasumi_system_info">Systeeminformatie</string>
     <string name="kasumi_tempdir">Tijdelijk koppelpunt</string>
     <string name="kasumi_tempdir_desc">Basispad voor tijdelijke koppelingen (laat leeg voor automatisch)</string>
     <string name="kasumi_title">Kasumi-configuratie</string>

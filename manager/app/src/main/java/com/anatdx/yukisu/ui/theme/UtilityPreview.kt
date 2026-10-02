@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ui.screen.moreSettings.component.*
+import com.anatdx.yukisu.ui.screen.WorkspaceTabs
 
 /** Device-independent previews: the same production settings rows and surface tokens. */
 @Preview(name = "Light · compact phone", widthDp = 360, heightDp = 740)
@@ -72,6 +73,25 @@ private fun UtilitySettingsPreviewContent() {
                     groupPosition = MoreSettingsItemPosition.Last,
                     onClick = {},
                 )
+            }
+        }
+    }
+}
+
+@Preview(name = "Equal tabs · light", widthDp = 360, heightDp = 300)
+@Preview(name = "Equal tabs · dark", widthDp = 360, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(name = "Equal tabs · large text", widthDp = 320, heightDp = 540, fontScale = 2f)
+@Preview(name = "Equal tabs · landscape", widthDp = 800, heightDp = 320)
+@Composable
+private fun WorkspaceTabsPreview() {
+    UtilityPreviewTheme {
+        Surface(color = MaterialTheme.colorScheme.background) {
+            Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+                WorkspaceTabs(listOf("模块", "插件"), 0, {})
+                Spacer(Modifier.height(16.dp))
+                WorkspaceTabs(listOf("挂载", "注入监控", "注入设置"), 1, {})
+                Spacer(Modifier.height(16.dp))
+                WorkspaceTabs(listOf("隔离设置", "生效规则", "内核功能", "高级安全"), 0, {})
             }
         }
     }

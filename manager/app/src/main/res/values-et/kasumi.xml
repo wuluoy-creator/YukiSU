@@ -20,11 +20,6 @@
     <string name="kasumi_hide_normal">Tavaline</string>
     <string name="kasumi_info_active_mounts">Aktiivsed haakimised:</string>
     <string name="kasumi_info_kernel">Kernel</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… ja veel %d haakepunkt</item>
-        <item quantity="other">… ja veel %d haakepunkti</item>
-    </plurals>
-    <string name="kasumi_info_mount_base">Haakimise baas</string>
     <string name="kasumi_kernel_debug">Kerneli silumine</string>
     <string name="kasumi_kernel_debug_desc">Luba Kasumi kerneli silumislogimine</string>
     <string name="kasumi_kernel_hooks">Tuuma haagid</string>
@@ -124,7 +119,6 @@
     <string name="kasumi_storage">Salvestusruum</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Haakimata</string>
-    <string name="kasumi_system_info">Süsteemiteave</string>
     <string name="kasumi_tempdir">Ajutine haakimispunkt</string>
     <string name="kasumi_tempdir_desc">Ajutiste haakimiste baastee (jätke tühjaks automaatseks)</string>
     <string name="kasumi_title">Kasumi konfiguratsioon</string>

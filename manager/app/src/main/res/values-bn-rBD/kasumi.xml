@@ -8,7 +8,6 @@
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
     <string name="kasumi_info_active_mounts">সক্রিয় মাউন্ট:</string>
     <string name="kasumi_info_kernel">কার্নেল</string>
-    <string name="kasumi_info_mount_base">মাউন্ট বেস</string>
     <string name="kasumi_kernel_debug">কার্নেল ডিবাগ</string>
     <string name="kasumi_kernel_debug_desc">Kasumi কার্নেল ডিবাগ লগিং সক্রিয় করুন</string>
     <string name="kasumi_kernel_title">Kasumi কার্নেল</string>
@@ -70,7 +69,6 @@
     <string name="kasumi_storage">সঞ্চয়স্থান</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">মাউন্ট করা নেই</string>
-    <string name="kasumi_system_info">সিস্টেম তথ্য</string>
     <string name="kasumi_tempdir">অস্থায়ী মাউন্ট পয়েন্ট</string>
     <string name="kasumi_tempdir_desc">অস্থায়ী মাউন্টের জন্য বেস পাথ (স্বয়ংক্রিয়র জন্য খালি রাখুন)</string>
     <string name="kasumi_title">Kasumi কনফিগারেশন</string>
@@ -94,10 +92,6 @@
     <string name="kasumi_global_override">গ্লোবাল ওভাররাইড: %1$s</string>
     <string name="kasumi_hide_aggressive">আক্রমণাত্মক</string>
     <string name="kasumi_hide_normal">সাধারণ</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">…এবং আরও %dটি</item>
-        <item quantity="other">…এবং আরও %dটি</item>
-    </plurals>
     <string name="kasumi_kernel_hooks">কার্নেল হুক</string>
     <string name="kasumi_logs_clear">ডেমন লগ মুছুন</string>
     <string name="kasumi_logs_clear_confirm">ডেমন লগ মুছবেন? কার্নেল লগ বদলাবে না।</string>

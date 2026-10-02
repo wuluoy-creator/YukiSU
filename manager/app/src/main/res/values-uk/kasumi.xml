@@ -20,13 +20,6 @@
     <string name="kasumi_hide_normal">Звичайний</string>
     <string name="kasumi_info_active_mounts">Активні монтування:</string>
     <string name="kasumi_info_kernel">Ядро</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… і ще %d</item>
-        <item quantity="few">… і ще %d</item>
-        <item quantity="many">… і ще %d</item>
-        <item quantity="other">… і ще %d</item>
-    </plurals>
-    <string name="kasumi_info_mount_base">База монтування</string>
     <string name="kasumi_kernel_debug">Налагодження ядра</string>
     <string name="kasumi_kernel_debug_desc">Увімкнути журнал налагодження ядра Kasumi</string>
     <string name="kasumi_kernel_hooks">Перехоплювачі ядра</string>
@@ -128,7 +121,6 @@
     <string name="kasumi_storage">Сховище</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Не змонтовано</string>
-    <string name="kasumi_system_info">Інформація про систему</string>
     <string name="kasumi_tempdir">Тимчасова точка монтування</string>
     <string name="kasumi_tempdir_desc">Базовий шлях для тимчасових монтувань (залиште порожнім для автоматичного)</string>
     <string name="kasumi_title">Конфігурація Kasumi</string>

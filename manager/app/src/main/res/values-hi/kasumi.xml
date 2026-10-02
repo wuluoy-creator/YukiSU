@@ -8,7 +8,6 @@
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
     <string name="kasumi_info_active_mounts">सक्रिय माउंट:</string>
     <string name="kasumi_info_kernel">कर्नेल</string>
-    <string name="kasumi_info_mount_base">माउंट आधार</string>
     <string name="kasumi_kernel_debug">कर्नेल डिबग</string>
     <string name="kasumi_kernel_debug_desc">Kasumi कर्नेल डिबग लॉगिंग सक्षम करें</string>
     <string name="kasumi_kernel_title">Kasumi कर्नेल</string>
@@ -70,7 +69,6 @@
     <string name="kasumi_storage">भंडारण</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">माउंट नहीं किया गया</string>
-    <string name="kasumi_system_info">सिस्टम जानकारी</string>
     <string name="kasumi_tempdir">अस्थायी माउंट बिंदु</string>
     <string name="kasumi_tempdir_desc">अस्थायी माउंट के लिए आधार पथ (स्वचालित के लिए खाली छोड़ें)</string>
     <string name="kasumi_title">Kasumi कॉन्फ़िगरेशन</string>
@@ -94,10 +92,6 @@
     <string name="kasumi_global_override">वैश्विक ओवरराइड: %1$s</string>
     <string name="kasumi_hide_aggressive">आक्रामक</string>
     <string name="kasumi_hide_normal">सामान्य</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… और %d माउंट</item>
-        <item quantity="other">… और %d माउंट</item>
-    </plurals>
     <string name="kasumi_kernel_hooks">कर्नेल हुक</string>
     <string name="kasumi_logs_clear">डेमन लॉग साफ़ करें</string>
     <string name="kasumi_logs_clear_confirm">डेमन लॉग साफ़ करें? कर्नेल लॉग नहीं बदलेंगे।</string>

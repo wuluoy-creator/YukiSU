@@ -35,7 +35,9 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -101,14 +103,18 @@ internal fun StatusTab(
     systemInfo: KasumiManager.SystemInfo,
     storageInfo: KasumiManager.StorageInfo,
     modules: List<KasumiManager.ModuleInfo>,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
+    scrollable: Boolean = true,
+    contentPadding: PaddingValues = PaddingValues(16.dp),
+    refreshEnabled: Boolean = true,
 ) {
     val mountBaseText = systemValueText(systemInfo.mountBase.ifBlank { "none" })
+    var detailsExpanded by rememberSaveable { mutableStateOf(scrollable) }
+    val expansionLabel = stringResource(if (detailsExpanded) R.string.home_runtime_collapse else R.string.home_runtime_expand)
+    val expansionState = stringResource(if (detailsExpanded) R.string.home_runtime_expanded else R.string.home_runtime_collapsed)
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
+        modifier = (if (scrollable) Modifier.fillMaxSize().verticalScroll(rememberScrollState()) else Modifier.fillMaxWidth())
+            .padding(contentPadding),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         KasumiStatusOverview(
@@ -117,51 +123,70 @@ internal fun StatusTab(
             version = systemValueText(version),
             moduleCount = modules.size,
             kasumiModuleCount = systemInfo.kasumiModuleIds.size,
-        )
-
-        ConfigSection(stringResource(R.string.kasumi_storage)) {
-            val progress = storageInfo.percent.removeSuffix("%").toFloatOrNull()
-                ?.takeIf { it.isFinite() }?.div(100)?.coerceIn(0f, 1f)
-            FlowRow(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                itemVerticalAlignment = Alignment.CenterVertically,
-            ) {
+            onRefresh = onRefresh,
+            refreshEnabled = refreshEnabled,
+        ) {
+            HorizontalDivider(Modifier.padding(horizontal = 16.dp), color = MaterialTheme.colorScheme.outlineVariant)
+            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                val progress = storageInfo.percent.removeSuffix("%").toFloatOrNull()
+                    ?.takeIf { it.isFinite() }?.div(100)?.coerceIn(0f, 1f)
                 Text(
-                    text = "${systemValueText(storageInfo.used)} / ${systemValueText(storageInfo.size)}",
-                    style = MaterialTheme.typography.titleSmall,
+                    text = stringResource(R.string.kasumi_storage),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
-                if (storageInfo.type.isNotBlank() && !storageInfo.type.equals("unknown", ignoreCase = true)) {
+                FlowRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    itemVerticalAlignment = Alignment.CenterVertically,
+                ) {
                     Text(
-                        text = storageInfo.type.uppercase(),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        text = "${systemValueText(storageInfo.used)} / ${systemValueText(storageInfo.size)}",
+                        style = MaterialTheme.typography.titleSmall,
+                    )
+                    if (storageInfo.type.isNotBlank() && !storageInfo.type.equals("unknown", ignoreCase = true)) {
+                        Text(
+                            text = storageInfo.type.uppercase(),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+                if (progress != null) {
+                    LinearProgressIndicator(
+                        progress = { progress },
+                        modifier = Modifier.fillMaxWidth().height(4.dp),
+                        trackColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                        gapSize = 0.dp,
+                        drawStopIndicator = {},
                     )
                 }
-            }
-            if (progress != null) {
-                LinearProgressIndicator(
-                    progress = { progress },
-                    modifier = Modifier.fillMaxWidth().height(4.dp),
-                    trackColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                    gapSize = 0.dp,
-                    drawStopIndicator = {},
+                Text(
+                    text = mountBaseText,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            Text(
-                text = mountBaseText,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-
-        ConfigSection(stringResource(R.string.kasumi_system_info)) {
-            Column {
-                InfoRow(stringResource(R.string.kasumi_info_kernel), systemValueText(systemInfo.kernel), monospace = true)
-                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-                InfoRow(stringResource(R.string.kasumi_info_mount_base), mountBaseText, monospace = true)
-                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+            HorizontalDivider(Modifier.padding(horizontal = 16.dp), color = MaterialTheme.colorScheme.outlineVariant)
+            Row(
+                modifier = Modifier.fillMaxWidth()
+                    .clickable(role = Role.Button, onClickLabel = expansionLabel) { detailsExpanded = !detailsExpanded }
+                    .semantics { stateDescription = expansionState }
+                    .heightIn(min = 48.dp)
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                Text(stringResource(R.string.home_runtime_details), Modifier.weight(1f), style = MaterialTheme.typography.titleSmall)
+                YukiIcon(if (detailsExpanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore, null)
+            }
+            if (detailsExpanded) Column(Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
+                // The home device group already exposes the kernel version.
+                if (scrollable) {
+                    InfoRow(stringResource(R.string.kasumi_info_kernel), systemValueText(systemInfo.kernel), monospace = true)
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                }
                 InfoRow(stringResource(R.string.kasumi_runtime_views), when (systemInfo.viewsEnabled) {
                     true -> stringResource(R.string.kasumi_views_on)
                     false -> stringResource(R.string.kasumi_views_off)
@@ -176,38 +201,25 @@ internal fun StatusTab(
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
-                        systemInfo.activeMounts.take(5).forEach { mount ->
+                        systemInfo.activeMounts.forEach { mount ->
                             Text(
                                 text = "• $mount",
                                 style = MaterialTheme.typography.bodySmall,
                                 fontFamily = FontFamily.Monospace,
                             )
                         }
-                        if (systemInfo.activeMounts.size > 5) {
-                            Text(
-                                text = pluralStringResource(R.plurals.kasumi_info_more_mounts, systemInfo.activeMounts.size - 5, systemInfo.activeMounts.size - 5),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
                     }
                 }
-            }
-        }
-
-        KernelHooksCard(systemInfo.hooks)
-        systemInfo.mountStats?.let { ms ->
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                shape = kasumiCardShape(),
-                color = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = CardConfig.cardAlpha),
-            ) {
-                FlowRow(
-                    Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-                    horizontalArrangement = Arrangement.spacedBy(24.dp),
-                ) {
-                    StatValue(ms.totalMounts.toString(), stringResource(R.string.kasumi_mount_total))
-                    StatValue(ms.overlayfsMounts.toString(), "OverlayFS")
+                if (systemInfo.hooks.isNotBlank()) {
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                    InfoRow(stringResource(R.string.kasumi_kernel_hooks), systemInfo.hooks, monospace = true)
+                }
+                systemInfo.mountStats?.let { ms ->
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
+                        StatValue(ms.totalMounts.toString(), stringResource(R.string.kasumi_mount_total))
+                        StatValue(ms.overlayfsMounts.toString(), "OverlayFS")
+                    }
                 }
             }
         }
@@ -242,6 +254,9 @@ private fun KasumiStatusOverview(
     version: String,
     moduleCount: Int,
     kasumiModuleCount: Int,
+    onRefresh: () -> Unit,
+    refreshEnabled: Boolean,
+    content: @Composable ColumnScope.() -> Unit = {},
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -298,6 +313,9 @@ private fun KasumiStatusOverview(
                         }
                     }
                 }
+                IconButton(onClick = onRefresh, enabled = refreshEnabled) {
+                    YukiIcon(Icons.Filled.Refresh, stringResource(R.string.kasumi_rules_refresh))
+                }
             }
             HorizontalDivider(Modifier.padding(horizontal = 16.dp), color = MaterialTheme.colorScheme.outlineVariant)
             FlowRow(
@@ -311,6 +329,7 @@ private fun KasumiStatusOverview(
                     stringResource(R.string.kasumi_stats_kasumi),
                 )
             }
+            content()
         }
     }
 }

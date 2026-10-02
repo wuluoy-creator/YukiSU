@@ -20,12 +20,6 @@
     <string name="kasumi_hide_normal">Normal</string>
     <string name="kasumi_info_active_mounts">Montagens ativas:</string>
     <string name="kasumi_info_kernel">Kernel</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… e mais %d montagem</item>
-        <item quantity="other">… e mais %d montagens</item>
-        <item quantity="many">… e mais %d montagens</item>
-    </plurals>
-    <string name="kasumi_info_mount_base">Base de montagem</string>
     <string name="kasumi_kernel_debug">Depuração do kernel</string>
     <string name="kasumi_kernel_debug_desc">Ativar o registro de depuração do kernel do Kasumi</string>
     <string name="kasumi_kernel_hooks">Hooks do kernel</string>
@@ -126,7 +120,6 @@
     <string name="kasumi_storage">Armazenamento</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Não montado</string>
-    <string name="kasumi_system_info">Informações do sistema</string>
     <string name="kasumi_tempdir">Ponto de montagem temporário</string>
     <string name="kasumi_tempdir_desc">Caminho base das montagens temporárias (deixe em branco para automático)</string>
     <string name="kasumi_title">Configuração do Kasumi</string>

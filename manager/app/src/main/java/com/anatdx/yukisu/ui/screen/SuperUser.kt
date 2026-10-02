@@ -27,6 +27,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.*
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -71,6 +73,8 @@ import com.dergoogler.mmrl.ui.component.LabelItemDefaults
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.AppProfileScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.AuthorizationPoliciesScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.AuthorizationRecordsScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.anatdx.yukisu.Natives
 import com.anatdx.yukisu.R
@@ -118,7 +122,6 @@ fun SuperUserScreen(navigator: DestinationsNavigator) {
 @Composable
 internal fun SuperUserPage(
     navigator: DestinationsNavigator,
-    sectionNavigation: @Composable () -> Unit = {},
 ) {
     val viewModel = viewModel<SuperUserViewModel>()
     val scope = rememberCoroutineScope()
@@ -221,22 +224,50 @@ internal fun SuperUserPage(
     Scaffold(
         topBar = {
             Column {
-            SearchAppBar(
-                title = { TopBarTitle(viewModel.selectedCategory, appCounts) },
-                searchText = viewModel.search,
-                onSearchTextChange = { viewModel.search = it },
-                onClearClick = { viewModel.search = "" },
-                dropdownContent = {
-                    IconButton(onClick = { showBottomSheet = true }) {
-                        YukiIcon(
-                            imageVector = Icons.Filled.MoreVert,
-                            contentDescription = stringResource(id = R.string.settings),
+                SearchAppBar(
+                    title = { TopBarTitle() },
+                    searchText = viewModel.search,
+                    onSearchTextChange = { viewModel.search = it },
+                    onClearClick = { viewModel.search = "" },
+                    navigationActions = {
+                        AuthorizationShortcut(
+                            icon = Icons.Outlined.Tune,
+                            label = stringResource(R.string.nav_policies),
+                            onClick = { navigator.navigate(AuthorizationPoliciesScreenDestination) },
                         )
+                        AuthorizationShortcut(
+                            icon = Icons.Outlined.History,
+                            label = stringResource(R.string.nav_records),
+                            onClick = { navigator.navigate(AuthorizationRecordsScreenDestination) },
+                        )
+                    },
+                    dropdownContent = {
+                        IconButton(onClick = { showBottomSheet = true }) {
+                            YukiIcon(
+                                imageVector = Icons.Filled.MoreVert,
+                                contentDescription = stringResource(id = R.string.settings),
+                            )
+                        }
+                    },
+                    scrollBehavior = scrollBehavior
+                )
+                if (viewModel.selectedCategory != AppCategory.ALL) {
+                    TextButton(
+                        onClick = { showBottomSheet = true },
+                        modifier = Modifier.fillMaxWidth()
+                            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
+                            .padding(horizontal = 12.dp)
+                            .heightIn(min = 48.dp),
+                    ) {
+                        Text(
+                            text = "${stringResource(viewModel.selectedCategory.displayNameRes)} · ${appCounts[viewModel.selectedCategory] ?: 0}",
+                            modifier = Modifier.weight(1f),
+                            style = MaterialTheme.typography.labelLarge,
+                            textAlign = TextAlign.Start,
+                        )
+                        YukiIcon(Icons.Filled.ExpandMore, contentDescription = null)
                     }
-                },
-                scrollBehavior = scrollBehavior
-            )
-                sectionNavigation()
+                }
             }
         },
         snackbarHost = { SnackbarHost(snackBarHostState.hostState) },
@@ -270,45 +301,26 @@ internal fun SuperUserPage(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBarTitle(
-    selectedCategory: AppCategory,
-    appCounts: Map<AppCategory, Int>
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+private fun AuthorizationShortcut(icon: ImageVector, label: String, onClick: () -> Unit) {
+    TooltipBox(
+        positionProvider = TooltipDefaults.rememberTooltipPositionProvider(),
+        tooltip = { PlainTooltip { Text(label) } },
+        state = rememberTooltipState(),
     ) {
-        Text(
-            text = stringResource(R.string.nav_authorization),
-            fontWeight = if (isExpressiveUi) FontWeight.Normal else null
-        )
-
-        if (selectedCategory != AppCategory.ALL) {
-            Surface(
-                shape = RoundedCornerShape(12.dp),
-                color = MaterialTheme.colorScheme.primaryContainer,
-                modifier = Modifier.padding(start = 4.dp)
-            ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Text(
-                        text = stringResource(selectedCategory.displayNameRes),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
-                    Text(
-                        text = "(${appCounts[selectedCategory] ?: 0})",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
-                }
-            }
-        }
+        IconButton(onClick = onClick) { YukiIcon(icon, label) }
     }
+}
+
+@Composable
+private fun TopBarTitle() {
+    Text(
+        text = stringResource(R.string.nav_authorization),
+        fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+    )
 }
 
 @Composable

@@ -20,12 +20,6 @@
     <string name="kasumi_hide_normal">Uobičajeno</string>
     <string name="kasumi_info_active_mounts">Aktivna montiranja:</string>
     <string name="kasumi_info_kernel">Jezgra</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… i još %d</item>
-        <item quantity="few">… i još %d</item>
-        <item quantity="other">… i još %d</item>
-    </plurals>
-    <string name="kasumi_info_mount_base">Osnova montiranja</string>
     <string name="kasumi_kernel_debug">Ispravljanje pogrešaka jezgre</string>
     <string name="kasumi_kernel_debug_desc">Omogući bilježenje ispravljanja pogrešaka jezgre Kasumi</string>
     <string name="kasumi_kernel_hooks">Kuke jezgre</string>
@@ -126,7 +120,6 @@
     <string name="kasumi_storage">Pohrana</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Nije montirano</string>
-    <string name="kasumi_system_info">Informacije o sustavu</string>
     <string name="kasumi_tempdir">Privremena točka montiranja</string>
     <string name="kasumi_tempdir_desc">Osnovna putanja za privremena montiranja (ostavite prazno za automatsko)</string>
     <string name="kasumi_title">Konfiguracija Kasumi</string>

@@ -20,11 +20,6 @@
     <string name="kasumi_hide_normal">Adi</string>
     <string name="kasumi_info_active_mounts">Aktiv Bağlamalar:</string>
     <string name="kasumi_info_kernel">Nüvə</string>
-    <plurals name="kasumi_info_more_mounts">
-        <item quantity="one">… və daha %d</item>
-        <item quantity="other">… və daha %d</item>
-    </plurals>
-    <string name="kasumi_info_mount_base">Bağlama Bazası</string>
     <string name="kasumi_kernel_debug">Nüvə Sazlaması</string>
     <string name="kasumi_kernel_debug_desc">Kasumi nüvə sazlama jurnalını aktivləşdir</string>
     <string name="kasumi_kernel_hooks">Nüvə qarmaqları</string>
@@ -124,7 +119,6 @@
     <string name="kasumi_storage">Yaddaş</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Bağlanmayıb</string>
-    <string name="kasumi_system_info">Sistem Məlumatı</string>
     <string name="kasumi_tempdir">Müvəqqəti Bağlama Nöqtəsi</string>
     <string name="kasumi_tempdir_desc">Müvəqqəti bağlamalar üçün əsas yol (avtomatik üçün boş buraxın)</string>
     <string name="kasumi_title">Kasumi Konfiqurasiyası</string>

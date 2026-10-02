@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.screen.WorkspaceTabs
 import ui.screen.moreSettings.component.MoreSettingsItemPosition
 import ui.screen.moreSettings.component.SettingsControlGroup
 
@@ -80,23 +81,11 @@ internal fun KasumiLogActions(content: @Composable RowScope.() -> Unit) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun KasumiTabs(selected: KasumiSection, onSelect: (KasumiSection) -> Unit) {
-    PrimaryScrollableTabRow(
-        selectedTabIndex = selected.ordinal,
-        edgePadding = 0.dp,
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-        divider = { HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant) },
-    ) {
-        KasumiSection.entries.forEach { tab ->
-            Tab(
-                selected = selected == tab,
-                onClick = { onSelect(tab) },
-                selectedContentColor = MaterialTheme.colorScheme.primary,
-                unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                text = { Text(stringResource(tab.displayNameRes)) },
-            )
-        }
-    }
+    WorkspaceTabs(
+        labels = KasumiSection.entries.map { stringResource(it.displayNameRes) },
+        selected = selected.ordinal,
+        onSelected = { onSelect(KasumiSection.entries[it]) },
+    )
 }
