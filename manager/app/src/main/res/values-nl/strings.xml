@@ -178,8 +178,6 @@
     <string name="su_not_allowed">Supergebruiker verlenen aan %s is niet toegestaan</string>
     <string name="settings_disable_kernel_umount">Kernel-umount uitschakelen</string>
     <string name="settings_disable_kernel_umount_summary">Schakel het door KernelSU bestuurde umount-gedrag op kernelniveau uit</string>
-    <string name="settings_enable_enhanced_security">Strikt beveiligingsbeleid gebruiken</string>
-    <string name="settings_enable_enhanced_security_summary">Blokkeer rechtenverhoging buiten het KernelSU-domein en ongeautoriseerde verlagingen van app-UID\'s</string>
     <string name="settings_selinux_hide">SELinux verbergen inschakelen</string>
     <string name="settings_selinux_hide_summary">Verberg wijzigingen in het KernelSU SELinux-beleid voor controles aan de app-zijde.</string>
     <string name="feature_status_unsupported_summary">De kernel ondersteunt deze functie niet</string>
@@ -549,8 +547,6 @@
     <string name="reboot_fastbootd">Opnieuw opstarten naar Fastbootd</string>
     <string name="profile_no_new_privs">Verdere rechtenverhoging voorkomen</string>
     <string name="profile_no_new_privs_summary">Processen die via dit profiel verhoogde rechten krijgen en hun onderliggende processen kunnen via KernelSU geen verdere rechten verkrijgen, bijvoorbeeld door opnieuw su uit te voeren of GRANT_ROOT aan te roepen. Inschakelen aanbevolen.</string>
-    <string name="settings_default_no_new_privs">Standaardbescherming tegen ontsnappen (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Verdere rechtenverhoging in het standaard-rootprofiel voorkomen, inclusief beheerder en shell. Standaard uitgeschakeld.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">Experimentele functie met de ingebouwde Zygisk-injector op kernelniveau, compatibel met ZN-modules.</string>
     <string name="settings_yukizygisk_toast_on">Ingeschakeld. Wordt actief na opnieuw opstarten.</string>

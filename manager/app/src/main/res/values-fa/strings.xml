@@ -176,8 +176,6 @@
     <string name="su_not_allowed">اعطای دسترسی superuser به %s مجاز نیست</string>
     <string name="settings_disable_kernel_umount">غیرفعال‌سازی umount کرنل</string>
     <string name="settings_disable_kernel_umount_summary">رفتار umount در سطح کرنل که توسط KernelSU کنترل می‌شود را غیرفعال کن</string>
-    <string name="settings_enable_enhanced_security">استفاده از خط‌مشی امنیتی سخت‌گیرانه</string>
-    <string name="settings_enable_enhanced_security_summary">ارتقای دسترسی خارج از دامنه KernelSU و کاهش‌های غیرمجاز UID برنامه را مسدود کن</string>
     <string name="settings_selinux_hide">فعال‌سازی پنهان‌سازی SELinux</string>
     <string name="settings_selinux_hide_summary">تغییرات خط‌مشی SELinux مربوط به KernelSU را از کاوش‌های سمت برنامه پنهان کن</string>
     <string name="feature_status_unsupported_summary">کرنل از این ویژگی پشتیبانی نمی‌کند</string>
@@ -547,8 +545,6 @@
     <string name="reboot_fastbootd">راه‌اندازی مجدد به Fastbootd</string>
     <string name="profile_no_new_privs">جلوگیری از افزایش مجدد دسترسی</string>
     <string name="profile_no_new_privs_summary">پردازش‌هایی که با این پیکربندی دسترسی بالاتر گرفته‌اند و فرزندانشان دیگر نمی‌توانند از طریق KernelSU، مانند اجرای دوباره su یا فراخوانی GRANT_ROOT، دسترسی خود را افزایش دهند. فعال‌سازی توصیه می‌شود.</string>
-    <string name="settings_default_no_new_privs">محافظت پیش‌فرض در برابر خروج از محدودیت (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">جلوگیری از افزایش مجدد دسترسی در نمایه پیش‌فرض root، شامل مدیر و shell. به‌طور پیش‌فرض خاموش است.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">ویژگی آزمایشی با تزریق‌کننده داخلی Zygisk در سطح هسته، سازگار با ماژول‌های ZN.</string>
     <string name="settings_yukizygisk_toast_on">روشن شد؛ پس از راه‌اندازی مجدد اعمال می‌شود</string>

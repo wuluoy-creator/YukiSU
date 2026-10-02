@@ -178,8 +178,6 @@
     <string name="su_not_allowed">لا يسمح بمنح المستخدم المتميز ل %s</string>
     <string name="settings_disable_kernel_umount">تعطيل umount النواة</string>
     <string name="settings_disable_kernel_umount_summary">تعطيل سلوك umount على مستوى النواة الذي يتحكم به KernelSU</string>
-    <string name="settings_enable_enhanced_security">استخدام سياسة أمان صارمة</string>
-    <string name="settings_enable_enhanced_security_summary">حظر رفع الصلاحيات خارج نطاق KernelSU وتخفيض UID التطبيقات غير المصرح به</string>
     <string name="settings_selinux_hide">تفعيل إخفاء SELinux</string>
     <string name="settings_selinux_hide_summary">إخفاء تغييرات سياسة SELinux الخاصة بـ KernelSU عن فحوصات التطبيقات.</string>
     <string name="feature_status_unsupported_summary">النواة لا تدعم هذه الميزة</string>
@@ -549,8 +547,6 @@
     <string name="reboot_fastbootd">إعادة التشغيل إلى Fastbootd</string>
     <string name="profile_no_new_privs">منع رفع الصلاحيات مجددًا</string>
     <string name="profile_no_new_privs_summary">العمليات التي تحصل على صلاحيات بهذا الإعداد وعملياتها الفرعية لن تتمكن من رفع الصلاحيات مجددًا عبر KernelSU، مثل إعادة تشغيل su أو استدعاء GRANT_ROOT. يوصى بتفعيله.</string>
-    <string name="settings_default_no_new_privs">الحماية الافتراضية من تجاوز القيود (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">منع رفع الصلاحيات مجددًا في ملف root الافتراضي، بما فيه المدير وshell. معطّل افتراضيًا.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">ميزة تجريبية تستخدم حاقن Zygisk المدمج على مستوى النواة، والمتوافق مع وحدات ZN.</string>
     <string name="settings_yukizygisk_toast_on">فُعّل. يسري بعد إعادة التشغيل</string>

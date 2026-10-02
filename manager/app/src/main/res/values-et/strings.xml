@@ -176,8 +176,6 @@
     <string name="su_not_allowed">Superkasutaja õiguste andmine %s-le pole lubatud</string>
     <string name="settings_disable_kernel_umount">Keela kerneli umount</string>
     <string name="settings_disable_kernel_umount_summary">Keela KernelSU poolt juhitav kernelitaseme umount-käitumine</string>
-    <string name="settings_enable_enhanced_security">Kasuta ranget turbepoliitikat</string>
-    <string name="settings_enable_enhanced_security_summary">Blokeeri õiguste tõstmine väljaspool KernelSU domeeni ja rakenduste volitamata UID-i alandamine</string>
     <string name="settings_selinux_hide">Luba SELinuxi peitmine</string>
     <string name="settings_selinux_hide_summary">Peida KernelSU SELinuxi poliitika muudatused rakenduse poolsete kontrollide eest.</string>
     <string name="feature_status_unsupported_summary">Kernel ei toeta seda funktsiooni</string>
@@ -547,8 +545,6 @@
     <string name="reboot_fastbootd">Taaskäivita Fastbootd-režiimi</string>
     <string name="profile_no_new_privs">Keela korduv õiguste tõstmine</string>
     <string name="profile_no_new_privs_summary">Selle profiiliga kõrgemad õigused saanud protsessid ja nende alamprotsessid ei saa KernelSU kaudu uuesti õigusi tõsta, näiteks su uuesti käivitades või GRANT_ROOT-i kutsudes. Soovitatav on lubada.</string>
-    <string name="settings_default_no_new_privs">Vaikimisi väljumiskaitse (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Keela korduvalt õiguste tõstmine vaikimisi root-profiilis, sealhulgas haldurile ja shellile. Vaikimisi väljas.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">Eksperimentaalne sisseehitatud tuumataseme Zygiski süstija, mis toetab ZN-mooduleid.</string>
     <string name="settings_yukizygisk_toast_on">Lubatud; jõustub pärast taaskäivitust</string>

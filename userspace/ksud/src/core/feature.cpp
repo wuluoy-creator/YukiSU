@@ -14,6 +14,7 @@
 
 #include <fcntl.h>
 #include <unistd.h>
+#include <algorithm>
 #include <cerrno>
 #include <cinttypes>
 #include <cstdio>
@@ -69,7 +70,8 @@ const std::map<uint32_t, const char*>& get_feature_descriptions() {
         {KSU_FEATURE_KERNEL_UMOUNT,
          "Kernel Umount - controls whether kernel automatically unmounts modules when not needed"},
         {KSU_FEATURE_ENHANCED_SECURITY,
-         "Enhanced Security - disable non-KSU root elevation and unauthorized UID downgrades"},
+         "Enhanced Security - always enabled; blocks non-KSU root elevation and unauthorized "
+         "UID downgrades"},
         {KSU_FEATURE_ADB_ROOT,
          "ADB Root - run adbd with root privileges via kernel feature injection"},
         {KSU_FEATURE_SELINUX_HIDE,
@@ -78,8 +80,8 @@ const std::map<uint32_t, const char*>& get_feature_descriptions() {
          "WebView Zygote Umount - unmounts modules before WebView sandbox processes inherit "
          "the zygote mount namespace"},
         {KSU_FEATURE_DEFAULT_NO_NEW_PRIVS,
-         "Default No-New-Privs - profiles using the default root profile block re-escalation "
-         "(anti-escape) by default"},
+         "Default No-New-Privs - always enabled; profiles using the default root profile "
+         "block re-escalation (anti-escape)"},
         {KSU_FEATURE_SULOG,
          "SU Log - streams kernel sulog events to userspace and persists them to disk"},
         {KSU_FEATURE_MAGISK_COMPAT,
@@ -105,7 +107,8 @@ const std::map<uint32_t, const char*>& get_feature_descriptions() {
 
 bool is_fixed_feature_id(uint32_t id) {
     return id == KSU_FEATURE_KASUMI || id == KSU_FEATURE_SU_COMPAT ||
-           id == KSU_FEATURE_KASUMI_SUCOMPAT;
+           id == KSU_FEATURE_KASUMI_SUCOMPAT || id == KSU_FEATURE_ENHANCED_SECURITY ||
+           id == KSU_FEATURE_DEFAULT_NO_NEW_PRIVS;
 }
 
 bool discard_fixed_features(std::map<uint32_t, uint64_t>& features) {
@@ -113,6 +116,8 @@ bool discard_fixed_features(std::map<uint32_t, uint64_t>& features) {
     features.erase(KSU_FEATURE_KASUMI);
     features.erase(KSU_FEATURE_SU_COMPAT);
     features.erase(KSU_FEATURE_KASUMI_SUCOMPAT);
+    features.erase(KSU_FEATURE_ENHANCED_SECURITY);
+    features.erase(KSU_FEATURE_DEFAULT_NO_NEW_PRIVS);
     return features.size() != count;
 }
 
@@ -141,7 +146,7 @@ int refresh_sucompat_vfs_locked() {
 }
 
 int apply_sucompat_config(std::map<uint32_t, uint64_t>& features) {
-    // Old configs cannot disable Kasumi or restore the classic provider.
+    // Old configs cannot change the fixed SU provider or security protections.
     discard_fixed_features(features);
     if (refresh_sucompat_vfs_locked() != 0)
         return -1;
@@ -267,6 +272,11 @@ int feature_save_config_locked() {
 }
 
 int feature_set_impl(const std::string& id, uint32_t feature_id, uint64_t value) {
+    if (feature_id == KSU_FEATURE_ENHANCED_SECURITY ||
+        feature_id == KSU_FEATURE_DEFAULT_NO_NEW_PRIVS) {
+        LOGE("Feature %s is always enabled and read-only", id.c_str());
+        return 1;
+    }
     if (is_fixed_feature_id(feature_id)) {
         const uint64_t fixed_value = feature_id == KSU_FEATURE_SU_COMPAT ? 0 : 1;
         if (value != fixed_value) {
@@ -622,8 +632,8 @@ int save_binary_config(const std::map<uint32_t, uint64_t>& features) {
     const uint32_t version = FEATURE_VERSION;
     put(&version, sizeof(version));
     const uint32_t count = static_cast<uint32_t>(
-        features.size() - features.count(KSU_FEATURE_KASUMI) -
-        features.count(KSU_FEATURE_SU_COMPAT) - features.count(KSU_FEATURE_KASUMI_SUCOMPAT));
+        std::count_if(features.begin(), features.end(),
+                      [](const auto& feature) { return !is_fixed_feature_id(feature.first); }));
     put(&count, sizeof(count));
     for (const auto& [id, value] : features) {
         if (is_fixed_feature_id(id))

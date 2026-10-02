@@ -54,7 +54,7 @@ static void init_default_profiles(void)
 	       sizeof(default_root_profile.capabilities.effective));
 	default_root_profile.namespaces = KSU_NS_INHERITED;
 	strcpy(default_root_profile.selinux_domain, KSU_DEFAULT_SELINUX_DOMAIN);
-	default_root_profile.flags = 0;
+	default_root_profile.flags = FLAG_KSU_NO_NEW_PRIVS;
 
 	// Keep modules mounted for apps without an explicit profile by default.
 	default_non_root_profile.umount_modules = false;
@@ -516,6 +516,7 @@ static void ensure_default_shell_profile(void)
 	profile.rp_config.profile.namespaces = default_root_profile.namespaces;
 	strcpy(profile.rp_config.profile.selinux_domain,
 	       default_root_profile.selinux_domain);
+	profile.rp_config.profile.flags = default_root_profile.flags;
 
 	if (!ksu_set_app_profile(&profile, false))
 		pr_warn("Failed to add default shell profile\n");
@@ -635,10 +636,9 @@ static void migrate_profile(u32 version, struct app_profile *profile)
 		}
 	}
 
-	/* pre-v4 -> v4: the flags field is new. Leave it neutral (0) so the
-	 * global "app profile 防逃逸" toggle (KSU_FEATURE_DEFAULT_NO_NEW_PRIVS,
-	 * applied to default_root_profile) is the single source of the
-	 * NO_NEW_PRIVS default. Per-profile overrides still win once set. */
+	/* pre-v4 -> v4: the flags field is new. Leave custom profiles neutral
+	 * (0); profiles using the default inherit its mandatory NO_NEW_PRIVS
+	 * flag. Per-profile overrides still win once set. */
 	if (version < KSU_APP_PROFILE_VER)
 		profile->rp_config.profile.flags = 0;
 
@@ -766,26 +766,11 @@ void ksu_prune_allowlist(bool (*is_uid_valid)(uid_t, char *, void *),
 	}
 }
 
-// Global "app profile 防逃逸" default: when on, default_root_profile carries
-// NO_NEW_PRIVS, so every profile that resolves to the default (incl. the
-// manager and shell, per ksu_get_root_profile) defaults to anti-escape.
-// Persisted by ksud's .feature_config (feature save/load).
+// The default root profile always carries NO_NEW_PRIVS. Keep the feature
+// query for compatibility, without a setter that could disable protection.
 static int default_no_new_privs_feature_get(u64 *value)
 {
 	*value = (default_root_profile.flags & FLAG_KSU_NO_NEW_PRIVS) ? 1 : 0;
-	return 0;
-}
-
-static int default_no_new_privs_feature_set(u64 value)
-{
-	// Single aligned u64 store; the lockless reader in
-	// escape_with_root_profile() sees either the old or new value, never
-	// torn.
-	if (value)
-		default_root_profile.flags |= FLAG_KSU_NO_NEW_PRIVS;
-	else
-		default_root_profile.flags &= ~FLAG_KSU_NO_NEW_PRIVS;
-	pr_info("default_no_new_privs: set to %d\n", value != 0);
 	return 0;
 }
 
@@ -793,7 +778,6 @@ static const struct ksu_feature_handler default_no_new_privs_handler = {
     .feature_id = KSU_FEATURE_DEFAULT_NO_NEW_PRIVS,
     .name = "default_no_new_privs",
     .get_handler = default_no_new_privs_feature_get,
-    .set_handler = default_no_new_privs_feature_set,
 };
 
 void ksu_allowlist_init(void)

@@ -176,8 +176,6 @@
     <string name="su_not_allowed">%s için süper kullanıcı yetkisi verilemiyor</string>
     <string name="settings_disable_kernel_umount">Çekirdek ayırmasını devre dışı bırak</string>
     <string name="settings_disable_kernel_umount_summary">KernelSU tarafından kontrol edilen çekirdek seviyesindeki ayırma davranışını devre dışı bırakın</string>
-    <string name="settings_enable_enhanced_security">Katı güvenlik politikası kullan</string>
-    <string name="settings_enable_enhanced_security_summary">KernelSU alanı dışındaki yetki yükseltmeyi ve yetkisiz app UID düşürmeyi engeller</string>
     <string name="settings_selinux_hide">SELinux gizlemeyi etkinleştir</string>
     <string name="settings_selinux_hide_summary">KernelSU SELinux politika değişikliklerini uygulama tarafı sondalardan gizle.</string>
     <string name="feature_status_unsupported_summary">Çekirdek bu özelliği desteklemiyor</string>
@@ -547,8 +545,6 @@
     <string name="reboot_fastbootd">Fastbootd\'ye yeniden başlat</string>
     <string name="profile_no_new_privs">Yeniden yetki yükseltmeyi engelle</string>
     <string name="profile_no_new_privs_summary">Bu yapılandırmayla yetki kazanan süreçler ve alt süreçleri, su komutunu yeniden çalıştırmak veya GRANT_ROOT çağırmak gibi yollarla KernelSU üzerinden tekrar yetki yükseltemez. Etkinleştirilmesi önerilir.</string>
-    <string name="settings_default_no_new_privs">Varsayılan kaçış koruması (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Yönetici ve shell dahil varsayılan root profilinde tekrar yetki yükseltmeyi engeller. Varsayılan olarak kapalıdır.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">Deneysel özellik: ZN modülleriyle uyumlu, çekirdek düzeyinde yerleşik Zygisk enjektörünü kullanır.</string>
     <string name="settings_yukizygisk_toast_on">Açıldı. Yeniden başlatınca uygulanır</string>

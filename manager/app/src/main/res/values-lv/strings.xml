@@ -178,8 +178,6 @@
     <string name="su_not_allowed">Superlietotāja tiesību piešķiršana %s nav atļauta</string>
     <string name="settings_disable_kernel_umount">Atspējot kodola umount</string>
     <string name="settings_disable_kernel_umount_summary">Atspējot KernelSU kontrolēto kodola līmeņa umount darbību</string>
-    <string name="settings_enable_enhanced_security">Izmantot stingru drošības politiku</string>
-    <string name="settings_enable_enhanced_security_summary">Bloķēt tiesību paaugstināšanu ārpus KernelSU domēna un neatļautu lietotņu UID pazemināšanu</string>
     <string name="settings_selinux_hide">Iespējot SELinux slēpšanu</string>
     <string name="settings_selinux_hide_summary">Slēpt KernelSU SELinux politikas izmaiņas no lietotņu puses pārbaudēm.</string>
     <string name="feature_status_unsupported_summary">Kodols neatbalsta šo funkciju</string>
@@ -549,8 +547,6 @@
     <string name="reboot_fastbootd">Restartēt Fastbootd režīmā</string>
     <string name="profile_no_new_privs">Aizliegt atkārtotu privilēģiju paaugstināšanu</string>
     <string name="profile_no_new_privs_summary">Procesi, kas iegūst privilēģijas ar šo profilu, un to bērnprocesi vairs nevarēs paaugstināt privilēģijas ar KernelSU, piemēram, atkārtoti izpildot su vai izsaucot GRANT_ROOT. Ieteicams iespējot.</string>
-    <string name="settings_default_no_new_privs">Noklusējuma aizsardzība pret izlaušanos (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Noklusējuma root profils, tostarp pārvaldniekam un čaulai, aizliedz atkārtotu privilēģiju paaugstināšanu. Pēc noklusējuma izslēgts.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">Eksperimentāls iebūvēts kodola līmeņa Zygisk injicētājs ar ZN moduļu atbalstu.</string>
     <string name="settings_yukizygisk_toast_on">Iespējots; stājas spēkā pēc restartēšanas</string>

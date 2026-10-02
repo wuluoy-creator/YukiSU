@@ -176,8 +176,6 @@
     <string name="su_not_allowed">Dodjela ovlasti superkorisnika za %s nije dopuštena</string>
     <string name="settings_disable_kernel_umount">Onemogući umount jezgre</string>
     <string name="settings_disable_kernel_umount_summary">Onemogući ponašanje umount na razini jezgre koje kontrolira KernelSU</string>
-    <string name="settings_enable_enhanced_security">Koristi strogu sigurnosnu politiku</string>
-    <string name="settings_enable_enhanced_security_summary">Blokiraj povećanje ovlasti izvan KernelSU domene i neovlašteno smanjenje UID-a aplikacija</string>
     <string name="settings_selinux_hide">Omogući skrivanje SELinux</string>
     <string name="settings_selinux_hide_summary">Sakrij promjene SELinux politike KernelSU od provjera na strani aplikacija.</string>
     <string name="feature_status_unsupported_summary">Jezgra ne podržava ovu značajku</string>
@@ -547,8 +545,6 @@
     <string name="reboot_fastbootd">Ponovno pokreni u Fastbootd</string>
     <string name="profile_no_new_privs">Zabrani ponovno podizanje ovlasti</string>
     <string name="profile_no_new_privs_summary">Procesi koji dobiju ovlasti ovom konfiguracijom i njihovi podređeni procesi više neće moći podizati ovlasti putem KernelSU-a, primjerice ponovnim pokretanjem su ili pozivom GRANT_ROOT. Preporučuje se omogućiti.</string>
-    <string name="settings_default_no_new_privs">Zadana zaštita od izlaska iz ograničenja (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Zabranjuje ponovno podizanje ovlasti u zadanom root profilu, uključujući upravitelj i shell. Zadano je isključeno.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">Eksperimentalna funkcija koja koristi ugrađeni injektor Zygiska na razini jezgre, kompatibilan sa ZN modulima.</string>
     <string name="settings_yukizygisk_toast_on">Uključeno. Primjenjuje se nakon ponovnog pokretanja</string>

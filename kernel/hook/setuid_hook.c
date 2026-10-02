@@ -25,27 +25,17 @@
 #include "supercall/supercall.h"
 #include "hook/tp_marker.h"
 
-static bool ksu_enhanced_security_enabled = false;
-
 static int enhanced_security_feature_get(u64 *value)
 {
-	*value = ksu_enhanced_security_enabled ? 1 : 0;
+	*value = 1;
 	return 0;
 }
 
-static int enhanced_security_feature_set(u64 value)
-{
-	bool enable = value != 0;
-	ksu_enhanced_security_enabled = enable;
-	pr_info("enhanced_security: set to %d\n", enable);
-	return 0;
-}
-
+/* Strict security is mandatory; retain only the status query for clients. */
 static const struct ksu_feature_handler enhanced_security_handler = {
     .feature_id = KSU_FEATURE_ENHANCED_SECURITY,
     .name = "enhanced_security",
     .get_handler = enhanced_security_feature_get,
-    .set_handler = enhanced_security_feature_set,
 };
 
 /*
@@ -62,7 +52,7 @@ int ksu_handle_setresuid(uid_t old_uid, uid_t new_uid)
 #endif // #ifdef CONFIG_KSU_YUKIZYGISK
 
 	// if old process is root, ignore it.
-	if (old_uid != 0 && ksu_enhanced_security_enabled) {
+	if (old_uid != 0) {
 		// disallow any non-ksu domain escalation from non-root to root!
 		if (unlikely(new_uid == 0)) {
 			if (!is_ksu_domain()) {

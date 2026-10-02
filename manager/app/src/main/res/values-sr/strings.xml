@@ -176,8 +176,6 @@
     <string name="su_not_allowed">Додељивање суперкорисника %s није дозвољено</string>
     <string name="settings_disable_kernel_umount">Онемогући демонтирање на нивоу језгра</string>
     <string name="settings_disable_kernel_umount_summary">Онемогући демонтирање на нивоу језгра којим управља KernelSU</string>
-    <string name="settings_enable_enhanced_security">Користите строгу безбедносну политику</string>
-    <string name="settings_enable_enhanced_security_summary">Блокирај подизање привилегија изван KernelSU домена и неовлашћене апликације UID на ниже верзије</string>
     <string name="settings_selinux_hide">Омогући сакривање SELinux</string>
     <string name="settings_selinux_hide_summary">Сакриј измене смерница KernelSU SELinux од сонди усмерених на апликацију</string>
     <string name="feature_status_unsupported_summary">Језгро не подржава ову функцију</string>
@@ -547,8 +545,6 @@
     <string name="reboot_fastbootd">Поновно покрени у Fastbootd</string>
     <string name="profile_no_new_privs">Забрани поновно подизање привилегија</string>
     <string name="profile_no_new_privs_summary">Процеси који добију привилегије овом конфигурацијом и њихови подређени процеси више неће моћи подизати привилегије путем KernelSU-а, на пример поновним покретањем su или позивом GRANT_ROOT. Препоручује се омогућити.</string>
-    <string name="settings_default_no_new_privs">Подразумевана заштита од изласка из ограничења (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Забрањује поновно подизање привилегија у подразумеваном root профилу, укључујући менаџера и shell. Подразумевано је искључено.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">Експериментална функција која користи уграђени ињектор Zygisk-а на разини језгра, компатибилан са ZN модулима.</string>
     <string name="settings_yukizygisk_toast_on">Укључено. Примењује се након поновног покретања</string>

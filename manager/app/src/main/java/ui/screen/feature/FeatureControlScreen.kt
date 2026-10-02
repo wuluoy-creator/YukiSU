@@ -7,7 +7,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.rounded.EnhancedEncryption
 import androidx.compose.material.icons.rounded.RemoveCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -155,15 +154,12 @@ fun FeatureControlContent(
     )
     val suLog = rememberFeatureToggleState(Natives.FEATURE_SULOG)
     val adbRoot = rememberFeatureToggleState(Natives.FEATURE_ADB_ROOT)
-    val enhancedSecurity = rememberFeatureToggleState(Natives.FEATURE_ENHANCED_SECURITY)
     val magiskCompat = rememberFeatureToggleState(Natives.FEATURE_MAGISK_COMPAT)
-    val defaultNoNewPrivs = rememberFeatureToggleState(Natives.FEATURE_DEFAULT_NO_NEW_PRIVS)
     val hideBootloader = rememberFeatureToggleState(Natives.FEATURE_HIDE_BOOTLOADER)
 
     val saving = listOf(
         selinuxHide, kernelUmountDisabled, webViewZygoteUmount, suLog,
-        adbRoot, enhancedSecurity, magiskCompat, defaultNoNewPrivs,
-        hideBootloader,
+        adbRoot, magiskCompat, hideBootloader,
     ).any { it.saving }
     val savingCallback by rememberUpdatedState(onSavingChanged)
     SideEffect { savingCallback(saving) }
@@ -296,28 +292,12 @@ fun FeatureControlContent(
 
             SettingsCard(title = stringResource(R.string.yukisu_features)) {
                 FeatureSwitchItem(
-                    featureId = Natives.FEATURE_ENHANCED_SECURITY,
-                    icon = Icons.Rounded.EnhancedEncryption,
-                    title = stringResource(R.string.settings_enable_enhanced_security),
-                    summary = stringResource(R.string.settings_enable_enhanced_security_summary),
-                    state = enhancedSecurity,
-                    groupPosition = MoreSettingsItemPosition.First,
-                    onChange = { enabled ->
-                        scope.persistFeature(
-                            state = enhancedSecurity,
-                            featureId = Natives.FEATURE_ENHANCED_SECURITY,
-                            featureName = "enhanced_security",
-                            kernelEnabled = enabled
-                        )
-                    }
-                )
-
-                FeatureSwitchItem(
                     featureId = Natives.FEATURE_MAGISK_COMPAT,
                     icon = Icons.Filled.Security,
                     title = stringResource(R.string.su_compact_magisk_title),
                     summary = stringResource(R.string.su_compact_magisk_summary),
                     state = magiskCompat,
+                    groupPosition = MoreSettingsItemPosition.First,
                     enabled = ksmEnabled &&
                         (!kasumiSupported || kasumiInitialized),
                     onChange = { enabled ->
@@ -329,22 +309,6 @@ fun FeatureControlContent(
                             onFailure = { snackbarHost.showSnackbar(failedMessage) },
                         )
                     },
-                )
-
-                FeatureSwitchItem(
-                    featureId = Natives.FEATURE_DEFAULT_NO_NEW_PRIVS,
-                    icon = Icons.Filled.FrontHand,
-                    title = stringResource(R.string.settings_default_no_new_privs),
-                    summary = stringResource(R.string.settings_default_no_new_privs_summary),
-                    state = defaultNoNewPrivs,
-                    onChange = { enabled ->
-                        scope.persistFeature(
-                            state = defaultNoNewPrivs,
-                            featureId = Natives.FEATURE_DEFAULT_NO_NEW_PRIVS,
-                            featureName = "default_no_new_privs",
-                            kernelEnabled = enabled
-                        )
-                    }
                 )
 
                 FeatureSwitchItem(

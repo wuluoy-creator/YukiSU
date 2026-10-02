@@ -176,8 +176,6 @@
     <string name="su_not_allowed">%s에 슈퍼유저 권한을 부여할 수 없습니다</string>
     <string name="settings_disable_kernel_umount">커널 umount 비활성화</string>
     <string name="settings_disable_kernel_umount_summary">KernelSU가 제어하는 커널 수준 umount 동작을 비활성화합니다</string>
-    <string name="settings_enable_enhanced_security">엄격한 보안 정책 사용</string>
-    <string name="settings_enable_enhanced_security_summary">KernelSU 도메인 외부의 권한 상승 및 무단 앱 UID 강등을 차단합니다</string>
     <string name="settings_selinux_hide">SELinux 숨기기 활성화</string>
     <string name="settings_selinux_hide_summary">앱 측 탐지로부터 KernelSU SELinux 정책 변경을 숨깁니다.</string>
     <string name="feature_status_unsupported_summary">커널이 이 기능을 지원하지 않습니다</string>
@@ -567,8 +565,6 @@
     <string name="reboot_fastbootd">Fastbootd로 재부팅</string>
     <string name="profile_no_new_privs">추가 권한 상승 금지</string>
     <string name="profile_no_new_privs_summary">이 프로필로 권한을 상승시킨 프로세스와 그 자식 프로세스는 KernelSU로 다시 권한을 상승시킬 수 없습니다(su 재실행 또는 GRANT_ROOT 호출 등). 활성화를 권장합니다.</string>
-    <string name="settings_default_no_new_privs">기본 재상승 방지(no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">기본 root 프로필(관리자, shell 포함)에서 추가 권한 상승을 금지합니다. 기본값은 꺼짐입니다.</string>
     <string name="settings_yukizygisk_summary">실험적 기능입니다. 내장 커널 수준 Zygisk 주입기를 사용하며 ZN 모듈과 호환됩니다.</string>
     <string name="settings_yukizygisk_toast_on">활성화했습니다. 재부팅 후 적용됩니다</string>
     <string name="settings_yukizygisk_toast_off">비활성화했습니다. 재부팅 후 적용됩니다</string>

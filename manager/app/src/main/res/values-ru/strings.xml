@@ -178,8 +178,6 @@
     <string name="su_not_allowed">Предоставление рут-доступа %s запрещено</string>
     <string name="settings_disable_kernel_umount">Отключить размонтирование ядра</string>
     <string name="settings_disable_kernel_umount_summary">Отключить поведение размонтирования на уровне ядра, контролируемое KernelSU.</string>
-    <string name="settings_enable_enhanced_security">Использовать строгую политику безопасности</string>
-    <string name="settings_enable_enhanced_security_summary">Блокирует повышение привилегий вне домена KernelSU и неразрешенное понижение UID приложений</string>
     <string name="settings_selinux_hide">Включить скрытие SELinux</string>
     <string name="settings_selinux_hide_summary">Скрывать изменения политики SELinux KernelSU от проверок со стороны приложений.</string>
     <string name="feature_status_unsupported_summary">Ядро не поддерживает эту функцию</string>
@@ -550,8 +548,6 @@
     <string name="reboot_fastbootd">Перезагрузить в Fastbootd</string>
     <string name="profile_no_new_privs">Запретить повторное повышение привилегий</string>
     <string name="profile_no_new_privs_summary">Процессы, получившие привилегии с этой конфигурацией, и их дочерние процессы не смогут повторно повысить привилегии через KernelSU, например повторным запуском su или вызовом GRANT_ROOT. Рекомендуется включить.</string>
-    <string name="settings_default_no_new_privs">Защита от выхода из ограничений по умолчанию (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Запрещает повторное повышение привилегий в профиле root по умолчанию, включая менеджер и shell. По умолчанию выключено.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">Экспериментальная функция: встроенный инжектор Zygisk на уровне ядра, совместимый с модулями ZN.</string>
     <string name="settings_yukizygisk_toast_on">Включено. Вступит в силу после перезагрузки</string>

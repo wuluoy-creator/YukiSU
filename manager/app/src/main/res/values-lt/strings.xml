@@ -176,8 +176,6 @@
     <string name="su_not_allowed">Supervartotojo teisių suteikimas %s neleidžiamas</string>
     <string name="settings_disable_kernel_umount">Išjungti branduolio umount</string>
     <string name="settings_disable_kernel_umount_summary">Išjungti KernelSU valdomą branduolio lygio umount elgseną</string>
-    <string name="settings_enable_enhanced_security">Naudoti griežtą saugumo politiką</string>
-    <string name="settings_enable_enhanced_security_summary">Blokuoti teisių didinimą už KernelSU domeno ribų ir neautorizuotą programų UID mažinimą</string>
     <string name="settings_selinux_hide">Įjungti SELinux slėpimą</string>
     <string name="settings_selinux_hide_summary">Slėpti KernelSU SELinux politikos pakeitimus nuo programos pusės patikrinimų.</string>
     <string name="feature_status_unsupported_summary">Branduolys nepalaiko šios funkcijos</string>
@@ -547,8 +545,6 @@
     <string name="reboot_fastbootd">Paleisti iš naujo į Fastbootd</string>
     <string name="profile_no_new_privs">Uždrausti pakartotinį teisių suteikimą</string>
     <string name="profile_no_new_privs_summary">Procesai, kuriems teisės suteiktos pagal šį profilį, ir jų antriniai procesai nebegalės pakartotinai gauti teisių per KernelSU, pavyzdžiui, vėl paleisdami su ar iškviesdami GRANT_ROOT. Rekomenduojama įjungti.</string>
-    <string name="settings_default_no_new_privs">Numatytoji apsauga nuo ištrūkimo (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Numatytasis root profilis, įskaitant tvarkytuvę ir komandų apvalkalą, draudžia pakartotinai suteikti teises. Pagal numatymą išjungta.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">Eksperimentinis įtaisytasis branduolio lygmens Zygisk injektorius, suderinamas su ZN moduliais.</string>
     <string name="settings_yukizygisk_toast_on">Įjungta; įsigalios paleidus iš naujo</string>

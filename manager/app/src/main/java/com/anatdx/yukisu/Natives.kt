@@ -124,15 +124,6 @@ object Natives {
     external fun setKernelUmountEnabled(enabled: Boolean): Boolean
 
     /**
-     * Enhanced security can be enabled/disabled.
-     *  0: disabled
-     *  1: enabled
-     *  negative : error
-     */
-    external fun isEnhancedSecurityEnabled(): Boolean
-    external fun setEnhancedSecurityEnabled(enabled: Boolean): Boolean
-
-    /**
      * Su Log can be enabled/disabled.
      *  0: disabled
      *  1: enabled
@@ -160,12 +151,11 @@ object Natives {
     external fun setSelinuxHideEnabled(enabled: Boolean): Boolean
 
     /**
-     * Global "app profile 防逃逸" default. When on, the default root profile
-     * (used by every profile that resolves to default, incl. the manager and
-     * shell) carries NO_NEW_PRIVS. Persisted via ksud's feature config.
+     * Reads the default root profile's NO_NEW_PRIVS policy, including on older
+     * kernels. Current kernels always enable it for profiles using the default,
+     * including the manager and shell.
      */
     external fun isDefaultNoNewPrivsEnabled(): Boolean
-    external fun setDefaultNoNewPrivsEnabled(enabled: Boolean): Boolean
 
     /** Runtime bootloader-property hiding. Persisted via ksud's feature config. */
     external fun isHideBootloaderEnabled(): Boolean

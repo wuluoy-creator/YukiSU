@@ -176,8 +176,6 @@
     <string name="su_not_allowed">Det er ikke tilladt at give superbruger til %s</string>
     <string name="settings_disable_kernel_umount">Deaktiver kerne-afmontering</string>
     <string name="settings_disable_kernel_umount_summary">Deaktiver afmonteringsadfærd på kerneniveau styret af KernelSU</string>
-    <string name="settings_enable_enhanced_security">Brug streng sikkerhedspolitik</string>
-    <string name="settings_enable_enhanced_security_summary">Bloker rettighedsforøgelse uden for KernelSU-domænet og uautoriserede nedgraderinger af app-UID</string>
     <string name="settings_selinux_hide">Aktivér SELinux-skjul</string>
     <string name="settings_selinux_hide_summary">Skjul KernelSU SELinux-politikændringer fra app-rettede probes</string>
     <string name="feature_status_unsupported_summary">Kernen understøtter ikke denne funktion</string>
@@ -547,8 +545,6 @@
     <string name="reboot_fastbootd">Genstart til Fastbootd</string>
     <string name="profile_no_new_privs">Forhindr yderligere rettighedsforøgelse</string>
     <string name="profile_no_new_privs_summary">Processer, der får forhøjede rettigheder med denne profil, og deres underprocesser kan ikke få yderligere rettigheder via KernelSU, f.eks. ved at køre su igen eller kalde GRANT_ROOT. Det anbefales at aktivere dette.</string>
-    <string name="settings_default_no_new_privs">Standardbeskyttelse mod undslip (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Forhindr yderligere rettighedsforøgelse i standard-root-profilen, herunder administratoren og shell. Deaktiveret som standard.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">Eksperimentel funktion med den indbyggede Zygisk-injektor på kerneniveau, kompatibel med ZN-moduler.</string>
     <string name="settings_yukizygisk_toast_on">Aktiveret. Træder i kraft efter genstart.</string>

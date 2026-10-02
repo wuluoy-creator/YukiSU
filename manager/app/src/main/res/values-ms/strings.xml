@@ -176,8 +176,6 @@
     <string name="su_not_allowed">Pemberian superuser kepada %s tidak dibenarkan</string>
     <string name="settings_disable_kernel_umount">Lumpuhkan nyahlekap kernel</string>
     <string name="settings_disable_kernel_umount_summary">Lumpuhkan kelakuan nyahlekap pada peringkat kernel yang dikawal oleh KernelSU</string>
-    <string name="settings_enable_enhanced_security">Gunakan dasar keselamatan ketat</string>
-    <string name="settings_enable_enhanced_security_summary">Sekat peningkatan keistimewaan di luar domain KernelSU dan penurunan UID aplikasi tanpa kebenaran</string>
     <string name="settings_selinux_hide">Dayakan penyembunyian SELinux</string>
     <string name="settings_selinux_hide_summary">Sembunyikan perubahan dasar SELinux KernelSU daripada pemeriksaan pihak aplikasi</string>
     <string name="feature_status_unsupported_summary">Kernel tidak menyokong ciri ini</string>
@@ -567,8 +565,6 @@
     <string name="reboot_fastbootd">But semula ke Fastbootd</string>
     <string name="profile_no_new_privs">Larang peningkatan keistimewaan semula</string>
     <string name="profile_no_new_privs_summary">Proses yang memperoleh keistimewaan melalui profil ini serta proses anaknya tidak boleh meningkatkan keistimewaan lagi melalui KernelSU, seperti menjalankan su atau memanggil GRANT_ROOT semula. Disyorkan supaya didayakan.</string>
-    <string name="settings_default_no_new_privs">Pencegahan peningkatan semula lalai (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Larang peningkatan keistimewaan semula dalam profil root lalai, termasuk pengurus dan shell. Dimatikan secara lalai.</string>
     <string name="settings_yukizygisk_summary">Ciri percubaan yang menggunakan penyuntik Zygisk peringkat kernel terbina dalam dan serasi dengan modul ZN.</string>
     <string name="settings_yukizygisk_toast_on">Didayakan, berkuat kuasa selepas but semula</string>
     <string name="settings_yukizygisk_toast_off">Dilumpuhkan, berkuat kuasa selepas but semula</string>

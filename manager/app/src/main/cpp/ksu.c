@@ -313,22 +313,6 @@ bool is_kernel_umount_enabled() {
   return value != 0;
 }
 
-bool set_enhanced_security_enabled(bool enabled) {
-  return set_feature(KSU_FEATURE_ENHANCED_SECURITY, enabled ? 1 : 0);
-}
-
-bool is_enhanced_security_enabled() {
-  uint64_t value = 0;
-  bool supported = false;
-  if (!get_feature(KSU_FEATURE_ENHANCED_SECURITY, &value, &supported)) {
-    return false;
-  }
-  if (!supported) {
-    return false;
-  }
-  return value != 0;
-}
-
 bool set_sulog_enabled(bool enabled) {
   return set_feature(KSU_FEATURE_SULOG, enabled ? 1 : 0);
 }
@@ -375,10 +359,6 @@ bool is_selinux_hide_enabled() {
     return false;
   }
   return value != 0;
-}
-
-bool set_default_no_new_privs_enabled(bool enabled) {
-  return set_feature(KSU_FEATURE_DEFAULT_NO_NEW_PRIVS, enabled ? 1 : 0);
 }
 
 bool is_default_no_new_privs_enabled() {

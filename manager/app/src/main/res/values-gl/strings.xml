@@ -176,8 +176,6 @@
     <string name="su_not_allowed">Non se permite conceder superusuario a %s</string>
     <string name="settings_disable_kernel_umount">Desactivar o umount do kernel</string>
     <string name="settings_disable_kernel_umount_summary">Desactivar o comportamento de umount a nivel de kernel controlado por KernelSU</string>
-    <string name="settings_enable_enhanced_security">Usar unha política de seguranza estrita</string>
-    <string name="settings_enable_enhanced_security_summary">Bloquear a elevación de privilexios fóra do dominio de KernelSU e as degradacións non autorizadas de UID das aplicacións</string>
     <string name="settings_selinux_hide">Activar a ocultación do SELinux</string>
     <string name="settings_selinux_hide_summary">Ocultar os cambios da política SELinux de KernelSU das sondaxes do lado da aplicación.</string>
     <string name="feature_status_unsupported_summary">O kernel non admite esta función</string>
@@ -547,8 +545,6 @@
     <string name="reboot_fastbootd">Reiniciar en Fastbootd</string>
     <string name="profile_no_new_privs">Impedir novas elevacións de privilexios</string>
     <string name="profile_no_new_privs_summary">Os procesos elevados con este perfil e os seus procesos fillos non poderán volver obter privilexios mediante KernelSU, por exemplo, ao executar de novo su ou chamar a GRANT_ROOT. Recoméndase activalo.</string>
-    <string name="settings_default_no_new_privs">Protección predeterminada contra a evasión (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Impedir novas elevacións de privilexios no perfil root predeterminado, incluídos o xestor e o shell. Desactivado de xeito predeterminado.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">Función experimental que usa o inxector Zygisk integrado a nivel do núcleo, compatible cos módulos ZN.</string>
     <string name="settings_yukizygisk_toast_on">Activado. Aplícase despois de reiniciar.</string>

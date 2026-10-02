@@ -13,9 +13,11 @@ enum ksu_feature_id {
   KSU_FEATURE_ADB_ROOT = 3,
   KSU_FEATURE_SELINUX_HIDE = 4,
   KSU_FEATURE_WEBVIEW_ZYGOTE_UMOUNT = 5,
+  // Always enabled; retained as a read-only feature for ABI compatibility.
   KSU_FEATURE_ENHANCED_SECURITY = 100,
   KSU_FEATURE_MAGISK_COMPAT = 101,
   // YukiSU extensions number from 100 up; 0-99 reserved for upstream KSU.
+  // The default root profile always carries NO_NEW_PRIVS; read-only.
   KSU_FEATURE_DEFAULT_NO_NEW_PRIVS = 102,
   KSU_FEATURE_YUKIZYGISK = 103,
   KSU_FEATURE_HIDE_BOOTLOADER = 104,

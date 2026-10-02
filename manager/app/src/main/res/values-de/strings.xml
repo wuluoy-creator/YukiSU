@@ -178,8 +178,6 @@
     <string name="su_not_allowed">Superuser %s zu erlauben ist nicht erlaubt</string>
     <string name="settings_disable_kernel_umount">Kernel-Aushängen deaktivieren</string>
     <string name="settings_disable_kernel_umount_summary">Das von KernelSU gesteuerte Aushängen auf Kernel-Ebene deaktivieren</string>
-    <string name="settings_enable_enhanced_security">Strenge Sicherheitsrichtlinie verwenden</string>
-    <string name="settings_enable_enhanced_security_summary">Rechteausweitung außerhalb der KernelSU-Domäne und unautorisierte Herabstufungen von App-UIDs blockieren</string>
     <string name="settings_selinux_hide">SELinux-Verbergung aktivieren</string>
     <string name="settings_selinux_hide_summary">Änderungen an der KernelSU-SELinux-Richtlinie vor App-seitigen Prüfungen verbergen.</string>
     <string name="feature_status_unsupported_summary">Der Kernel unterstützt diese Funktion nicht</string>
@@ -549,8 +547,6 @@
     <string name="reboot_fastbootd">Zu Fastbootd neu starten</string>
     <string name="profile_no_new_privs">Erneute Rechteausweitung verhindern</string>
     <string name="profile_no_new_privs_summary">Prozesse, die mit diesem Profil erhöhte Rechte erhalten, und ihre Kindprozesse können über KernelSU keine weiteren Rechte erlangen, etwa durch erneutes Ausführen von su oder Aufrufen von GRANT_ROOT. Aktivierung empfohlen.</string>
-    <string name="settings_default_no_new_privs">Ausbruchsschutz im Standardprofil (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Erneute Rechteausweitung im Standard-root-Profil einschließlich Manager und Shell verhindern. Standardmäßig deaktiviert.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">Experimentelle Funktion: integrierter Zygisk-Injektor auf Kernel-Ebene, kompatibel mit ZN-Modulen.</string>
     <string name="settings_yukizygisk_toast_on">Aktiviert. Wird nach einem Neustart wirksam.</string>

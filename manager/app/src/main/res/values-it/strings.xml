@@ -178,8 +178,6 @@
     <string name="su_not_allowed">Concedere i privilegi di superutente a %s non è consentito</string>
     <string name="settings_disable_kernel_umount">Disabilita umount del kernel</string>
     <string name="settings_disable_kernel_umount_summary">Disabilita il comportamento di umount a livello di kernel controllato da KernelSU</string>
-    <string name="settings_enable_enhanced_security">Usa criterio di sicurezza rigoroso</string>
-    <string name="settings_enable_enhanced_security_summary">Blocca l\'elevazione dei privilegi al di fuori del dominio KernelSU e i declassamenti non autorizzati di UID delle app</string>
     <string name="settings_selinux_hide">Abilita occultamento SELinux</string>
     <string name="settings_selinux_hide_summary">Nascondi le modifiche ai criteri SELinux di KernelSU dalle sonde lato app.</string>
     <string name="feature_status_unsupported_summary">Il kernel non supporta questa funzione</string>
@@ -549,8 +547,6 @@
     <string name="reboot_fastbootd">Riavvia in Fastbootd</string>
     <string name="profile_no_new_privs">Impedisci ulteriori elevazioni dei privilegi</string>
     <string name="profile_no_new_privs_summary">I processi elevati con questo profilo e i relativi processi figli non potranno ottenere nuovamente privilegi tramite KernelSU, ad esempio eseguendo ancora su o chiamando GRANT_ROOT. Si consiglia di attivare questa opzione.</string>
-    <string name="settings_default_no_new_privs">Protezione predefinita dalle evasioni (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Impedisci ulteriori elevazioni dei privilegi nel profilo root predefinito, inclusi gestore e shell. Disattivato per impostazione predefinita.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">Funzione sperimentale che usa l’iniettore Zygisk integrato a livello kernel, compatibile con i moduli ZN.</string>
     <string name="settings_yukizygisk_toast_on">Attivato. Ha effetto dopo il riavvio.</string>

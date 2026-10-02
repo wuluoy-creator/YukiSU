@@ -134,8 +134,6 @@
     <string name="require_kernel_version">Kernel update required. Tap to install.</string>
     <string name="settings_umount_modules_default">Umount modules by default</string>
     <string name="settings_umount_modules_default_summary">Umount modules for apps without their own profile. Off by default.</string>
-    <string name="settings_default_no_new_privs" tools:ignore="MissingTranslation">Default anti-escape (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary" tools:ignore="MissingTranslation">Default root profile (manager and shell included) blocks re-escalation. Off by default.</string>
     <string name="settings_yukizygisk" tools:ignore="MissingTranslation">YukiZygisk</string>
     <string name="settings_yukizygisk_summary" tools:ignore="MissingTranslation">Experimental. Built-in kernel-level Zygisk injector with ZN module compatibility.</string>
     <string name="settings_yukizygisk_toast_on" tools:ignore="MissingTranslation">Enabled; reboot required</string>
@@ -302,8 +300,6 @@
     <string name="settings_disable_kernel_umount_summary">Disable kernel-level umount behavior controlled by KernelSU</string>
     <string name="settings_webview_zygote_umount" tools:ignore="MissingTranslation">Unmount modules for WebView</string>
     <string name="settings_webview_zygote_umount_summary" tools:ignore="MissingTranslation">Unmount modules from the WebView zygote to prevent mount information leaks. This may break modules that modify WebView resources; reboot to apply.</string>
-    <string name="settings_enable_enhanced_security">Use strict security policy</string>
-    <string name="settings_enable_enhanced_security_summary">Block privilege elevation outside the KernelSU domain and unauthorized app UID downgrades</string>
     <string name="settings_selinux_hide">Enable SELinux hide</string>
     <string name="settings_selinux_hide_summary">Hide KernelSU SELinux policy changes from app-facing probes</string>
     <string name="feature_status_unsupported_summary">Kernel does not support this feature</string>

@@ -176,8 +176,6 @@
     <string name="su_not_allowed">Dodelitev pravic superuporabnika za %s ni dovoljena</string>
     <string name="settings_disable_kernel_umount">Onemogoči umount jedra</string>
     <string name="settings_disable_kernel_umount_summary">Onemogoči vedenje umount na ravni jedra, ki ga nadzoruje KernelSU</string>
-    <string name="settings_enable_enhanced_security">Uporabi strogo varnostno politiko</string>
-    <string name="settings_enable_enhanced_security_summary">Blokiraj stopnjevanje pravic zunaj domene KernelSU in nepooblaščeno zniževanje UID aplikacij</string>
     <string name="settings_selinux_hide">Omogoči skrivanje SELinux</string>
     <string name="settings_selinux_hide_summary">Skrij spremembe politike SELinux KernelSU pred preverjanji na strani aplikacij.</string>
     <string name="feature_status_unsupported_summary">Jedro ne podpira te funkcije</string>
@@ -547,8 +545,6 @@
     <string name="reboot_fastbootd">Znova zaženi v Fastbootd</string>
     <string name="profile_no_new_privs">Prepovej ponovno povišanje pravic</string>
     <string name="profile_no_new_privs_summary">Procesi, ki pridobijo pravice s tem profilom, in njihovi podrejeni procesi ne bodo mogli znova povišati pravic prek KernelSU, na primer s ponovnim zagonom su ali klicem GRANT_ROOT. Priporočamo vklop.</string>
-    <string name="settings_default_no_new_privs">Privzeta zaščita pred pobegom (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Privzeti profil root, vključno z upraviteljem in lupino, prepoveduje ponovno povišanje pravic. Privzeto izklopljeno.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">Poskusni vgrajeni mehanizem za vbrizgavanje Zygisk na ravni jedra, združljiv z moduli ZN.</string>
     <string name="settings_yukizygisk_toast_on">Omogočeno; začne veljati po ponovnem zagonu</string>

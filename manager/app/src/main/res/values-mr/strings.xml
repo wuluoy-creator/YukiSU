@@ -176,8 +176,6 @@
     <string name="su_not_allowed">%s ला सुपरयूजर देण्याची परवानगी नाही</string>
     <string name="settings_disable_kernel_umount">कर्नल umount अक्षम करा</string>
     <string name="settings_disable_kernel_umount_summary">KernelSU द्वारे नियंत्रित कर्नल-स्तरीय umount वर्तन अक्षम करा</string>
-    <string name="settings_enable_enhanced_security">कठोर सुरक्षा धोरण वापरा</string>
-    <string name="settings_enable_enhanced_security_summary">KernelSU डोमेनबाहेरील विशेषाधिकार वाढ आणि अनधिकृत अॅप UID डाउनग्रेड अवरोधित करा</string>
     <string name="settings_selinux_hide">SELinux लपवणे सक्षम करा</string>
     <string name="settings_selinux_hide_summary">अॅप-समोरील तपासण्यांपासून KernelSU SELinux धोरण बदल लपवा</string>
     <string name="feature_status_unsupported_summary">कर्नल या वैशिष्ट्यास समर्थन देत नाही</string>
@@ -567,8 +565,6 @@
     <string name="reboot_fastbootd">Fastbootd मध्ये रीस्टार्ट करा</string>
     <string name="profile_no_new_privs">पुन्हा विशेषाधिकार वाढवण्यास प्रतिबंध करा</string>
     <string name="profile_no_new_privs_summary">या प्रोफाइलद्वारे विशेषाधिकार मिळवणाऱ्या प्रक्रिया आणि त्यांच्या उपप्रक्रिया KernelSU द्वारे पुन्हा विशेषाधिकार मिळवू शकणार नाहीत, उदा. पुन्हा su चालवून किंवा GRANT_ROOT कॉल करून. हे सक्षम करण्याची शिफारस केली जाते.</string>
-    <string name="settings_default_no_new_privs">डीफॉल्ट सुटका प्रतिबंध (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">व्यवस्थापक आणि shell यांसह डीफॉल्ट root प्रोफाइलमध्ये पुन्हा विशेषाधिकार वाढवण्यास प्रतिबंध करा. डीफॉल्टनुसार बंद आहे.</string>
     <string name="settings_yukizygisk_summary">प्रायोगिक सुविधा; अंगभूत कर्नल-स्तरीय Zygisk इंजेक्टर वापरते आणि ZN मॉड्यूलशी सुसंगत आहे.</string>
     <string name="settings_yukizygisk_toast_on">सुरू केले. रीस्टार्टनंतर लागू होईल.</string>
     <string name="settings_yukizygisk_toast_off">बंद केले. रीस्टार्टनंतर लागू होईल.</string>

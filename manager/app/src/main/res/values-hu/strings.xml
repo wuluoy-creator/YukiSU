@@ -176,8 +176,6 @@
     <string name="su_not_allowed">A rendszergazdai jogosultság megadása nem engedélyezett ennek: %s</string>
     <string name="settings_disable_kernel_umount">Kernel umount letiltása</string>
     <string name="settings_disable_kernel_umount_summary">A KernelSU által vezérelt kernelszintű umount viselkedés letiltása</string>
-    <string name="settings_enable_enhanced_security">Szigorú biztonsági szabályzat használata</string>
-    <string name="settings_enable_enhanced_security_summary">A KernelSU tartományon kívüli jogosultságemelés és az alkalmazások jogosulatlan UID-csökkentésének blokkolása</string>
     <string name="settings_selinux_hide">SELinux elrejtés engedélyezése</string>
     <string name="settings_selinux_hide_summary">A KernelSU SELinux szabályzatmódosításainak elrejtése az alkalmazásoldali vizsgálatok elől.</string>
     <string name="feature_status_unsupported_summary">A kernel nem támogatja ezt a funkciót</string>
@@ -548,8 +546,6 @@ A</string>
     <string name="reboot_fastbootd">Újraindítás Fastbootd módba</string>
     <string name="profile_no_new_privs">Ismételt jogosultságnövelés tiltása</string>
     <string name="profile_no_new_privs_summary">Az ezzel a konfigurációval emelt jogosultságot kapott folyamatok és gyermekfolyamataik nem növelhetik újra jogosultságukat a KernelSU-val, például su újbóli futtatásával vagy GRANT_ROOT hívásával. Ajánlott bekapcsolni.</string>
-    <string name="settings_default_no_new_privs">Alapértelmezett kitörésvédelem (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Tiltja az ismételt jogosultságnövelést az alapértelmezett root profilban, a kezelőben és a shellben is. Alapértelmezés szerint kikapcsolva.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">Kísérleti funkció: beépített, kernelszintű Zygisk-injektort használ, amely kompatibilis a ZN modulokkal.</string>
     <string name="settings_yukizygisk_toast_on">Bekapcsolva. Újraindítás után lép életbe</string>

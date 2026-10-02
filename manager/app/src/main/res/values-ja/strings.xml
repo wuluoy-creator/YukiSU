@@ -178,8 +178,6 @@
     <string name="su_not_allowed">「%s」にスーパーユーザー権限を付与することはできません</string>
     <string name="settings_disable_kernel_umount">カーネルアンマウントを無効化</string>
     <string name="settings_disable_kernel_umount_summary">KernelSU が制御するカーネルレベルの umount 動作を無効にします</string>
-    <string name="settings_enable_enhanced_security">厳格なセキュリティポリシーを使用</string>
-    <string name="settings_enable_enhanced_security_summary">KernelSU ドメイン外の権限昇格と未承認アプリの UID 低下をブロック</string>
     <string name="settings_selinux_hide">SELinux 隠蔽を有効化</string>
     <string name="settings_selinux_hide_summary">KernelSU の SELinux ポリシー変更をアプリ側の検知から隠します。</string>
     <string name="feature_status_unsupported_summary">カーネルがこの機能をサポートしていません</string>
@@ -569,8 +567,6 @@
     <string name="reboot_fastbootd">Fastbootd に再起動</string>
     <string name="profile_no_new_privs">再度の権限昇格を禁止</string>
     <string name="profile_no_new_privs_summary">このプロファイルで権限を昇格したプロセスとその子プロセスは、KernelSU で再度権限を昇格できなくなります（su の再実行や GRANT_ROOT の呼び出しなど）。有効化を推奨します。</string>
-    <string name="settings_default_no_new_privs">デフォルトの再昇格防止（no-new-privs）</string>
-    <string name="settings_default_no_new_privs_summary">デフォルトの root プロファイル（マネージャーと shell を含む）で再度の権限昇格を禁止します。デフォルトではオフです。</string>
     <string name="settings_yukizygisk_summary">実験的な機能です。内蔵のカーネルレベル Zygisk インジェクターを使用し、ZN モジュールに対応します。</string>
     <string name="settings_yukizygisk_toast_on">有効にしました。再起動後に反映されます</string>
     <string name="settings_yukizygisk_toast_off">無効にしました。再起動後に反映されます</string>

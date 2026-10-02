@@ -176,8 +176,6 @@
     <string name="su_not_allowed">Không thể cấp quyền Superuser cho %s</string>
     <string name="settings_disable_kernel_umount">Vô hiệu hoá kernel umount</string>
     <string name="settings_disable_kernel_umount_summary">Vô hiệu hoá umount kernel-level được kiểm soát bởi KernelSU</string>
-    <string name="settings_enable_enhanced_security">Dùng chính sách bảo mật nghiêm ngặt</string>
-    <string name="settings_enable_enhanced_security_summary">Chặn leo thang đặc quyền ngoài miền KernelSU và hạ UID app khi chưa được phép</string>
     <string name="settings_selinux_hide">Bật ẩn SELinux</string>
     <string name="settings_selinux_hide_summary">Ẩn các thay đổi chính sách SELinux của KernelSU khỏi các thăm dò từ phía ứng dụng.</string>
     <string name="feature_status_unsupported_summary">Kernel không hỗ trợ tính năng này</string>
@@ -567,8 +565,6 @@
     <string name="reboot_fastbootd">Khởi động lại vào Fastbootd</string>
     <string name="profile_no_new_privs">Cấm nâng quyền lần nữa</string>
     <string name="profile_no_new_privs_summary">Tiến trình đã nâng quyền bằng hồ sơ này và các tiến trình con sẽ không thể nâng quyền lần nữa qua KernelSU, chẳng hạn chạy lại su hoặc gọi GRANT_ROOT. Nên bật tùy chọn này.</string>
-    <string name="settings_default_no_new_privs">Mặc định ngăn nâng quyền lại (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Cấm nâng quyền lần nữa trong hồ sơ root mặc định, gồm trình quản lý và shell. Mặc định tắt.</string>
     <string name="settings_yukizygisk_summary">Tính năng thử nghiệm sử dụng bộ chèn Zygisk cấp nhân tích hợp, tương thích với mô-đun ZN.</string>
     <string name="settings_yukizygisk_toast_on">Đã bật, có hiệu lực sau khi khởi động lại</string>
     <string name="settings_yukizygisk_toast_off">Đã tắt, có hiệu lực sau khi khởi động lại</string>

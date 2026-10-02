@@ -178,8 +178,6 @@
     <string name="su_not_allowed">Memberikan hak superuser kepada %s tidak diizinkan</string>
     <string name="settings_disable_kernel_umount">Nonaktifkan pelepasan (unmount) kernel</string>
     <string name="settings_disable_kernel_umount_summary">Nonaktifkan perilaku unmount pada level kernel yang digunakan oleh KernelSU.</string>
-    <string name="settings_enable_enhanced_security">Gunakan kebijakan keamanan ketat</string>
-    <string name="settings_enable_enhanced_security_summary">Blokir eskalasi hak istimewa di luar domain KernelSU dan penurunan UID app tanpa izin</string>
     <string name="settings_selinux_hide">Aktifkan sembunyikan SELinux</string>
     <string name="settings_selinux_hide_summary">Sembunyikan perubahan kebijakan SELinux KernelSU dari pemeriksaan sisi aplikasi.</string>
     <string name="feature_status_unsupported_summary">Kernel tidak mendukung fitur ini</string>
@@ -571,8 +569,6 @@
     <string name="reboot_fastbootd">Mulai ulang ke Fastbootd</string>
     <string name="profile_no_new_privs">Larang peningkatan hak akses ulang</string>
     <string name="profile_no_new_privs_summary">Proses yang memperoleh hak akses melalui profil ini beserta proses turunannya tidak dapat meningkatkan hak akses lagi melalui KernelSU, misalnya dengan menjalankan su atau memanggil GRANT_ROOT lagi. Disarankan untuk diaktifkan.</string>
-    <string name="settings_default_no_new_privs">Pencegahan peningkatan ulang bawaan (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Larang peningkatan hak akses ulang pada profil root bawaan, termasuk pengelola dan shell. Nonaktif secara bawaan.</string>
     <string name="settings_yukizygisk_summary">Fitur eksperimental yang menggunakan injektor Zygisk tingkat kernel bawaan dan kompatibel dengan modul ZN.</string>
     <string name="settings_yukizygisk_toast_on">Diaktifkan, berlaku setelah mulai ulang</string>
     <string name="settings_yukizygisk_toast_off">Dinonaktifkan, berlaku setelah mulai ulang</string>

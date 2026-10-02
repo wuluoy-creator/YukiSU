@@ -188,8 +188,6 @@
     <string name="su_not_allowed">唔允許授予 %s 超級用戶權限</string>
     <string name="settings_disable_kernel_umount">關閉核心 umount</string>
     <string name="settings_disable_kernel_umount_summary">關閉 KernelSU 控制的核心級 umount 行為。</string>
-    <string name="settings_enable_enhanced_security">使用嚴格安全策略</string>
-    <string name="settings_enable_enhanced_security_summary">阻止非 KernelSU 域的提權及未授權 app UID 降低行為</string>
     <string name="settings_selinux_hide">啟用 SELinux 隱藏</string>
     <string name="settings_selinux_hide_summary">對應用端 SELinux 探測隱藏 KernelSU 策略變更。</string>
     <string name="feature_status_unsupported_summary">核心不支援此功能。</string>
@@ -564,8 +562,6 @@
     <string name="repository_remove_source_failed">儲存庫來源刪除失敗</string>
     <string name="profile_no_new_privs">禁止再次提升權限</string>
     <string name="profile_no_new_privs_summary">使用此配置取得權限的程序及其子程序，將無法再透過 KernelSU 提升權限（例如再次執行 su 或呼叫 GRANT_ROOT）。建議開啟。</string>
-    <string name="settings_default_no_new_privs">預設防逃逸 (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">預設的 root 配置（包括管理器與 shell）禁止再次提升權限。預設關閉。</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">實驗性功能，使用內置的核心級 Zygisk 注入器，兼容 ZN 模組。</string>
     <string name="settings_yukizygisk_toast_on">已開啟，重新啟動生效</string>

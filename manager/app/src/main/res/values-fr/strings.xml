@@ -178,8 +178,6 @@
     <string name="su_not_allowed">Donner un super-utilisateur à %s n\'est pas autorisé</string>
     <string name="settings_disable_kernel_umount">Désactiver le démontage du noyau</string>
     <string name="settings_disable_kernel_umount_summary">Désactiver le comportement de démontage au niveau du noyau contrôlé par KernelSU</string>
-    <string name="settings_enable_enhanced_security">Utiliser une politique de sécurité stricte</string>
-    <string name="settings_enable_enhanced_security_summary">Bloquer l\'élévation de privilèges hors du domaine KernelSU et les rétrogradations d\'UID d\'application non autorisées</string>
     <string name="settings_selinux_hide">Activer le masquage SELinux</string>
     <string name="settings_selinux_hide_summary">Masquer les modifications de la politique SELinux de KernelSU vis-à-vis des sondes côté application.</string>
     <string name="feature_status_unsupported_summary">Le noyau ne prend pas en charge cette fonction</string>
@@ -549,8 +547,6 @@
     <string name="reboot_fastbootd">Redémarrer en Fastbootd</string>
     <string name="profile_no_new_privs">Interdire toute nouvelle élévation de privilèges</string>
     <string name="profile_no_new_privs_summary">Les processus élevés avec ce profil et leurs descendants ne pourront plus obtenir de privilèges via KernelSU, par exemple en exécutant à nouveau su ou en appelant GRANT_ROOT. Activation recommandée.</string>
-    <string name="settings_default_no_new_privs">Protection par défaut contre l’évasion (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Interdire toute nouvelle élévation de privilèges avec le profil root par défaut, y compris pour le gestionnaire et le shell. Désactivé par défaut.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">Fonction expérimentale utilisant l’injecteur Zygisk intégré au niveau du noyau, compatible avec les modules ZN.</string>
     <string name="settings_yukizygisk_toast_on">Activé. Prend effet après redémarrage.</string>

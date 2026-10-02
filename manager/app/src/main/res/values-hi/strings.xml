@@ -176,8 +176,6 @@
     <string name="su_not_allowed">%s को सुपरयूज़र प्रदान करने की अनुमति नहीं है</string>
     <string name="settings_disable_kernel_umount">कर्नेल umount अक्षम करें</string>
     <string name="settings_disable_kernel_umount_summary">KernelSU द्वारा नियंत्रित कर्नेल-स्तरीय umount व्यवहार अक्षम करें</string>
-    <string name="settings_enable_enhanced_security">सख्त सुरक्षा नीति का उपयोग करें</string>
-    <string name="settings_enable_enhanced_security_summary">KernelSU डोमेन के बाहर विशेषाधिकार वृद्धि और अनधिकृत ऐप UID डाउनग्रेड को अवरुद्ध करें</string>
     <string name="settings_selinux_hide">SELinux छिपाना सक्षम करें</string>
     <string name="settings_selinux_hide_summary">KernelSU SELinux नीति परिवर्तनों को ऐप-सामना करने वाली जांच से छिपाएं</string>
     <string name="feature_status_unsupported_summary">कर्नेल इस सुविधा का समर्थन नहीं करता</string>
@@ -567,8 +565,6 @@
     <string name="reboot_fastbootd">Fastbootd में रीस्टार्ट करें</string>
     <string name="profile_no_new_privs">दोबारा विशेषाधिकार बढ़ाने से रोकें</string>
     <string name="profile_no_new_privs_summary">इस प्रोफ़ाइल से विशेषाधिकार पाने वाली प्रक्रियाएँ और उनकी संतान प्रक्रियाएँ KernelSU से दोबारा विशेषाधिकार नहीं पा सकेंगी, जैसे फिर से su चलाकर या GRANT_ROOT बुलाकर। इसे सक्षम करना अनुशंसित है।</string>
-    <string name="settings_default_no_new_privs">डिफ़ॉल्ट एस्केप सुरक्षा (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">डिफ़ॉल्ट root प्रोफ़ाइल में प्रबंधक और shell सहित दोबारा विशेषाधिकार बढ़ाने से रोकें। डिफ़ॉल्ट रूप से बंद है।</string>
     <string name="settings_yukizygisk_summary">प्रयोगात्मक सुविधा, जो अंतर्निहित कर्नेल-स्तरीय Zygisk इंजेक्टर का उपयोग करती है और ZN मॉड्यूल के साथ संगत है।</string>
     <string name="settings_yukizygisk_toast_on">चालू किया गया। रीस्टार्ट के बाद लागू होगा।</string>
     <string name="settings_yukizygisk_toast_off">बंद किया गया। रीस्टार्ट के बाद लागू होगा।</string>

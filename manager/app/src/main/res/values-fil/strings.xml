@@ -176,8 +176,6 @@
     <string name="su_not_allowed">Hindi pinapayagang magbigay ng superuser sa %s</string>
     <string name="settings_disable_kernel_umount">I-disable ang kernel umount</string>
     <string name="settings_disable_kernel_umount_summary">I-disable ang kernel-level na umount behavior na kinokontrol ng KernelSU</string>
-    <string name="settings_enable_enhanced_security">Gumamit ng mahigpit na security policy</string>
-    <string name="settings_enable_enhanced_security_summary">I-block ang privilege elevation sa labas ng KernelSU domain at ang mga hindi awtorisadong pag-downgrade ng app UID</string>
     <string name="settings_selinux_hide">I-enable ang SELinux hide</string>
     <string name="settings_selinux_hide_summary">Itago ang mga pagbabago sa SELinux policy ng KernelSU mula sa mga probe na nakaharap sa app</string>
     <string name="feature_status_unsupported_summary">Hindi sinusuportahan ng kernel ang feature na ito</string>
@@ -567,8 +565,6 @@
     <string name="reboot_fastbootd">Mag-restart papuntang Fastbootd</string>
     <string name="profile_no_new_privs">Ipagbawal ang muling pagtaas ng pribilehiyo</string>
     <string name="profile_no_new_privs_summary">Ang mga prosesong nagtaas ng pribilehiyo gamit ang profile na ito at ang kanilang mga child process ay hindi na maaaring magtaas muli ng pribilehiyo sa pamamagitan ng KernelSU, gaya ng muling pagpapatakbo ng su o pagtawag sa GRANT_ROOT. Inirerekomendang paganahin ito.</string>
-    <string name="settings_default_no_new_privs">Default na paghadlang sa muling pagtaas ng pribilehiyo (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Ipagbawal ang muling pagtaas ng pribilehiyo sa default na root profile, kasama ang manager at shell. Naka-off bilang default.</string>
     <string name="settings_yukizygisk_summary">Eksperimental na tampok na gumagamit ng built-in na Zygisk injector sa antas ng kernel at compatible sa mga ZN module.</string>
     <string name="settings_yukizygisk_toast_on">Pinagana, magkakabisa pagkatapos mag-restart</string>
     <string name="settings_yukizygisk_toast_off">Hindi pinagana, magkakabisa pagkatapos mag-restart</string>

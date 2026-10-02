@@ -178,8 +178,6 @@
     <string name="su_not_allowed">Acordarea privilegiilor de superutilizator pentru %s nu este permisă</string>
     <string name="settings_disable_kernel_umount">Dezactivează umount-ul kernelului</string>
     <string name="settings_disable_kernel_umount_summary">Dezactivează comportamentul umount la nivel de kernel controlat de KernelSU</string>
-    <string name="settings_enable_enhanced_security">Folosește o politică de securitate strictă</string>
-    <string name="settings_enable_enhanced_security_summary">Blochează escaladarea privilegiilor în afara domeniului KernelSU și retrogradările neautorizate ale UID-urilor aplicațiilor</string>
     <string name="settings_selinux_hide">Activează ascunderea SELinux</string>
     <string name="settings_selinux_hide_summary">Ascunde modificările politicii SELinux a KernelSU față de verificările din partea aplicațiilor.</string>
     <string name="feature_status_unsupported_summary">Kernelul nu acceptă această funcție</string>
@@ -549,8 +547,6 @@
     <string name="reboot_fastbootd">Repornește în Fastbootd</string>
     <string name="profile_no_new_privs">Împiedică o nouă escaladare a privilegiilor</string>
     <string name="profile_no_new_privs_summary">Procesele care obțin privilegii cu acest profil și procesele lor copil nu vor mai putea obține privilegii prin KernelSU, de exemplu executând din nou su sau apelând GRANT_ROOT. Se recomandă activarea.</string>
-    <string name="settings_default_no_new_privs">Protecție implicită împotriva evadării (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Împiedică o nouă escaladare a privilegiilor în profilul root implicit, inclusiv pentru administrator și shell. Dezactivată implicit.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">Funcție experimentală care utilizează injectorul Zygisk integrat la nivel de nucleu, compatibil cu modulele ZN.</string>
     <string name="settings_yukizygisk_toast_on">Activat. Se aplică după repornire.</string>

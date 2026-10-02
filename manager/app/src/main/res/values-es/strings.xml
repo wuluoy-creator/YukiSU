@@ -176,8 +176,6 @@
     <string name="su_not_allowed">No se permite conceder superusuario a %s</string>
     <string name="settings_disable_kernel_umount">Desactivar el desmontaje del kernel</string>
     <string name="settings_disable_kernel_umount_summary">Desactivar el comportamiento de desmontaje a nivel de kernel controlado por KernelSU</string>
-    <string name="settings_enable_enhanced_security">Usar política de seguridad estricta</string>
-    <string name="settings_enable_enhanced_security_summary">Bloquear la elevación de privilegios fuera del dominio de KernelSU y las degradaciones no autorizadas de UID de aplicaciones</string>
     <string name="settings_selinux_hide">Activar ocultación de SELinux</string>
     <string name="settings_selinux_hide_summary">Ocultar los cambios de la política SELinux de KernelSU frente a las sondas del lado de la aplicación.</string>
     <string name="feature_status_unsupported_summary">El kernel no admite esta función</string>
@@ -547,8 +545,6 @@
     <string name="reboot_fastbootd">Reiniciar en Fastbootd</string>
     <string name="profile_no_new_privs">Impedir nuevas elevaciones de privilegios</string>
     <string name="profile_no_new_privs_summary">Los procesos elevados con este perfil y sus procesos secundarios no podrán volver a elevar privilegios mediante KernelSU, por ejemplo, al ejecutar su de nuevo o llamar a GRANT_ROOT. Se recomienda activarlo.</string>
-    <string name="settings_default_no_new_privs">Protección antievasión predeterminada (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Impedir nuevas elevaciones de privilegios con el perfil root predeterminado, incluidos el gestor y el shell. Desactivado de forma predeterminada.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">Función experimental que usa el inyector Zygisk integrado a nivel del núcleo, compatible con módulos ZN.</string>
     <string name="settings_yukizygisk_toast_on">Activado. Se aplica tras reiniciar.</string>

@@ -66,10 +66,6 @@ int su_prompt_ready(uint64_t request_id, uint64_t nonce);
 bool set_kernel_umount_enabled(bool enabled);
 bool is_kernel_umount_enabled();
 
-// Enhanced security
-bool set_enhanced_security_enabled(bool enabled);
-bool is_enhanced_security_enabled();
-
 // Su log
 bool set_sulog_enabled(bool enabled);
 bool is_sulog_enabled();
@@ -82,7 +78,6 @@ bool is_adb_root_enabled();
 bool set_selinux_hide_enabled(bool enabled);
 bool is_selinux_hide_enabled();
 
-bool set_default_no_new_privs_enabled(bool enabled);
 bool is_default_no_new_privs_enabled();
 
 // Bootloader property hiding

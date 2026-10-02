@@ -176,8 +176,6 @@
     <string name="su_not_allowed">הענקת הרשאת משתמש-על ל-%s אינה מותרת</string>
     <string name="settings_disable_kernel_umount">השבת umount של הליבה</string>
     <string name="settings_disable_kernel_umount_summary">השבת התנהגות umount ברמת הליבה הנשלטת על ידי KernelSU</string>
-    <string name="settings_enable_enhanced_security">השתמש במדיניות אבטחה קפדנית</string>
-    <string name="settings_enable_enhanced_security_summary">חסום הסלמת הרשאות מחוץ לתחום KernelSU והורדות דרגה לא מורשות של UID של אפליקציות</string>
     <string name="settings_selinux_hide">הפעל הסתרת SELinux</string>
     <string name="settings_selinux_hide_summary">הסתר שינויי מדיניות SELinux של KernelSU מבדיקות מצד האפליקציה</string>
     <string name="feature_status_unsupported_summary">הליבה אינה תומכת בתכונה זו</string>
@@ -547,8 +545,6 @@
     <string name="reboot_fastbootd">הפעלה מחדש אל Fastbootd</string>
     <string name="profile_no_new_privs">חסימת העלאת הרשאות חוזרת</string>
     <string name="profile_no_new_privs_summary">תהליכים שקיבלו הרשאות באמצעות תצורה זו ותהליכי הבן שלהם לא יוכלו להעלות הרשאות שוב דרך KernelSU, למשל בהפעלה חוזרת של su או בקריאה ל-GRANT_ROOT. מומלץ להפעיל.</string>
-    <string name="settings_default_no_new_privs">הגנת ברירת מחדל מפני יציאה מההגבלות (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">חסימת העלאת הרשאות חוזרת בפרופיל root המוגדר כברירת מחדל, כולל המנהל ו-shell. כבוי כברירת מחדל.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">תכונה ניסיונית המשתמשת במזריק Zygisk מובנה ברמת הליבה, עם תאימות למודולי ZN.</string>
     <string name="settings_yukizygisk_toast_on">הופעל. ייכנס לתוקף לאחר הפעלה מחדש</string>

@@ -176,8 +176,6 @@
     <string name="su_not_allowed">%s üçün superistifadəçi səlahiyyəti verilməsinə icazə yoxdur</string>
     <string name="settings_disable_kernel_umount">Nüvə ayırmasını deaktiv et</string>
     <string name="settings_disable_kernel_umount_summary">KernelSU tərəfindən idarə olunan nüvə səviyyəsindəki ayırma davranışını deaktiv edin</string>
-    <string name="settings_enable_enhanced_security">Ciddi təhlükəsizlik siyasəti istifadə et</string>
-    <string name="settings_enable_enhanced_security_summary">KernelSU sahəsindən kənar səlahiyyət artırmanı və icazəsiz tətbiq UID aşağılamasını bloklayır</string>
     <string name="settings_selinux_hide">SELinux gizlətməsini aktivləşdir</string>
     <string name="settings_selinux_hide_summary">KernelSU SELinux siyasəti dəyişikliklərini tətbiq tərəfli yoxlamalardan gizlət</string>
     <string name="feature_status_unsupported_summary">Nüvə bu xüsusiyyəti dəstəkləmir</string>
@@ -547,8 +545,6 @@
     <string name="reboot_fastbootd">Fastbootd rejiminə yenidən başlat</string>
     <string name="profile_no_new_privs">Təkrar səlahiyyət yüksəltməni qadağan et</string>
     <string name="profile_no_new_privs_summary">Bu konfiqurasiya ilə səlahiyyət qazanan proseslər və onların alt prosesləri, məsələn, su-nu yenidən icra etməklə və ya GRANT_ROOT çağırmaqla KernelSU üzərindən təkrar səlahiyyət yüksəldə bilməyəcək. Aktivləşdirmək tövsiyə olunur.</string>
-    <string name="settings_default_no_new_privs">Standart məhdudiyyətdən çıxma qoruması (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">Menecer və shell daxil olmaqla standart root profilində təkrar səlahiyyət yüksəltməni qadağan edir. Standart olaraq söndürülüb.</string>
     <string name="settings_yukizygisk">YukiZygisk</string>
     <string name="settings_yukizygisk_summary">Təcrübi funksiya: ZN modulları ilə uyğun olan nüvə səviyyəli daxili Zygisk inyektorundan istifadə edir.</string>
     <string name="settings_yukizygisk_toast_on">Açıldı. Yenidən başladıqdan sonra qüvvəyə minir</string>

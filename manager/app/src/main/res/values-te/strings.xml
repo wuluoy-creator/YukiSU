@@ -176,8 +176,6 @@
     <string name="su_not_allowed">%sకు సూపర్‌యూజర్ ఇవ్వడానికి అనుమతి లేదు</string>
     <string name="settings_disable_kernel_umount">కెర్నల్ umountను నిలిపివేయండి</string>
     <string name="settings_disable_kernel_umount_summary">KernelSU చేత నియంత్రించబడే కెర్నల్-స్థాయి umount ప్రవర్తనను నిలిపివేయండి</string>
-    <string name="settings_enable_enhanced_security">కఠినమైన భద్రతా విధానాన్ని ఉపయోగించండి</string>
-    <string name="settings_enable_enhanced_security_summary">KernelSU డొమైన్ వెలుపల అధికార పెంపును మరియు అనధికార యాప్ UID డౌన్‌గ్రేడ్‌లను నిరోధించండి</string>
     <string name="settings_selinux_hide">SELinux దాచడాన్ని ప్రారంభించండి</string>
     <string name="settings_selinux_hide_summary">యాప్-ముఖ ప్రోబ్‌ల నుండి KernelSU SELinux విధాన మార్పులను దాచండి</string>
     <string name="feature_status_unsupported_summary">కెర్నల్ ఈ ఫీచర్‌కు మద్దతు ఇవ్వదు</string>
@@ -567,8 +565,6 @@
     <string name="reboot_fastbootd">Fastbootdకు పునఃప్రారంభించండి</string>
     <string name="profile_no_new_privs">మళ్లీ అధికారాల పెంపును నిషేధించండి</string>
     <string name="profile_no_new_privs_summary">ఈ ప్రొఫైల్‌తో అధికారాలు పెంచుకున్న ప్రాసెస్‌లు, వాటి చైల్డ్ ప్రాసెస్‌లు KernelSU ద్వారా మళ్లీ అధికారాలు పెంచుకోలేవు; ఉదాహరణకు su మళ్లీ అమలు చేయడం లేదా GRANT_ROOTను కాల్ చేయడం. ప్రారంభించాలని సిఫార్సు.</string>
-    <string name="settings_default_no_new_privs">డిఫాల్ట్ పునరధికార పెంపు నిరోధం (no-new-privs)</string>
-    <string name="settings_default_no_new_privs_summary">మేనేజర్, shell సహా డిఫాల్ట్ root ప్రొఫైల్‌లో మళ్లీ అధికారాల పెంపును నిషేధించండి. డిఫాల్ట్‌గా ఆఫ్.</string>
     <string name="settings_yukizygisk_summary">ప్రయోగాత్మక ఫీచర్. అంతర్నిర్మిత కెర్నల్ స్థాయి Zygisk ఇంజెక్టర్‌ను ఉపయోగిస్తుంది, ZN మాడ్యూల్‌లకు అనుకూలం.</string>
     <string name="settings_yukizygisk_toast_on">ప్రారంభించబడింది, పునఃప్రారంభం తర్వాత అమలవుతుంది</string>
     <string name="settings_yukizygisk_toast_off">నిలిపివేయబడింది, పునఃప్రారంభం తర్వాత అమలవుతుంది</string>
