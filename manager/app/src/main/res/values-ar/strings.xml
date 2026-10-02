@@ -600,8 +600,6 @@
     <string name="predictive_back_gesture">إيماءة الرجوع التنبؤية</string>
     <string name="predictive_back_gesture_summary">معاينة الصفحة السابقة مع حركة إيماءة الرجوع. معطّل افتراضيًا</string>
     <string name="feature_control">التحكم في الميزات</string>
-    <string name="kernelsu_features">ميزات KernelSU</string>
-    <string name="yukisu_features">ميزات YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk مفعّل. عُطّلت هذه الوحدة لمنع التعارض</string>
     <string name="module_disabled_standalone_yukizygisk">أنت تستخدم YukiSU بالفعل. لماذا لا تستخدم النسخة المدمجة؟ :(</string>
     <string name="home_working_mode">وضع العمل</string>

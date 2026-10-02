@@ -598,8 +598,6 @@
     <string name="predictive_back_gesture">מחוות חזרה חזויה</string>
     <string name="predictive_back_gesture_summary">תצוגה מקדימה של הדף הקודם בהתאם למחוות החזרה. כבוי כברירת מחדל</string>
     <string name="feature_control">שליטה בתכונות</string>
-    <string name="kernelsu_features">תכונות KernelSU</string>
-    <string name="yukisu_features">תכונות YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk מופעל. מודול זה הושבת למניעת התנגשויות</string>
     <string name="module_disabled_standalone_yukizygisk">כבר יש לך YukiSU. למה לא להשתמש בגרסה המובנית? :(</string>
     <string name="home_working_mode">מצב פעולה</string>

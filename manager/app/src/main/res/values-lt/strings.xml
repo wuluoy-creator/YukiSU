@@ -598,8 +598,6 @@
     <string name="predictive_back_gesture">Nuspėjamasis grįžimo gestas</string>
     <string name="predictive_back_gesture_summary">Grįžtant pagal gestą peržiūrėti ankstesnį puslapį. Pagal numatymą išjungta.</string>
     <string name="feature_control">Funkcijų valdymas</string>
-    <string name="kernelsu_features">KernelSU funkcijos</string>
-    <string name="yukisu_features">YukiSU funkcijos</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk įjungtas; šis modulis išjungtas siekiant išvengti konfliktų</string>
     <string name="module_disabled_standalone_yukizygisk">Jau naudojate YukiSU, kodėl nepasinaudojus įtaisytąja versija? :(</string>
     <string name="home_working_mode">Veikimo režimas</string>

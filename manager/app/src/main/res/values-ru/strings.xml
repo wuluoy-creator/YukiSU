@@ -601,8 +601,6 @@
     <string name="predictive_back_gesture">Предиктивный жест «Назад»</string>
     <string name="predictive_back_gesture_summary">Показывать предыдущую страницу в соответствии с жестом возврата. По умолчанию выключено</string>
     <string name="feature_control">Управление функциями</string>
-    <string name="kernelsu_features">Функции KernelSU</string>
-    <string name="yukisu_features">Функции YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk включён. Этот модуль отключён во избежание конфликтов</string>
     <string name="module_disabled_standalone_yukizygisk">Вы уже используете YukiSU. Почему бы не воспользоваться встроенной версией? :(</string>
     <string name="home_working_mode">Режим работы</string>

@@ -600,8 +600,6 @@
     <string name="predictive_back_gesture">Gesto Indietro predittivo</string>
     <string name="predictive_back_gesture_summary">Mostra un’anteprima della pagina precedente durante il gesto Indietro. Disattivato per impostazione predefinita.</string>
     <string name="feature_control">Controllo delle funzioni</string>
-    <string name="kernelsu_features">Funzioni di KernelSU</string>
-    <string name="yukisu_features">Funzioni di YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk è attivato. Questo modulo è stato disattivato per evitare conflitti.</string>
     <string name="module_disabled_standalone_yukizygisk">Usi già YukiSU: perché non usare direttamente la versione integrata? :(</string>
     <string name="home_working_mode">Modalità operativa</string>

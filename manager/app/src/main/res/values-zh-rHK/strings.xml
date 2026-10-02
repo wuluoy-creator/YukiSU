@@ -604,8 +604,6 @@
     <string name="hide_seccomp_status">隱藏 Seccomp 狀態</string>
     <string name="hide_seccomp_status_summary">隱藏主頁的 Seccomp 狀態信息</string>
     <string name="feature_control">功能控制</string>
-    <string name="kernelsu_features">KernelSU 功能</string>
-    <string name="yukisu_features">YukiSU 功能</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk 已啟用，為防止衝突，此模組已停用</string>
     <string name="module_disabled_standalone_yukizygisk">你都用緊 YukiSU，點解唔直接用內置版呢 :(</string>
     <string name="settings_superkey_management">超級密鑰管理</string>

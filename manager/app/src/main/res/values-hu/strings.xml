@@ -599,8 +599,6 @@ A</string>
     <string name="predictive_back_gesture">Prediktív visszalépési gesztus</string>
     <string name="predictive_back_gesture_summary">A visszalépési gesztust követve megjeleníti az előző oldal előnézetét. Alapértelmezés szerint kikapcsolva</string>
     <string name="feature_control">Funkciók vezérlése</string>
-    <string name="kernelsu_features">KernelSU funkciók</string>
-    <string name="yukisu_features">YukiSU funkciók</string>
     <string name="module_disabled_by_yukizygisk">A YukiZygisk engedélyezve van. Az ütközések elkerülésére ez a modul letiltva</string>
     <string name="module_disabled_standalone_yukizygisk">Már YukiSU-t használ. Miért nem a beépített verziót használja? :(</string>
     <string name="home_working_mode">Működési mód</string>

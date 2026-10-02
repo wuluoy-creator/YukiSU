@@ -616,8 +616,6 @@
     <string name="predictive_back_gesture">ఊహాత్మక వెనుకకు వెళ్లే సంజ్ఞ</string>
     <string name="predictive_back_gesture_summary">వెనుకకు వెళ్లే సంజ్ఞతో మునుపటి పేజీ ప్రివ్యూ చూపండి. డిఫాల్ట్‌గా ఆఫ్</string>
     <string name="feature_control">ఫీచర్ నియంత్రణ</string>
-    <string name="kernelsu_features">KernelSU ఫీచర్‌లు</string>
-    <string name="yukisu_features">YukiSU ఫీచర్‌లు</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk ప్రారంభించబడింది. వైరుధ్యాలను నివారించడానికి ఈ మాడ్యూల్ నిలిపివేయబడింది</string>
     <string name="module_disabled_standalone_yukizygisk">YukiSU వాడుతున్నప్పుడు అంతర్నిర్మిత వెర్షన్‌నే ఎందుకు వాడకూడదు? :(</string>
     <string name="home_working_mode">పని మోడ్</string>

@@ -600,8 +600,6 @@
     <string name="predictive_back_gesture">Geste de retour prédictif</string>
     <string name="predictive_back_gesture_summary">Prévisualiser la page précédente pendant le geste de retour. Désactivé par défaut.</string>
     <string name="feature_control">Contrôle des fonctions</string>
-    <string name="kernelsu_features">Fonctions KernelSU</string>
-    <string name="yukisu_features">Fonctions YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk est activé. Ce module a été désactivé pour éviter les conflits.</string>
     <string name="module_disabled_standalone_yukizygisk">Vous utilisez déjà YukiSU, pourquoi ne pas utiliser directement la version intégrée ? :(</string>
     <string name="home_working_mode">Mode de fonctionnement</string>

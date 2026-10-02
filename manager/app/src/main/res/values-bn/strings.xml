@@ -616,8 +616,6 @@
     <string name="predictive_back_gesture">পূর্বানুমানভিত্তিক ফিরে যাওয়ার অঙ্গভঙ্গি</string>
     <string name="predictive_back_gesture_summary">ফিরে যাওয়ার অঙ্গভঙ্গির সঙ্গে আগের পৃষ্ঠার পূর্বরূপ দেখান। ডিফল্টভাবে বন্ধ</string>
     <string name="feature_control">বৈশিষ্ট্য নিয়ন্ত্রণ</string>
-    <string name="kernelsu_features">KernelSU-এর বৈশিষ্ট্য</string>
-    <string name="yukisu_features">YukiSU-এর বৈশিষ্ট্য</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk চালু আছে। দ্বন্দ্ব এড়াতে এই মডিউল বন্ধ করা হয়েছে</string>
     <string name="module_disabled_standalone_yukizygisk">YukiSU ব্যবহার করছেনই, সরাসরি অন্তর্নির্মিত সংস্করণটি ব্যবহার করছেন না কেন? :(</string>
     <string name="home_working_mode">কাজের মোড</string>

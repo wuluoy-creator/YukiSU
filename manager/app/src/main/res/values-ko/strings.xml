@@ -616,8 +616,6 @@
     <string name="predictive_back_gesture">예측 뒤로 가기 제스처</string>
     <string name="predictive_back_gesture_summary">뒤로 가기 제스처에 따라 이전 화면을 미리 봅니다. 기본값은 꺼짐입니다</string>
     <string name="feature_control">기능 제어</string>
-    <string name="kernelsu_features">KernelSU 기능</string>
-    <string name="yukisu_features">YukiSU 기능</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk가 활성화되어 충돌을 방지하기 위해 이 모듈을 비활성화했습니다</string>
     <string name="module_disabled_standalone_yukizygisk">YukiSU를 사용 중인데 내장 버전을 사용해 보는 건 어떤가요 :(</string>
     <string name="home_working_mode">작동 모드</string>

@@ -598,8 +598,6 @@
     <string name="predictive_back_gesture">Xesto de retroceso preditivo</string>
     <string name="predictive_back_gesture_summary">Previsualizar a páxina anterior durante o xesto de retroceso. Desactivado de xeito predeterminado.</string>
     <string name="feature_control">Control de funcións</string>
-    <string name="kernelsu_features">Funcións de KernelSU</string>
-    <string name="yukisu_features">Funcións de YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk está activado. Este módulo desactivouse para evitar conflitos.</string>
     <string name="module_disabled_standalone_yukizygisk">Xa usas YukiSU, por que non usar directamente a versión integrada? :(</string>
     <string name="home_working_mode">Modo de funcionamento</string>

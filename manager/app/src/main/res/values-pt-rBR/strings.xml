@@ -598,8 +598,6 @@
     <string name="predictive_back_gesture">Gesto de voltar preditivo</string>
     <string name="predictive_back_gesture_summary">Visualizar a página anterior durante o gesto de voltar. Desativado por padrão.</string>
     <string name="feature_control">Controle de recursos</string>
-    <string name="kernelsu_features">Recursos do KernelSU</string>
-    <string name="yukisu_features">Recursos do YukiSU</string>
     <string name="module_disabled_by_yukizygisk">O YukiZygisk está ativado. Este módulo foi desativado para evitar conflitos.</string>
     <string name="module_disabled_standalone_yukizygisk">Você já usa o YukiSU, por que não usar diretamente a versão integrada? :(</string>
     <string name="home_working_mode">Modo de operação</string>

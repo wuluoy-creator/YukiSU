@@ -620,8 +620,6 @@
     <string name="predictive_back_gesture">Gestur kembali prediktif</string>
     <string name="predictive_back_gesture_summary">Pratinjau halaman sebelumnya mengikuti gestur kembali. Nonaktif secara bawaan</string>
     <string name="feature_control">Kontrol fitur</string>
-    <string name="kernelsu_features">Fitur KernelSU</string>
-    <string name="yukisu_features">Fitur YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk aktif. Modul ini dinonaktifkan untuk mencegah konflik</string>
     <string name="module_disabled_standalone_yukizygisk">Sudah memakai YukiSU, mengapa tidak langsung memakai versi bawaannya? :(</string>
     <string name="home_working_mode">Mode kerja</string>

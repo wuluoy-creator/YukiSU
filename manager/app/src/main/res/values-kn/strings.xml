@@ -616,8 +616,6 @@
     <string name="predictive_back_gesture">ಮುನ್ಸೂಚಕ ಹಿಂದಿರುಗುವ ಗೆಸ್ಚರ್</string>
     <string name="predictive_back_gesture_summary">ಹಿಂದಿರುಗುವ ಗೆಸ್ಚರ್‌ನೊಂದಿಗೆ ಹಿಂದಿನ ಪುಟದ ಪೂರ್ವವೀಕ್ಷಣೆ ತೋರಿಸಿ. ಪೂರ್ವನಿಯೋಜಿತವಾಗಿ ಆಫ್</string>
     <string name="feature_control">ವೈಶಿಷ್ಟ್ಯ ನಿಯಂತ್ರಣ</string>
-    <string name="kernelsu_features">KernelSU ವೈಶಿಷ್ಟ್ಯಗಳು</string>
-    <string name="yukisu_features">YukiSU ವೈಶಿಷ್ಟ್ಯಗಳು</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk ಸಕ್ರಿಯವಾಗಿದೆ. ಸಂಘರ್ಷ ತಡೆಯಲು ಈ ಮಾಡ್ಯೂಲ್ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</string>
     <string name="module_disabled_standalone_yukizygisk">YukiSU ಬಳಸುತ್ತಿರುವಾಗ ಅದರ ಅಂತರ್ನಿರ್ಮಿತ ಆವೃತ್ತಿಯನ್ನೇ ಏಕೆ ಬಳಸಬಾರದು? :(</string>
     <string name="home_working_mode">ಕಾರ್ಯ ಮೋಡ್</string>

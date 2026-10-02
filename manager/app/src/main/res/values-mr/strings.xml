@@ -616,8 +616,6 @@
     <string name="predictive_back_gesture">अंदाजाधारित मागे जाण्याचा जेस्चर</string>
     <string name="predictive_back_gesture_summary">मागे जाण्याच्या जेस्चरसोबत मागील पृष्ठाचे पूर्वावलोकन दाखवा. डीफॉल्टनुसार बंद आहे.</string>
     <string name="feature_control">सुविधा नियंत्रण</string>
-    <string name="kernelsu_features">KernelSU सुविधा</string>
-    <string name="yukisu_features">YukiSU सुविधा</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk सक्षम आहे. संघर्ष टाळण्यासाठी हे मॉड्यूल अक्षम केले आहे.</string>
     <string name="module_disabled_standalone_yukizygisk">तुम्ही आधीच YukiSU वापरत आहात, मग थेट अंगभूत आवृत्ती का वापरत नाही? :(</string>
     <string name="home_working_mode">कार्य मोड</string>

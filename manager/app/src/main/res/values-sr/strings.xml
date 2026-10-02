@@ -598,8 +598,6 @@
     <string name="predictive_back_gesture">Предиктивна геста за повратак</string>
     <string name="predictive_back_gesture_summary">Приказује претходну страницу пратећи гесту повратка. Подразумевано је искључено</string>
     <string name="feature_control">Управљање функцијама</string>
-    <string name="kernelsu_features">KernelSU функције</string>
-    <string name="yukisu_features">YukiSU функције</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk је омогућен. Овај модул је онемогућен ради спречавања сукоба</string>
     <string name="module_disabled_standalone_yukizygisk">Већ користите YukiSU. Зашто не бисте користили уграђену верзију? :(</string>
     <string name="home_working_mode">Начин рада</string>

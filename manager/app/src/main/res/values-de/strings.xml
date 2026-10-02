@@ -600,8 +600,6 @@
     <string name="predictive_back_gesture">Vorausschauende Zurück-Geste</string>
     <string name="predictive_back_gesture_summary">Beim Zurückgehen eine Vorschau der vorherigen Seite passend zur Geste anzeigen. Standardmäßig deaktiviert.</string>
     <string name="feature_control">Funktionssteuerung</string>
-    <string name="kernelsu_features">KernelSU-Funktionen</string>
-    <string name="yukisu_features">YukiSU-Funktionen</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk ist aktiviert. Dieses Modul wurde deaktiviert, um Konflikte zu vermeiden.</string>
     <string name="module_disabled_standalone_yukizygisk">Du verwendest bereits YukiSU. Warum nicht direkt die integrierte Version nutzen? :(</string>
     <string name="home_working_mode">Betriebsmodus</string>

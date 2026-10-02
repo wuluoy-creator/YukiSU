@@ -600,8 +600,6 @@
     <string name="predictive_back_gesture">Predykcyjny gest wstecz</string>
     <string name="predictive_back_gesture_summary">Pokazuj podgląd poprzedniej strony podczas wykonywania gestu wstecz. Domyślnie wyłączone.</string>
     <string name="feature_control">Sterowanie funkcjami</string>
-    <string name="kernelsu_features">Funkcje KernelSU</string>
-    <string name="yukisu_features">Funkcje YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk jest włączony; ten moduł został wyłączony, aby zapobiec konfliktom</string>
     <string name="module_disabled_standalone_yukizygisk">Skoro używasz już YukiSU, dlaczego nie skorzystasz z wbudowanej wersji? :(</string>
     <string name="home_working_mode">Tryb pracy</string>

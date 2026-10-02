@@ -352,8 +352,6 @@
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM repair/installation</string>
     <string name="feature_control" tools:ignore="MissingTranslation">Feature controls</string>
-    <string name="kernelsu_features" tools:ignore="MissingTranslation">KernelSU features</string>
-    <string name="yukisu_features" tools:ignore="MissingTranslation">YukiSU features</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Application not found</string>
     <string name="selinux_enabled_toast">SELinux Enabled</string>

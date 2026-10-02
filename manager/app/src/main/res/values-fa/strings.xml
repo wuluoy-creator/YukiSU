@@ -598,8 +598,6 @@
     <string name="predictive_back_gesture">ژست بازگشت پیش‌بینانه</string>
     <string name="predictive_back_gesture_summary">هنگام بازگشت، پیش‌نمایش صفحه قبلی را همراه با ژست نشان می‌دهد. به‌طور پیش‌فرض خاموش است</string>
     <string name="feature_control">کنترل قابلیت‌ها</string>
-    <string name="kernelsu_features">قابلیت‌های KernelSU</string>
-    <string name="yukisu_features">قابلیت‌های YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk فعال است. برای جلوگیری از تداخل، این ماژول غیرفعال شده است</string>
     <string name="module_disabled_standalone_yukizygisk">شما که از YukiSU استفاده می‌کنید، چرا نسخه داخلی را به کار نمی‌برید؟ :(</string>
     <string name="home_working_mode">حالت کار</string>

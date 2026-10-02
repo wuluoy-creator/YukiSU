@@ -348,8 +348,6 @@
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM 修补/安装</string>
     <string name="feature_control">功能控制</string>
-    <string name="kernelsu_features">KernelSU 功能</string>
-    <string name="yukisu_features">YukiSU 功能</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">未找到应用</string>
     <string name="selinux_enabled_toast">SELinux 已设置为启用状态</string>

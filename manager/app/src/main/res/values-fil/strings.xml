@@ -616,8 +616,6 @@
     <string name="predictive_back_gesture">Predictive na galaw ng pagbabalik</string>
     <string name="predictive_back_gesture_summary">I-preview ang nakaraang pahina kasabay ng galaw ng pagbabalik. Naka-off bilang default</string>
     <string name="feature_control">Kontrol ng mga tampok</string>
-    <string name="kernelsu_features">Mga tampok ng KernelSU</string>
-    <string name="yukisu_features">Mga tampok ng YukiSU</string>
     <string name="module_disabled_by_yukizygisk">Pinagana ang YukiZygisk. Hindi pinagana ang module na ito upang maiwasan ang salungatan</string>
     <string name="module_disabled_standalone_yukizygisk">Gumagamit ka na ng YukiSU, bakit hindi na lang gamitin ang built-in na bersyon? :(</string>
     <string name="home_working_mode">Mode ng pagpapatakbo</string>

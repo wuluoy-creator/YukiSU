@@ -607,8 +607,6 @@
     <string name="hide_seccomp_status">隱藏 Seccomp 狀態</string>
     <string name="hide_seccomp_status_summary">隱藏主頁的 Seccomp 狀態資訊</string>
     <string name="feature_control">功能控制</string>
-    <string name="kernelsu_features">KernelSU 功能</string>
-    <string name="yukisu_features">YukiSU 功能</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk 已啟用，為防止衝突，此模組已停用</string>
     <string name="module_disabled_standalone_yukizygisk">你都在用 YukiSU 了，為什麼不直接用內建版呢 :(</string>
     <string name="partition_edit_ramdisk">編輯 Ramdisk</string>

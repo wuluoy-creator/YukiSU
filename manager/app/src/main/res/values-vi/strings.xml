@@ -616,8 +616,6 @@
     <string name="predictive_back_gesture">Cử chỉ quay lại dự đoán</string>
     <string name="predictive_back_gesture_summary">Xem trước trang trước theo cử chỉ quay lại. Mặc định tắt</string>
     <string name="feature_control">Điều khiển tính năng</string>
-    <string name="kernelsu_features">Tính năng KernelSU</string>
-    <string name="yukisu_features">Tính năng YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk đã bật. Mô-đun này bị tắt để tránh xung đột</string>
     <string name="module_disabled_standalone_yukizygisk">Đã dùng YukiSU rồi, sao không dùng luôn bản tích hợp nhỉ? :(</string>
     <string name="home_working_mode">Chế độ hoạt động</string>

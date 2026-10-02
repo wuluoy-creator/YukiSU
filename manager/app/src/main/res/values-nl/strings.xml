@@ -600,8 +600,6 @@
     <string name="predictive_back_gesture">Voorspellend teruggebaar</string>
     <string name="predictive_back_gesture_summary">Tijdens het teruggebaar een voorbeeld van de vorige pagina tonen. Standaard uitgeschakeld.</string>
     <string name="feature_control">Functiebeheer</string>
-    <string name="kernelsu_features">KernelSU-functies</string>
-    <string name="yukisu_features">YukiSU-functies</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk is ingeschakeld. Deze module is uitgeschakeld om conflicten te voorkomen.</string>
     <string name="module_disabled_standalone_yukizygisk">Je gebruikt al YukiSU. Waarom niet meteen de ingebouwde versie gebruiken? :(</string>
     <string name="home_working_mode">Werkingsmodus</string>
