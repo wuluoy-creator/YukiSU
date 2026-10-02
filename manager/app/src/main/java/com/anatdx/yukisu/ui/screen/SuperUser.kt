@@ -79,6 +79,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.anatdx.yukisu.Natives
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.FabMenuPresets
+import com.anatdx.yukisu.ui.component.LocalBottomBarPadding
 import com.anatdx.yukisu.ui.component.SearchAppBar
 import com.anatdx.yukisu.ui.component.VerticalExpandableFab
 import com.anatdx.yukisu.ui.component.YukiIcon
@@ -127,11 +128,7 @@ internal fun SuperUserPage(
     val viewModel = viewModel<SuperUserViewModel>()
     val scope = rememberCoroutineScope()
     val topAppBarState = rememberTopAppBarState()
-    val scrollBehavior = if (isExpressiveUi) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(topAppBarState)
-    } else {
-        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-    }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
     val listState = rememberLazyListState()
     val context = LocalContext.current
     val snackBarHostState = rememberSnackbarController()
@@ -274,7 +271,9 @@ internal fun SuperUserPage(
         snackbarHost = { SnackbarHost(snackBarHostState.hostState) },
         contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
         floatingActionButton = {
-            SuperUserFab(viewModel, filteredAndSortedAppGroups, listState, scope)
+            Box(Modifier.padding(bottom = LocalBottomBarPadding.current)) {
+                SuperUserFab(viewModel, filteredAndSortedAppGroups, listState, scope)
+            }
         }
     ) { innerPadding ->
         SuperUserContent(
@@ -391,7 +390,7 @@ private fun SuperUserContent(
             modifier = Modifier
                 .fillMaxSize()
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
-            contentPadding = PaddingValues(top = 8.dp, bottom = 96.dp),
+            contentPadding = PaddingValues(top = 8.dp, bottom = 96.dp + LocalBottomBarPadding.current),
             verticalArrangement = Arrangement.Top
         ) {
             filteredAndSortedAppGroups.forEach { appGroup ->

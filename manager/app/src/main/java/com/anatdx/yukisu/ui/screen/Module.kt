@@ -387,13 +387,11 @@ internal fun ModulePage(
         value = withContext(Dispatchers.IO) { hasMagisk() }
     }
     val hideInstallButton = isSafeMode || hasMagisk
+    val fabTransition = rememberFabTransition(!hideInstallButton && fabVisible)
+    val fabPresent = fabTransition.currentState || fabTransition.targetState || !fabTransition.isIdle
 
     val topAppBarState = rememberTopAppBarState()
-    val scrollBehavior = if (isExpressiveUi) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(topAppBarState)
-    } else {
-        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-    }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
 
     val webUILauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -438,8 +436,9 @@ internal fun ModulePage(
             }
         },
         floatingActionButton = {
-            AnimatedFab(visible = !hideInstallButton && fabVisible) {
+            AnimatedFab(visibilityState = fabTransition) {
                 FloatingActionButton(
+                    modifier = Modifier.padding(bottom = LocalBottomBarPadding.current),
                     shape = if (isExpressiveUi) {
                         CircleShape
                     } else {
@@ -467,7 +466,14 @@ internal fun ModulePage(
         contentWindowInsets = WindowInsets.safeDrawing.only(
             WindowInsetsSides.Top + WindowInsetsSides.Horizontal
         ),
-        snackbarHost = { SnackbarHost(hostState = snackBarHost.hostState) }
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackBarHost.hostState,
+                modifier = Modifier.padding(
+                    bottom = if (fabPresent) 0.dp else LocalBottomBarPadding.current,
+                ),
+            )
+        }
     ) { innerPadding ->
         when {
             hasMagisk -> {
@@ -1089,14 +1095,13 @@ private fun ModuleList(
             state = listState,
             modifier = modifier,
             verticalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = remember {
-                PaddingValues(
-                    start = 16.dp,
-                    top = 16.dp,
-                    end = 16.dp,
-                    bottom = 16.dp + 56.dp + 16.dp + 48.dp + 6.dp /* Scaffold Fab Spacing + Fab container height + SnackBar height */
-                )
-            },
+            contentPadding = PaddingValues(
+                start = 16.dp,
+                top = 16.dp,
+                end = 16.dp,
+                // Keep the last module above the dock, FAB, and snackbar.
+                bottom = LocalBottomBarPadding.current + 16.dp + 56.dp + 16.dp + 48.dp + 6.dp,
+            ),
         ) {
             when {
                 visibleModules.isEmpty() -> {

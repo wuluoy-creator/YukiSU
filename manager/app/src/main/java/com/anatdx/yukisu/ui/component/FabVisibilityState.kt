@@ -2,6 +2,7 @@ package com.anatdx.yukisu.ui.component
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.*
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.*
 
@@ -36,11 +37,15 @@ fun rememberFabVisibilityState(listState: LazyListState): State<Boolean> {
 }
 
 @Composable
-fun AnimatedFab(visible: Boolean, content: @Composable () -> Unit) {
+fun rememberFabTransition(visible: Boolean): MutableTransitionState<Boolean> =
+    remember { MutableTransitionState(visible) }.apply { targetState = visible }
+
+@Composable
+fun AnimatedFab(visibilityState: MutableTransitionState<Boolean>, content: @Composable () -> Unit) {
     // Scroll-triggered visibility should be brief and never bounce or grow from zero.
     // Compose animation specs honor Android's animator duration scale.
     AnimatedVisibility(
-        visible = visible,
+        visibleState = visibilityState,
         enter = fadeIn(androidx.compose.animation.core.tween(160)),
         exit = fadeOut(androidx.compose.animation.core.tween(100)),
     ) { content() }

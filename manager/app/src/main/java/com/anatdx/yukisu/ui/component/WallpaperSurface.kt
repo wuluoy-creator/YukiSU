@@ -17,11 +17,12 @@ import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 
-internal class WallpaperBackdrop(val layer: GraphicsLayer) {
+internal class SurfaceBackdrop(val layer: GraphicsLayer) {
     var coordinates by mutableStateOf<LayoutCoordinates?>(null)
 }
 
-internal val LocalWallpaperBackdrop = staticCompositionLocalOf<WallpaperBackdrop?> { null }
+internal val LocalWallpaperBackdrop = staticCompositionLocalOf<SurfaceBackdrop?> { null }
+internal val LocalPageBackdrop = staticCompositionLocalOf<SurfaceBackdrop?> { null }
 
 /** Records only the wallpaper; navigation controls can never be captured into their own glass. */
 @Composable
@@ -31,7 +32,7 @@ internal fun WallpaperSurface(
     content: @Composable () -> Unit,
 ) {
     val layer = rememberGraphicsLayer()
-    val backdrop = remember(layer) { WallpaperBackdrop(layer) }
+    val backdrop = remember(layer) { SurfaceBackdrop(layer) }
     CompositionLocalProvider(LocalWallpaperBackdrop provides backdrop) {
         Box(modifier.fillMaxSize()) {
             Box(

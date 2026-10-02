@@ -38,6 +38,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.BuildConfig
 import com.anatdx.yukisu.ui.component.KsuIsValid
+import com.anatdx.yukisu.ui.component.LocalBottomBarPadding
 import com.anatdx.yukisu.ui.screen.WorkspaceTabs
 import com.anatdx.yukisu.ui.component.YukiIcon
 import com.anatdx.yukisu.ui.component.YukiTopAppBar
@@ -180,7 +181,8 @@ fun MoreSettingsContent(category: PreferenceCategory, scrollable: Boolean = true
             Modifier.fillMaxSize().verticalScroll(rememberScrollState())
         } else {
             Modifier.fillMaxWidth()
-        }).padding(horizontal = 16.dp, vertical = if (scrollable) 8.dp else 0.dp),
+        }).padding(horizontal = 16.dp, vertical = if (scrollable) 8.dp else 0.dp)
+            .padding(bottom = if (scrollable) LocalBottomBarPadding.current else 0.dp),
     ) {
         when (category) {
             PreferenceCategory.Appearance -> AppearanceSettings(

@@ -131,7 +131,7 @@ private fun SettingsWorkspaceIndex(
     onCategory: (SettingsWorkspaceCategory) -> Unit,
 ) {
     val aboutDialog = rememberCustomDialog { AboutDialog(it) }
-    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 16.dp)) {
+    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 16.dp + LocalBottomBarPadding.current)) {
         SettingsGroupCard(stringResource(R.string.settings_workspace_personalization)) {
             SettingItem(
                 icon = Icons.Filled.Palette,
@@ -245,7 +245,7 @@ private fun UpdateUninstallSettingsContent(navigator: DestinationsNavigator) {
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences("settings", Context.MODE_PRIVATE) }
     val loadingDialog = rememberLoadingDialog()
-    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 16.dp)) {
+    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 16.dp + LocalBottomBarPadding.current)) {
         SettingsGroupCard(stringResource(R.string.settings_category_app)) {
             var checkUpdate by rememberSaveable { mutableStateOf(prefs.getBoolean("check_update", true)) }
             SwitchItem(

@@ -154,11 +154,7 @@ fun PartitionManagerScreen(navigator: DestinationsNavigator) {
     var showBackupDirectoryDialog by rememberSaveable { mutableStateOf(false) }
 
     val topAppBarState = rememberTopAppBarState()
-    val scrollBehavior = if (isExpressiveUi) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(topAppBarState)
-    } else {
-        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-    }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
 
     val displayList = if (showAllPartitions) allPartitionList else partitionList
     val filteredList = remember(displayList, partitionTypeFilter, searchQuery) {

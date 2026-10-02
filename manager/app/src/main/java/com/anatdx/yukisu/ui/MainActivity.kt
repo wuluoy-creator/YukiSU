@@ -12,15 +12,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.CompositionLocalProvider
@@ -48,7 +45,6 @@ import com.anatdx.yukisu.Natives
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.integrity.KsudIntegrity
 import com.anatdx.yukisu.ui.activity.component.BottomBar
-import com.anatdx.yukisu.ui.activity.util.AnimatedBottomBar
 import com.anatdx.yukisu.ui.activity.util.DataRefreshUtils
 import com.anatdx.yukisu.ui.activity.util.DisplayUtils
 import com.anatdx.yukisu.ui.activity.util.LocalPredictiveBackEnabled
@@ -59,6 +55,7 @@ import com.anatdx.yukisu.ui.activity.util.ThemeChangeContentObserver
 import com.anatdx.yukisu.ui.activity.util.ThemeUtils
 import com.anatdx.yukisu.ui.activity.util.UltraActivityUtils
 import com.anatdx.yukisu.ui.component.InstallConfirmationDialog
+import com.anatdx.yukisu.ui.component.FloatingNavigationScaffold
 import com.anatdx.yukisu.ui.component.ZipFileDetector
 import com.anatdx.yukisu.ui.component.ZipFileInfo
 import com.anatdx.yukisu.ui.screen.BottomBarDestination
@@ -215,48 +212,32 @@ class MainActivity : ComponentActivity() {
                         LocalSnackbarHost provides snackBarHostState,
                         LocalNavigationLeaveGuard provides navigationLeaveGuard,
                     ) {
-                        Scaffold(
+                        FloatingNavigationScaffold(
+                            showBottomBar = !predictiveBackEnabled && currentDestination?.route in bottomBarRoutes,
                             containerColor = if (predictiveBackEnabled) Color.Transparent else MaterialTheme.colorScheme.surface,
                             snackbarHost = {
                                 if (!predictiveBackEnabled) SnackbarHost(hostState = snackBarHostState.hostState)
                             },
-                            bottomBar = {
-                                if (!predictiveBackEnabled) {
-                                    AnimatedBottomBar.AnimatedBottomBarWrapper(
-                                        showBottomBar = currentDestination?.route in bottomBarRoutes,
-                                        content = { BottomBar(navController) },
-                                    )
-                                }
-                            },
-                            contentWindowInsets = WindowInsets(0, 0, 0, 0),
-                        ) { outerPadding ->
+                            bottomBar = { BottomBar(navController) },
+                        ) {
                             DestinationsNavHost(
-                                modifier = Modifier.fillMaxSize().padding(outerPadding)
-                                    .consumeWindowInsets(outerPadding).imePadding(),
+                                modifier = Modifier.fillMaxSize().imePadding(),
                                 navGraph = NavGraphs.root as NavHostGraphSpec,
                                 navController = navController,
                                 engine = rememberPredictiveBackNavHostEngine(bottomBarRoutes, predictiveBackEnabled),
                             ) {
                                 predictiveBackSurfaces(NavGraphs.root) { route, contentModifier, content ->
                                     val predictive = LocalPredictiveBackEnabled.current
-                                    Scaffold(
+                                    FloatingNavigationScaffold(
+                                        showBottomBar = predictive && route in bottomBarRoutes,
                                         containerColor = if (predictive) MaterialTheme.colorScheme.surface else Color.Transparent,
                                         snackbarHost = {
                                             if (predictive) SnackbarHost(hostState = snackBarHostState.hostState)
                                         },
-                                        bottomBar = {
-                                            if (predictive) {
-                                                AnimatedBottomBar.AnimatedBottomBarWrapper(
-                                                    showBottomBar = route in bottomBarRoutes,
-                                                    content = { BottomBar(navController) },
-                                                )
-                                            }
-                                        },
-                                        contentWindowInsets = WindowInsets(0, 0, 0, 0),
-                                    ) { innerPadding ->
+                                        bottomBar = { BottomBar(navController) },
+                                    ) {
                                         Box(
-                                            Modifier.fillMaxSize().padding(innerPadding)
-                                                .consumeWindowInsets(innerPadding)
+                                            Modifier.fillMaxSize()
                                                 .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
                                                 .then(contentModifier),
                                             contentAlignment = Alignment.TopCenter,

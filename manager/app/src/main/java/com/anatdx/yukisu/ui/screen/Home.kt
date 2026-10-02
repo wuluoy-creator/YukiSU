@@ -63,6 +63,7 @@ import com.anatdx.yukisu.integrity.KsudIntegrity
 import com.anatdx.yukisu.integrity.KsudIntegrityStatus
 import com.anatdx.yukisu.superkey.SuperKeyHelper
 import com.anatdx.yukisu.ui.component.KsuIsValid
+import com.anatdx.yukisu.ui.component.LocalBottomBarPadding
 import com.anatdx.yukisu.ui.kasumi.HomeKasumiCard
 import com.anatdx.yukisu.ui.component.HomeSummaryCard
 import com.anatdx.yukisu.ui.component.HomeCardIcon
@@ -282,6 +283,7 @@ fun HomeScreen(navigator: DestinationsNavigator) {
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(scrollState)
+                    .padding(bottom = LocalBottomBarPadding.current)
                     .padding(top = 12.dp, start = 16.dp, end = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {

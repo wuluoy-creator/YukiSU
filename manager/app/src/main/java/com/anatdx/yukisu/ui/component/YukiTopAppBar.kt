@@ -32,6 +32,7 @@ fun YukiTopAppBar(
     modifier: Modifier = Modifier,
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
+    // Page headers use pinned behavior so scrolling never changes their height or visibility.
     scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
     val containerColor = yukiTopBarContainerColor()

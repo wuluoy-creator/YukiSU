@@ -40,14 +40,14 @@ private class GlassCoordinates {
     var offset by mutableStateOf<Offset?>(null)
 }
 
-/** A wallpaper lens with an independent, sharp foreground for text and touch targets. */
+/** Samples wallpaper and page content with a sharp foreground for text and touch targets. */
 @Composable
 internal fun LiquidGlassSurface(
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit,
 ) {
-    val backdrop = LocalWallpaperBackdrop.current
-    val coordinates = remember { GlassCoordinates() }
+    val backdrops = listOfNotNull(LocalWallpaperBackdrop.current, LocalPageBackdrop.current)
+    val coordinates = remember(backdrops) { backdrops.map { GlassCoordinates() } }
     val dark = MaterialTheme.colorScheme.surfaceContainerLow.luminance() < 0.5f
     val hasWallpaper = CardConfig.isCustomBackgroundEnabled && ThemeConfig.customBackgroundUri != null
     val opacity = if (hasWallpaper) {
@@ -79,10 +79,11 @@ internal fun LiquidGlassSurface(
         Box(
             Modifier.matchParentSize()
                 .onGloballyPositioned { target ->
-                    coordinates.target = target
-                    val source = backdrop?.coordinates
-                    coordinates.offset = source?.takeIf { it.isAttached }
-                        ?.localPositionOf(target, Offset.Zero)
+                    backdrops.forEachIndexed { index, backdrop ->
+                        coordinates[index].target = target
+                        coordinates[index].offset = backdrop.coordinates?.takeIf { it.isAttached }
+                            ?.localPositionOf(target, Offset.Zero)
+                    }
                 }
                 .graphicsLayer {
                     clip = true
@@ -93,12 +94,14 @@ internal fun LiquidGlassSurface(
                     }
                 }
                 .drawWithContent {
-                    val source = backdrop?.coordinates
-                    val target = coordinates.target
-                    if (backdrop != null && source?.isAttached == true && target?.isAttached == true) {
-                        // Local coordinates also stay aligned while a predictive-back page scales.
-                        val offset = coordinates.offset ?: source.localPositionOf(target, Offset.Zero)
-                        translate(-offset.x, -offset.y) { drawLayer(backdrop.layer) }
+                    backdrops.forEachIndexed { index, backdrop ->
+                        val source = backdrop.coordinates
+                        val target = coordinates[index].target
+                        if (source?.isAttached == true && target?.isAttached == true) {
+                            // Both sources share the dock's predictive-back coordinate space.
+                            val offset = coordinates[index].offset ?: source.localPositionOf(target, Offset.Zero)
+                            translate(-offset.x, -offset.y) { drawLayer(backdrop.layer) }
+                        }
                     }
                 },
         )

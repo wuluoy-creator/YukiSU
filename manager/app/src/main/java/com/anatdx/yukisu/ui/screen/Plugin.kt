@@ -86,6 +86,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.AnimatedFab
+import com.anatdx.yukisu.ui.component.LocalBottomBarPadding
 import com.anatdx.yukisu.ui.component.ConfirmResult
 import com.anatdx.yukisu.ui.component.SearchAppBar
 import com.anatdx.yukisu.ui.component.YukiIcon
@@ -94,6 +95,7 @@ import com.anatdx.yukisu.ui.component.YukiPullToRefreshBox
 import com.anatdx.yukisu.ui.component.YukiSwitch
 import com.anatdx.yukisu.ui.component.rememberConfirmDialog
 import com.anatdx.yukisu.ui.component.rememberFabVisibilityState
+import com.anatdx.yukisu.ui.component.rememberFabTransition
 import com.anatdx.yukisu.ui.theme.isExpressiveUi
 import com.anatdx.yukisu.ui.theme.getCardColors
 import com.anatdx.yukisu.ui.theme.getCardElevation
@@ -266,6 +268,9 @@ internal fun PluginPage(
             }
     }
 
+    val fabTransition = rememberFabTransition(fabVisible && !operationBusy)
+    val fabPresent = fabTransition.currentState || fabTransition.targetState || !fabTransition.isIdle
+
     Scaffold(
         topBar = {
             Column {
@@ -300,8 +305,9 @@ internal fun PluginPage(
             }
         },
         floatingActionButton = {
-            AnimatedFab(visible = fabVisible && !operationBusy) {
+            AnimatedFab(visibilityState = fabTransition) {
                 FloatingActionButton(
+                    modifier = Modifier.padding(bottom = LocalBottomBarPadding.current),
                     shape = if (isExpressiveUi) CircleShape else FloatingActionButtonDefaults.shape,
                     contentColor = MaterialTheme.colorScheme.onPrimary,
                     containerColor = MaterialTheme.colorScheme.primary,
@@ -314,7 +320,12 @@ internal fun PluginPage(
                 }
             }
         },
-        snackbarHost = { SnackbarHost(snackBarHost.hostState) },
+        snackbarHost = {
+            SnackbarHost(
+                snackBarHost.hostState,
+                Modifier.padding(bottom = if (fabPresent) 0.dp else LocalBottomBarPadding.current),
+            )
+        },
     ) { padding ->
         when {
             viewModel.plugins.isEmpty() && viewModel.isRefreshing -> {
@@ -353,7 +364,7 @@ internal fun PluginPage(
                             start = 16.dp,
                             top = 12.dp,
                             end = 16.dp,
-                            bottom = 96.dp,
+                            bottom = 96.dp + LocalBottomBarPadding.current,
                         ),
                         verticalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
