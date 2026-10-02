@@ -63,7 +63,6 @@
     <string name="kasumi_module_rules_add">Əlavə et</string>
     <string name="kasumi_module_rules_placeholder">/system/və ya/vendor/daxilindəki/yol</string>
     <string name="kasumi_module_rules_title">Bu modul üçün fərdi qaydalar</string>
-    <string name="kasumi_modules_count">Modullar</string>
     <string name="kasumi_mount_config">Bağlama konfiqurasiyası</string>
     <string name="kasumi_mount_filter">Qoşma rejimlərini süzgəcdən keçir</string>
     <string name="kasumi_mount_hide">Qoşmaların gizlədilməsi</string>
@@ -108,7 +107,6 @@
     <string name="kasumi_saved_reboot">Saxlandı. Qoşma mexanizmi yenidən başladıqdan sonra qüvvəyə minir</string>
     <string name="kasumi_statfs_spoof">Statfs saxtalaşdırılması</string>
     <string name="kasumi_statfs_spoof_desc">Fayl sistemi növü məlumatlarını əvəzləyir</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">Mövcuddur</string>
     <string name="kasumi_status_builtin">YukiSU-ya daxildir</string>
     <string name="kasumi_status_kernel_too_old">Nüvə çox köhnədir</string>
@@ -116,7 +114,6 @@
     <string name="kasumi_status_not_present">Mövcud deyil</string>
     <string name="kasumi_stealth">Gizli Rejim</string>
     <string name="kasumi_stealth_desc">Bağlama izlərini gizlət və bağlama ID-lərini yenidən sırala</string>
-    <string name="kasumi_storage">Yaddaş</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Bağlanmayıb</string>
     <string name="kasumi_tempdir">Müvəqqəti Bağlama Nöqtəsi</string>

@@ -40,7 +40,6 @@
     <string name="kasumi_module_rules_add">追加</string>
     <string name="kasumi_module_rules_placeholder">/system または /vendor 内のパス</string>
     <string name="kasumi_module_rules_title">このモジュールのカスタムルール</string>
-    <string name="kasumi_modules_count">モジュール</string>
     <string name="kasumi_mount_config">マウント設定</string>
     <string name="kasumi_mount_mode">マウントモード</string>
     <string name="kasumi_mount_mode_auto">自動</string>
@@ -60,13 +59,11 @@
     <string name="kasumi_rules_empty">アクティブなルールはありません</string>
     <string name="kasumi_rules_not_available">Kasumi カーネルが利用できません。ルールタブには Kasumi カーネルのサポートが必要です。</string>
     <string name="kasumi_rules_refresh">更新</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">利用可能</string>
     <string name="kasumi_status_kernel_too_old">カーネルが古すぎます</string>
     <string name="kasumi_status_not_present">存在しません</string>
     <string name="kasumi_stealth">ステルスモード</string>
     <string name="kasumi_stealth_desc">マウントの痕跡を隠し、マウント ID を並べ替えます</string>
-    <string name="kasumi_storage">ストレージ</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">未マウント</string>
     <string name="kasumi_tempdir">一時マウントポイント</string>

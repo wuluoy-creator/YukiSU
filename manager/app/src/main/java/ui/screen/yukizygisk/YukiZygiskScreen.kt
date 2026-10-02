@@ -2,7 +2,6 @@ package ui.screen.yukizygisk
 
 import android.util.Log
 import android.content.res.Configuration
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,13 +45,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.LinearProgressIndicator
 import com.anatdx.yukisu.ui.screen.WorkspaceTabs
+import com.anatdx.yukisu.ui.screen.WorkspaceOperationGuard
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.Tab
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -83,6 +82,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.anatdx.yukisu.R
+import com.anatdx.yukisu.ui.component.KsuIsValid
 import com.anatdx.yukisu.ui.component.YukiIcon
 import com.anatdx.yukisu.ui.component.YukiAlertDialog
 import com.anatdx.yukisu.ui.theme.CardConfig
@@ -92,6 +92,7 @@ import com.anatdx.yukisu.ui.util.LocalSnackbarHost
 import com.anatdx.yukisu.ui.util.execKsud
 import com.anatdx.yukisu.ui.util.getYukiZygiskStatusJson
 import com.anatdx.yukisu.ui.util.ksudReadString
+import com.ramcosta.composedestinations.generated.destinations.YukiZygiskScreenDestination
 import com.topjohnwu.superuser.io.SuFile
 import com.topjohnwu.superuser.io.SuFileInputStream
 import kotlinx.coroutines.Dispatchers
@@ -530,7 +531,7 @@ fun YukiZygiskScreen(navigator: DestinationsNavigator) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
     var section by rememberSaveable { mutableStateOf(InjectionSection.Overview) }
     var saving by remember { mutableStateOf(false) }
-    BackHandler(saving) {}
+    WorkspaceOperationGuard(saving, YukiZygiskScreenDestination.route)
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
@@ -553,7 +554,11 @@ fun YukiZygiskScreen(navigator: DestinationsNavigator) {
                 onSelected = { section = InjectionSection.entries[it] },
                 enabled = !saving,
             )
-            InjectionWorkspace(section, onSavingChanged = { saving = it })
+            Box(Modifier.weight(1f).fillMaxWidth()) {
+                KsuIsValid {
+                    InjectionWorkspace(section, onSavingChanged = { saving = it })
+                }
+            }
         }
     }
 }

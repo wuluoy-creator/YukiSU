@@ -107,7 +107,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.ExtensionsScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.PluginScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.ExtensionRuntimeScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.YukiZygiskScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.ExtensionRepositoryScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.Dispatchers
@@ -285,8 +285,8 @@ internal fun PluginPage(
                             contentDescription = stringResource(R.string.plugin_repositories),
                         )
                     }
-                    IconButton(enabled = !operationBusy, onClick = { navigator.navigate(ExtensionRuntimeScreenDestination()) }) {
-                        YukiIcon(Icons.Outlined.Settings, stringResource(R.string.nav_extension_runtime))
+                    IconButton(enabled = !operationBusy, onClick = { navigator.navigate(YukiZygiskScreenDestination) }) {
+                        YukiIcon(Icons.Outlined.Settings, stringResource(R.string.settings_yukizygisk))
                     }
                     IconButton(enabled = !operationBusy, onClick = { showSortSheet = true }) {
                         YukiIcon(

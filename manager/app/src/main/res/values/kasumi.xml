@@ -63,7 +63,6 @@
     <string name="kasumi_module_rules_add">Add</string>
     <string name="kasumi_module_rules_placeholder">/path/inside/system/or/vendor</string>
     <string name="kasumi_module_rules_title">Custom rules for this module</string>
-    <string name="kasumi_modules_count">Modules</string>
     <string name="kasumi_mount_config">Mount config</string>
     <string name="kasumi_mount_filter">Filter mount modes</string>
     <string name="kasumi_mount_hide">Mount hide</string>
@@ -108,7 +107,6 @@
     <string name="kasumi_saved_reboot">Saved; mount backend changes apply after reboot</string>
     <string name="kasumi_statfs_spoof">Statfs spoof</string>
     <string name="kasumi_statfs_spoof_desc">Project filesystem type information</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">Available</string>
     <string name="kasumi_status_builtin">Built into YukiSU</string>
     <string name="kasumi_status_kernel_too_old">Kernel too old</string>
@@ -116,7 +114,6 @@
     <string name="kasumi_status_not_present">Not present</string>
     <string name="kasumi_stealth">Stealth Mode</string>
     <string name="kasumi_stealth_desc">Hide mount traces and reorder mount IDs</string>
-    <string name="kasumi_storage">Storage</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Not mounted</string>
     <string name="kasumi_tempdir">Temporary Mount Point</string>

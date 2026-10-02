@@ -63,7 +63,6 @@
     <string name="kasumi_module_rules_add">Hozzáadás</string>
     <string name="kasumi_module_rules_placeholder">/útvonal/a/system/vagy/vendor/belsejében</string>
     <string name="kasumi_module_rules_title">Egyéni szabályok ehhez a modulhoz</string>
-    <string name="kasumi_modules_count">Modulok</string>
     <string name="kasumi_mount_config">Csatolási konfiguráció</string>
     <string name="kasumi_mount_filter">Csatolási módok szűrése</string>
     <string name="kasumi_mount_hide">Csatolások elrejtése</string>
@@ -108,7 +107,6 @@
     <string name="kasumi_saved_reboot">Mentve. A csatoló háttérmotor újraindítás után lép életbe</string>
     <string name="kasumi_statfs_spoof">Statfs álcázása</string>
     <string name="kasumi_statfs_spoof_desc">A fájlrendszertípus adatainak átírása</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">Elérhető</string>
     <string name="kasumi_status_builtin">A YukiSU beépített része</string>
     <string name="kasumi_status_kernel_too_old">A kernel túl régi</string>
@@ -116,7 +114,6 @@
     <string name="kasumi_status_not_present">Nincs jelen</string>
     <string name="kasumi_stealth">Rejtett mód</string>
     <string name="kasumi_stealth_desc">A csatolási nyomok elrejtése és a csatolási azonosítók átrendezése</string>
-    <string name="kasumi_storage">Tárhely</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Nincs csatolva</string>
     <string name="kasumi_tempdir">Ideiglenes csatolási pont</string>

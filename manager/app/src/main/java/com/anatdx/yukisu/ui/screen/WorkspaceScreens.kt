@@ -36,8 +36,6 @@ import ui.screen.feature.FeatureControlContent
 import ui.screen.feature.FeatureControlState
 import ui.screen.moreSettings.MoreSettingsContent
 import ui.screen.moreSettings.PreferenceCategory
-import ui.screen.yukizygisk.InjectionSection
-import ui.screen.yukizygisk.InjectionWorkspace
 
 /** Frequent task switches are immediate. Native tabs expose selection and wrap large text. */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -133,7 +131,7 @@ fun AuthorizationRecordsScreen(navigator: DestinationsNavigator) {
                 Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
                     Text(stringResource(R.string.nav_records_disabled), style = MaterialTheme.typography.bodyLarge)
                     Spacer(Modifier.height(16.dp))
-                    OutlinedButton(onClick = { navigator.navigate(KernelPolicyScreenDestination(initialPage = 2)) }) {
+                    OutlinedButton(onClick = { navigator.navigate(KernelPolicyScreenDestination(initialPage = 3)) }) {
                         Text(stringResource(R.string.nav_manage_kernel_features))
                     }
                 }
@@ -175,45 +173,27 @@ fun ExtensionRepositoryScreen(navigator: DestinationsNavigator, initialPage: Int
 
 @Destination<RootGraph>
 @Composable
-fun ExtensionRuntimeScreen(navigator: DestinationsNavigator, initialPage: Int = 0) {
-    var selected by rememberSaveable { mutableIntStateOf(initialPage.coerceIn(0, 2)) }
-    var kasumiSaving by remember { mutableStateOf(false) }
-    var injectionSaving by remember { mutableStateOf(false) }
-    val saving = kasumiSaving || injectionSaving
-    val pages = rememberSaveableStateHolder()
-    WorkspaceOperationGuard(saving, ExtensionRuntimeScreenDestination.route)
-    val labels = listOf(stringResource(R.string.nav_mount), stringResource(R.string.nav_injection_monitor), stringResource(R.string.nav_injection_config))
-    WorkspaceScaffold(stringResource(R.string.nav_extension_runtime), navigator, navigationEnabled = !saving, tabs = {
-        WorkspaceTabs(labels, selected, { selected = it }, enabled = !saving)
-    }) {
-        KsuIsValid {
-            pages.SaveableStateProvider(if (selected == 0) "mount" else "injection") {
-                if (selected == 0) KasumiWorkspace(KasumiSection.Mount, onSavingChanged = { kasumiSaving = it })
-                else InjectionWorkspace(if (selected == 1) InjectionSection.Overview else InjectionSection.Configuration, onSavingChanged = { injectionSaving = it })
-            }
-        }
-    }
-}
-
-@Destination<RootGraph>
-@Composable
 fun KernelPolicyScreen(navigator: DestinationsNavigator, initialPage: Int = 0) {
-    var selected by rememberSaveable { mutableIntStateOf(initialPage.coerceIn(0, 3)) }
+    var selected by rememberSaveable { mutableIntStateOf(initialPage.coerceIn(0, 4)) }
     var saving by remember { mutableStateOf(false) }
     val pages = rememberSaveableStateHolder()
     WorkspaceOperationGuard(saving, KernelPolicyScreenDestination.route)
-    val labels = listOf(stringResource(R.string.nav_isolation), stringResource(R.string.nav_active_rules), stringResource(R.string.nav_kernel_features), stringResource(R.string.nav_advanced_security))
+    val labels = listOf(stringResource(R.string.nav_mount), stringResource(R.string.nav_isolation), stringResource(R.string.nav_active_rules), stringResource(R.string.nav_kernel_features), stringResource(R.string.nav_advanced_security))
     WorkspaceScaffold(stringResource(R.string.nav_kernel_policy), navigator, navigationEnabled = !saving, tabs = {
         WorkspaceTabs(labels, selected, { selected = it }, enabled = !saving)
     }) {
         KsuIsValid {
-            pages.SaveableStateProvider(if (selected < 2) "isolation" else selected.toString()) {
+            pages.SaveableStateProvider(if (selected < 3) "kasumi" else selected.toString()) {
             when (selected) {
-                0, 1 -> KasumiWorkspace(
-                    section = if (selected == 0) KasumiSection.Isolation else KasumiSection.Rules,
+                0, 1, 2 -> KasumiWorkspace(
+                    section = when (selected) {
+                        0 -> KasumiSection.Mount
+                        1 -> KasumiSection.Isolation
+                        else -> KasumiSection.Rules
+                    },
                     onSavingChanged = { saving = it },
                     settingsHeader = {
-                        if (selected == 0) ConfigSection(title = "", segmented = true) {
+                        if (selected == 1) ConfigSection(title = "", segmented = true) {
                             SettingItem(
                                 icon = Icons.Outlined.FolderOff,
                                 title = stringResource(R.string.nav_umount_paths),
@@ -225,7 +205,7 @@ fun KernelPolicyScreen(navigator: DestinationsNavigator, initialPage: Int = 0) {
                         }
                     },
                 )
-                2 -> FeatureControlContent(navigator, onSavingChanged = { saving = it })
+                3 -> FeatureControlContent(navigator, onSavingChanged = { saving = it })
                 else -> MoreSettingsContent(PreferenceCategory.Advanced)
             }
             }
@@ -237,9 +217,7 @@ fun KernelPolicyScreen(navigator: DestinationsNavigator, initialPage: Int = 0) {
 @Composable
 fun DiagnosticsScreen(navigator: DestinationsNavigator) {
     var selected by rememberSaveable { mutableIntStateOf(0) }
-    var kasumiSaving by remember { mutableStateOf(false) }
-    var injectionSaving by remember { mutableStateOf(false) }
-    val saving = kasumiSaving || injectionSaving
+    var saving by remember { mutableStateOf(false) }
     val pages = rememberSaveableStateHolder()
     WorkspaceOperationGuard(saving, DiagnosticsScreenDestination.route)
     val rootAvailable = remember { Natives.isManager && Natives.version != null }
@@ -271,8 +249,7 @@ fun DiagnosticsScreen(navigator: DestinationsNavigator) {
                     }
                 } else null)
                 KsuIsValid {
-                    KasumiWorkspace(KasumiSection.Debug, scrollable = false, onSavingChanged = { kasumiSaving = it })
-                    InjectionWorkspace(InjectionSection.Diagnostics, scrollable = false, onSavingChanged = { injectionSaving = it })
+                    KasumiWorkspace(KasumiSection.Debug, scrollable = false, onSavingChanged = { saving = it })
                 }
             }
             1 -> KsuIsValid { KasumiWorkspace(KasumiSection.Logs) }

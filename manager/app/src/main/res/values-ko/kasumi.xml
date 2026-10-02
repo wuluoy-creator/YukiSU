@@ -40,7 +40,6 @@
     <string name="kasumi_module_rules_add">추가</string>
     <string name="kasumi_module_rules_placeholder">/system 또는 /vendor 내부의 경로</string>
     <string name="kasumi_module_rules_title">이 모듈의 사용자 지정 규칙</string>
-    <string name="kasumi_modules_count">모듈</string>
     <string name="kasumi_mount_config">마운트 구성</string>
     <string name="kasumi_mount_mode">마운트 모드</string>
     <string name="kasumi_mount_mode_auto">자동</string>
@@ -60,13 +59,11 @@
     <string name="kasumi_rules_empty">활성 규칙 없음</string>
     <string name="kasumi_rules_not_available">Kasumi 커널을 사용할 수 없습니다. 규칙 탭에는 Kasumi 커널 지원이 필요합니다.</string>
     <string name="kasumi_rules_refresh">새로고침</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">사용 가능</string>
     <string name="kasumi_status_kernel_too_old">커널이 너무 오래됨</string>
     <string name="kasumi_status_not_present">없음</string>
     <string name="kasumi_stealth">스텔스 모드</string>
     <string name="kasumi_stealth_desc">마운트 흔적을 숨기고 마운트 ID를 재정렬합니다</string>
-    <string name="kasumi_storage">저장소</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">마운트되지 않음</string>
     <string name="kasumi_tempdir">임시 마운트 지점</string>

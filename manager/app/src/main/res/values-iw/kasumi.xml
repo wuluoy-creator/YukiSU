@@ -63,7 +63,6 @@
     <string name="kasumi_module_rules_add">הוסף</string>
     <string name="kasumi_module_rules_placeholder">/נתיב/בתוך/system/או/vendor</string>
     <string name="kasumi_module_rules_title">כללים מותאמים אישית למודול זה</string>
-    <string name="kasumi_modules_count">מודולים</string>
     <string name="kasumi_mount_config">תצורת עיגון</string>
     <string name="kasumi_mount_filter">סינון מצבי עיגון</string>
     <string name="kasumi_mount_hide">הסתרת עיגונים</string>
@@ -109,7 +108,6 @@
     <string name="kasumi_saved_reboot">נשמר. מנוע העיגון ייכנס לתוקף לאחר הפעלה מחדש</string>
     <string name="kasumi_statfs_spoof">זיוף Statfs</string>
     <string name="kasumi_statfs_spoof_desc">מיפוי מחדש של מידע על סוג מערכת הקבצים</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">זמין</string>
     <string name="kasumi_status_builtin">מובנה ב-YukiSU</string>
     <string name="kasumi_status_kernel_too_old">הליבה ישנה מדי</string>
@@ -117,7 +115,6 @@
     <string name="kasumi_status_not_present">לא קיים</string>
     <string name="kasumi_stealth">מצב התגנבות</string>
     <string name="kasumi_stealth_desc">הסתר עקבות עיגון וסדר מחדש את מזהי העיגון</string>
-    <string name="kasumi_storage">אחסון</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">לא מעוגן</string>
     <string name="kasumi_tempdir">נקודת עיגון זמנית</string>

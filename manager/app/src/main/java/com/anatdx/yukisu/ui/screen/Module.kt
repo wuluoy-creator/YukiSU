@@ -76,7 +76,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.ExecuteModuleActionScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.FlashScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.ExtensionRuntimeScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.YukiZygiskScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.ExtensionRepositoryScreenDestination
 import com.anatdx.yukisu.ui.kasumi.KasumiMountConfigDialog
 import com.anatdx.yukisu.ui.kasumi.ConfigChoice
@@ -421,8 +421,8 @@ internal fun ModulePage(
                             contentDescription = stringResource(R.string.module_repositories),
                         )
                     }
-                    IconButton(onClick = { navigator.navigate(ExtensionRuntimeScreenDestination()) }) {
-                        YukiIcon(Icons.Outlined.Tune, stringResource(R.string.nav_extension_runtime))
+                    IconButton(onClick = { navigator.navigate(YukiZygiskScreenDestination) }) {
+                        YukiIcon(Icons.Outlined.Tune, stringResource(R.string.settings_yukizygisk))
                     }
                     IconButton(
                         onClick = { showBottomSheet = true },

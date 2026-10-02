@@ -40,7 +40,6 @@
     <string name="kasumi_module_rules_add">Magdagdag</string>
     <string name="kasumi_module_rules_placeholder">/path/sa/loob/ng/system/o/vendor</string>
     <string name="kasumi_module_rules_title">Mga custom na panuntunan para sa module na ito</string>
-    <string name="kasumi_modules_count">Mga Module</string>
     <string name="kasumi_mount_config">Mount config</string>
     <string name="kasumi_mount_mode">Mount mode</string>
     <string name="kasumi_mount_mode_auto">Auto</string>
@@ -60,13 +59,11 @@
     <string name="kasumi_rules_empty">Walang aktibong panuntunan</string>
     <string name="kasumi_rules_not_available">Hindi available ang Kasumi kernel. Kailangan ng Rules tab ang suporta ng Kasumi kernel.</string>
     <string name="kasumi_rules_refresh">I-refresh</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">Available</string>
     <string name="kasumi_status_kernel_too_old">Masyadong luma ang kernel</string>
     <string name="kasumi_status_not_present">Wala</string>
     <string name="kasumi_stealth">Stealth Mode</string>
     <string name="kasumi_stealth_desc">Itago ang mga mount trace at ayusin muli ang mga Mount ID</string>
-    <string name="kasumi_storage">Storage</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Hindi naka-mount</string>
     <string name="kasumi_tempdir">Pansamantalang Mount Point</string>

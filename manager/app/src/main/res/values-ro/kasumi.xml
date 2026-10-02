@@ -63,7 +63,6 @@
     <string name="kasumi_module_rules_add">Adaugă</string>
     <string name="kasumi_module_rules_placeholder">/cale/în/system/sau/vendor</string>
     <string name="kasumi_module_rules_title">Reguli personalizate pentru acest modul</string>
-    <string name="kasumi_modules_count">Module</string>
     <string name="kasumi_mount_config">Configurare montare</string>
     <string name="kasumi_mount_filter">Filtrează modurile de montare</string>
     <string name="kasumi_mount_hide">Ascunderea montărilor</string>
@@ -109,7 +108,6 @@
     <string name="kasumi_saved_reboot">Salvat. Motorul de montare se va aplica după repornire.</string>
     <string name="kasumi_statfs_spoof">Simularea Statfs</string>
     <string name="kasumi_statfs_spoof_desc">Remapează informațiile despre tipul sistemului de fișiere</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">Disponibil</string>
     <string name="kasumi_status_builtin">Integrat în YukiSU</string>
     <string name="kasumi_status_kernel_too_old">Kernel prea vechi</string>
@@ -117,7 +115,6 @@
     <string name="kasumi_status_not_present">Nu este prezent</string>
     <string name="kasumi_stealth">Mod stealth</string>
     <string name="kasumi_stealth_desc">Ascunde urmele de montare și reordonează ID-urile de montare</string>
-    <string name="kasumi_storage">Stocare</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Nemontat</string>
     <string name="kasumi_tempdir">Punct de montare temporar</string>

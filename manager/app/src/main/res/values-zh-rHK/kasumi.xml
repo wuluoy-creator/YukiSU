@@ -63,7 +63,6 @@
     <string name="kasumi_module_rules_add">新增</string>
     <string name="kasumi_module_rules_placeholder">/system 或 /vendor 下面嘅路徑</string>
     <string name="kasumi_module_rules_title">呢個模組嘅自定義規則</string>
-    <string name="kasumi_modules_count">模組數</string>
     <string name="kasumi_mount_config">掛載配置</string>
     <string name="kasumi_mount_filter">篩選掛載模式</string>
     <string name="kasumi_mount_hide">掛載隱藏</string>
@@ -107,7 +106,6 @@
     <string name="kasumi_saved_reboot">已保存，掛載後端在重新啟動後生效</string>
     <string name="kasumi_statfs_spoof">Statfs 偽裝</string>
     <string name="kasumi_statfs_spoof_desc">映射文件系統類型信息</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">可用</string>
     <string name="kasumi_status_builtin">YukiSU 內置</string>
     <string name="kasumi_status_kernel_too_old">核心版本過低，唔支援 Kasumi</string>
@@ -115,7 +113,6 @@
     <string name="kasumi_status_not_present">未檢測到</string>
     <string name="kasumi_stealth">隱身模式</string>
     <string name="kasumi_stealth_desc">隱藏掛載痕跡並重新排序掛載 ID</string>
-    <string name="kasumi_storage">儲存</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">未掛載</string>
     <string name="kasumi_tempdir">臨時掛載基點</string>

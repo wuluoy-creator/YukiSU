@@ -40,7 +40,6 @@
     <string name="kasumi_module_rules_add">जोडा</string>
     <string name="kasumi_module_rules_placeholder">/system/किंवा/vendor/मधील/पथ</string>
     <string name="kasumi_module_rules_title">या मॉड्यूलसाठी कस्टम नियम</string>
-    <string name="kasumi_modules_count">मॉड्यूल</string>
     <string name="kasumi_mount_config">माउंट कॉन्फिगरेशन</string>
     <string name="kasumi_mount_mode">माउंट मोड</string>
     <string name="kasumi_mount_mode_auto">स्वयंचलित</string>
@@ -60,13 +59,11 @@
     <string name="kasumi_rules_empty">कोणतेही सक्रिय नियम नाहीत</string>
     <string name="kasumi_rules_not_available">Kasumi कर्नल उपलब्ध नाही. नियम टॅबला Kasumi कर्नल समर्थन आवश्यक आहे.</string>
     <string name="kasumi_rules_refresh">रिफ्रेश करा</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">उपलब्ध</string>
     <string name="kasumi_status_kernel_too_old">कर्नल खूप जुने आहे</string>
     <string name="kasumi_status_not_present">उपस्थित नाही</string>
     <string name="kasumi_stealth">स्टेल्थ मोड</string>
     <string name="kasumi_stealth_desc">माउंट खुणा लपवा आणि माउंट आयडी पुन्हा क्रमवारी लावा</string>
-    <string name="kasumi_storage">संचयन</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">माउंट केलेले नाही</string>
     <string name="kasumi_tempdir">तात्पुरते माउंट पॉइंट</string>

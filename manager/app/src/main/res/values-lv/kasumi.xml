@@ -63,7 +63,6 @@
     <string name="kasumi_module_rules_add">Pievienot</string>
     <string name="kasumi_module_rules_placeholder">/ceļš/iekšā/system/vai/vendor</string>
     <string name="kasumi_module_rules_title">Pielāgoti noteikumi šim modulim</string>
-    <string name="kasumi_modules_count">Moduļi</string>
     <string name="kasumi_mount_config">Montēšanas konfigurācija</string>
     <string name="kasumi_mount_filter">Filtrēt montēšanas režīmus</string>
     <string name="kasumi_mount_hide">Montējumu slēpšana</string>
@@ -109,7 +108,6 @@
     <string name="kasumi_saved_reboot">Saglabāts; montēšanas aizmugursistēma stāsies spēkā pēc restartēšanas</string>
     <string name="kasumi_statfs_spoof">Statfs maskēšana</string>
     <string name="kasumi_statfs_spoof_desc">Aizstāt failu sistēmas tipa informāciju</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">Pieejams</string>
     <string name="kasumi_status_builtin">Iebūvēts YukiSU</string>
     <string name="kasumi_status_kernel_too_old">Kodols pārāk vecs</string>
@@ -117,7 +115,6 @@
     <string name="kasumi_status_not_present">Nav klāt</string>
     <string name="kasumi_stealth">Slēptais režīms</string>
     <string name="kasumi_stealth_desc">Slēpt montēšanas pēdas un pārkārtot montēšanas ID</string>
-    <string name="kasumi_storage">Krātuve</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Nav montēts</string>
     <string name="kasumi_tempdir">Pagaidu montēšanas punkts</string>

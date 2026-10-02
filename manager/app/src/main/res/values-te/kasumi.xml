@@ -40,7 +40,6 @@
     <string name="kasumi_module_rules_add">జోడించండి</string>
     <string name="kasumi_module_rules_placeholder">/system/లేదా/vendor/లోపల/పాత్</string>
     <string name="kasumi_module_rules_title">ఈ మాడ్యూల్ కోసం కస్టమ్ నియమాలు</string>
-    <string name="kasumi_modules_count">మాడ్యూల్‌లు</string>
     <string name="kasumi_mount_config">మౌంట్ కాన్ఫిగ్</string>
     <string name="kasumi_mount_mode">మౌంట్ మోడ్</string>
     <string name="kasumi_mount_mode_auto">స్వయంచాలకం</string>
@@ -60,13 +59,11 @@
     <string name="kasumi_rules_empty">క్రియాశీల నియమాలు లేవు</string>
     <string name="kasumi_rules_not_available">Kasumi కెర్నల్ అందుబాటులో లేదు. నియమాల ట్యాబ్‌కు Kasumi కెర్నల్ మద్దతు అవసరం.</string>
     <string name="kasumi_rules_refresh">రిఫ్రెష్ చేయండి</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">అందుబాటులో ఉంది</string>
     <string name="kasumi_status_kernel_too_old">కెర్నల్ చాలా పాతది</string>
     <string name="kasumi_status_not_present">లేదు</string>
     <string name="kasumi_stealth">స్టెల్త్ మోడ్</string>
     <string name="kasumi_stealth_desc">మౌంట్ జాడలను దాచు మరియు మౌంట్ IDలను పునఃక్రమబద్ధీకరించు</string>
-    <string name="kasumi_storage">నిల్వ</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">మౌంట్ చేయబడలేదు</string>
     <string name="kasumi_tempdir">తాత్కాలిక మౌంట్ పాయింట్</string>

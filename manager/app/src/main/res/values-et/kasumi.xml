@@ -63,7 +63,6 @@
     <string name="kasumi_module_rules_add">Lisa</string>
     <string name="kasumi_module_rules_placeholder">/tee/kaustas/system/või/vendor</string>
     <string name="kasumi_module_rules_title">Selle mooduli kohandatud reeglid</string>
-    <string name="kasumi_modules_count">Moodulid</string>
     <string name="kasumi_mount_config">Haakimise konfiguratsioon</string>
     <string name="kasumi_mount_filter">Filtreeri haakimisrežiime</string>
     <string name="kasumi_mount_hide">Haakimiste peitmine</string>
@@ -108,7 +107,6 @@
     <string name="kasumi_saved_reboot">Salvestatud; haakimise taustsüsteem jõustub pärast taaskäivitust</string>
     <string name="kasumi_statfs_spoof">Statfs-andmete maskeerimine</string>
     <string name="kasumi_statfs_spoof_desc">Asenda failisüsteemi tüübi teave</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">Saadaval</string>
     <string name="kasumi_status_builtin">YukiSU-sse sisseehitatud</string>
     <string name="kasumi_status_kernel_too_old">Kernel liiga vana</string>
@@ -116,7 +114,6 @@
     <string name="kasumi_status_not_present">Puudub</string>
     <string name="kasumi_stealth">Varjatud režiim</string>
     <string name="kasumi_stealth_desc">Peida haakimisjäljed ja järjesta haakimise ID-d ümber</string>
-    <string name="kasumi_storage">Salvestusruum</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Haakimata</string>
     <string name="kasumi_tempdir">Ajutine haakimispunkt</string>

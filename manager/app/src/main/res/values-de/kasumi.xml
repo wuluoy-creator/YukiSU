@@ -63,7 +63,6 @@
     <string name="kasumi_module_rules_add">Hinzufügen</string>
     <string name="kasumi_module_rules_placeholder">/pfad/innerhalb/system/oder/vendor</string>
     <string name="kasumi_module_rules_title">Benutzerdefinierte Regeln für dieses Modul</string>
-    <string name="kasumi_modules_count">Module</string>
     <string name="kasumi_mount_config">Mount-Konfiguration</string>
     <string name="kasumi_mount_filter">Mount-Modi filtern</string>
     <string name="kasumi_mount_hide">Mounts verbergen</string>
@@ -108,7 +107,6 @@
     <string name="kasumi_saved_reboot">Gespeichert. Das Mount-Backend wird nach einem Neustart wirksam.</string>
     <string name="kasumi_statfs_spoof">Statfs-Tarnung</string>
     <string name="kasumi_statfs_spoof_desc">Informationen zum Dateisystemtyp abbilden</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">Verfügbar</string>
     <string name="kasumi_status_builtin">In YukiSU integriert</string>
     <string name="kasumi_status_kernel_too_old">Kernel zu alt</string>
@@ -116,7 +114,6 @@
     <string name="kasumi_status_not_present">Nicht vorhanden</string>
     <string name="kasumi_stealth">Tarnmodus</string>
     <string name="kasumi_stealth_desc">Mount-Spuren verbergen und Mount-IDs neu ordnen</string>
-    <string name="kasumi_storage">Speicher</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Nicht eingehängt</string>
     <string name="kasumi_tempdir">Temporärer Einhängepunkt</string>

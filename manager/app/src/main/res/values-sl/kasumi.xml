@@ -63,7 +63,6 @@
     <string name="kasumi_module_rules_add">Dodaj</string>
     <string name="kasumi_module_rules_placeholder">/pot/znotraj/system/ali/vendor</string>
     <string name="kasumi_module_rules_title">Lastna pravila za ta modul</string>
-    <string name="kasumi_modules_count">Moduli</string>
     <string name="kasumi_mount_config">Konfiguracija priklopa</string>
     <string name="kasumi_mount_filter">Filtriraj načine priklopa</string>
     <string name="kasumi_mount_hide">Skrivanje priklopov</string>
@@ -110,7 +109,6 @@
     <string name="kasumi_saved_reboot">Shranjeno; zaledje priklopov začne veljati po ponovnem zagonu</string>
     <string name="kasumi_statfs_spoof">Ponarejanje Statfs</string>
     <string name="kasumi_statfs_spoof_desc">Zamenjaj podatke o vrsti datotečnega sistema</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">Na voljo</string>
     <string name="kasumi_status_builtin">Vgrajeno v YukiSU</string>
     <string name="kasumi_status_kernel_too_old">Jedro prestaro</string>
@@ -118,7 +116,6 @@
     <string name="kasumi_status_not_present">Ni prisoten</string>
     <string name="kasumi_stealth">Prikriti način</string>
     <string name="kasumi_stealth_desc">Skrij sledi priklopa in preuredi ID-je priklopov</string>
-    <string name="kasumi_storage">Shramba</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Ni priklopljeno</string>
     <string name="kasumi_tempdir">Začasna priklopna točka</string>

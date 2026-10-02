@@ -63,7 +63,6 @@
     <string name="kasumi_module_rules_add">Ekle</string>
     <string name="kasumi_module_rules_placeholder">/system/veya/vendor/içindeki/yol</string>
     <string name="kasumi_module_rules_title">Bu modül için özel kurallar</string>
-    <string name="kasumi_modules_count">Modüller</string>
     <string name="kasumi_mount_config">Bağlama yapılandırması</string>
     <string name="kasumi_mount_filter">Bağlama kiplerini filtrele</string>
     <string name="kasumi_mount_hide">Bağlamaları gizleme</string>
@@ -108,7 +107,6 @@
     <string name="kasumi_saved_reboot">Kaydedildi. Bağlama arka ucu yeniden başlatınca uygulanır</string>
     <string name="kasumi_statfs_spoof">Statfs taklidi</string>
     <string name="kasumi_statfs_spoof_desc">Dosya sistemi türü bilgilerini eşler</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">Kullanılabilir</string>
     <string name="kasumi_status_builtin">YukiSU\'da yerleşik</string>
     <string name="kasumi_status_kernel_too_old">Kernel çok eski</string>
@@ -116,7 +114,6 @@
     <string name="kasumi_status_not_present">Mevcut değil</string>
     <string name="kasumi_stealth">Gizli mod</string>
     <string name="kasumi_stealth_desc">Bağlama izlerini gizle ve bağlama kimliklerini yeniden sırala</string>
-    <string name="kasumi_storage">Depolama</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Bağlanmadı</string>
     <string name="kasumi_tempdir">Geçici bağlama noktası</string>

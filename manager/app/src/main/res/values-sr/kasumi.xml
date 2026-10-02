@@ -63,7 +63,6 @@
     <string name="kasumi_module_rules_add">Додај</string>
     <string name="kasumi_module_rules_placeholder">/path/inside/system/or/vendor</string>
     <string name="kasumi_module_rules_title">Прилагођена правила за овај модул</string>
-    <string name="kasumi_modules_count">Модули</string>
     <string name="kasumi_mount_config">Конфигурација монтирања</string>
     <string name="kasumi_mount_filter">Филтрирај начине монтирања</string>
     <string name="kasumi_mount_hide">Скривање монтирања</string>
@@ -109,7 +108,6 @@
     <string name="kasumi_saved_reboot">Сачувано. Позадински систем монтирања примењује се након поновног покретања</string>
     <string name="kasumi_statfs_spoof">Прикривање Statfs</string>
     <string name="kasumi_statfs_spoof_desc">Пресликава податке о врсти система датотека</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">Доступан</string>
     <string name="kasumi_status_builtin">Уграђено у YukiSU</string>
     <string name="kasumi_status_kernel_too_old">Језгро је престаро</string>
@@ -117,7 +115,6 @@
     <string name="kasumi_status_not_present">Није присутан</string>
     <string name="kasumi_stealth">Стеалтх Моде</string>
     <string name="kasumi_stealth_desc">Сакриј трагове монтирања и промени редослед монтажних ИД-ова</string>
-    <string name="kasumi_storage">Складиштење</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Није монтирано</string>
     <string name="kasumi_tempdir">Привремена тачка постављања</string>

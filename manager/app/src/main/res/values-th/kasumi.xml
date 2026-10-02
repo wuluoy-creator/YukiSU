@@ -40,7 +40,6 @@
     <string name="kasumi_module_rules_add">เพิ่ม</string>
     <string name="kasumi_module_rules_placeholder">/พาธ/ภายใน/system/หรือ/vendor</string>
     <string name="kasumi_module_rules_title">กฎแบบกำหนดเองสำหรับโมดูลนี้</string>
-    <string name="kasumi_modules_count">โมดูล</string>
     <string name="kasumi_mount_config">การกำหนดค่าการเมานต์</string>
     <string name="kasumi_mount_mode">โหมดการเมานต์</string>
     <string name="kasumi_mount_mode_auto">อัตโนมัติ</string>
@@ -60,13 +59,11 @@
     <string name="kasumi_rules_empty">ไม่มีกฎที่ใช้งานอยู่</string>
     <string name="kasumi_rules_not_available">เคอร์เนล Kasumi ไม่พร้อมใช้งาน แท็บกฎต้องการการรองรับเคอร์เนล Kasumi</string>
     <string name="kasumi_rules_refresh">รีเฟรช</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">พร้อมใช้งาน</string>
     <string name="kasumi_status_kernel_too_old">เคอร์เนลเก่าเกินไป</string>
     <string name="kasumi_status_not_present">ไม่มี</string>
     <string name="kasumi_stealth">โหมดซ่อนตัว</string>
     <string name="kasumi_stealth_desc">ซ่อนร่องรอยการเมานต์และจัดเรียง ID การเมานต์ใหม่</string>
-    <string name="kasumi_storage">ที่จัดเก็บ</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">ยังไม่ได้เมานต์</string>
     <string name="kasumi_tempdir">จุดเมานต์ชั่วคราว</string>

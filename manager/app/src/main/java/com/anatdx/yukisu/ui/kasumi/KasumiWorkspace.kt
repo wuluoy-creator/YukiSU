@@ -63,10 +63,8 @@ fun KasumiWorkspace(
     var status by remember { mutableStateOf(Controller.KasumiStatus.NOT_PRESENT) }
     var version by remember { mutableStateOf("Unknown") }
     var config by remember { mutableStateOf(Controller.KagamiConfig()) }
-    var modules by remember { mutableStateOf(emptyList<Controller.ModuleInfo>()) }
     var rules by remember { mutableStateOf(emptyList<Controller.ActiveRule>()) }
     var system by remember { mutableStateOf(Controller.SystemInfo("", "", emptyList(), emptyList(), false, null)) }
-    var storage by remember { mutableStateOf(Controller.StorageInfo("-", "-", "-", "0%", "unknown")) }
     var features by remember { mutableStateOf<Controller.FeaturesResult?>(null) }
     var rulesRefreshing by remember { mutableStateOf(false) }
     var showKernelLog by rememberSaveable { mutableStateOf(false) }
@@ -83,9 +81,7 @@ fun KasumiWorkspace(
         status = loaded.status
         // Keep the complete config, including original JSON and supported fields.
         config = loaded.config
-        modules = loaded.modules
         system = loaded.system
-        storage = loaded.storage
         rules = loaded.rules
         features = loaded.features
         dataReady = true
@@ -249,7 +245,7 @@ fun KasumiWorkspace(
                         }
                     } else when (section) {
                         KasumiSection.Status -> StatusTab(
-                            status, true, version, system, storage, modules, ::loadData,
+                            status, true, version, system, ::loadData,
                             scrollable = !inlineContent,
                             contentPadding = contentPadding,
                             refreshEnabled = !isLoading && !configSaving,

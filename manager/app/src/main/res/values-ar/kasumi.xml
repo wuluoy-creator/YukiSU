@@ -63,7 +63,6 @@
     <string name="kasumi_module_rules_add">إضافة</string>
     <string name="kasumi_module_rules_placeholder">/المسار/داخل/system/أو/vendor</string>
     <string name="kasumi_module_rules_title">قواعد مخصصة لهذه الوحدة</string>
-    <string name="kasumi_modules_count">الوحدات</string>
     <string name="kasumi_mount_config">إعداد التركيب</string>
     <string name="kasumi_mount_filter">تصفية أوضاع التركيب</string>
     <string name="kasumi_mount_hide">إخفاء نقاط التركيب</string>
@@ -112,7 +111,6 @@
     <string name="kasumi_saved_reboot">حُفظ. تسري الواجهة الخلفية للتركيب بعد إعادة التشغيل</string>
     <string name="kasumi_statfs_spoof">تمويه Statfs</string>
     <string name="kasumi_statfs_spoof_desc">تغيير معلومات نوع نظام الملفات</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">متاح</string>
     <string name="kasumi_status_builtin">مدمج في YukiSU</string>
     <string name="kasumi_status_kernel_too_old">النواة قديمة جداً</string>
@@ -120,7 +118,6 @@
     <string name="kasumi_status_not_present">غير موجود</string>
     <string name="kasumi_stealth">الوضع الخفي</string>
     <string name="kasumi_stealth_desc">إخفاء آثار التركيب وإعادة ترتيب معرّفات التركيب</string>
-    <string name="kasumi_storage">التخزين</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">غير مركّب</string>
     <string name="kasumi_tempdir">نقطة تركيب مؤقتة</string>

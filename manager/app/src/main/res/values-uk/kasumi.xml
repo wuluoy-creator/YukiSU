@@ -63,7 +63,6 @@
     <string name="kasumi_module_rules_add">Додати</string>
     <string name="kasumi_module_rules_placeholder">/шлях/усередині/system/або/vendor</string>
     <string name="kasumi_module_rules_title">Власні правила для цього модуля</string>
-    <string name="kasumi_modules_count">Модулі</string>
     <string name="kasumi_mount_config">Конфігурація монтування</string>
     <string name="kasumi_mount_filter">Фільтр режимів монтування</string>
     <string name="kasumi_mount_hide">Приховування монтувань</string>
@@ -110,7 +109,6 @@
     <string name="kasumi_saved_reboot">Збережено. Механізм монтування набуде чинності після перезавантаження</string>
     <string name="kasumi_statfs_spoof">Підміна Statfs</string>
     <string name="kasumi_statfs_spoof_desc">Підміна відомостей про тип файлової системи</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">Доступно</string>
     <string name="kasumi_status_builtin">Вбудовано в YukiSU</string>
     <string name="kasumi_status_kernel_too_old">Ядро застаре</string>
@@ -118,7 +116,6 @@
     <string name="kasumi_status_not_present">Відсутній</string>
     <string name="kasumi_stealth">Прихований режим</string>
     <string name="kasumi_stealth_desc">Приховувати сліди монтування та впорядковувати ідентифікатори монтувань</string>
-    <string name="kasumi_storage">Сховище</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Не змонтовано</string>
     <string name="kasumi_tempdir">Тимчасова точка монтування</string>

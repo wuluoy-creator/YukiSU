@@ -40,7 +40,6 @@
     <string name="kasumi_module_rules_add">Thêm</string>
     <string name="kasumi_module_rules_placeholder">/đường/dẫn/trong/system/hoặc/vendor</string>
     <string name="kasumi_module_rules_title">Quy tắc tùy chỉnh cho module này</string>
-    <string name="kasumi_modules_count">Module</string>
     <string name="kasumi_mount_config">Cấu hình gắn kết</string>
     <string name="kasumi_mount_mode">Chế độ gắn kết</string>
     <string name="kasumi_mount_mode_auto">Tự động</string>
@@ -60,13 +59,11 @@
     <string name="kasumi_rules_empty">Không có quy tắc đang hoạt động</string>
     <string name="kasumi_rules_not_available">Kernel Kasumi không khả dụng. Tab Quy tắc cần hỗ trợ kernel Kasumi.</string>
     <string name="kasumi_rules_refresh">Làm mới</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">Khả dụng</string>
     <string name="kasumi_status_kernel_too_old">Kernel quá cũ</string>
     <string name="kasumi_status_not_present">Không hiện diện</string>
     <string name="kasumi_stealth">Chế độ ẩn</string>
     <string name="kasumi_stealth_desc">Ẩn dấu vết gắn kết và sắp xếp lại các ID gắn kết</string>
-    <string name="kasumi_storage">Bộ nhớ</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Chưa gắn kết</string>
     <string name="kasumi_tempdir">Điểm gắn kết tạm thời</string>

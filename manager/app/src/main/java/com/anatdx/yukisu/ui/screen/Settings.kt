@@ -46,6 +46,7 @@ import com.ramcosta.composedestinations.generated.destinations.AppProfileTemplat
 import com.ramcosta.composedestinations.generated.destinations.FlashScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.KernelPolicyScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.DiagnosticsScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.YukiZygiskScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.anatdx.yukisu.BuildConfig
 import com.anatdx.yukisu.Natives
@@ -166,6 +167,12 @@ private fun SettingsWorkspaceIndex(
                     title = stringResource(R.string.settings_category_kernel),
                     summary = stringResource(R.string.settings_category_kernel_summary),
                     onClick = { navigator.navigate(KernelPolicyScreenDestination()) },
+                )
+                SettingItem(
+                    icon = Icons.Filled.Extension,
+                    title = stringResource(R.string.settings_yukizygisk),
+                    summary = stringResource(R.string.settings_yukizygisk_page_summary),
+                    onClick = { navigator.navigate(YukiZygiskScreenDestination) },
                 )
             }
             SettingItem(

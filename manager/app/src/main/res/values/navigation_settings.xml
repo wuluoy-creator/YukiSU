@@ -8,7 +8,7 @@
     <string name="settings_category_app" tools:ignore="MissingTranslation">App and updates</string>
     <string name="settings_category_app_summary" tools:ignore="MissingTranslation">Manager updates, daemon updates and WebUI engine</string>
     <string name="settings_category_kernel" tools:ignore="MissingTranslation">Kernel and isolation</string>
-    <string name="settings_category_kernel_summary" tools:ignore="MissingTranslation">Kernel features, security and isolation policies</string>
+    <string name="settings_category_kernel_summary" tools:ignore="MissingTranslation">Mount settings, kernel features, security and isolation policies</string>
     <string name="settings_category_diagnostics" tools:ignore="MissingTranslation">Diagnostics</string>
     <string name="settings_category_diagnostics_summary" tools:ignore="MissingTranslation">Logs, reports and debugging controls</string>
     <string name="settings_category_maintenance" tools:ignore="MissingTranslation">Maintenance and about</string>
@@ -16,4 +16,5 @@
     <string name="settings_category_security" tools:ignore="MissingTranslation">Security</string>
     <string name="settings_category_webui" tools:ignore="MissingTranslation">WebUI debugging</string>
     <string name="settings_authorization_defaults" tools:ignore="MissingTranslation">Authorization defaults</string>
+    <string name="settings_yukizygisk_page_summary" tools:ignore="MissingTranslation">Injection monitoring, configuration and diagnostics</string>
 </resources>

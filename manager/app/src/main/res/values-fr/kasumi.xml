@@ -63,7 +63,6 @@
     <string name="kasumi_module_rules_add">Ajouter</string>
     <string name="kasumi_module_rules_placeholder">/chemin/dans/system/ou/vendor</string>
     <string name="kasumi_module_rules_title">Règles personnalisées pour ce module</string>
-    <string name="kasumi_modules_count">Modules</string>
     <string name="kasumi_mount_config">Configuration de montage</string>
     <string name="kasumi_mount_filter">Filtrer les modes de montage</string>
     <string name="kasumi_mount_hide">Masquage des montages</string>
@@ -109,7 +108,6 @@
     <string name="kasumi_saved_reboot">Enregistré. Le moteur de montage prendra effet après redémarrage.</string>
     <string name="kasumi_statfs_spoof">Simulation de Statfs</string>
     <string name="kasumi_statfs_spoof_desc">Remapper les informations de type de système de fichiers</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">Disponible</string>
     <string name="kasumi_status_builtin">Intégré à YukiSU</string>
     <string name="kasumi_status_kernel_too_old">Noyau trop ancien</string>
@@ -117,7 +115,6 @@
     <string name="kasumi_status_not_present">Absent</string>
     <string name="kasumi_stealth">Mode furtif</string>
     <string name="kasumi_stealth_desc">Masquer les traces de montage et réordonner les ID de montage</string>
-    <string name="kasumi_storage">Stockage</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Non monté</string>
     <string name="kasumi_tempdir">Point de montage temporaire</string>

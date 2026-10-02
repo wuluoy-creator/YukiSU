@@ -63,7 +63,6 @@
     <string name="kasumi_module_rules_add">Tilføj</string>
     <string name="kasumi_module_rules_placeholder">/sti/inde/i/system/eller/vendor</string>
     <string name="kasumi_module_rules_title">Brugerdefinerede regler for dette modul</string>
-    <string name="kasumi_modules_count">Moduler</string>
     <string name="kasumi_mount_config">Monteringskonfiguration</string>
     <string name="kasumi_mount_filter">Filtrer monteringstilstande</string>
     <string name="kasumi_mount_hide">Skjul monteringer</string>
@@ -108,7 +107,6 @@
     <string name="kasumi_saved_reboot">Gemt. Monteringsbackend træder i kraft efter genstart.</string>
     <string name="kasumi_statfs_spoof">Statfs-forfalskning</string>
     <string name="kasumi_statfs_spoof_desc">Omdiriger oplysninger om filsystemtypen</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">Tilgængelig</string>
     <string name="kasumi_status_builtin">Indbygget i YukiSU</string>
     <string name="kasumi_status_kernel_too_old">Kernen er for gammel</string>
@@ -116,7 +114,6 @@
     <string name="kasumi_status_not_present">Ikke til stede</string>
     <string name="kasumi_stealth">Skjult tilstand</string>
     <string name="kasumi_stealth_desc">Skjul monteringsspor og omarrangér monterings-ID\'er</string>
-    <string name="kasumi_storage">Lager</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Ikke monteret</string>
     <string name="kasumi_tempdir">Midlertidigt monteringspunkt</string>

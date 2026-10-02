@@ -40,7 +40,6 @@
     <string name="kasumi_module_rules_add">Tambah</string>
     <string name="kasumi_module_rules_placeholder">/jalur/di/dalam/system/atau/vendor</string>
     <string name="kasumi_module_rules_title">Aturan kustom untuk modul ini</string>
-    <string name="kasumi_modules_count">Modul</string>
     <string name="kasumi_mount_config">Konfigurasi pemasangan</string>
     <string name="kasumi_mount_mode">Mode pemasangan</string>
     <string name="kasumi_mount_mode_auto">Otomatis</string>
@@ -60,13 +59,11 @@
     <string name="kasumi_rules_empty">Tidak ada aturan aktif</string>
     <string name="kasumi_rules_not_available">Kernel Kasumi tidak tersedia. Tab Aturan memerlukan dukungan kernel Kasumi.</string>
     <string name="kasumi_rules_refresh">Segarkan</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">Tersedia</string>
     <string name="kasumi_status_kernel_too_old">Kernel terlalu lama</string>
     <string name="kasumi_status_not_present">Tidak ada</string>
     <string name="kasumi_stealth">Mode siluman</string>
     <string name="kasumi_stealth_desc">Sembunyikan jejak pemasangan dan tata ulang ID pemasangan</string>
-    <string name="kasumi_storage">Penyimpanan</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Tidak terpasang</string>
     <string name="kasumi_tempdir">Titik pemasangan sementara</string>

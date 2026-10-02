@@ -63,7 +63,6 @@
     <string name="kasumi_module_rules_add">Toevoegen</string>
     <string name="kasumi_module_rules_placeholder">/pad/binnen/system/of/vendor</string>
     <string name="kasumi_module_rules_title">Aangepaste regels voor deze module</string>
-    <string name="kasumi_modules_count">Modules</string>
     <string name="kasumi_mount_config">Koppelconfiguratie</string>
     <string name="kasumi_mount_filter">Koppelmodi filteren</string>
     <string name="kasumi_mount_hide">Koppelingen verbergen</string>
@@ -108,7 +107,6 @@
     <string name="kasumi_saved_reboot">Opgeslagen. De koppelbackend wordt actief na opnieuw opstarten.</string>
     <string name="kasumi_statfs_spoof">Statfs-vervalsing</string>
     <string name="kasumi_statfs_spoof_desc">Informatie over het bestandssysteemtype opnieuw toewijzen</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">Beschikbaar</string>
     <string name="kasumi_status_builtin">Ingebouwd in YukiSU</string>
     <string name="kasumi_status_kernel_too_old">Kernel te oud</string>
@@ -116,7 +114,6 @@
     <string name="kasumi_status_not_present">Niet aanwezig</string>
     <string name="kasumi_stealth">Stealth-modus</string>
     <string name="kasumi_stealth_desc">Verberg koppelsporen en herorden koppel-ID\'s</string>
-    <string name="kasumi_storage">Opslag</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Niet gekoppeld</string>
     <string name="kasumi_tempdir">Tijdelijk koppelpunt</string>

@@ -40,7 +40,6 @@
     <string name="kasumi_module_rules_add">ಸೇರಿಸಿ</string>
     <string name="kasumi_module_rules_placeholder">/system/ಅಥವಾ/vendor/ಒಳಗಿನ/ಪಥ</string>
     <string name="kasumi_module_rules_title">ಈ ಮಾಡ್ಯೂಲ್‌ಗಾಗಿ ಕಸ್ಟಮ್ ನಿಯಮಗಳು</string>
-    <string name="kasumi_modules_count">ಮಾಡ್ಯೂಲ್‌ಗಳು</string>
     <string name="kasumi_mount_config">ಮೌಂಟ್ ಕಾನ್ಫಿಗ್</string>
     <string name="kasumi_mount_mode">ಮೌಂಟ್ ಮೋಡ್</string>
     <string name="kasumi_mount_mode_auto">ಸ್ವಯಂಚಾಲಿತ</string>
@@ -60,13 +59,11 @@
     <string name="kasumi_rules_empty">ಯಾವುದೇ ಸಕ್ರಿಯ ನಿಯಮಗಳಿಲ್ಲ</string>
     <string name="kasumi_rules_not_available">Kasumi ಕರ್ನಲ್ ಲಭ್ಯವಿಲ್ಲ. ನಿಯಮಗಳ ಟ್ಯಾಬ್‌ಗೆ Kasumi ಕರ್ನಲ್ ಬೆಂಬಲ ಅಗತ್ಯವಿದೆ.</string>
     <string name="kasumi_rules_refresh">ರಿಫ್ರೆಶ್ ಮಾಡಿ</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">ಲಭ್ಯವಿದೆ</string>
     <string name="kasumi_status_kernel_too_old">ಕರ್ನಲ್ ತುಂಬಾ ಹಳೆಯದು</string>
     <string name="kasumi_status_not_present">ಇರುವುದಿಲ್ಲ</string>
     <string name="kasumi_stealth">ಸ್ಟೆಲ್ತ್ ಮೋಡ್</string>
     <string name="kasumi_stealth_desc">ಮೌಂಟ್ ಕುರುಹುಗಳನ್ನು ಮರೆಮಾಡಿ ಮತ್ತು ಮೌಂಟ್ ಐಡಿಗಳನ್ನು ಮರುಕ್ರಮಗೊಳಿಸಿ</string>
-    <string name="kasumi_storage">ಸಂಗ್ರಹಣೆ</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">ಮೌಂಟ್ ಮಾಡಿಲ್ಲ</string>
     <string name="kasumi_tempdir">ತಾತ್ಕಾಲಿಕ ಮೌಂಟ್ ಪಾಯಿಂಟ್</string>

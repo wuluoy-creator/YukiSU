@@ -63,7 +63,6 @@
     <string name="kasumi_module_rules_add">افزودن</string>
     <string name="kasumi_module_rules_placeholder">/مسیر/داخل/system/یا/vendor</string>
     <string name="kasumi_module_rules_title">قوانین سفارشی برای این ماژول</string>
-    <string name="kasumi_modules_count">ماژول‌ها</string>
     <string name="kasumi_mount_config">پیکربندی مانت</string>
     <string name="kasumi_mount_filter">فیلتر حالت‌های اتصال</string>
     <string name="kasumi_mount_hide">پنهان‌سازی اتصال‌ها</string>
@@ -108,7 +107,6 @@
     <string name="kasumi_saved_reboot">ذخیره شد؛ زیرسامانه اتصال پس از راه‌اندازی مجدد اعمال می‌شود</string>
     <string name="kasumi_statfs_spoof">جعل Statfs</string>
     <string name="kasumi_statfs_spoof_desc">بازنگاشت اطلاعات نوع سامانه فایل</string>
-    <string name="kasumi_stats_kasumi">Kasumi</string>
     <string name="kasumi_status_available">در دسترس</string>
     <string name="kasumi_status_builtin">داخلی YukiSU</string>
     <string name="kasumi_status_kernel_too_old">کرنل بسیار قدیمی است</string>
@@ -116,7 +114,6 @@
     <string name="kasumi_status_not_present">موجود نیست</string>
     <string name="kasumi_stealth">حالت مخفی</string>
     <string name="kasumi_stealth_desc">ردپای مانت را پنهان کن و شناسه‌های مانت را دوباره مرتب کن</string>
-    <string name="kasumi_storage">فضای ذخیره‌سازی</string>
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">مانت نشده</string>
     <string name="kasumi_tempdir">نقطه مانت موقت</string>
