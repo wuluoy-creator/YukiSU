@@ -20,7 +20,6 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
@@ -28,6 +27,8 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.KeyEventBlocker
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.component.YukiTopAppBar
+import com.anatdx.yukisu.ui.component.YukiTopBarTitle
 import com.anatdx.yukisu.ui.theme.isExpressiveUi
 import com.anatdx.yukisu.ui.util.LocalSnackbarHost
 import com.anatdx.yukisu.ui.util.runModuleAction
@@ -170,9 +171,8 @@ private fun TopBar(
     scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
     val title: @Composable () -> Unit = {
-        Text(
+        YukiTopBarTitle(
             text = stringResource(R.string.action),
-            fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
         )
     }
     val actions: @Composable RowScope.() -> Unit = {
@@ -186,23 +186,9 @@ private fun TopBar(
             )
         }
     }
-    val colors = TopAppBarDefaults.topAppBarColors(
-        containerColor = if (isExpressiveUi) {
-            MaterialTheme.colorScheme.surfaceContainerLow
-        } else {
-            MaterialTheme.colorScheme.background
-        },
-        scrolledContainerColor = if (isExpressiveUi) {
-            MaterialTheme.colorScheme.surfaceContainerLow
-        } else {
-            MaterialTheme.colorScheme.background
-        },
-    )
-
-    TopAppBar(
+    YukiTopAppBar(
         title = title,
         actions = actions,
-        colors = colors,
         scrollBehavior = scrollBehavior,
     )
 }

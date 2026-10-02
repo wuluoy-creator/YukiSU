@@ -4,12 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
@@ -19,10 +15,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.component.YukiTopAppBar
+import com.anatdx.yukisu.ui.component.YukiTopBarTitle
 import com.anatdx.yukisu.ui.screen.WorkspaceTabs
 import ui.screen.moreSettings.component.MoreSettingsItemPosition
 import ui.screen.moreSettings.component.SettingsControlGroup
@@ -44,14 +41,9 @@ internal fun KasumiTopBar(
     onBack: () -> Unit,
     onRefresh: () -> Unit,
 ) {
-    TopAppBar(
+    YukiTopAppBar(
         title = {
-            Text(
-                stringResource(R.string.kasumi_title),
-                style = MaterialTheme.typography.titleLarge,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+            YukiTopBarTitle(stringResource(R.string.kasumi_title))
         },
         navigationIcon = {
             IconButton(onClick = onBack) {
@@ -63,11 +55,6 @@ internal fun KasumiTopBar(
                 YukiIcon(Icons.Filled.Refresh, stringResource(R.string.kasumi_rules_refresh))
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-            scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-        ),
-        windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
     )
 }
 

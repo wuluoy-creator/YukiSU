@@ -51,6 +51,7 @@ import androidx.navigationevent.NavigationEvent
 import androidx.navigationevent.NavigationEventTransitionState
 import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
 import com.anatdx.yukisu.ui.theme.BackgroundLayer
+import com.anatdx.yukisu.ui.component.WallpaperSurface
 import com.ramcosta.composedestinations.animations.NavHostAnimatedDestinationStyle
 import com.ramcosta.composedestinations.manualcomposablecalls.ManualComposableCallsBuilder
 import com.ramcosta.composedestinations.manualcomposablecalls.composable
@@ -356,7 +357,11 @@ private fun AnimatedDestinationScope<*>.NavigationPage(content: @Composable (Mod
             }
             .then(if (predictiveBackEnabled) animatedModifier else Modifier),
     ) {
-        if (predictiveBackEnabled) BackgroundLayer()
-        content(if (predictiveBackEnabled) Modifier else animatedModifier)
+        if (predictiveBackEnabled) {
+            // Keep the sampled wallpaper and floating bar in the same moving page coordinates.
+            WallpaperSurface(background = { BackgroundLayer() }) { content(Modifier) }
+        } else {
+            content(animatedModifier)
+        }
     }
 }

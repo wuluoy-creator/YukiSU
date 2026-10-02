@@ -50,7 +50,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
@@ -91,8 +90,9 @@ import com.anatdx.yukisu.ui.component.SearchAppBar
 import com.anatdx.yukisu.ui.component.DownloadProgressDialog
 import com.anatdx.yukisu.ui.component.YukiAlertDialog
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.component.YukiTopAppBar
+import com.anatdx.yukisu.ui.component.YukiTopBarTitle
 import com.anatdx.yukisu.ui.component.YukiSwitch
-import com.anatdx.yukisu.ui.theme.CardConfig
 import com.anatdx.yukisu.ui.theme.CardStyleProvider.getCardColors
 import com.anatdx.yukisu.ui.theme.CardStyleProvider.getCardElevation
 import com.anatdx.yukisu.ui.theme.isExpressiveUi
@@ -270,31 +270,17 @@ private fun RepositoryTopAppBar(
     scrollBehavior: TopAppBarScrollBehavior,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
-    val colorScheme = MaterialTheme.colorScheme
-    val containerColor = if (CardConfig.isCustomBackgroundEnabled) {
-        colorScheme.surfaceContainerLow
-    } else {
-        colorScheme.background
-    }
-    val colors = TopAppBarDefaults.topAppBarColors(
-        containerColor = containerColor,
-        scrolledContainerColor = containerColor,
-    )
     val navigationIcon: @Composable () -> Unit = {
         RepositoryIconButton(onClick = onBack) {
             YukiIcon(Icons.AutoMirrored.Outlined.ArrowBack, stringResource(R.string.back))
         }
     }
 
-    TopAppBar(
+    YukiTopAppBar(
         title = title,
         navigationIcon = navigationIcon,
         actions = actions,
         scrollBehavior = scrollBehavior,
-        colors = colors,
-        windowInsets = WindowInsets.safeDrawing.only(
-            WindowInsetsSides.Top + WindowInsetsSides.Horizontal
-        ),
     )
 }
 
@@ -332,9 +318,8 @@ internal fun ModuleRepositoryPage(
             Column {
             SearchAppBar(
                 title = {
-                    Text(
+                    YukiTopBarTitle(
                         stringResource(if (workspace) R.string.nav_repository else R.string.module_repositories),
-                        fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
                     )
                 },
                 searchText = viewModel.search,
@@ -586,9 +571,8 @@ fun RepositorySourcesScreen(navigator: DestinationsNavigator) {
         topBar = {
             RepositoryTopAppBar(
                 title = {
-                    Text(
+                    YukiTopBarTitle(
                         stringResource(R.string.repository_sources),
-                        fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
                     )
                 },
                 onBack = navigator::popBackStack,
@@ -1140,11 +1124,8 @@ fun ModuleRepositoryDetailScreen(
         topBar = {
             RepositoryTopAppBar(
                 title = {
-                    Text(
+                    YukiTopBarTitle(
                         module?.name ?: moduleId,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
                     )
                 },
                 onBack = navigator::popBackStack,

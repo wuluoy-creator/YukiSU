@@ -48,6 +48,8 @@ import com.anatdx.yukisu.ui.component.DownloadProgressDialog
 import com.anatdx.yukisu.ui.component.SearchAppBar
 import com.anatdx.yukisu.ui.component.YukiAlertDialog
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.component.YukiTopAppBar
+import com.anatdx.yukisu.ui.component.YukiTopBarTitle
 import com.anatdx.yukisu.ui.component.YukiSwitch
 import com.anatdx.yukisu.ui.theme.CardStyleProvider.getCardColors
 import com.anatdx.yukisu.ui.theme.CardStyleProvider.getCardElevation
@@ -196,9 +198,8 @@ internal fun PluginRepositoryPage(
             Column {
             SearchAppBar(
                 title = {
-                    Text(
+                    YukiTopBarTitle(
                         stringResource(if (workspace) R.string.nav_repository else R.string.plugin_repositories),
-                        fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
                     )
                 },
                 searchText = viewModel.search,
@@ -339,8 +340,8 @@ fun PluginRepositorySourcesScreen(navigator: DestinationsNavigator) {
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.repository_sources)) },
+            YukiTopAppBar(
+                title = { YukiTopBarTitle(stringResource(R.string.repository_sources)) },
                 navigationIcon = {
                     IconButton(onClick = navigator::popBackStack) {
                         YukiIcon(Icons.AutoMirrored.Outlined.ArrowBack, stringResource(R.string.back))
@@ -351,9 +352,6 @@ fun PluginRepositorySourcesScreen(navigator: DestinationsNavigator) {
                         YukiIcon(Icons.Outlined.Refresh, stringResource(R.string.refresh))
                     }
                 },
-                windowInsets = WindowInsets.safeDrawing.only(
-                    WindowInsetsSides.Top + WindowInsetsSides.Horizontal
-                ),
             )
         },
         floatingActionButton = {

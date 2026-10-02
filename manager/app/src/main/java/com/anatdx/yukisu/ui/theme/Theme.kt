@@ -29,6 +29,7 @@ import androidx.core.net.toUri
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import com.anatdx.yukisu.ui.component.clickHapticFeedback
+import com.anatdx.yukisu.ui.component.WallpaperSurface
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.launch
 import java.io.File
@@ -261,14 +262,7 @@ fun KernelSUTheme(
     val themedContent: @Composable () -> Unit = {
         Box(modifier = Modifier.clickHapticFeedback()) {
             if (showBackground) {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    // 背景层
-                    BackgroundLayer(darkTheme)
-                    // 内容层
-                    Box(modifier = Modifier.fillMaxSize().zIndex(1f)) {
-                        content()
-                    }
-                }
+                WallpaperSurface(background = { BackgroundLayer(darkTheme) }, content = content)
             } else {
                 content()
             }

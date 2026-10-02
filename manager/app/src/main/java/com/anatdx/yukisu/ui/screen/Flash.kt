@@ -47,8 +47,9 @@ import com.anatdx.yukisu.data.repository.ModuleRepositoryProvider
 import com.anatdx.yukisu.superkey.SuperKeyHelper
 import com.anatdx.yukisu.ui.component.KeyEventBlocker
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.component.YukiTopAppBar
+import com.anatdx.yukisu.ui.component.YukiTopBarTitle
 import com.anatdx.yukisu.ui.component.YukiAlertDialog
-import com.anatdx.yukisu.ui.theme.CardConfig
 import com.anatdx.yukisu.ui.theme.CardConfig.cardAlpha
 import com.anatdx.yukisu.ui.theme.isExpressiveUi
 import com.anatdx.yukisu.ui.util.*
@@ -775,12 +776,6 @@ private fun TopBar(
     onSave: () -> Unit = {},
     scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
-    val colorScheme = MaterialTheme.colorScheme
-    val cardColor = if (isExpressiveUi || CardConfig.isCustomBackgroundEnabled) {
-        colorScheme.surfaceContainerLow
-    } else {
-        colorScheme.background
-    }
     val statusColor = when(status) {
         FlashingStatus.FLASHING -> MaterialTheme.colorScheme.primary
         FlashingStatus.SUCCESS -> MaterialTheme.colorScheme.tertiary
@@ -789,7 +784,7 @@ private fun TopBar(
 
     val title: @Composable () -> Unit = {
         Column {
-            Text(
+            YukiTopBarTitle(
                 text = stringResource(
                     when (status) {
                         FlashingStatus.FLASHING -> R.string.flashing
@@ -797,7 +792,6 @@ private fun TopBar(
                         FlashingStatus.FAILED -> R.string.flash_failed
                     }
                 ),
-                fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
                 color = statusColor
             )
 
@@ -817,8 +811,7 @@ private fun TopBar(
         IconButton(onClick = onBack) {
             YukiIcon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurface
+                contentDescription = stringResource(R.string.back),
             )
         }
     }
@@ -827,24 +820,13 @@ private fun TopBar(
             YukiIcon(
                 imageVector = Icons.Filled.Save,
                 contentDescription = stringResource(id = R.string.save_log),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
-    val colors = TopAppBarDefaults.topAppBarColors(
-        containerColor = cardColor,
-        scrolledContainerColor = cardColor
-    )
-    val windowInsets = WindowInsets.safeDrawing.only(
-        WindowInsetsSides.Top + WindowInsetsSides.Horizontal
-    )
-
-    TopAppBar(
+    YukiTopAppBar(
         title = title,
         navigationIcon = navigationIcon,
         actions = actions,
-        colors = colors,
-        windowInsets = windowInsets,
         scrollBehavior = scrollBehavior,
     )
 }

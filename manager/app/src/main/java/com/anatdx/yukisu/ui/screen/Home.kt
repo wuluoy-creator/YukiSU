@@ -69,6 +69,8 @@ import com.anatdx.yukisu.ui.component.HomeCardIcon
 import com.anatdx.yukisu.ui.component.HomeStatusLayout
 import com.anatdx.yukisu.ui.component.rememberConfirmDialog
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.component.YukiTopAppBar
+import com.anatdx.yukisu.ui.component.YukiTopBarTitle
 import com.anatdx.yukisu.ui.component.YukiPullToRefreshBox
 import com.anatdx.yukisu.ui.component.YukiAlertDialog
 import com.anatdx.yukisu.ui.component.clickHapticFeedback
@@ -498,15 +500,7 @@ private fun TopBar(
     navigator: DestinationsNavigator,
     isDataLoaded: Boolean = false
 ) {
-    val context = LocalContext.current
-    val colorScheme = MaterialTheme.colorScheme
-    val cardColor = if (CardConfig.isCustomBackgroundEnabled) {
-        colorScheme.surfaceContainerLow
-    } else {
-        colorScheme.background
-    }
-
-    TopAppBar(
+    YukiTopAppBar(
         title = {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -518,19 +512,11 @@ private fun TopBar(
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(28.dp),
                 )
-                Text(
+                YukiTopBarTitle(
                     text = stringResource(R.string.app_name),
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.SemiBold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
                 )
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = cardColor,
-            scrolledContainerColor = cardColor
-        ),
         actions = {
             if (isDataLoaded) {
                 var showDropdown by remember { mutableStateOf(false) }
@@ -573,7 +559,6 @@ private fun TopBar(
                 }
             }
         },
-        windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
         scrollBehavior = scrollBehavior
     )
 }

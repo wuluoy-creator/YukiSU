@@ -969,7 +969,7 @@ private fun LogViewerTopBar(
     onClearLogs: () -> Unit,
 ) {
     SearchAppBar(
-        title = { Text(stringResource(if (onBackClick == null) R.string.nav_authorization else R.string.log_viewer_title)) },
+        title = { YukiTopBarTitle(stringResource(if (onBackClick == null) R.string.nav_authorization else R.string.log_viewer_title)) },
         searchText = searchQuery,
         onSearchTextChange = onSearchQueryChange,
         onClearClick = { onSearchQueryChange("") },

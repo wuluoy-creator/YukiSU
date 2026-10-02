@@ -24,7 +24,6 @@ import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -35,6 +34,8 @@ import com.ramcosta.composedestinations.result.ResultBackNavigator
 import com.anatdx.yukisu.Natives
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.component.YukiTopAppBar
+import com.anatdx.yukisu.ui.component.YukiTopBarTitle
 import com.anatdx.yukisu.ui.component.profile.RootProfileConfig
 import com.anatdx.yukisu.ui.theme.CardConfig.cardAlpha
 import com.anatdx.yukisu.ui.theme.isExpressiveUi
@@ -277,7 +278,7 @@ private fun TopBar(
     scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
     val titleContent: @Composable () -> Unit = {
-        Text(text = title)
+        YukiTopBarTitle(text = title)
     }
     val navigationIcon: @Composable () -> Unit = {
         IconButton(onClick = onBack) {
@@ -300,28 +301,10 @@ private fun TopBar(
             }
         }
     }
-    val colors = TopAppBarDefaults.topAppBarColors(
-        containerColor = if (isExpressiveUi) {
-            MaterialTheme.colorScheme.surfaceContainerLow
-        } else {
-            MaterialTheme.colorScheme.background
-        },
-        scrolledContainerColor = if (isExpressiveUi) {
-            MaterialTheme.colorScheme.surfaceContainerLow
-        } else {
-            MaterialTheme.colorScheme.background
-        },
-    )
-    val windowInsets = WindowInsets.safeDrawing.only(
-        WindowInsetsSides.Top + WindowInsetsSides.Horizontal
-    )
-
-    TopAppBar(
+    YukiTopAppBar(
         title = titleContent,
         navigationIcon = navigationIcon,
         actions = actions,
-        colors = colors,
-        windowInsets = windowInsets,
         scrollBehavior = scrollBehavior,
     )
 }

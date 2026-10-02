@@ -82,6 +82,7 @@ import com.anatdx.yukisu.ui.component.FabMenuPresets
 import com.anatdx.yukisu.ui.component.SearchAppBar
 import com.anatdx.yukisu.ui.component.VerticalExpandableFab
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.component.YukiTopBarTitle
 import com.anatdx.yukisu.ui.component.YukiPullToRefreshBox
 import com.anatdx.yukisu.ui.component.clickHapticFeedback
 import com.anatdx.yukisu.ui.theme.isExpressiveUi
@@ -315,11 +316,8 @@ private fun AuthorizationShortcut(icon: ImageVector, label: String, onClick: () 
 
 @Composable
 private fun TopBarTitle() {
-    Text(
+    YukiTopBarTitle(
         text = stringResource(R.string.nav_authorization),
-        fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
     )
 }
 

@@ -19,7 +19,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -47,6 +46,8 @@ import com.anatdx.yukisu.Natives
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.SwitchItem
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.component.YukiTopAppBar
+import com.anatdx.yukisu.ui.component.YukiTopBarTitle
 import com.anatdx.yukisu.ui.component.clickHapticFeedback
 import com.anatdx.yukisu.ui.component.profile.AppProfileConfig
 import com.anatdx.yukisu.ui.component.profile.RootProfileConfig
@@ -137,20 +138,10 @@ fun AppProfileScreen(
             dynamicManagerFlags and Natives.DYNAMIC_MANAGER_FLAG_PRESET != 0
     }
 
-    val colorScheme = MaterialTheme.colorScheme
-    val cardColor = if (isExpressiveUi || CardConfig.isCustomBackgroundEnabled) {
-        colorScheme.surfaceContainerLow
-    } else {
-        colorScheme.background
-    }
     Scaffold(
         topBar = {
             TopBar(
                 title = if (isSharedUid) "UID ${appInfo.uid}" else appInfo.label,
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = cardColor,
-                    scrolledContainerColor = cardColor
-                ),
                 onBack = dropUnlessResumed { navigator.popBackStack() },
                 scrollBehavior = scrollBehavior
             )
@@ -645,13 +636,11 @@ private enum class Mode(@param:StringRes private val res: Int) {
 private fun TopBar(
     title: String,
     onBack: () -> Unit,
-    colors: TopAppBarColors,
     scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
     val titleContent: @Composable () -> Unit = {
-        Text(
+        YukiTopBarTitle(
             text = title,
-            fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
         )
     }
     val navigationIcon: @Composable () -> Unit = {
@@ -662,34 +651,11 @@ private fun TopBar(
             )
         }
     }
-    val windowInsets = WindowInsets.safeDrawing.only(
-        WindowInsetsSides.Top + WindowInsetsSides.Horizontal
+    YukiTopAppBar(
+        title = titleContent,
+        navigationIcon = navigationIcon,
+        scrollBehavior = scrollBehavior,
     )
-
-    if (isExpressiveUi) {
-        TopAppBar(
-            title = titleContent,
-            colors = colors,
-            navigationIcon = navigationIcon,
-            windowInsets = windowInsets,
-            scrollBehavior = scrollBehavior,
-        )
-    } else {
-        TopAppBar(
-            title = titleContent,
-            colors = colors,
-            navigationIcon = navigationIcon,
-            windowInsets = windowInsets,
-            scrollBehavior = scrollBehavior,
-            modifier = Modifier.shadow(
-                elevation = if ((scrollBehavior?.state?.overlappedFraction ?: 0f) > 0.01f) {
-                    4.dp
-                } else {
-                    0.dp
-                },
-            ),
-        )
-    }
 }
 
 @Composable

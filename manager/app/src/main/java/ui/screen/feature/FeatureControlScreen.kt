@@ -15,14 +15,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.anatdx.yukisu.Natives
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.KsuIsValid
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.component.YukiTopAppBar
+import com.anatdx.yukisu.ui.component.YukiTopBarTitle
 import com.anatdx.yukisu.ui.screen.SettingItem
-import com.anatdx.yukisu.ui.theme.isExpressiveUi
 import com.anatdx.yukisu.ui.util.LocalSnackbarHost
 import com.anatdx.yukisu.ui.util.getFeatureStatus
 import com.anatdx.yukisu.ui.util.getFeatureValue
@@ -460,10 +460,7 @@ private fun FeatureControlTopBar(
     scrollBehavior: TopAppBarScrollBehavior
 ) {
     val title: @Composable () -> Unit = {
-        Text(
-            text = stringResource(R.string.feature_control),
-            fontWeight = if (isExpressiveUi) FontWeight.Normal else null
-        )
+        YukiTopBarTitle(text = stringResource(R.string.feature_control))
     }
     val navigationIcon: @Composable () -> Unit = {
         IconButton(onClick = onBack) {
@@ -473,29 +470,9 @@ private fun FeatureControlTopBar(
             )
         }
     }
-    val colors = TopAppBarDefaults.topAppBarColors(
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-        scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow
+    YukiTopAppBar(
+        title = title,
+        navigationIcon = navigationIcon,
+        scrollBehavior = scrollBehavior,
     )
-    val windowInsets = WindowInsets.safeDrawing.only(
-        WindowInsetsSides.Top + WindowInsetsSides.Horizontal
-    )
-
-    if (isExpressiveUi) {
-        TopAppBar(
-            title = title,
-            navigationIcon = navigationIcon,
-            colors = colors,
-            windowInsets = windowInsets,
-            scrollBehavior = scrollBehavior
-        )
-    } else {
-        TopAppBar(
-            title = title,
-            navigationIcon = navigationIcon,
-            colors = colors,
-            windowInsets = windowInsets,
-            scrollBehavior = scrollBehavior
-        )
-    }
 }

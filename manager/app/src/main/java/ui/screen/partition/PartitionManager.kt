@@ -102,6 +102,7 @@ import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.SearchAppBar
 import com.anatdx.yukisu.ui.component.YukiAlertDialog
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.component.YukiTopBarTitle
 import com.anatdx.yukisu.ui.component.YukiSwitch
 import com.anatdx.yukisu.ui.screen.FlashIt
 import com.anatdx.yukisu.ui.theme.CardConfig
@@ -806,9 +807,8 @@ private fun PartitionManagerTopBar(
 ) {
     SearchAppBar(
         title = {
-            Text(
+            YukiTopBarTitle(
                 text = stringResource(R.string.partition_manager),
-                fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
             )
         },
         searchText = searchText,

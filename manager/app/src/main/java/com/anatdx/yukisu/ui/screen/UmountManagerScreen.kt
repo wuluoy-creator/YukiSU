@@ -19,7 +19,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.annotation.Destination
@@ -29,10 +28,10 @@ import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.rememberConfirmDialog
 import com.anatdx.yukisu.ui.component.ConfirmResult
 import com.anatdx.yukisu.ui.component.YukiAlertDialog
-import com.anatdx.yukisu.ui.theme.CardConfig
+import com.anatdx.yukisu.ui.component.YukiTopAppBar
+import com.anatdx.yukisu.ui.component.YukiTopBarTitle
 import com.anatdx.yukisu.ui.theme.getCardColors
 import com.anatdx.yukisu.ui.theme.getCardElevation
-import com.anatdx.yukisu.ui.theme.isExpressiveUi
 import com.anatdx.yukisu.ui.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -269,10 +268,7 @@ private fun UmountManagerTopBar(
     scrollBehavior: TopAppBarScrollBehavior
 ) {
     val title: @Composable () -> Unit = {
-        Text(
-            text = stringResource(R.string.umount_path_manager),
-            fontWeight = if (isExpressiveUi) FontWeight.Normal else null
-        )
+        YukiTopBarTitle(text = stringResource(R.string.umount_path_manager))
     }
     val navigationIcon: @Composable () -> Unit = {
         IconButton(onClick = onBack) {
@@ -284,20 +280,10 @@ private fun UmountManagerTopBar(
             Icon(Icons.Filled.Refresh, contentDescription = stringResource(R.string.refresh))
         }
     }
-    val colors = TopAppBarDefaults.topAppBarColors(
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-        scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow
-    )
-    val windowInsets = WindowInsets.safeDrawing.only(
-        WindowInsetsSides.Top + WindowInsetsSides.Horizontal
-    )
-
-    TopAppBar(
+    YukiTopAppBar(
         title = title,
         navigationIcon = navigationIcon,
         actions = actions,
-        colors = colors,
-        windowInsets = windowInsets,
         scrollBehavior = scrollBehavior
     )
 }

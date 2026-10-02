@@ -404,9 +404,8 @@ internal fun ModulePage(
             Column {
             SearchAppBar(
                 title = {
-                    Text(
+                    YukiTopBarTitle(
                         text = stringResource(if (workspace) R.string.nav_extensions else R.string.module),
-                        fontWeight = if (isExpressiveUi) FontWeight.Normal else null
                     )
                 },
                 searchText = viewModel.search,

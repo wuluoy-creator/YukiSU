@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/crop_toolbar"
-        android:minHeight="?attr/actionBarSize">
+        android:minHeight="64dp">
 
         <TextView
             android:id="@+id/toolbar_title"
@@ -19,6 +19,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="22sp"
             android:textColor="@color/crop_toolbar_widget" />
 
     </androidx.appcompat.widget.Toolbar>

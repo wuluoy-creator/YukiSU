@@ -8,12 +8,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -23,6 +25,7 @@ import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 import com.anatdx.yukisu.ui.MainActivity
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.component.LiquidGlassSurface
 import com.anatdx.yukisu.ui.activity.util.AppData
 import com.anatdx.yukisu.ui.screen.BottomBarDestination
 import com.anatdx.yukisu.ui.util.LocalNavigationLeaveGuard
@@ -41,14 +44,18 @@ fun BottomBar(navController: NavHostController) {
     val pluginCount by AppData.DataRefreshManager.pluginCount.collectAsState()
     val destinations = BottomBarDestination.entries.filter { isFullFeatured || !it.rootRequired }
 
-    Surface(modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.surfaceContainerLow) {
-        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+    Box(
+        modifier = Modifier.fillMaxWidth()
+            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom))
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        LiquidGlassSurface(Modifier.widthIn(max = (destinations.size * 116).dp).fillMaxWidth()) {
             NavigationBar(
-                modifier = Modifier.widthIn(max = 840.dp),
-                containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                modifier = Modifier.fillMaxWidth(),
+                containerColor = Color.Transparent,
                 tonalElevation = 0.dp,
-                windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom),
+                windowInsets = WindowInsets(0, 0, 0, 0),
             ) {
                 destinations.forEach { destination ->
                     val selected by navController.isRouteOnBackStackAsState(destination.direction)
@@ -92,14 +99,20 @@ fun BottomBar(navController: NavHostController) {
                                 }
                             }
                         },
-                        label = { Text(stringResource(destination.label), style = MaterialTheme.typography.labelMedium) },
+                        label = {
+                            Text(
+                                stringResource(destination.label),
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
+                            )
+                        },
                         alwaysShowLabel = true,
                         colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.primary,
-                            selectedTextColor = MaterialTheme.colorScheme.primary,
+                            selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            selectedTextColor = MaterialTheme.colorScheme.onSurface,
                             indicatorColor = MaterialTheme.colorScheme.primaryContainer,
-                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unselectedIconColor = MaterialTheme.colorScheme.onSurface,
+                            unselectedTextColor = MaterialTheme.colorScheme.onSurface,
                         ),
                     )
                 }

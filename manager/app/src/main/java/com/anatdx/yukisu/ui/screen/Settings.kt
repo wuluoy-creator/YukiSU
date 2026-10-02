@@ -95,11 +95,10 @@ fun SettingScreen(navigator: DestinationsNavigator) {
     BackHandler(enabled = category != null) { category = null }
     Scaffold(
         topBar = {
-            TopAppBar(
+            YukiTopAppBar(
                 title = {
-                    Text(
+                    YukiTopBarTitle(
                         text = stringResource(category?.titleRes ?: R.string.settings),
-                        style = MaterialTheme.typography.titleLarge,
                     )
                 },
                 navigationIcon = {
@@ -109,10 +108,6 @@ fun SettingScreen(navigator: DestinationsNavigator) {
                         }
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                    scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                ),
             )
         },
         contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),

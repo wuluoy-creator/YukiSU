@@ -30,7 +30,6 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.annotation.Destination
@@ -41,6 +40,8 @@ import com.anatdx.yukisu.BuildConfig
 import com.anatdx.yukisu.ui.component.KsuIsValid
 import com.anatdx.yukisu.ui.screen.WorkspaceTabs
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.component.YukiTopAppBar
+import com.anatdx.yukisu.ui.component.YukiTopBarTitle
 import com.anatdx.yukisu.ui.theme.*
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.CoroutineScope
@@ -101,7 +102,7 @@ fun MoreSettingsContent(category: PreferenceCategory, scrollable: Boolean = true
     val settingsState = remember { MoreSettingsState(context, prefs, systemIsDark) }
     val settingsHandlers = remember { MoreSettingsHandlers(context, prefs, settingsState) }
     var settingsLoaded by remember { mutableStateOf(false) }
-    val cropToolbarColor = MaterialTheme.colorScheme.surfaceContainerHighest
+    val cropToolbarColor = MaterialTheme.colorScheme.surfaceContainerLow
     val cropToolbarWidgetColor = MaterialTheme.colorScheme.onSurface
     val cropAccentColor = MaterialTheme.colorScheme.primary
     val cropToolbarTitle = stringResource(R.string.settings_custom_background)
@@ -202,10 +203,7 @@ private fun MoreSettingsTopBar(
     scrollBehavior: TopAppBarScrollBehavior
 ) {
     val title: @Composable () -> Unit = {
-        Text(
-            text = stringResource(R.string.more_settings),
-            fontWeight = if (isExpressiveUi) FontWeight.Normal else null
-        )
+        YukiTopBarTitle(text = stringResource(R.string.more_settings))
     }
     val navigationIcon: @Composable () -> Unit = {
         IconButton(onClick = onBack) {
@@ -215,31 +213,11 @@ private fun MoreSettingsTopBar(
             )
         }
     }
-    val colors = TopAppBarDefaults.topAppBarColors(
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-        scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow
+    YukiTopAppBar(
+        title = title,
+        navigationIcon = navigationIcon,
+        scrollBehavior = scrollBehavior,
     )
-    val windowInsets = WindowInsets.safeDrawing.only(
-        WindowInsetsSides.Top + WindowInsetsSides.Horizontal
-    )
-
-    if (isExpressiveUi) {
-        TopAppBar(
-            title = title,
-            navigationIcon = navigationIcon,
-            colors = colors,
-            windowInsets = windowInsets,
-            scrollBehavior = scrollBehavior
-        )
-    } else {
-        TopAppBar(
-            title = title,
-            navigationIcon = navigationIcon,
-            colors = colors,
-            windowInsets = windowInsets,
-            scrollBehavior = scrollBehavior
-        )
-    }
 }
 
 @Composable

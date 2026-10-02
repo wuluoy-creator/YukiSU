@@ -24,6 +24,9 @@ import com.anatdx.yukisu.Natives
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.KsuIsValid
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.component.YukiTopAppBar
+import com.anatdx.yukisu.ui.component.YukiTopBarTitle
+import com.anatdx.yukisu.ui.component.yukiTopBarContainerColor
 import com.anatdx.yukisu.ui.kasumi.KasumiSection
 import com.anatdx.yukisu.ui.kasumi.KasumiWorkspace
 import com.anatdx.yukisu.ui.kasumi.ConfigSection
@@ -54,7 +57,7 @@ internal fun WorkspaceTabs(
     SecondaryTabRow(
         modifier = Modifier.fillMaxWidth(),
         selectedTabIndex = selected,
-        containerColor = MaterialTheme.colorScheme.background,
+        containerColor = yukiTopBarContainerColor(),
         divider = { HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant) },
     ) {
         labels.forEachIndexed { index, label ->
@@ -92,15 +95,13 @@ private fun WorkspaceScaffold(
     Scaffold(
         topBar = {
             Column {
-                TopAppBar(
-                    title = { Text(title) },
+                YukiTopAppBar(
+                    title = { YukiTopBarTitle(title) },
                     navigationIcon = {
                         if (showBack) IconButton(enabled = navigationEnabled, onClick = { navigator.navigateUp() }) {
                             YukiIcon(Icons.AutoMirrored.Outlined.ArrowBack, stringResource(R.string.back))
                         }
                     },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
-                    windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
                 )
                 tabs()
             }

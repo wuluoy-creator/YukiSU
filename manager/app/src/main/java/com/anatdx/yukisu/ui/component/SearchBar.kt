@@ -52,7 +52,7 @@ fun SearchAppBar(
     }
     DisposableEffect(Unit) { onDispose { keyboard?.hide() } }
 
-    TopAppBar(
+    YukiTopAppBar(
         title = {
             if (searching) {
                 OutlinedTextField(
@@ -98,11 +98,6 @@ fun SearchAppBar(
             }
             dropdownContent?.invoke()
         },
-        windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
         scrollBehavior = if (searching) null else scrollBehavior,
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background,
-            scrolledContainerColor = MaterialTheme.colorScheme.background,
-        ),
     )
 }

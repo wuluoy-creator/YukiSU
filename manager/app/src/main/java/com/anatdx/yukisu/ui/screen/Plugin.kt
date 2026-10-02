@@ -89,6 +89,7 @@ import com.anatdx.yukisu.ui.component.AnimatedFab
 import com.anatdx.yukisu.ui.component.ConfirmResult
 import com.anatdx.yukisu.ui.component.SearchAppBar
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.component.YukiTopBarTitle
 import com.anatdx.yukisu.ui.component.YukiPullToRefreshBox
 import com.anatdx.yukisu.ui.component.YukiSwitch
 import com.anatdx.yukisu.ui.component.rememberConfirmDialog
@@ -270,9 +271,8 @@ internal fun PluginPage(
             Column {
             SearchAppBar(
                 title = {
-                    Text(
+                    YukiTopBarTitle(
                         text = stringResource(if (workspace) R.string.nav_extensions else R.string.plugin),
-                        fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
                     )
                 },
                 searchText = searchQuery,

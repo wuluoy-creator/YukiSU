@@ -49,6 +49,8 @@ import com.anatdx.yukisu.ui.util.rememberSnackbarController
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.YukiIcon
 import com.anatdx.yukisu.ui.component.YukiAlertDialog
+import com.anatdx.yukisu.ui.component.YukiTopAppBar
+import com.anatdx.yukisu.ui.component.YukiTopBarTitle
 import com.anatdx.yukisu.ui.theme.isExpressiveUi
 import com.anatdx.yukisu.ui.theme.UtilityPreviewTheme
 import com.anatdx.yukisu.ui.kasumi.util.KasumiUiAdapter as KasumiManager
@@ -73,8 +75,8 @@ fun KasumiConfigScreen(navigator: DestinationsNavigator) {
     var selectedSection by rememberSaveable { mutableStateOf(KasumiSection.Status) }
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.kasumi_title)) },
+            YukiTopAppBar(
+                title = { YukiTopBarTitle(stringResource(R.string.kasumi_title)) },
                 navigationIcon = {
                     IconButton(onClick = { navigator.popBackStack() }) {
                         YukiIcon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))

@@ -11,6 +11,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
@@ -41,7 +42,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -74,6 +74,9 @@ import com.anatdx.yukifb.ui.TextFileEditor
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.YukiAlertDialog
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.component.YukiTopAppBar
+import com.anatdx.yukisu.ui.component.YukiTopBarTitle
+import com.anatdx.yukisu.ui.component.yukiTopBarContainerColor
 import com.anatdx.yukisu.ui.theme.isExpressiveUi
 import com.anatdx.yukisu.ui.util.SnackbarController
 import com.anatdx.yukisu.ui.util.rememberSnackbarController
@@ -477,7 +480,7 @@ fun RamdiskEditorScreen(
 
                 BackHandler(onBack = ::handleBrowserBack)
 
-                Box(Modifier.fillMaxSize()) {
+                RamdiskBrowserFrame {
                     val editor = openedTextFile
                     val elfFile = openedElfFile
                     if (editor != null) {
@@ -801,6 +804,21 @@ fun RamdiskEditorScreen(
     }
 }
 
+/** YukiFB owns its headers; its Material3 surface tokens supply their colors. */
+@Composable
+private fun RamdiskBrowserFrame(content: @Composable BoxScope.() -> Unit) {
+    val headerColor = yukiTopBarContainerColor()
+    MaterialTheme(
+        colorScheme = MaterialTheme.colorScheme.copy(
+            surface = headerColor,
+            surfaceContainer = headerColor,
+            // Preserve background so the library's Scaffold can reveal the wallpaper.
+        ),
+    ) {
+        Box(modifier = Modifier.fillMaxSize(), content = content)
+    }
+}
+
 @Composable
 private fun RamdiskImageActions(
     dirty: Boolean,
@@ -851,7 +869,7 @@ private fun RamdiskFragmentSelector(
     onExportImage: () -> Unit,
 ) {
     val title = @Composable {
-        Text(stringResource(R.string.ramdisk_editor_fragments_title, partitionName))
+        YukiTopBarTitle(stringResource(R.string.ramdisk_editor_fragments_title, partitionName))
     }
     val navigationIcon = @Composable {
         IconButton(onClick = onBack) {
@@ -872,19 +890,11 @@ private fun RamdiskFragmentSelector(
     }
     Scaffold(
         topBar = {
-            if (isExpressiveUi) {
-                TopAppBar(
-                    title = title,
-                    navigationIcon = navigationIcon,
-                    actions = actions,
-                )
-            } else {
-                TopAppBar(
-                    title = title,
-                    navigationIcon = navigationIcon,
-                    actions = actions,
-                )
-            }
+            YukiTopAppBar(
+                title = title,
+                navigationIcon = navigationIcon,
+                actions = actions,
+            )
         },
         snackbarHost = { SnackbarHost(snackbarHost.hostState) },
     ) { paddingValues ->
@@ -1013,8 +1023,8 @@ private fun RamdiskEditorStatusScreen(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(title) },
+            YukiTopAppBar(
+                title = { YukiTopBarTitle(title) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         YukiIcon(
@@ -1141,8 +1151,8 @@ private fun ElfSummaryViewer(
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = { Text(fileName) },
+            YukiTopAppBar(
+                title = { YukiTopBarTitle(fileName) },
                 navigationIcon = {
                     IconButton(onClick = onClose) {
                         YukiIcon(

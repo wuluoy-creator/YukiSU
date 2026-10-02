@@ -64,6 +64,8 @@ import com.anatdx.yukisu.superkey.SuperKeyHelper
 import com.anatdx.yukisu.ui.component.DialogHandle
 import com.anatdx.yukisu.ui.component.SuperDropdown
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.component.YukiTopAppBar
+import com.anatdx.yukisu.ui.component.YukiTopBarTitle
 import com.anatdx.yukisu.ui.component.YukiSwitch
 import com.anatdx.yukisu.ui.component.YukiAlertDialog
 import com.anatdx.yukisu.ui.component.YukiDialogTheme
@@ -1300,16 +1302,9 @@ private fun TopBar(
     onBack: () -> Unit = {},
     scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
-    val colorScheme = MaterialTheme.colorScheme
-    val cardColor = if (isExpressiveUi || CardConfig.isCustomBackgroundEnabled) {
-        colorScheme.surfaceContainerLow
-    } else {
-        colorScheme.background
-    }
     val title: @Composable () -> Unit = {
-        Text(
+        YukiTopBarTitle(
             text = stringResource(R.string.install),
-            fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
         )
     }
     val navigationIcon: @Composable () -> Unit = {
@@ -1320,19 +1315,9 @@ private fun TopBar(
             )
         }
     }
-    val colors = TopAppBarDefaults.topAppBarColors(
-        containerColor = cardColor,
-        scrolledContainerColor = cardColor
-    )
-    val windowInsets = WindowInsets.safeDrawing.only(
-        WindowInsetsSides.Top + WindowInsetsSides.Horizontal
-    )
-
-    TopAppBar(
+    YukiTopAppBar(
         title = title,
-        colors = colors,
         navigationIcon = navigationIcon,
-        windowInsets = windowInsets,
         scrollBehavior = scrollBehavior,
     )
 }

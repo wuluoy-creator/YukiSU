@@ -24,7 +24,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.getSystemService
@@ -38,9 +37,10 @@ import com.ramcosta.composedestinations.result.ResultRecipient
 import com.ramcosta.composedestinations.result.getOr
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.YukiIcon
+import com.anatdx.yukisu.ui.component.YukiTopAppBar
+import com.anatdx.yukisu.ui.component.YukiTopBarTitle
 import com.anatdx.yukisu.ui.component.YukiPullToRefreshBox
 import com.anatdx.yukisu.ui.component.clickHapticFeedback
-import com.anatdx.yukisu.ui.theme.CardConfig
 import com.anatdx.yukisu.ui.theme.CardConfig.cardAlpha
 import com.anatdx.yukisu.ui.theme.ExpressiveListGroupMinHeight
 import com.anatdx.yukisu.ui.theme.isExpressiveUi
@@ -251,17 +251,8 @@ private fun TopBar(
     onExport: () -> Unit = {},
     scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
-    val colorScheme = MaterialTheme.colorScheme
-    val cardColor = if (isExpressiveUi || CardConfig.isCustomBackgroundEnabled) {
-        colorScheme.surfaceContainerLow
-    } else {
-        colorScheme.background
-    }
     val title: @Composable () -> Unit = {
-        Text(
-            text = stringResource(R.string.settings_profile_template),
-            fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
-        )
+        YukiTopBarTitle(text = stringResource(R.string.settings_profile_template))
     }
     val navigationIcon: @Composable () -> Unit = {
         IconButton(onClick = onBack) {
@@ -301,20 +292,10 @@ private fun TopBar(
             }
         }
     }
-    val colors = TopAppBarDefaults.topAppBarColors(
-        containerColor = cardColor,
-        scrolledContainerColor = cardColor
-    )
-    val windowInsets = WindowInsets.safeDrawing.only(
-        WindowInsetsSides.Top + WindowInsetsSides.Horizontal
-    )
-
-    TopAppBar(
+    YukiTopAppBar(
         title = title,
         navigationIcon = navigationIcon,
         actions = actions,
-        colors = colors,
-        windowInsets = windowInsets,
         scrollBehavior = scrollBehavior,
     )
 }
