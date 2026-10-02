@@ -34,6 +34,7 @@ import com.ramcosta.composedestinations.generated.destinations.*
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import ui.screen.feature.FeatureControlContent
 import ui.screen.feature.FeatureControlState
+import ui.screen.feature.IsolationKernelSettings
 import ui.screen.moreSettings.MoreSettingsContent
 import ui.screen.moreSettings.PreferenceCategory
 
@@ -131,7 +132,7 @@ fun AuthorizationRecordsScreen(navigator: DestinationsNavigator) {
                 Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
                     Text(stringResource(R.string.nav_records_disabled), style = MaterialTheme.typography.bodyLarge)
                     Spacer(Modifier.height(16.dp))
-                    OutlinedButton(onClick = { navigator.navigate(KernelPolicyScreenDestination(initialPage = 3)) }) {
+                    OutlinedButton(onClick = { navigator.navigate(KernelPolicyScreenDestination()) }) {
                         Text(stringResource(R.string.nav_manage_kernel_features))
                     }
                 }
@@ -174,41 +175,74 @@ fun ExtensionRepositoryScreen(navigator: DestinationsNavigator, initialPage: Int
 @Destination<RootGraph>
 @Composable
 fun KernelPolicyScreen(navigator: DestinationsNavigator, initialPage: Int = 0) {
-    var selected by rememberSaveable { mutableIntStateOf(initialPage.coerceIn(0, 4)) }
+    var selected by rememberSaveable { mutableIntStateOf(initialPage.coerceIn(0, 1)) }
+    // A restored back stack may still hold an index from the former five-tab page.
+    val currentPage = when (selected) {
+        1, 4 -> 1
+        else -> 0
+    }
     var saving by remember { mutableStateOf(false) }
     val pages = rememberSaveableStateHolder()
     WorkspaceOperationGuard(saving, KernelPolicyScreenDestination.route)
-    val labels = listOf(stringResource(R.string.nav_mount), stringResource(R.string.nav_isolation), stringResource(R.string.nav_active_rules), stringResource(R.string.nav_kernel_features), stringResource(R.string.nav_advanced_security))
+    val labels = listOf(stringResource(R.string.nav_kernel_features), stringResource(R.string.nav_advanced_security))
     WorkspaceScaffold(stringResource(R.string.nav_kernel_policy), navigator, navigationEnabled = !saving, tabs = {
+        WorkspaceTabs(labels, currentPage, { selected = it }, enabled = !saving)
+    }) {
+        KsuIsValid {
+            pages.SaveableStateProvider(currentPage) {
+                when (currentPage) {
+                    0 -> FeatureControlContent(navigator, onSavingChanged = { saving = it })
+                    else -> MoreSettingsContent(PreferenceCategory.Advanced)
+                }
+            }
+        }
+    }
+}
+
+@Destination<RootGraph>
+@Composable
+fun MountIsolationScreen(navigator: DestinationsNavigator) {
+    var selected by rememberSaveable { mutableIntStateOf(0) }
+    var kasumiSaving by remember { mutableStateOf(false) }
+    var isolationSaving by remember { mutableStateOf(false) }
+    val saving = kasumiSaving || isolationSaving
+    // Keep the path dialog alive when Kasumi finishes loading and moves its header.
+    val isolationHeader = remember(navigator) {
+        movableContentOf<Boolean> { controlsEnabled ->
+            ConfigSection(title = "", segmented = true) {
+                IsolationKernelSettings(
+                    enabled = controlsEnabled,
+                    onSavingChanged = { isolationSaving = it },
+                )
+                SettingItem(
+                    icon = Icons.Outlined.FolderOff,
+                    title = stringResource(R.string.nav_umount_paths),
+                    summary = stringResource(R.string.nav_umount_paths_summary),
+                    enabled = controlsEnabled && !isolationSaving,
+                    groupPosition = SettingsItemPosition.Last,
+                    onClick = { navigator.navigate(UmountManagerScreenDestination) },
+                )
+            }
+        }
+    }
+    WorkspaceOperationGuard(saving, MountIsolationScreenDestination.route)
+    val labels = listOf(stringResource(R.string.nav_mount), stringResource(R.string.nav_isolation), stringResource(R.string.nav_active_rules))
+    WorkspaceScaffold(stringResource(R.string.settings_category_mount_isolation), navigator, navigationEnabled = !saving, tabs = {
         WorkspaceTabs(labels, selected, { selected = it }, enabled = !saving)
     }) {
         KsuIsValid {
-            pages.SaveableStateProvider(if (selected < 3) "kasumi" else selected.toString()) {
-            when (selected) {
-                0, 1, 2 -> KasumiWorkspace(
-                    section = when (selected) {
-                        0 -> KasumiSection.Mount
-                        1 -> KasumiSection.Isolation
-                        else -> KasumiSection.Rules
-                    },
-                    onSavingChanged = { saving = it },
-                    settingsHeader = {
-                        if (selected == 1) ConfigSection(title = "", segmented = true) {
-                            SettingItem(
-                                icon = Icons.Outlined.FolderOff,
-                                title = stringResource(R.string.nav_umount_paths),
-                                summary = stringResource(R.string.nav_umount_paths_summary),
-                                enabled = !saving,
-                                groupPosition = SettingsItemPosition.Only,
-                                onClick = { navigator.navigate(UmountManagerScreenDestination) },
-                            )
-                        }
-                    },
-                )
-                3 -> FeatureControlContent(navigator, onSavingChanged = { saving = it })
-                else -> MoreSettingsContent(PreferenceCategory.Advanced)
-            }
-            }
+            KasumiWorkspace(
+                section = when (selected) {
+                    0 -> KasumiSection.Mount
+                    1 -> KasumiSection.Isolation
+                    else -> KasumiSection.Rules
+                },
+                onSavingChanged = { kasumiSaving = it },
+                externalSaving = isolationSaving,
+                settingsHeader = {
+                    if (selected == 1) isolationHeader(!kasumiSaving)
+                },
+            )
         }
     }
 }

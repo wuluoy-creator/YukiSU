@@ -89,9 +89,9 @@ private fun WorkspaceTabsPreview() {
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
                 WorkspaceTabs(listOf("模块", "插件"), 0, {})
                 Spacer(Modifier.height(16.dp))
-                WorkspaceTabs(listOf("概览", "配置", "诊断"), 1, {})
+                WorkspaceTabs(listOf("挂载", "隔离设置", "生效规则"), 1, {})
                 Spacer(Modifier.height(16.dp))
-                WorkspaceTabs(listOf("挂载", "隔离设置", "生效规则", "内核功能", "高级安全"), 0, {})
+                WorkspaceTabs(listOf("内核功能", "高级安全"), 0, {})
             }
         }
     }

@@ -77,9 +77,11 @@ internal fun SuPathSetting(
         summary = current,
         enabled = enabled && !saving,
         onClick = {
-            input = current
-            error = null
-            showDialog = true
+            if (enabled && !saving) {
+                input = current
+                error = null
+                showDialog = true
+            }
         },
     )
 
@@ -127,7 +129,8 @@ internal fun SuPathSetting(
             confirmButton = {
                 TextButton(
                     enabled = enabled && valid && !saving,
-                    onClick = {
+                    onClick = savePath@{
+                        if (!enabled || !valid || saving) return@savePath
                         val requested = input
                         saving = true
                         onSavingChange(true)

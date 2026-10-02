@@ -18,6 +18,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.anatdx.yukisu.Natives
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.KsuIsValid
@@ -140,8 +143,6 @@ fun FeatureControlContent(
     val snackbarHost = LocalSnackbarHost.current
 
     val selinuxHide = rememberFeatureToggleState(Natives.FEATURE_SELINUX_HIDE)
-    var suPathSaving by remember { mutableStateOf(false) }
-    val ksmSupported = remember { getFeatureStatus(Natives.FEATURE_KASUMI_SUCOMPAT) == "supported" }
     var ksmEnabled by remember { mutableStateOf(getFeatureValue(Natives.FEATURE_KASUMI_SUCOMPAT)) }
     val kasumiSupported = remember { getFeatureValueOrNull(Natives.FEATURE_KASUMI) != null }
     val kasumiInitialized = remember { Natives.kasumiIsInitialized() }
@@ -152,7 +153,6 @@ fun FeatureControlContent(
     val webViewZygoteUmount = rememberFeatureToggleState(
         Natives.FEATURE_WEBVIEW_ZYGOTE_UMOUNT
     )
-    val unshareMnt = rememberFeatureToggleState(Natives.FEATURE_UNSHARE_MNT)
     val suLog = rememberFeatureToggleState(Natives.FEATURE_SULOG)
     val adbRoot = rememberFeatureToggleState(Natives.FEATURE_ADB_ROOT)
     val enhancedSecurity = rememberFeatureToggleState(Natives.FEATURE_ENHANCED_SECURITY)
@@ -160,8 +160,8 @@ fun FeatureControlContent(
     val defaultNoNewPrivs = rememberFeatureToggleState(Natives.FEATURE_DEFAULT_NO_NEW_PRIVS)
     val hideBootloader = rememberFeatureToggleState(Natives.FEATURE_HIDE_BOOTLOADER)
 
-    val saving = suPathSaving || listOf(
-        selinuxHide, kernelUmountDisabled, webViewZygoteUmount, unshareMnt, suLog,
+    val saving = listOf(
+        selinuxHide, kernelUmountDisabled, webViewZygoteUmount, suLog,
         adbRoot, enhancedSecurity, magiskCompat, defaultNoNewPrivs,
         hideBootloader,
     ).any { it.saving }
@@ -169,6 +169,19 @@ fun FeatureControlContent(
     SideEffect { savingCallback(saving) }
     DisposableEffect(Unit) {
         onDispose { savingCallback(false) }
+    }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val currentlySaving by rememberUpdatedState(saving)
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME && !currentlySaving) {
+                ksmEnabled = getFeatureValue(Natives.FEATURE_KASUMI_SUCOMPAT)
+                magiskCompat.checked = getFeatureValue(Natives.FEATURE_MAGISK_COMPAT)
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
     val savedRebootMessage = stringResource(R.string.setting_change_saved_reboot)
@@ -300,41 +313,12 @@ fun FeatureControlContent(
                 )
 
                 FeatureSwitchItem(
-                    featureId = Natives.FEATURE_UNSHARE_MNT,
-                    icon = ImageVector.vectorResource(R.drawable.ic_mount_view_cleanup),
-                    title = stringResource(R.string.settings_unshare_mnt),
-                    summary = stringResource(R.string.settings_unshare_mnt_summary),
-                    state = unshareMnt,
-                    onChange = { enabled ->
-                        scope.persistFeature(
-                            state = unshareMnt,
-                            featureId = Natives.FEATURE_UNSHARE_MNT,
-                            featureName = "unshare_mnt",
-                            kernelEnabled = enabled,
-                            onFailure = { snackbarHost.showSnackbar(failedMessage) }
-                        )
-                    }
-                )
-
-                if (ksmSupported) {
-                    SuPathSetting(
-                        enabled = !magiskCompat.saving,
-                        onSavingChange = { saving ->
-                            suPathSaving = saving
-                            if (!saving) {
-                                ksmEnabled = getFeatureValue(Natives.FEATURE_KASUMI_SUCOMPAT)
-                            }
-                        },
-                    )
-                }
-
-                FeatureSwitchItem(
                     featureId = Natives.FEATURE_MAGISK_COMPAT,
                     icon = Icons.Filled.Security,
                     title = stringResource(R.string.su_compact_magisk_title),
                     summary = stringResource(R.string.su_compact_magisk_summary),
                     state = magiskCompat,
-                    enabled = ksmEnabled && !suPathSaving &&
+                    enabled = ksmEnabled &&
                         (!kasumiSupported || kasumiInitialized),
                     onChange = { enabled ->
                         scope.persistFeature(
@@ -407,6 +391,51 @@ fun FeatureControlContent(
         Spacer(modifier = Modifier.height(8.dp))
     }
 
+}
+
+/** Native isolation controls embedded beside the shared Kasumi settings. */
+@Composable
+internal fun IsolationKernelSettings(
+    enabled: Boolean = true,
+    onSavingChanged: (Boolean) -> Unit = {},
+) {
+    val scope = rememberCoroutineScope()
+    val snackbarHost = LocalSnackbarHost.current
+    val unshareMnt = rememberFeatureToggleState(Natives.FEATURE_UNSHARE_MNT)
+    val ksmSupported = remember { getFeatureStatus(Natives.FEATURE_KASUMI_SUCOMPAT) == "supported" }
+    var suPathSaving by remember { mutableStateOf(false) }
+    val saving = unshareMnt.saving || suPathSaving
+    val savingCallback by rememberUpdatedState(onSavingChanged)
+    SideEffect { savingCallback(saving) }
+    DisposableEffect(Unit) { onDispose { savingCallback(false) } }
+    val failedMessage = stringResource(R.string.setting_change_failed)
+
+    FeatureSwitchItem(
+        featureId = Natives.FEATURE_UNSHARE_MNT,
+        icon = ImageVector.vectorResource(R.drawable.ic_mount_view_cleanup),
+        title = stringResource(R.string.settings_unshare_mnt),
+        summary = stringResource(R.string.settings_unshare_mnt_summary),
+        state = unshareMnt,
+        groupPosition = MoreSettingsItemPosition.First,
+        enabled = enabled && !saving,
+        onChange = { checked ->
+            if (enabled && !unshareMnt.saving && !suPathSaving) {
+                scope.persistFeature(
+                    state = unshareMnt,
+                    featureId = Natives.FEATURE_UNSHARE_MNT,
+                    featureName = "unshare_mnt",
+                    kernelEnabled = checked,
+                    onFailure = { snackbarHost.showSnackbar(failedMessage) },
+                )
+            }
+        },
+    )
+    if (ksmSupported) {
+        SuPathSetting(
+            enabled = enabled && !saving,
+            onSavingChange = { suPathSaving = it },
+        )
+    }
 }
 
 @Composable

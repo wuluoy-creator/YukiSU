@@ -8,7 +8,9 @@
     <string name="settings_category_app" tools:ignore="MissingTranslation">App and updates</string>
     <string name="settings_category_app_summary" tools:ignore="MissingTranslation">Manager updates, daemon updates and WebUI engine</string>
     <string name="settings_category_kernel" tools:ignore="MissingTranslation">Kernel and isolation</string>
-    <string name="settings_category_kernel_summary" tools:ignore="MissingTranslation">Mount settings, kernel features, security and isolation policies</string>
+    <string name="settings_category_kernel_summary" tools:ignore="MissingTranslation">Kernel features and advanced security</string>
+    <string name="settings_category_mount_isolation" tools:ignore="MissingTranslation">Mount and isolation</string>
+    <string name="settings_category_mount_isolation_summary" tools:ignore="MissingTranslation">Mount settings, isolation policies and active rules</string>
     <string name="settings_category_diagnostics" tools:ignore="MissingTranslation">Diagnostics</string>
     <string name="settings_category_diagnostics_summary" tools:ignore="MissingTranslation">Logs, reports and debugging controls</string>
     <string name="settings_category_maintenance" tools:ignore="MissingTranslation">Maintenance and about</string>

@@ -8,7 +8,9 @@
     <string name="settings_category_app">应用与更新</string>
     <string name="settings_category_app_summary">管理器更新、守护进程更新与 WebUI 引擎</string>
     <string name="settings_category_kernel">内核与隔离</string>
-    <string name="settings_category_kernel_summary">挂载设置、内核功能、安全与隔离策略</string>
+    <string name="settings_category_kernel_summary">内核功能与高级安全</string>
+    <string name="settings_category_mount_isolation">挂载与隔离</string>
+    <string name="settings_category_mount_isolation_summary">挂载设置、隔离策略与生效规则</string>
     <string name="settings_category_diagnostics">诊断</string>
     <string name="settings_category_diagnostics_summary">日志、诊断报告与调试控制</string>
     <string name="settings_category_maintenance">维护与关于</string>

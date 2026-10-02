@@ -45,6 +45,7 @@ import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.AppProfileTemplateScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.FlashScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.KernelPolicyScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.MountIsolationScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.DiagnosticsScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.YukiZygiskScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -162,6 +163,12 @@ private fun SettingsWorkspaceIndex(
                 onClick = { onCategory(SettingsWorkspaceCategory.App) },
             )
             KsuIsValid {
+                SettingItem(
+                    icon = Icons.Filled.Folder,
+                    title = stringResource(R.string.settings_category_mount_isolation),
+                    summary = stringResource(R.string.settings_category_mount_isolation_summary),
+                    onClick = { navigator.navigate(MountIsolationScreenDestination) },
+                )
                 SettingItem(
                     icon = Icons.Filled.Security,
                     title = stringResource(R.string.settings_category_kernel),

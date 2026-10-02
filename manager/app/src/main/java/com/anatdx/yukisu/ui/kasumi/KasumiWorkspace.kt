@@ -43,6 +43,7 @@ fun KasumiWorkspace(
     settingsHeader: @Composable () -> Unit = {},
     contentPadding: PaddingValues = PaddingValues(16.dp),
     refreshKey: Int = 0,
+    externalSaving: Boolean = false,
 ) {
     val resources = LocalResources.current
     val scope = rememberCoroutineScope()
@@ -57,6 +58,7 @@ fun KasumiWorkspace(
     val sectionState = rememberSaveableStateHolder()
     var isLoading by remember { mutableStateOf(false) }
     var configSaving by remember { mutableStateOf(false) }
+    val saving = configSaving || externalSaving
     var dataReady by remember { mutableStateOf(false) }
     var loadError by remember { mutableStateOf<String?>(null) }
     var runtimeApplyPending by rememberSaveable { mutableStateOf(false) }
@@ -89,7 +91,7 @@ fun KasumiWorkspace(
     }
 
     fun loadData() {
-        if (isLoading || configSaving) return
+        if (isLoading || configSaving || externalSaving) return
         isLoading = true
         scope.launchUi(snackbar) {
             try {
@@ -106,7 +108,7 @@ fun KasumiWorkspace(
     }
 
     fun saveConfig(newConfig: Controller.KagamiConfig) {
-        if (configSaving || isLoading || !dataReady) return
+        if (configSaving || externalSaving || isLoading || !dataReady) return
         configSaving = true
         scope.launchUi(snackbar, start = CoroutineStart.UNDISPATCHED) {
             // The existing backend performs persist/apply atomically. Preserve its result
@@ -132,7 +134,7 @@ fun KasumiWorkspace(
     }
 
     fun retryApply() {
-        if (configSaving || isLoading) return
+        if (configSaving || externalSaving || isLoading) return
         configSaving = true
         scope.launchUi(snackbar, start = CoroutineStart.UNDISPATCHED) {
             val applyFailed = withContext(NonCancellable) {
@@ -149,7 +151,7 @@ fun KasumiWorkspace(
     }
 
     fun refreshRules() {
-        if (rulesRefreshing || configSaving || isLoading || !dataReady) return
+        if (rulesRefreshing || configSaving || externalSaving || isLoading || !dataReady) return
         rulesRefreshing = true
         scope.launchUi(snackbar) {
             try {
@@ -161,7 +163,7 @@ fun KasumiWorkspace(
     }
 
     fun clearRules() {
-        if (configSaving || rulesRefreshing || isLoading || !dataReady) return
+        if (configSaving || externalSaving || rulesRefreshing || isLoading || !dataReady) return
         configSaving = true
         scope.launchUi(snackbar, start = CoroutineStart.UNDISPATCHED) {
             val message = withContext(NonCancellable) {
@@ -182,7 +184,7 @@ fun KasumiWorkspace(
     }
 
     fun mutateMapRules(successMessage: Int, failureMessage: Int, mutation: suspend () -> Boolean) {
-        if (configSaving || isLoading || !dataReady) return
+        if (configSaving || externalSaving || isLoading || !dataReady) return
         configSaving = true
         scope.launchUi(snackbar, start = CoroutineStart.UNDISPATCHED) {
             val message = withContext(NonCancellable) {
@@ -225,12 +227,12 @@ fun KasumiWorkspace(
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.error,
                     )
-                    IconButton(onClick = ::loadData, enabled = !isLoading && !configSaving) {
+                    IconButton(onClick = ::loadData, enabled = !isLoading && !saving) {
                         YukiIcon(Icons.Filled.Refresh, stringResource(R.string.kasumi_rules_refresh))
                     }
                 }
             }
-            if (isLoading || configSaving || rulesRefreshing || logLoading || logClearing) {
+            if (isLoading || saving || rulesRefreshing || logLoading || logClearing) {
                 LinearProgressIndicator(Modifier.fillMaxWidth())
             }
             Box(if (inlineContent) Modifier.fillMaxWidth() else Modifier.weight(1f).fillMaxWidth()) {
@@ -240,7 +242,7 @@ fun KasumiWorkspace(
                             Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(contentPadding),
                             horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
-                            settingsHeader()
+                            CompositionLocalProvider(LocalSnackbarHost provides snackbar) { settingsHeader() }
                             if (isLoading) CircularProgressIndicator(Modifier.padding(16.dp))
                         }
                     } else when (section) {
@@ -248,14 +250,14 @@ fun KasumiWorkspace(
                             status, true, version, system, ::loadData,
                             scrollable = !inlineContent,
                             contentPadding = contentPadding,
-                            refreshEnabled = !isLoading && !configSaving,
+                            refreshEnabled = !isLoading && !saving,
                         )
                         KasumiSection.Mount, KasumiSection.Isolation, KasumiSection.Debug -> SettingsTab(
                             config = config,
                             kasumiStatus = status,
                             features = features,
                             snackbarHostState = snackbar,
-                            controlsEnabled = dataReady && !configSaving && !isLoading,
+                            controlsEnabled = dataReady && !saving && !isLoading,
                             runtimeApplyPending = runtimeApplyPending,
                             onRetryApply = ::retryApply,
                             onConfigChanged = ::saveConfig,
@@ -271,16 +273,16 @@ fun KasumiWorkspace(
                             },
                             section = section,
                             scrollable = !inlineContent,
-                            header = settingsHeader,
+                            header = { CompositionLocalProvider(LocalSnackbarHost provides snackbar) { settingsHeader() } },
                             contentPadding = contentPadding,
                             headingActions = {
-                                IconButton(onClick = ::loadData, enabled = !isLoading && !configSaving) {
+                                IconButton(onClick = ::loadData, enabled = !isLoading && !saving) {
                                     YukiIcon(Icons.Filled.Refresh, stringResource(R.string.kasumi_rules_refresh))
                                 }
                             },
                         )
                         KasumiSection.Rules -> RulesTab(
-                            rules, status, dataReady && !configSaving && !rulesRefreshing && !isLoading,
+                            rules, status, dataReady && !saving && !rulesRefreshing && !isLoading,
                             ::refreshRules, ::clearRules,
                         )
                         KasumiSection.Logs -> LogsTab(
