@@ -55,13 +55,13 @@ internal object FeatureControlState {
     }
 }
 
-private class FeatureToggleState(initialChecked: Boolean) {
+internal class FeatureToggleState(initialChecked: Boolean) {
     var checked by mutableStateOf(initialChecked)
     var saving by mutableStateOf(false)
 }
 
 @Composable
-private fun rememberFeatureToggleState(
+internal fun rememberFeatureToggleState(
     featureId: Int,
     displayInverted: Boolean = false
 ): FeatureToggleState = remember(featureId, displayInverted) {
@@ -158,12 +158,11 @@ fun FeatureControlContent(
     val enhancedSecurity = rememberFeatureToggleState(Natives.FEATURE_ENHANCED_SECURITY)
     val magiskCompat = rememberFeatureToggleState(Natives.FEATURE_MAGISK_COMPAT)
     val defaultNoNewPrivs = rememberFeatureToggleState(Natives.FEATURE_DEFAULT_NO_NEW_PRIVS)
-    val yukiZygisk = rememberFeatureToggleState(Natives.FEATURE_YUKIZYGISK)
     val hideBootloader = rememberFeatureToggleState(Natives.FEATURE_HIDE_BOOTLOADER)
 
     val saving = suPathSaving || listOf(
         selinuxHide, kernelUmountDisabled, webViewZygoteUmount, unshareMnt, suLog,
-        adbRoot, enhancedSecurity, magiskCompat, defaultNoNewPrivs, yukiZygisk,
+        adbRoot, enhancedSecurity, magiskCompat, defaultNoNewPrivs,
         hideBootloader,
     ).any { it.saving }
     val savingCallback by rememberUpdatedState(onSavingChanged)
@@ -174,9 +173,6 @@ fun FeatureControlContent(
 
     val savedRebootMessage = stringResource(R.string.setting_change_saved_reboot)
     val failedMessage = stringResource(R.string.setting_change_failed)
-    val yukiZygiskEnabledMessage = stringResource(R.string.settings_yukizygisk_toast_on)
-    val yukiZygiskDisabledMessage = stringResource(R.string.settings_yukizygisk_toast_off)
-    val yukiZygiskFailedMessage = stringResource(R.string.settings_yukizygisk_toast_failed)
 
     Column(
         modifier = Modifier
@@ -368,35 +364,6 @@ fun FeatureControlContent(
                 )
 
                 FeatureSwitchItem(
-                    featureId = Natives.FEATURE_YUKIZYGISK,
-                    icon = Icons.Filled.Extension,
-                    title = stringResource(R.string.settings_yukizygisk),
-                    summary = stringResource(R.string.settings_yukizygisk_summary),
-                    state = yukiZygisk,
-                    onChange = { enabled ->
-                        scope.persistFeature(
-                            state = yukiZygisk,
-                            featureId = Natives.FEATURE_YUKIZYGISK,
-                            featureName = "yukizygisk",
-                            kernelEnabled = enabled,
-                            optimistic = true,
-                            onSuccess = {
-                                snackbarHost.showSnackbar(
-                                    if (enabled) {
-                                        yukiZygiskEnabledMessage
-                                    } else {
-                                        yukiZygiskDisabledMessage
-                                    }
-                                )
-                            },
-                            onFailure = {
-                                snackbarHost.showSnackbar(yukiZygiskFailedMessage)
-                            }
-                        )
-                    }
-                )
-
-                FeatureSwitchItem(
                     featureId = Natives.FEATURE_HIDE_BOOTLOADER,
                     icon = Icons.Filled.Lock,
                     title = stringResource(R.string.hide_bl_title),
@@ -440,6 +407,40 @@ fun FeatureControlContent(
         Spacer(modifier = Modifier.height(8.dp))
     }
 
+}
+
+@Composable
+internal fun YukiZygiskFeatureSwitch(state: FeatureToggleState, enabled: Boolean = true) {
+    val scope = rememberCoroutineScope()
+    val snackbarHost = LocalSnackbarHost.current
+    val enabledMessage = stringResource(R.string.settings_yukizygisk_toast_on)
+    val disabledMessage = stringResource(R.string.settings_yukizygisk_toast_off)
+    val failedMessage = stringResource(R.string.settings_yukizygisk_toast_failed)
+
+    FeatureSwitchItem(
+        featureId = Natives.FEATURE_YUKIZYGISK,
+        icon = Icons.Filled.Extension,
+        title = stringResource(R.string.settings_yukizygisk),
+        summary = stringResource(R.string.settings_yukizygisk_summary),
+        state = state,
+        groupPosition = MoreSettingsItemPosition.Only,
+        enabled = enabled,
+        onChange = { checked ->
+            if (enabled && !state.saving) {
+                scope.persistFeature(
+                    state = state,
+                    featureId = Natives.FEATURE_YUKIZYGISK,
+                    featureName = "yukizygisk",
+                    kernelEnabled = checked,
+                    optimistic = true,
+                    onSuccess = {
+                        snackbarHost.showSnackbar(if (checked) enabledMessage else disabledMessage)
+                    },
+                    onFailure = { snackbarHost.showSnackbar(failedMessage) },
+                )
+            }
+        },
+    )
 }
 
 @Composable

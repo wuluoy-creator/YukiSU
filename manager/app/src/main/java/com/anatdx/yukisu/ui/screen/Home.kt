@@ -24,6 +24,10 @@ import androidx.compose.material.icons.filled.Engineering
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.automirrored.filled.NavigateNext
 import androidx.compose.material.icons.outlined.Block
+import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.outlined.Shield
+import androidx.compose.material.icons.outlined.Terminal
+import androidx.compose.material.icons.outlined.Memory
 import androidx.compose.material.icons.outlined.TaskAlt
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.*
@@ -41,7 +45,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.edit
@@ -62,6 +65,7 @@ import com.anatdx.yukisu.superkey.SuperKeyHelper
 import com.anatdx.yukisu.ui.component.KsuIsValid
 import com.anatdx.yukisu.ui.kasumi.HomeKasumiCard
 import com.anatdx.yukisu.ui.component.HomeSummaryCard
+import com.anatdx.yukisu.ui.component.HomeCardIcon
 import com.anatdx.yukisu.ui.component.HomeStatusLayout
 import com.anatdx.yukisu.ui.component.rememberConfirmDialog
 import com.anatdx.yukisu.ui.component.YukiIcon
@@ -532,7 +536,7 @@ private fun TopBar(
                 var showDropdown by remember { mutableStateOf(false) }
                 KsuIsValid {
                     IconButton(onClick = { navigator.navigate(DiagnosticsScreenDestination) }) {
-                        Icon(Icons.Filled.BugReport, contentDescription = stringResource(R.string.injection_section_diagnostics))
+                        Icon(Icons.Filled.BugReport, contentDescription = stringResource(R.string.settings_category_diagnostics))
                     }
                     IconButton(onClick = {
                         showDropdown = true
@@ -585,13 +589,58 @@ private fun StatusCard(
     onSuperKeyAuth: () -> Unit = {},
 ) {
     val installed = systemStatus.ksuVersion != null
-    val statusColor = if (installed) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+    val safeMode = installed && Natives.isSafeMode
     val context = LocalContext.current
     val isHideVersion by produceState(initialValue = false) {
         value = withContext(Dispatchers.IO) {
             context.getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("is_hide_version", false)
         }
     }
+    val version = systemStatus.ksuFullVersion?.takeIf { installed && !isHideVersion }
+    val machine = if (installed) remember { Os.uname().machine } else null
+    val labels = buildList {
+        if (installed && isSignatureOk) add(stringResource(R.string.home_auth_signature_tag))
+        if (installed && isSuperKeyMode) add(stringResource(R.string.home_auth_superkey_tag))
+        if (machine != null && machine != "aarch64") add(machine)
+        if (version != null && systemStatus.showCustomLkmBadge) add(stringResource(R.string.home_lkm_custom))
+    }
+    InstallationStatusCard(
+        status = stringResource(when {
+            !installed -> R.string.home_not_installed
+            safeMode -> R.string.safe_mode
+            else -> R.string.home_working
+        }),
+        installed = installed,
+        safeMode = safeMode,
+        onClickInstall = onClickInstall,
+        modifier = modifier,
+        version = version?.let { stringResource(R.string.home_working_version, it) },
+        buildInfo = version?.let {
+            if (systemStatus.kernelUapiVersion > 0) {
+                stringResource(R.string.home_status_build_api, systemStatus.ksuVersion ?: 0, systemStatus.kernelUapiVersion)
+            } else stringResource(R.string.home_status_build, systemStatus.ksuVersion ?: 0)
+        },
+        labels = labels,
+        needsSuperKeyAuth = !installed && needsSuperKeyAuth,
+        onSuperKeyAuth = onSuperKeyAuth,
+    )
+}
+
+/** Pure presentation shared by the live status and previews of every installation state. */
+@Composable
+private fun InstallationStatusCard(
+    status: String,
+    installed: Boolean,
+    safeMode: Boolean,
+    onClickInstall: () -> Unit,
+    modifier: Modifier = Modifier,
+    version: String? = null,
+    buildInfo: String? = null,
+    labels: List<String> = emptyList(),
+    needsSuperKeyAuth: Boolean = false,
+    onSuperKeyAuth: () -> Unit = {},
+) {
+    val statusColor = if (installed) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
     ElevatedCard(
         onClick = onClickInstall,
         modifier = modifier.heightIn(min = 188.dp),
@@ -600,69 +649,63 @@ private fun StatusCard(
     ) {
         Column(
             modifier = Modifier.fillMaxSize().padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.SpaceBetween,
         ) {
-            Text(
-                text = stringResource(when {
-                    !installed -> R.string.home_not_installed
-                    Natives.isSafeMode -> R.string.safe_mode
-                    else -> R.string.home_working
-                }),
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center,
-                color = statusColor,
-            )
-            if (installed) {
-                FlowRow(
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    if (isSignatureOk) StatusBadge(
-                        stringResource(R.string.home_auth_signature_tag),
-                        MaterialTheme.colorScheme.secondaryContainer,
-                        MaterialTheme.colorScheme.onSecondaryContainer,
+                    HomeCardIcon(
+                        icon = when {
+                            !installed -> Icons.Outlined.Download
+                            safeMode -> Icons.Outlined.Shield
+                            else -> Icons.Outlined.TaskAlt
+                        },
+                        tint = statusColor,
+                        containerColor = if (installed) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.errorContainer,
                     )
-                    if (isSuperKeyMode) StatusBadge(
-                        stringResource(R.string.home_auth_superkey_tag),
-                        MaterialTheme.colorScheme.tertiaryContainer,
-                        MaterialTheme.colorScheme.onTertiaryContainer,
-                    )
-                    val machine = remember { Os.uname().machine }
-                    if (machine != "aarch64") StatusBadge(
-                        machine, MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.onPrimary,
-                    )
-                }
-                if (!isHideVersion) {
-                    systemStatus.ksuFullVersion?.let { version ->
-                        val versionText = if (systemStatus.kernelUapiVersion > 0) {
-                            "$version (${systemStatus.ksuVersion}/${systemStatus.kernelUapiVersion})"
-                        } else "$version (${systemStatus.ksuVersion})"
-                        Text(
-                            text = stringResource(R.string.home_working_version, versionText),
-                            style = MaterialTheme.typography.bodySmall,
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                        if (systemStatus.showCustomLkmBadge) StatusBadge(
-                            stringResource(R.string.home_lkm_custom),
-                            MaterialTheme.colorScheme.tertiaryContainer,
-                            MaterialTheme.colorScheme.onTertiaryContainer,
-                        )
+                    if (needsSuperKeyAuth) {
+                        IconButton(onClick = onSuperKeyAuth) {
+                            YukiIcon(Icons.Default.Key, stringResource(R.string.superkey_auth_title), tint = MaterialTheme.colorScheme.tertiary)
+                        }
                     }
                 }
-            } else {
                 Text(
-                    text = stringResource(R.string.home_click_to_install),
-                    style = MaterialTheme.typography.bodySmall,
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    text = status,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = statusColor,
                 )
-                if (needsSuperKeyAuth) {
-                    IconButton(onClick = onSuperKeyAuth) {
-                        YukiIcon(Icons.Default.Key, stringResource(R.string.superkey_auth_title), tint = MaterialTheme.colorScheme.tertiary)
+            }
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                if (installed) {
+                    if (version != null) {
+                        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                            Text(version, style = MaterialTheme.typography.bodyMedium)
+                            buildInfo?.let {
+                                Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                        }
                     }
+                    if (labels.isNotEmpty()) {
+                        FlowRow(
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            verticalArrangement = Arrangement.spacedBy(4.dp),
+                        ) {
+                            labels.forEach { StatusBadge(it) }
+                        }
+                    }
+                } else {
+                    Text(
+                        text = stringResource(R.string.home_click_to_install),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
                 }
             }
         }
@@ -670,14 +713,13 @@ private fun StatusCard(
 }
 
 @Composable
-private fun StatusBadge(label: String, containerColor: Color, contentColor: Color) {
-    Surface(shape = MaterialTheme.shapes.extraSmall, color = containerColor) {
+private fun StatusBadge(label: String) {
+    Surface(shape = MaterialTheme.shapes.extraSmall, color = MaterialTheme.colorScheme.surfaceContainerHighest) {
         Text(
             text = label,
             style = MaterialTheme.typography.labelMedium,
-            textAlign = TextAlign.Center,
             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-            color = contentColor,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
@@ -1010,7 +1052,9 @@ private fun KsudSummaryCard(modifier: Modifier, ksudIntegrityStatus: KsudIntegri
         else -> "$installedVer / APK: $apkVer"
     }
     HomeSummaryCard(
-        title = stringResource(R.string.home_ksud_daemon_title),
+        title = "ksud",
+        subtitle = stringResource(R.string.home_status_daemon_role),
+        icon = Icons.Outlined.Terminal,
         description = ksudContent,
         modifier = modifier,
         onClick = { showKsudDialog = true },
@@ -1124,80 +1168,74 @@ fun getManagerVersion(context: Context): Pair<String, Long> {
     return Pair(packageInfo.versionName!!, versionCode)
 }
 
-@Preview(name = "Home summaries · light", widthDp = 360, heightDp = 640)
-@Preview(name = "Home summaries · dark", widthDp = 360, heightDp = 640, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Preview(name = "Home summaries · large text", widthDp = 320, heightDp = 740, fontScale = 2f)
-@Preview(name = "Home summaries · landscape", widthDp = 800, heightDp = 360)
+@Preview(name = "Home cards · light", widthDp = 360, heightDp = 640)
+@Preview(name = "Home cards · dark", widthDp = 360, heightDp = 640, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(name = "Home cards · large text", widthDp = 320, heightDp = 900, fontScale = 2f)
+@Preview(name = "Home cards · landscape", widthDp = 800, heightDp = 360)
 @Composable
 private fun HomeStatusLayoutPreview() {
+    HomeStatusPreviewContent(installed = true)
+}
+
+@Preview(name = "Home cards · uninstalled", widthDp = 320, heightDp = 640)
+@Composable
+private fun UninstalledStatusPreview() {
+    HomeStatusPreviewContent(installed = false)
+}
+
+@Preview(name = "Home cards · safe mode and mismatch", widthDp = 360, heightDp = 740)
+@Composable
+private fun SafeModeStatusPreview() {
+    HomeStatusPreviewContent(installed = true, safeMode = true)
+}
+
+@Composable
+private fun HomeStatusPreviewContent(installed: Boolean, safeMode: Boolean = false) {
     UtilityPreviewTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
                 HomeStatusLayout(
                     status = { modifier ->
-                        StatusCard(
-                            systemStatus = HomeViewModel.SystemStatus(kernelVersion = KernelVersion(6, 1, 101)),
-                            needsSuperKeyAuth = true,
+                        InstallationStatusCard(
+                            status = stringResource(when {
+                                !installed -> R.string.home_not_installed
+                                safeMode -> R.string.safe_mode
+                                else -> R.string.home_working
+                            }),
+                            installed = installed,
+                            safeMode = safeMode,
+                            onClickInstall = {},
                             modifier = modifier,
+                            version = if (installed) stringResource(R.string.home_working_version, "1.0.0-android16-release") else null,
+                            buildInfo = if (installed) stringResource(R.string.home_status_build_api, 12345, 5) else null,
+                            labels = if (installed) listOf("Signature", "SuperKey") else emptyList(),
+                            needsSuperKeyAuth = !installed,
                         )
                     },
                     daemon = { modifier ->
                         HomeSummaryCard(
-                            title = stringResource(R.string.home_ksud_daemon_title),
+                            title = "ksud", subtitle = stringResource(R.string.home_status_daemon_role),
+                            icon = Icons.Outlined.Terminal,
                             description = "1.0.0 (12345)", modifier = modifier, onClick = {},
                         )
                     },
                     kernel = { modifier ->
                         HomeSummaryCard(
-                            title = stringResource(R.string.kasumi_kernel_title),
-                            description = stringResource(R.string.kasumi_status_builtin), modifier = modifier, onClick = {},
+                            title = "Kasumi", subtitle = stringResource(R.string.home_status_kernel_role),
+                            icon = Icons.Outlined.Memory,
+                            description = stringResource(when {
+                                !installed -> R.string.home_ksud_daemon_unknown
+                                safeMode -> R.string.home_status_protocol_mismatch
+                                else -> R.string.kasumi_status_builtin
+                            }),
+                            supportingText = if (installed && !safeMode) stringResource(R.string.kasumi_version_label, "17") else null,
+                            descriptionColor = if (safeMode) MaterialTheme.colorScheme.error else Color.Unspecified,
+                            modifier = modifier, onClick = {},
                         )
                     },
                 )
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun StatusCardPreview() {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        StatusCard(
-            HomeViewModel.SystemStatus(
-                isManager = true,
-                ksuVersion = 1,
-                kernelVersion = KernelVersion(6, 1, 101),
-                isRootAvailable = true
-            )
-        )
-
-        StatusCard(
-            HomeViewModel.SystemStatus(
-                isManager = true,
-                ksuVersion = 10000,
-                kernelVersion = KernelVersion(6, 1, 101),
-                isRootAvailable = true
-            )
-        )
-
-        StatusCard(
-            HomeViewModel.SystemStatus(
-                isManager = false,
-                ksuVersion = null,
-                kernelVersion = KernelVersion(6, 1, 101),
-                isRootAvailable = false
-            )
-        )
-
-        StatusCard(
-            HomeViewModel.SystemStatus(
-                isManager = false,
-                ksuVersion = null,
-                kernelVersion = KernelVersion(4, 10, 101),
-                isRootAvailable = false
-            )
-        )
     }
 }
 

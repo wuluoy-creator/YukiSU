@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Memory
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -107,7 +109,7 @@ internal fun KasumiStatusSummaryCard(
         loadError != null -> stringResource(R.string.home_status_load_failed)
         warning != null -> stringResource(R.string.home_status_protocol_mismatch)
         loading && status == null -> stringResource(R.string.home_status_loading)
-        else -> listOfNotNull(statusText, versionText).joinToString(" · ")
+        else -> statusText
     }
     val hasWarning = loadError != null || warning != null || status in setOf(
         Controller.KasumiStatus.KERNEL_TOO_OLD,
@@ -115,8 +117,11 @@ internal fun KasumiStatusSummaryCard(
     )
 
     HomeSummaryCard(
-        title = stringResource(R.string.kasumi_kernel_title),
+        title = "Kasumi",
+        icon = Icons.Outlined.Memory,
+        subtitle = stringResource(R.string.home_status_kernel_role),
         description = description,
+        supportingText = versionText.takeIf { loadError == null && warning == null && !loading },
         modifier = modifier,
         onClick = { showDetails = true },
         descriptionColor = if (hasWarning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,

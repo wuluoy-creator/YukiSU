@@ -44,7 +44,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.LinearProgressIndicator
-import com.anatdx.yukisu.ui.screen.WorkspaceTabs
 import com.anatdx.yukisu.ui.screen.WorkspaceOperationGuard
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
@@ -56,6 +55,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
@@ -64,7 +64,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -82,6 +81,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.anatdx.yukisu.R
+import com.anatdx.yukisu.Natives
 import com.anatdx.yukisu.ui.component.KsuIsValid
 import com.anatdx.yukisu.ui.component.YukiIcon
 import com.anatdx.yukisu.ui.component.YukiAlertDialog
@@ -107,15 +107,11 @@ import org.json.JSONObject
 import ui.screen.moreSettings.component.MoreSettingsItemPosition
 import ui.screen.moreSettings.component.SettingsCard
 import ui.screen.moreSettings.component.SwitchSettingItem
+import ui.screen.feature.YukiZygiskFeatureSwitch
+import ui.screen.feature.rememberFeatureToggleState
 
 private const val TAG = "YukiZygiskScreen"
 private val yzConfigWriteMutex = Mutex()
-
-enum class InjectionSection {
-    Overview,
-    Configuration,
-    Diagnostics,
-}
 
 data class YzConfig(
     val yukilinker: Boolean = true,
@@ -529,8 +525,8 @@ private fun zygiskModuleState(
 fun YukiZygiskScreen(navigator: DestinationsNavigator) {
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-    var section by rememberSaveable { mutableStateOf(InjectionSection.Overview) }
     var saving by remember { mutableStateOf(false) }
+    val snackbar = rememberSnackbarController()
     WorkspaceOperationGuard(saving, YukiZygiskScreenDestination.route)
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -541,38 +537,71 @@ fun YukiZygiskScreen(navigator: DestinationsNavigator) {
                 scrollBehavior = scrollBehavior,
             )
         },
+        snackbarHost = { SnackbarHost(snackbar.hostState) },
         contentWindowInsets = WindowInsets.safeDrawing,
     ) { padding ->
-        Column(Modifier.fillMaxSize().padding(padding).consumeWindowInsets(padding)) {
-            WorkspaceTabs(
-                labels = InjectionSection.entries.map { item -> stringResource(when (item) {
-                    InjectionSection.Overview -> R.string.injection_section_overview
-                    InjectionSection.Configuration -> R.string.injection_section_configuration
-                    InjectionSection.Diagnostics -> R.string.injection_section_diagnostics
-                }) },
-                selected = section.ordinal,
-                onSelected = { section = InjectionSection.entries[it] },
-                enabled = !saving,
-            )
-            Box(Modifier.weight(1f).fillMaxWidth()) {
+        CompositionLocalProvider(LocalSnackbarHost provides snackbar) {
+            Box(Modifier.fillMaxSize().padding(padding).consumeWindowInsets(padding)) {
                 KsuIsValid {
-                    InjectionWorkspace(section, onSavingChanged = { saving = it })
+                    YukiZygiskContent(onSavingChanged = { saving = it })
                 }
             }
         }
     }
 }
 
-/** The host owns its app bar/insets; non-scrolling content also uses its gutters/snackbar. */
 @Composable
-fun InjectionWorkspace(
-    section: InjectionSection,
-    scrollable: Boolean = true,
+private fun YukiZygiskContent(onSavingChanged: (Boolean) -> Unit) {
+    val feature = rememberFeatureToggleState(Natives.FEATURE_YUKIZYGISK)
+    var configurationSaving by remember { mutableStateOf(false) }
+    val savingCallback by rememberUpdatedState(onSavingChanged)
+    SideEffect { savingCallback(feature.saving || configurationSaving) }
+    DisposableEffect(Unit) { onDispose { savingCallback(false) } }
+
+    YukiZygiskPageLayout(
+        enabled = feature.checked,
+        switching = feature.saving,
+        masterSwitch = {
+            YukiZygiskFeatureSwitch(feature, enabled = !configurationSaving)
+        },
+    ) {
+        InjectionWorkspace(onSavingChanged = { configurationSaving = it })
+    }
+}
+
+/** One scroll region; disabled or pending enablement never composes runtime content. */
+@Composable
+private fun YukiZygiskPageLayout(
+    enabled: Boolean,
+    switching: Boolean,
+    masterSwitch: @Composable () -> Unit,
+    content: @Composable () -> Unit,
+) {
+    Column(
+        Modifier.fillMaxSize().verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+    ) {
+        Surface(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+            shape = MaterialTheme.shapes.medium,
+            color = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = CardConfig.cardAlpha),
+        ) {
+            masterSwitch()
+        }
+        if (switching) {
+            LinearProgressIndicator(Modifier.fillMaxWidth().height(2.dp))
+        }
+        if (enabled && !switching) content()
+    }
+}
+
+/** Enabled-only content shares its host's scroll, insets and snackbar. */
+@Composable
+private fun InjectionWorkspace(
     onSavingChanged: (Boolean) -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
-    val localSnackbar = rememberSnackbarController()
-    val snackBarHost = if (scrollable) localSnackbar else LocalSnackbarHost.current
+    val snackBarHost = LocalSnackbarHost.current
 
     var config by remember { mutableStateOf(YzConfig()) }
     var configLoaded by remember { mutableStateOf(false) }
@@ -587,17 +616,13 @@ fun InjectionWorkspace(
     var crashEvidence by remember { mutableStateOf<List<CrashEvidence>>(emptyList()) }
     var nativeMonitorMode by remember { mutableStateOf(NativeMonitorMode.Module) }
     var monitorDialog by remember { mutableStateOf<MonitorDialogState?>(null) }
-    val overviewScrollState = rememberScrollState()
-    val configurationScrollState = rememberScrollState()
-    val diagnosticsScrollState = rememberScrollState()
 
     LaunchedEffect(Unit) {
         config = readYzConfig()
         configLoaded = true
     }
 
-    LaunchedEffect(section) {
-        if (section != InjectionSection.Overview) return@LaunchedEffect
+    LaunchedEffect(Unit) {
         val moduleNameCache = mutableMapOf<String, String>()
         val moduleAbiCache = mutableMapOf<String, List<String>>()
         while (true) {
@@ -675,7 +700,7 @@ fun InjectionWorkspace(
         }
     }
 
-    monitorDialog?.takeIf { section == InjectionSection.Overview }?.let { dialog ->
+    monitorDialog?.let { dialog ->
         YukiAlertDialog(
             onDismissRequest = { monitorDialog = null },
             title = { Text(dialog.title) },
@@ -688,122 +713,99 @@ fun InjectionWorkspace(
         )
     }
 
-    Box(if (scrollable) Modifier.fillMaxSize() else Modifier.fillMaxWidth()) {
-        Column(
-            modifier = if (scrollable) Modifier
-                .fillMaxSize()
-                .verticalScroll(when (section) {
-                    InjectionSection.Overview -> overviewScrollState
-                    InjectionSection.Configuration -> configurationScrollState
-                    InjectionSection.Diagnostics -> diagnosticsScrollState
-                })
-                .padding(horizontal = 16.dp)
-                .padding(top = 8.dp, bottom = 8.dp)
-                else Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-        ) {
-            if (saving) {
-                LinearProgressIndicator(
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp).height(2.dp),
-                )
+    Column(Modifier.fillMaxWidth()) {
+        if (saving) {
+            LinearProgressIndicator(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp).height(2.dp),
+            )
+        }
+        MonitorCard(title = stringResource(R.string.yukizygisk_injected_zygotes)) {
+            if (monitoredZygotes.isEmpty()) {
+                EmptyMonitorGroup(stringResource(R.string.yukizygisk_no_zygotes))
+            } else {
+                monitoredZygotes.forEachIndexed { index, zygote ->
+                    if (index > 0) MonitorDivider()
+                    val dialog = zygoteDialog(zygote)
+                    ZygoteMonitorRow(zygote) {
+                        monitorDialog = dialog
+                    }
+                }
             }
-            if (section == InjectionSection.Overview) {
-                MonitorCard(title = stringResource(R.string.yukizygisk_injected_zygotes)) {
-                    if (monitoredZygotes.isEmpty()) {
-                        EmptyMonitorGroup(stringResource(R.string.yukizygisk_no_zygotes))
-                    } else {
-                        monitoredZygotes.forEachIndexed { index, zygote ->
-                            if (index > 0) MonitorDivider()
-                            val dialog = zygoteDialog(zygote)
-                            ZygoteMonitorRow(zygote) {
-                                monitorDialog = dialog
-                            }
-                        }
-                    }
-                }
+        }
 
-                MonitorCard(title = stringResource(R.string.yukizygisk_modules)) {
-                    if (zygiskModules.isEmpty()) {
-                        EmptyMonitorGroup(stringResource(R.string.yukizygisk_no_modules))
-                    } else {
-                        zygiskModules.forEachIndexed { index, module ->
-                            if (index > 0) MonitorDivider()
-                            val dialog = zygiskModuleDialog(module)
-                            ZygiskModuleRow(module) { monitorDialog = dialog }
-                        }
-                    }
+        MonitorCard(title = stringResource(R.string.yukizygisk_modules)) {
+            if (zygiskModules.isEmpty()) {
+                EmptyMonitorGroup(stringResource(R.string.yukizygisk_no_modules))
+            } else {
+                zygiskModules.forEachIndexed { index, module ->
+                    if (index > 0) MonitorDivider()
+                    val dialog = zygiskModuleDialog(module)
+                    ZygiskModuleRow(module) { monitorDialog = dialog }
                 }
+            }
+        }
 
-                MonitorCard(
-                    title = stringResource(R.string.yukizygisk_native_injections),
-                    trailing = {
-                        NativeMonitorModeToggle(
-                            mode = nativeMonitorMode,
-                            onClick = {
-                                nativeMonitorMode = when (nativeMonitorMode) {
-                                    NativeMonitorMode.Module -> NativeMonitorMode.Process
-                                    NativeMonitorMode.Process -> NativeMonitorMode.Module
-                                }
-                            },
-                        )
+        MonitorCard(
+            title = stringResource(R.string.yukizygisk_native_injections),
+            trailing = {
+                NativeMonitorModeToggle(
+                    mode = nativeMonitorMode,
+                    onClick = {
+                        nativeMonitorMode = when (nativeMonitorMode) {
+                            NativeMonitorMode.Module -> NativeMonitorMode.Process
+                            NativeMonitorMode.Process -> NativeMonitorMode.Module
+                        }
                     },
-                ) {
-                    val moduleRows = remember(nativeModules, nativeInjections, crashEvidence) {
-                        buildNativeModuleRows(nativeModules, nativeInjections, crashEvidence)
+                )
+            },
+        ) {
+            val moduleRows = remember(nativeModules, nativeInjections, crashEvidence) {
+                buildNativeModuleRows(nativeModules, nativeInjections, crashEvidence)
+            }
+            val processRows = remember(nativeInjections) {
+                nativeInjections
+                    .groupBy { it.pid to it.process }
+                    .map { (_, rows) ->
+                        val first = rows.first()
+                        val state = aggregateMonitorState(rows.map { it.state })
+                        NativeProcessEntry(
+                            pid = first.pid,
+                            process = nativeProcessDisplayName(
+                                first.process.ifEmpty { first.target }
+                            ),
+                            abi = first.abi,
+                            modules = rows.map { it.module }.distinct(),
+                            state = state,
+                        )
                     }
-                    val processRows = remember(nativeInjections) {
-                        nativeInjections
-                            .groupBy { it.pid to it.process }
-                            .map { (_, rows) ->
-                                val first = rows.first()
-                                val state = aggregateMonitorState(rows.map { it.state })
-                                NativeProcessEntry(
-                                    pid = first.pid,
-                                    process = nativeProcessDisplayName(
-                                        first.process.ifEmpty { first.target }
-                                    ),
-                                    abi = first.abi,
-                                    modules = rows.map { it.module }.distinct(),
-                                    state = state,
-                                )
-                            }
-                            .sortedWith(compareBy<NativeProcessEntry> { it.process }.thenBy { it.pid })
-                    }
+                    .sortedWith(compareBy<NativeProcessEntry> { it.process }.thenBy { it.pid })
+            }
 
-                    if (nativeMonitorMode == NativeMonitorMode.Module && moduleRows.isEmpty()) {
-                        EmptyMonitorGroup(stringResource(R.string.yukizygisk_no_native_modules))
-                    } else if (nativeMonitorMode == NativeMonitorMode.Process && processRows.isEmpty()) {
-                        EmptyMonitorGroup(stringResource(R.string.yukizygisk_no_native_injections))
-                    } else if (nativeMonitorMode == NativeMonitorMode.Module) {
-                        moduleRows.forEachIndexed { index, module ->
-                            if (index > 0) MonitorDivider()
-                            val dialog = nativeModuleDialog(module)
-                            NativeModuleMonitorRow(module) {
-                                monitorDialog = dialog
-                            }
-                        }
-                    } else {
-                        processRows.forEachIndexed { index, process ->
-                            if (index > 0) MonitorDivider()
-                            val dialog = nativeProcessDialog(process)
-                            NativeProcessMonitorRow(process) {
-                                monitorDialog = dialog
-                            }
-                        }
+            if (nativeMonitorMode == NativeMonitorMode.Module && moduleRows.isEmpty()) {
+                EmptyMonitorGroup(stringResource(R.string.yukizygisk_no_native_modules))
+            } else if (nativeMonitorMode == NativeMonitorMode.Process && processRows.isEmpty()) {
+                EmptyMonitorGroup(stringResource(R.string.yukizygisk_no_native_injections))
+            } else if (nativeMonitorMode == NativeMonitorMode.Module) {
+                moduleRows.forEachIndexed { index, module ->
+                    if (index > 0) MonitorDivider()
+                    val dialog = nativeModuleDialog(module)
+                    NativeModuleMonitorRow(module) {
+                        monitorDialog = dialog
+                    }
+                }
+            } else {
+                processRows.forEachIndexed { index, process ->
+                    if (index > 0) MonitorDivider()
+                    val dialog = nativeProcessDialog(process)
+                    NativeProcessMonitorRow(process) {
+                        monitorDialog = dialog
                     }
                 }
             }
-
-            if (section == InjectionSection.Configuration) {
-                InjectionConfiguration(config, configLoaded && !saving, ::save)
-            }
-
-            if (section == InjectionSection.Diagnostics) {
-                InjectionDiagnostics(config, configLoaded && !saving, ::save)
-            }
         }
-        if (scrollable) {
-            SnackbarHost(snackBarHost.hostState, Modifier.align(Alignment.BottomCenter))
-        }
+
+        InjectionConfiguration(config, configLoaded && !saving, ::save)
+        InjectionDiagnostics(config, configLoaded && !saving, ::save)
     }
 }
 
@@ -1253,9 +1255,42 @@ private fun DenylistModeSelector(
 @Preview(name = "YukiZygisk · landscape", widthDp = 800, heightDp = 360)
 @Composable
 private fun YukiZygiskMonitorPreview() {
+    YukiZygiskPagePreview(enabled = true)
+}
+
+@Preview(name = "YukiZygisk · disabled", widthDp = 360, heightDp = 740)
+@Preview(name = "YukiZygisk · disabled dark", widthDp = 360, heightDp = 740, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(name = "YukiZygisk · disabled large text", widthDp = 320, heightDp = 900, fontScale = 2f)
+@Composable
+private fun YukiZygiskDisabledPreview() {
+    YukiZygiskPagePreview(enabled = false)
+}
+
+@Preview(name = "YukiZygisk · enabling", widthDp = 360, heightDp = 740)
+@Composable
+private fun YukiZygiskEnablingPreview() {
+    YukiZygiskPagePreview(enabled = true, switching = true)
+}
+
+@Composable
+private fun YukiZygiskPagePreview(enabled: Boolean, switching: Boolean = false) {
     UtilityPreviewTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
-            Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
+            YukiZygiskPageLayout(
+                enabled = enabled,
+                switching = switching,
+                masterSwitch = {
+                    SwitchSettingItem(
+                        icon = Icons.Filled.Extension,
+                        title = stringResource(R.string.settings_yukizygisk),
+                        summary = stringResource(R.string.settings_yukizygisk_summary),
+                        checked = enabled,
+                        enabled = !switching,
+                        groupPosition = MoreSettingsItemPosition.Only,
+                        onChange = {},
+                    )
+                },
+            ) {
                 MonitorCard(title = stringResource(R.string.yukizygisk_injected_zygotes)) {
                     ZygoteMonitorRow(ZygoteMonitorEntry(1854, "zygote", "arm64-v8a", MonitorState.Injected)) {}
                     MonitorDivider()
@@ -1279,6 +1314,8 @@ private fun YukiZygiskMonitorPreview() {
                         NativeModuleMonitorEntry("LSPosed", "zygisk_lsposed", emptyList(), MonitorState.Injected, emptyList()),
                     ) {}
                 }
+                InjectionConfiguration(YzConfig(), enabled = true, onConfigChange = {})
+                InjectionDiagnostics(YzConfig(), enabled = true, onConfigChange = {})
             }
         }
     }

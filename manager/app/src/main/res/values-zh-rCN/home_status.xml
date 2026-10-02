@@ -3,4 +3,8 @@
     <string name="home_status_load_failed">状态加载失败</string>
     <string name="home_status_protocol_mismatch">协议不匹配</string>
     <string name="home_status_loading">正在加载…</string>
+    <string name="home_status_daemon_role">守护进程</string>
+    <string name="home_status_kernel_role">内核</string>
+    <string name="home_status_build">构建 %1$d</string>
+    <string name="home_status_build_api">构建 %1$d · UAPI %2$d</string>
 </resources>

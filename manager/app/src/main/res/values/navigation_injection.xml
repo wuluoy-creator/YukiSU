@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="injection_section_overview" tools:ignore="MissingTranslation">Overview</string>
-    <string name="injection_section_configuration" tools:ignore="MissingTranslation">Configuration</string>
-    <string name="injection_section_diagnostics" tools:ignore="MissingTranslation">Diagnostics</string>
     <string name="injection_denylist_title" tools:ignore="MissingTranslation">Denylist mode</string>
 </resources>

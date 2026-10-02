@@ -16,5 +16,5 @@
     <string name="settings_category_security">安全</string>
     <string name="settings_category_webui">WebUI 调试</string>
     <string name="settings_authorization_defaults">授权默认策略</string>
-    <string name="settings_yukizygisk_page_summary">注入监控、配置与诊断</string>
+    <string name="settings_yukizygisk_page_summary">启用开关、注入监控与日志设置</string>
 </resources>
