@@ -229,9 +229,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">Réparation/installation LKM</string>
-    <string name="configuration">Configurer</string>
-    <string name="app_settings">Paramètres de l\'application</string>
-    <string name="tools">Outils</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Application introuvable</string>
     <string name="selinux_enabled_toast">SELinux activé</string>
@@ -243,7 +240,6 @@
     <string name="hide_bl_enabled_toast">Masquage de l\'état de déverrouillage activé, redémarrez pour appliquer</string>
     <string name="hide_bl_disabled_toast">Masquage de l\'état de déverrouillage désactivé</string>
     <string name="hide_bl_change_failed">Échec de la modification du paramètre de masquage de l\'état de déverrouillage</string>
-    <string name="advanced_settings">Paramètres avancés</string>
     <string name="appearance_settings">Choisir les boutons à afficher</string>
     <string name="back">Reviens</string>
     <string name="background_set_success">Fond d\'écran défini avec succès</string>
@@ -328,7 +324,6 @@
     <string name="author">Auteur</string>
     <string name="description">Description</string>
     <string name="log_viewer_title">Visionneuse de journaux</string>
-    <string name="log_viewer_back">Retour</string>
     <string name="log_viewer_search">Rechercher</string>
     <string name="log_viewer_clear_logs">Effacer les journaux</string>
     <string name="log_viewer_clear_logs_confirm">Voulez-vous vraiment effacer le fichier journal sélectionné ? Cette action est irréversible</string>
@@ -345,8 +340,6 @@
     <string name="log_viewer_raw_log">Journal brut</string>
     <string name="log_viewer_search_placeholder">Rechercher par UID, commande ou détails…</string>
     <string name="log_viewer_clear_search">Effacer la recherche</string>
-    <string name="log_viewer_view_logs">Afficher les journaux d\'utilisation</string>
-    <string name="log_viewer_view_logs_summary">Afficher les journaux d\'accès superutilisateur de KernelSU</string>
     <string name="log_viewer_exclude_subtypes">Exclure les sous-types</string>
     <string name="log_viewer_exclude_current_app">Application actuelle</string>
     <string name="log_viewer_exclude_viewer_refresh">Auto-actualisation de la visionneuse de journaux</string>
@@ -364,7 +357,6 @@
     <string name="log_viewer_all_logs_loaded">Tous les journaux affichés</string>
     <string name="incompatible_kernel_msg">Le gestionnaire actuel est incompatible avec ce noyau ! Veuillez mettre à niveau le noyau vers la version %2$d ou supérieure (actuellement %1$d)</string>
     <string name="umount_path_manager">Gestion des chemins de démontage</string>
-    <string name="umount_path_manager_summary">Gérer les chemins de démontage du noyau</string>
     <string name="umount_path_restart_notice">Un redémarrage est nécessaire pour que les modifications prennent effet. Le système appliquera la nouvelle configuration au prochain démarrage</string>
     <string name="add_umount_path">Ajouter un chemin de démontage</string>
     <string name="mount_path">Chemin de montage</string>
@@ -618,7 +610,6 @@
     <string name="predictive_back_gesture">Geste de retour prédictif</string>
     <string name="predictive_back_gesture_summary">Prévisualiser la page précédente pendant le geste de retour. Désactivé par défaut.</string>
     <string name="feature_control">Contrôle des fonctions</string>
-    <string name="feature_control_summary">Gérer les fonctions prises en charge par le noyau actuel.</string>
     <string name="kernelsu_features">Fonctions KernelSU</string>
     <string name="yukisu_features">Fonctions YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk est activé. Ce module a été désactivé pour éviter les conflits.</string>

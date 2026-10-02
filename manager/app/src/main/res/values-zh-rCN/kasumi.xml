@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="kasumi_absolute_path">请输入绝对路径</string>
-    <string name="kasumi_advanced">高级</string>
     <string name="kasumi_apply_failed">已保存的配置尚未应用到内核</string>
     <string name="kasumi_backend_enable_desc">允许挂载规划器使用此后端</string>
     <string name="kasumi_check_conflicts">检查挂载冲突</string>
@@ -16,7 +15,6 @@
     <string name="kasumi_fs_type_ext4">EXT4 镜像</string>
     <string name="kasumi_fs_type_title">存储文件系统</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs 分区（内存）</string>
-    <string name="kasumi_general">常规</string>
     <string name="kasumi_global_override">全局覆盖：%1$s</string>
     <string name="kasumi_hide_aggressive">激进</string>
     <string name="kasumi_hide_normal">普通</string>
@@ -125,10 +123,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">未挂载</string>
     <string name="kasumi_system_info">系统信息</string>
-    <string name="kasumi_tab_logs">日志</string>
-    <string name="kasumi_tab_rules">规则</string>
-    <string name="kasumi_tab_settings">设置</string>
-    <string name="kasumi_tab_status">状态</string>
     <string name="kasumi_tempdir">临时挂载基点</string>
     <string name="kasumi_tempdir_desc">临时挂载的基础路径（留空则自动选择）</string>
     <string name="kasumi_title">Kasumi 配置</string>

@@ -64,6 +64,8 @@ import com.anatdx.yukisu.ui.viewmodel.PluginRepositoryViewModel
 import com.anatdx.yukisu.ui.viewmodel.PluginViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
+import com.ramcosta.composedestinations.generated.destinations.ExtensionRepositoryScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.PluginRepositoryScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.PluginRepositorySourcesScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.Dispatchers
@@ -78,6 +80,16 @@ import java.util.Date
 @Destination<RootGraph>
 @Composable
 fun PluginRepositoryScreen(navigator: DestinationsNavigator) {
+    PluginRepositoryPage(navigator)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun PluginRepositoryPage(
+    navigator: DestinationsNavigator,
+    workspace: Boolean = false,
+    sectionNavigation: @Composable (Boolean) -> Unit = {},
+) {
     val viewModel = viewModel<PluginRepositoryViewModel>()
     val pluginViewModel = viewModel<PluginViewModel>()
     val sources by viewModel.sources.collectAsState()
@@ -95,6 +107,9 @@ fun PluginRepositoryScreen(navigator: DestinationsNavigator) {
     var downloadProgress by remember { mutableStateOf(DownloadProgress()) }
     var downloadHandle by remember { mutableStateOf<DownloadHandle?>(null) }
     var installingId by remember { mutableStateOf<String?>(null) }
+
+    val operationBusy = installingId != null || downloadingPlugin != null
+    WorkspaceOperationGuard(operationBusy, if (workspace) ExtensionRepositoryScreenDestination.route else PluginRepositoryScreenDestination.route)
 
     val installed = remember(pluginViewModel.plugins) {
         pluginViewModel.plugins.associateBy(PluginInfo::id)
@@ -178,22 +193,24 @@ fun PluginRepositoryScreen(navigator: DestinationsNavigator) {
 
     Scaffold(
         topBar = {
+            Column {
             SearchAppBar(
                 title = {
                     Text(
-                        stringResource(R.string.plugin_repositories),
+                        stringResource(if (workspace) R.string.nav_repository else R.string.plugin_repositories),
                         fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
                     )
                 },
                 searchText = viewModel.search,
                 onSearchTextChange = { viewModel.search = it },
                 onClearClick = { viewModel.search = "" },
-                onBackClick = navigator::popBackStack,
+                onBackClick = { if (!operationBusy) navigator.popBackStack() },
                 dropdownContent = {
-                    IconButton(onClick = viewModel::refreshAll) {
+                    IconButton(enabled = !operationBusy, onClick = viewModel::refreshAll) {
                         YukiIcon(Icons.Outlined.Refresh, stringResource(R.string.refresh))
                     }
                     IconButton(
+                        enabled = !operationBusy,
                         onClick = { navigator.navigate(PluginRepositorySourcesScreenDestination) }
                     ) {
                         YukiIcon(Icons.Outlined.Storage, stringResource(R.string.repository_sources))
@@ -201,6 +218,8 @@ fun PluginRepositoryScreen(navigator: DestinationsNavigator) {
                 },
                 scrollBehavior = scrollBehavior,
             )
+                sectionNavigation(!operationBusy)
+            }
         },
         snackbarHost = { SnackbarHost(snackbarHost.hostState) },
         contentWindowInsets = WindowInsets.safeDrawing.only(

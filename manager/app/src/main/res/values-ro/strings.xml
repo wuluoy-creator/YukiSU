@@ -229,9 +229,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">Reparare/instalare LKM</string>
-    <string name="configuration">Configurează</string>
-    <string name="app_settings">Setările aplicației</string>
-    <string name="tools">Instrumente</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Aplicație negăsită</string>
     <string name="selinux_enabled_toast">SELinux activat</string>
@@ -243,7 +240,6 @@
     <string name="hide_bl_enabled_toast">Ascunderea stării de deblocare activată, reporniți pentru a aplica</string>
     <string name="hide_bl_disabled_toast">Ascunderea stării de deblocare dezactivată</string>
     <string name="hide_bl_change_failed">Schimbarea setării de ascundere a stării de deblocare a eșuat</string>
-    <string name="advanced_settings">Setări avansate</string>
     <string name="appearance_settings">Personalizează bara de instrumente</string>
     <string name="back">Înapoi</string>
     <string name="background_set_success">Fundal setat cu succes</string>
@@ -328,7 +324,6 @@
     <string name="author">Autor</string>
     <string name="description">Descriere</string>
     <string name="log_viewer_title">Vizualizator de jurnale</string>
-    <string name="log_viewer_back">Înapoi</string>
     <string name="log_viewer_search">Caută</string>
     <string name="log_viewer_clear_logs">Șterge jurnalele</string>
     <string name="log_viewer_clear_logs_confirm">Sigur doriți să ștergeți fișierul jurnal selectat? Această acțiune nu poate fi anulată</string>
@@ -345,8 +340,6 @@
     <string name="log_viewer_raw_log">Jurnal brut</string>
     <string name="log_viewer_search_placeholder">Caută după UID, comandă sau detalii…</string>
     <string name="log_viewer_clear_search">Șterge căutarea</string>
-    <string name="log_viewer_view_logs">Vizualizează jurnalele de utilizare</string>
-    <string name="log_viewer_view_logs_summary">Vizualizează jurnalele de acces superutilizator ale KernelSU</string>
     <string name="log_viewer_exclude_subtypes">Exclude subtipurile</string>
     <string name="log_viewer_exclude_current_app">Aplicația curentă</string>
     <string name="log_viewer_exclude_viewer_refresh">Autoreîmprospătarea vizualizatorului de jurnale</string>
@@ -364,7 +357,6 @@
     <string name="log_viewer_all_logs_loaded">Toate jurnalele afișate</string>
     <string name="incompatible_kernel_msg">Administratorul curent este incompatibil cu acest kernel! Vă rugăm să faceți upgrade kernelului la versiunea %2$d sau mai nouă (curent %1$d)</string>
     <string name="umount_path_manager">Gestionarea căilor umount</string>
-    <string name="umount_path_manager_summary">Gestionează căile de demontare ale kernelului</string>
     <string name="umount_path_restart_notice">Este necesară o repornire pentru ca modificările să aibă efect. Sistemul va aplica noua configurație la următoarea pornire</string>
     <string name="add_umount_path">Adaugă cale umount</string>
     <string name="mount_path">Cale de montare</string>
@@ -618,7 +610,6 @@
     <string name="predictive_back_gesture">Gest de revenire predictiv</string>
     <string name="predictive_back_gesture_summary">Previzualizează pagina anterioară în timpul gestului de revenire. Dezactivat implicit.</string>
     <string name="feature_control">Controlul funcțiilor</string>
-    <string name="feature_control_summary">Gestionează funcțiile acceptate de nucleul actual.</string>
     <string name="kernelsu_features">Funcții KernelSU</string>
     <string name="yukisu_features">Funcții YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk este activat. Acest modul a fost dezactivat pentru a preveni conflictele.</string>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_absolute_path">Введите абсолютный путь</string>
-    <string name="kasumi_advanced">Дополнительно</string>
     <string name="kasumi_apply_failed">Сохранённая конфигурация ещё не применена к ядру</string>
     <string name="kasumi_backend_enable_desc">Разрешить планировщику монтирования использовать этот механизм</string>
     <string name="kasumi_check_conflicts">Проверить конфликты монтирования</string>
@@ -16,7 +15,6 @@
     <string name="kasumi_fs_type_ext4">Образ EXT4</string>
     <string name="kasumi_fs_type_title">Файловая система хранилища</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (ОЗУ)</string>
-    <string name="kasumi_general">Общие</string>
     <string name="kasumi_global_override">Глобальное переопределение: %1$s</string>
     <string name="kasumi_hide_aggressive">Агрессивный</string>
     <string name="kasumi_hide_normal">Обычный</string>
@@ -131,10 +129,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Не смонтировано</string>
     <string name="kasumi_system_info">Сведения о системе</string>
-    <string name="kasumi_tab_logs">Журналы</string>
-    <string name="kasumi_tab_rules">Правила</string>
-    <string name="kasumi_tab_settings">Настройки</string>
-    <string name="kasumi_tab_status">Статус</string>
     <string name="kasumi_tempdir">Временная точка монтирования</string>
     <string name="kasumi_tempdir_desc">Базовый путь для временных монтирований (оставьте пустым для авто)</string>
     <string name="kasumi_title">Конфигурация Kasumi</string>

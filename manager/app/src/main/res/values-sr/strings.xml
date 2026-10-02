@@ -227,9 +227,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM поправка/installation</string>
-    <string name="configuration">Конфигуришите</string>
-    <string name="app_settings">Подешавања апликације</string>
-    <string name="tools">Алати</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Апликација није пронађена</string>
     <string name="selinux_enabled_toast">SELinux Омогућено</string>
@@ -241,7 +238,6 @@
     <string name="hide_bl_enabled_toast">Сакривање стања откључавања је омогућено; поново покрените уређај да бисте применили промену</string>
     <string name="hide_bl_disabled_toast">Сакривање стања откључавања је онемогућено</string>
     <string name="hide_bl_change_failed">Промена статуса откључавања Хиде подешавања није успела</string>
-    <string name="advanced_settings">Напредна подешавања</string>
     <string name="appearance_settings">Прилагодите траку са алаткама</string>
     <string name="back">Повратак</string>
     <string name="background_set_success">Позадина је успешно постављена</string>
@@ -326,7 +322,6 @@
     <string name="author">Аутор</string>
     <string name="description">Опис</string>
     <string name="log_viewer_title">Прегледач дневника</string>
-    <string name="log_viewer_back">Назад</string>
     <string name="log_viewer_search">Тражи</string>
     <string name="log_viewer_clear_logs">Обриши евиденцију</string>
     <string name="log_viewer_clear_logs_confirm">Да ли сте сигурни да желите да обришете изабрану датотеку евиденције? Ова радња се не може опозвати</string>
@@ -343,8 +338,6 @@
     <string name="log_viewer_raw_log">Необрађена евиденција</string>
     <string name="log_viewer_search_placeholder">Тражи по UID, команди или детаљима…</string>
     <string name="log_viewer_clear_search">Обриши претрагу</string>
-    <string name="log_viewer_view_logs">Погледај евиденцију коришћења</string>
-    <string name="log_viewer_view_logs_summary">Погледај KernelSU евиденције приступа суперкорисника</string>
     <string name="log_viewer_exclude_subtypes">Искључи подтипове</string>
     <string name="log_viewer_exclude_current_app">Тренутна апликација</string>
     <string name="log_viewer_exclude_viewer_refresh">Аутоматско освежавање прегледача евиденције</string>
@@ -362,7 +355,6 @@
     <string name="log_viewer_all_logs_loaded">Сви дневници су приказани</string>
     <string name="incompatible_kernel_msg">Тренутни менаџер је некомпатибилан са овим кернелом! Молимо надоградите кернел на верзију %2$d или новију (тренутно %1$d)</string>
     <string name="umount_path_manager">Управљање путањама за демонтирање</string>
-    <string name="umount_path_manager_summary">Управљајте путањама за демонтирање на нивоу језгра</string>
     <string name="umount_path_restart_notice">Потребно је поновно покретање да би промене ступиле на снагу. Систем ће применити нову конфигурацију при следећем покретању</string>
     <string name="add_umount_path">Додај Умоунт путању</string>
     <string name="mount_path">Путања монтирања</string>
@@ -616,7 +608,6 @@
     <string name="predictive_back_gesture">Предиктивна геста за повратак</string>
     <string name="predictive_back_gesture_summary">Приказује претходну страницу пратећи гесту повратка. Подразумевано је искључено</string>
     <string name="feature_control">Управљање функцијама</string>
-    <string name="feature_control_summary">Управља функцијама које подржава тренутно језгро.</string>
     <string name="kernelsu_features">KernelSU функције</string>
     <string name="yukisu_features">YukiSU функције</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk је омогућен. Овај модул је онемогућен ради спречавања сукоба</string>

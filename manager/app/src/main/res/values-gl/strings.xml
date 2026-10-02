@@ -227,9 +227,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">Reparación/instalación de LKM</string>
-    <string name="configuration">Configurar</string>
-    <string name="app_settings">Axustes da aplicación</string>
-    <string name="tools">Ferramentas</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Non se atopou a aplicación</string>
     <string name="selinux_enabled_toast">SELinux activado</string>
@@ -241,7 +238,6 @@
     <string name="hide_bl_enabled_toast">Ocultación do estado de desbloqueo activada, reinicia para aplicar</string>
     <string name="hide_bl_disabled_toast">Ocultación do estado de desbloqueo desactivada</string>
     <string name="hide_bl_change_failed">Erro ao cambiar o axuste de ocultación do estado de desbloqueo</string>
-    <string name="advanced_settings">Axustes avanzados</string>
     <string name="appearance_settings">Personaliza a barra de ferramentas.</string>
     <string name="back">Volver</string>
     <string name="background_set_success">Fondo definido correctamente</string>
@@ -326,7 +322,6 @@
     <string name="author">Autor</string>
     <string name="description">Descrición</string>
     <string name="log_viewer_title">Visor de rexistros</string>
-    <string name="log_viewer_back">Volver</string>
     <string name="log_viewer_search">Buscar</string>
     <string name="log_viewer_clear_logs">Limpar rexistros</string>
     <string name="log_viewer_clear_logs_confirm">Seguro que queres limpar o ficheiro de rexistro seleccionado? Esta acción non se pode desfacer</string>
@@ -343,8 +338,6 @@
     <string name="log_viewer_raw_log">Rexistro en bruto</string>
     <string name="log_viewer_search_placeholder">Buscar por UID, comando ou detalles…</string>
     <string name="log_viewer_clear_search">Limpar a busca</string>
-    <string name="log_viewer_view_logs">Ver os rexistros de uso</string>
-    <string name="log_viewer_view_logs_summary">Ver os rexistros de acceso de superusuario de KernelSU</string>
     <string name="log_viewer_exclude_subtypes">Excluír subtipos</string>
     <string name="log_viewer_exclude_current_app">Aplicación actual</string>
     <string name="log_viewer_exclude_viewer_refresh">Autoactualización do visor de rexistros</string>
@@ -362,7 +355,6 @@
     <string name="log_viewer_all_logs_loaded">Amosáronse todos os rexistros</string>
     <string name="incompatible_kernel_msg">O xestor actual é incompatible con este kernel! Actualiza o kernel á versión %2$d ou superior (actualmente %1$d)</string>
     <string name="umount_path_manager">Xestión das rutas de umount</string>
-    <string name="umount_path_manager_summary">Xestionar as rutas de desmontaxe do kernel</string>
     <string name="umount_path_restart_notice">É necesario reiniciar para que os cambios teñan efecto. O sistema aplicará a nova configuración no seguinte arranque</string>
     <string name="add_umount_path">Engadir ruta de umount</string>
     <string name="mount_path">Ruta de montaxe</string>
@@ -616,7 +608,6 @@
     <string name="predictive_back_gesture">Xesto de retroceso preditivo</string>
     <string name="predictive_back_gesture_summary">Previsualizar a páxina anterior durante o xesto de retroceso. Desactivado de xeito predeterminado.</string>
     <string name="feature_control">Control de funcións</string>
-    <string name="feature_control_summary">Xestionar as funcións compatibles co núcleo actual.</string>
     <string name="kernelsu_features">Funcións de KernelSU</string>
     <string name="yukisu_features">Funcións de YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk está activado. Este módulo desactivouse para evitar conflitos.</string>

@@ -229,9 +229,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">إصلاح/تثبيت LKM</string>
-    <string name="configuration">تعيين</string>
-    <string name="app_settings">إعدادات التطبيق </string>
-    <string name="tools">ادوات</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">التطبيق غير موجود</string>
     <string name="selinux_enabled_toast">تم تمكين SELinux</string>
@@ -243,7 +240,6 @@
     <string name="hide_bl_enabled_toast">تم تفعيل إخفاء حالة إلغاء القفل، أعد التشغيل للتطبيق</string>
     <string name="hide_bl_disabled_toast">تم تعطيل إخفاء حالة إلغاء القفل</string>
     <string name="hide_bl_change_failed">فشل تغيير إعداد إخفاء حالة إلغاء القفل</string>
-    <string name="advanced_settings">إعدادات متقدمة</string>
     <string name="appearance_settings">تخصيص شريط الأدوات</string>
     <string name="back">عد مرة أخرى</string>
     <string name="background_set_success">تم تعيين الخلفية بنجاح</string>
@@ -328,7 +324,6 @@
     <string name="author">المؤلف</string>
     <string name="description">الوصف</string>
     <string name="log_viewer_title">عارض السجلات</string>
-    <string name="log_viewer_back">رجوع</string>
     <string name="log_viewer_search">بحث</string>
     <string name="log_viewer_clear_logs">مسح السجلات</string>
     <string name="log_viewer_clear_logs_confirm">هل أنت متأكد من أنك تريد مسح ملف السجل المحدد؟ لا يمكن التراجع عن هذا الإجراء</string>
@@ -345,8 +340,6 @@
     <string name="log_viewer_raw_log">سجل خام</string>
     <string name="log_viewer_search_placeholder">البحث حسب UID أو الأمر أو التفاصيل…</string>
     <string name="log_viewer_clear_search">مسح البحث</string>
-    <string name="log_viewer_view_logs">عرض سجلات الاستخدام</string>
-    <string name="log_viewer_view_logs_summary">عرض سجلات وصول المستخدم الخارق لـ KernelSU</string>
     <string name="log_viewer_exclude_subtypes">استبعاد الأنواع الفرعية</string>
     <string name="log_viewer_exclude_current_app">التطبيق الحالي</string>
     <string name="log_viewer_exclude_viewer_refresh">التحديث الذاتي لعارض السجلات</string>
@@ -364,7 +357,6 @@
     <string name="log_viewer_all_logs_loaded">تم عرض جميع السجلات</string>
     <string name="incompatible_kernel_msg">المدير الحالي غير متوافق مع هذه النواة! يرجى ترقية النواة إلى الإصدار %2$d أو أعلى (الحالي %1$d)</string>
     <string name="umount_path_manager">إدارة مسارات umount</string>
-    <string name="umount_path_manager_summary">إدارة مسارات إلغاء تركيب النواة</string>
     <string name="umount_path_restart_notice">يلزم إعادة التشغيل لتصبح التغييرات سارية. سيطبّق النظام الإعداد الجديد عند الإقلاع التالي</string>
     <string name="add_umount_path">إضافة مسار umount</string>
     <string name="mount_path">مسار التركيب</string>
@@ -618,7 +610,6 @@
     <string name="predictive_back_gesture">إيماءة الرجوع التنبؤية</string>
     <string name="predictive_back_gesture_summary">معاينة الصفحة السابقة مع حركة إيماءة الرجوع. معطّل افتراضيًا</string>
     <string name="feature_control">التحكم في الميزات</string>
-    <string name="feature_control_summary">إدارة الميزات التي تدعمها النواة الحالية.</string>
     <string name="kernelsu_features">ميزات KernelSU</string>
     <string name="yukisu_features">ميزات YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk مفعّل. عُطّلت هذه الوحدة لمنع التعارض</string>

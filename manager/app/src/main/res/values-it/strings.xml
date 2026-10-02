@@ -229,9 +229,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">Riparazione/installazione LKM</string>
-    <string name="configuration">Configura</string>
-    <string name="app_settings">Impostazioni dell\'applicazione</string>
-    <string name="tools">Strumenti</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Applicazione non trovata</string>
     <string name="selinux_enabled_toast">SELinux abilitato</string>
@@ -243,7 +240,6 @@
     <string name="hide_bl_enabled_toast">Occultamento dello stato di sblocco abilitato, riavvia per applicare</string>
     <string name="hide_bl_disabled_toast">Occultamento dello stato di sblocco disabilitato</string>
     <string name="hide_bl_change_failed">Impossibile modificare l\'impostazione di occultamento dello stato di sblocco</string>
-    <string name="advanced_settings">Impostazioni avanzate</string>
     <string name="appearance_settings">Personalizza la barra degli strumenti</string>
     <string name="back">Indietro</string>
     <string name="background_set_success">Sfondo impostato correttamente</string>
@@ -328,7 +324,6 @@
     <string name="author">Autore</string>
     <string name="description">Descrizione</string>
     <string name="log_viewer_title">Visualizzatore registri</string>
-    <string name="log_viewer_back">Indietro</string>
     <string name="log_viewer_search">Cerca</string>
     <string name="log_viewer_clear_logs">Cancella registri</string>
     <string name="log_viewer_clear_logs_confirm">Vuoi davvero cancellare il file di registro selezionato? Questa azione non può essere annullata</string>
@@ -345,8 +340,6 @@
     <string name="log_viewer_raw_log">Registro grezzo</string>
     <string name="log_viewer_search_placeholder">Cerca per UID, comando o dettagli…</string>
     <string name="log_viewer_clear_search">Cancella ricerca</string>
-    <string name="log_viewer_view_logs">Visualizza registri di utilizzo</string>
-    <string name="log_viewer_view_logs_summary">Visualizza i registri di accesso del superutente di KernelSU</string>
     <string name="log_viewer_exclude_subtypes">Escludi sottotipi</string>
     <string name="log_viewer_exclude_current_app">App corrente</string>
     <string name="log_viewer_exclude_viewer_refresh">Aggiornamento automatico del visualizzatore registri</string>
@@ -364,7 +357,6 @@
     <string name="log_viewer_all_logs_loaded">Tutti i registri visualizzati</string>
     <string name="incompatible_kernel_msg">Il gestore attuale non è compatibile con questo kernel! Aggiorna il kernel alla versione %2$d o superiore (attualmente %1$d)</string>
     <string name="umount_path_manager">Gestione percorsi di umount</string>
-    <string name="umount_path_manager_summary">Gestisci i percorsi di smontaggio del kernel</string>
     <string name="umount_path_restart_notice">È necessario un riavvio affinché le modifiche abbiano effetto. Il sistema applicherà la nuova configurazione al prossimo avvio</string>
     <string name="add_umount_path">Aggiungi percorso di umount</string>
     <string name="mount_path">Percorso di montaggio</string>
@@ -618,7 +610,6 @@
     <string name="predictive_back_gesture">Gesto Indietro predittivo</string>
     <string name="predictive_back_gesture_summary">Mostra un’anteprima della pagina precedente durante il gesto Indietro. Disattivato per impostazione predefinita.</string>
     <string name="feature_control">Controllo delle funzioni</string>
-    <string name="feature_control_summary">Gestisci le funzioni supportate dal kernel attuale.</string>
     <string name="kernelsu_features">Funzioni di KernelSU</string>
     <string name="yukisu_features">Funzioni di YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk è attivato. Questo modulo è stato disattivato per evitare conflitti.</string>

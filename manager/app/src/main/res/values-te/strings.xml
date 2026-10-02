@@ -227,9 +227,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM మరమ్మతు/ఇన్‌స్టాలేషన్</string>
-    <string name="configuration">కాన్ఫిగర్ చేయండి</string>
-    <string name="app_settings">అప్లికేషన్ సెట్టింగ్‌లు</string>
-    <string name="tools">సాధనాలు</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">అప్లికేషన్ కనుగొనబడలేదు</string>
     <string name="selinux_enabled_toast">SELinux ప్రారంభించబడింది</string>
@@ -241,7 +238,6 @@
     <string name="hide_bl_enabled_toast">అన్‌లాక్ స్థితి దాచడం ప్రారంభించబడింది, వర్తింపజేయడానికి రీబూట్ చేయండి</string>
     <string name="hide_bl_disabled_toast">అన్‌లాక్ స్థితి దాచడం నిలిపివేయబడింది</string>
     <string name="hide_bl_change_failed">అన్‌లాక్ స్థితి దాచడం సెట్టింగ్‌ను మార్చడం విఫలమైంది</string>
-    <string name="advanced_settings">అధునాతన సెట్టింగ్‌లు</string>
     <string name="appearance_settings">టూల్‌బార్‌ను అనుకూలీకరించండి</string>
     <string name="back">వెనుకకు</string>
     <string name="background_set_success">నేపథ్యం విజయవంతంగా సెట్ చేయబడింది</string>
@@ -326,7 +322,6 @@
     <string name="author">రచయిత</string>
     <string name="description">వివరణ</string>
     <string name="log_viewer_title">లాగ్ వ్యూయర్</string>
-    <string name="log_viewer_back">వెనుకకు</string>
     <string name="log_viewer_search">వెతకండి</string>
     <string name="log_viewer_clear_logs">లాగ్‌లను క్లియర్ చేయండి</string>
     <string name="log_viewer_clear_logs_confirm">మీరు ఖచ్చితంగా ఎంచుకున్న లాగ్ ఫైల్‌ను క్లియర్ చేయాలనుకుంటున్నారా? ఈ చర్యను రద్దు చేయడం సాధ్యం కాదు</string>
@@ -343,8 +338,6 @@
     <string name="log_viewer_raw_log">ముడి లాగ్</string>
     <string name="log_viewer_search_placeholder">UID, కమాండ్, లేదా వివరాల ప్రకారం వెతకండి…</string>
     <string name="log_viewer_clear_search">శోధనను క్లియర్ చేయండి</string>
-    <string name="log_viewer_view_logs">వినియోగ లాగ్‌లను చూడండి</string>
-    <string name="log_viewer_view_logs_summary">KernelSU సూపర్‌యూజర్ యాక్సెస్ లాగ్‌లను చూడండి</string>
     <string name="log_viewer_exclude_subtypes">ఉప-రకాలను మినహాయించండి</string>
     <string name="log_viewer_exclude_current_app">ప్రస్తుత యాప్</string>
     <string name="log_viewer_exclude_viewer_refresh">లాగ్ వ్యూయర్ స్వీయ-రిఫ్రెష్</string>
@@ -362,7 +355,6 @@
     <string name="log_viewer_all_logs_loaded">అన్ని లాగ్‌లు ప్రదర్శించబడ్డాయి</string>
     <string name="incompatible_kernel_msg">ప్రస్తుత మేనేజర్ ఈ కెర్నల్‌తో అనుకూలంగా లేదు! దయచేసి కెర్నల్‌ను వెర్షన్ %2$d లేదా అంతకంటే ఎక్కువకు అప్‌గ్రేడ్ చేయండి (ప్రస్తుతం %1$d)</string>
     <string name="umount_path_manager">Umount పాత్ నిర్వహణ</string>
-    <string name="umount_path_manager_summary">కెర్నల్ అన్‌మౌంట్ పాత్‌లను నిర్వహించండి</string>
     <string name="umount_path_restart_notice">మార్పులు అమలులోకి రావడానికి రీబూట్ అవసరం. సిస్టమ్ తదుపరి బూట్‌లో కొత్త కాన్ఫిగరేషన్‌ను వర్తింపజేస్తుంది</string>
     <string name="add_umount_path">Umount పాత్ జోడించండి</string>
     <string name="mount_path">మౌంట్ పాత్</string>
@@ -634,7 +626,6 @@
     <string name="predictive_back_gesture">ఊహాత్మక వెనుకకు వెళ్లే సంజ్ఞ</string>
     <string name="predictive_back_gesture_summary">వెనుకకు వెళ్లే సంజ్ఞతో మునుపటి పేజీ ప్రివ్యూ చూపండి. డిఫాల్ట్‌గా ఆఫ్</string>
     <string name="feature_control">ఫీచర్ నియంత్రణ</string>
-    <string name="feature_control_summary">ప్రస్తుత కెర్నల్ మద్దతిచ్చే ఫీచర్‌లను నిర్వహించండి.</string>
     <string name="kernelsu_features">KernelSU ఫీచర్‌లు</string>
     <string name="yukisu_features">YukiSU ఫీచర్‌లు</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk ప్రారంభించబడింది. వైరుధ్యాలను నివారించడానికి ఈ మాడ్యూల్ నిలిపివేయబడింది</string>

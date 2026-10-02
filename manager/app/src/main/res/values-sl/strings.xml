@@ -227,9 +227,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">Popravilo/namestitev LKM</string>
-    <string name="configuration">Konfiguriraj</string>
-    <string name="app_settings">Nastavitve aplikacije</string>
-    <string name="tools">Orodja</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Aplikacije ni mogoče najti</string>
     <string name="selinux_enabled_toast">SELinux omogočen</string>
@@ -241,7 +238,6 @@
     <string name="hide_bl_enabled_toast">Skrivanje stanja odklepanja omogočeno, znova zaženite za uveljavitev</string>
     <string name="hide_bl_disabled_toast">Skrivanje stanja odklepanja onemogočeno</string>
     <string name="hide_bl_change_failed">Nastavitve skrivanja stanja odklepanja ni bilo mogoče spremeniti</string>
-    <string name="advanced_settings">Napredne nastavitve</string>
     <string name="appearance_settings">Prilagodi orodno vrstico</string>
     <string name="back">Nazaj</string>
     <string name="background_set_success">Ozadje uspešno nastavljeno</string>
@@ -326,7 +322,6 @@
     <string name="author">Avtor</string>
     <string name="description">Opis</string>
     <string name="log_viewer_title">Pregledovalnik dnevnikov</string>
-    <string name="log_viewer_back">Nazaj</string>
     <string name="log_viewer_search">Iskanje</string>
     <string name="log_viewer_clear_logs">Počisti dnevnike</string>
     <string name="log_viewer_clear_logs_confirm">Ali ste prepričani, da želite počistiti izbrano datoteko dnevnika? Tega dejanja ni mogoče razveljaviti</string>
@@ -343,8 +338,6 @@
     <string name="log_viewer_raw_log">Neobdelan dnevnik</string>
     <string name="log_viewer_search_placeholder">Iskanje po UID, ukazu ali podrobnostih…</string>
     <string name="log_viewer_clear_search">Počisti iskanje</string>
-    <string name="log_viewer_view_logs">Ogled dnevnikov uporabe</string>
-    <string name="log_viewer_view_logs_summary">Ogled dnevnikov dostopa superuporabnika KernelSU</string>
     <string name="log_viewer_exclude_subtypes">Izključi podvrste</string>
     <string name="log_viewer_exclude_current_app">Trenutna aplikacija</string>
     <string name="log_viewer_exclude_viewer_refresh">Samodejno osveževanje pregledovalnika dnevnikov</string>
@@ -362,7 +355,6 @@
     <string name="log_viewer_all_logs_loaded">Prikazani vsi dnevniki</string>
     <string name="incompatible_kernel_msg">Trenutni upravitelj ni združljiv s tem jedrom! Nadgradite jedro na različico %2$d ali novejšo (trenutno %1$d)</string>
     <string name="umount_path_manager">Upravljanje poti umount</string>
-    <string name="umount_path_manager_summary">Upravljanje poti odklopa jedra</string>
     <string name="umount_path_restart_notice">Za uveljavitev sprememb je potreben ponovni zagon. Sistem bo uporabil novo konfiguracijo ob naslednjem zagonu</string>
     <string name="add_umount_path">Dodaj pot umount</string>
     <string name="mount_path">Pot priklopa</string>
@@ -616,7 +608,6 @@
     <string name="predictive_back_gesture">Predvidena poteza nazaj</string>
     <string name="predictive_back_gesture_summary">Med potezo nazaj prikaži predogled prejšnje strani. Privzeto izklopljeno.</string>
     <string name="feature_control">Upravljanje funkcij</string>
-    <string name="feature_control_summary">Upravljaj funkcije, ki jih podpira trenutno jedro.</string>
     <string name="kernelsu_features">Funkcije KernelSU</string>
     <string name="yukisu_features">Funkcije YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk je omogočen; ta modul je onemogočen zaradi preprečevanja sporov</string>

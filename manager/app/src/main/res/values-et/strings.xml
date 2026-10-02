@@ -227,9 +227,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM parandamine/installimine</string>
-    <string name="configuration">Seadista</string>
-    <string name="app_settings">Rakenduse seaded</string>
-    <string name="tools">Tööriistad</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Rakendust ei leitud</string>
     <string name="selinux_enabled_toast">SELinux lubatud</string>
@@ -241,7 +238,6 @@
     <string name="hide_bl_enabled_toast">Avamise oleku peitmine lubatud, taaskäivitage rakendamiseks</string>
     <string name="hide_bl_disabled_toast">Avamise oleku peitmine keelatud</string>
     <string name="hide_bl_change_failed">Avamise oleku peitmise seade muutmine ebaõnnestus</string>
-    <string name="advanced_settings">Täpsemad seaded</string>
     <string name="appearance_settings">Kohanda tööriistariba</string>
     <string name="back">Tagasi</string>
     <string name="background_set_success">Taust edukalt määratud</string>
@@ -326,7 +322,6 @@
     <string name="author">Autor</string>
     <string name="description">Kirjeldus</string>
     <string name="log_viewer_title">Logivaatur</string>
-    <string name="log_viewer_back">Tagasi</string>
     <string name="log_viewer_search">Otsi</string>
     <string name="log_viewer_clear_logs">Kustuta logid</string>
     <string name="log_viewer_clear_logs_confirm">Kas olete kindel, et soovite valitud logifaili kustutada? Seda toimingut ei saa tagasi võtta</string>
@@ -343,8 +338,6 @@
     <string name="log_viewer_raw_log">Toorlog</string>
     <string name="log_viewer_search_placeholder">Otsi UID-i, käsu või üksikasjade järgi…</string>
     <string name="log_viewer_clear_search">Kustuta otsing</string>
-    <string name="log_viewer_view_logs">Vaata kasutuslogisid</string>
-    <string name="log_viewer_view_logs_summary">Vaata KernelSU superkasutaja juurdepääsulogisid</string>
     <string name="log_viewer_exclude_subtypes">Välista alamtüübid</string>
     <string name="log_viewer_exclude_current_app">Praegune rakendus</string>
     <string name="log_viewer_exclude_viewer_refresh">Logivaaturi automaatne värskendamine</string>
@@ -362,7 +355,6 @@
     <string name="log_viewer_all_logs_loaded">Kõik logid kuvatud</string>
     <string name="incompatible_kernel_msg">Praegune haldur ei ühildu selle kerneliga! Palun uuendage kernel versioonile %2$d või uuemale (praegu %1$d)</string>
     <string name="umount_path_manager">Umount-teede haldus</string>
-    <string name="umount_path_manager_summary">Halda kerneli lahti haakimise teid</string>
     <string name="umount_path_restart_notice">Muudatuste jõustumiseks on vajalik taaskäivitus. Süsteem rakendab uue konfiguratsiooni järgmisel käivitamisel</string>
     <string name="add_umount_path">Lisa umount-tee</string>
     <string name="mount_path">Haakimise tee</string>
@@ -616,7 +608,6 @@
     <string name="predictive_back_gesture">Ennustav tagasiliikumise žest</string>
     <string name="predictive_back_gesture_summary">Eelvaata tagasiliikumisel eelmist lehte vastavalt žestile. Vaikimisi väljas.</string>
     <string name="feature_control">Funktsioonide juhtimine</string>
-    <string name="feature_control_summary">Halda praeguse tuuma toetatud funktsioone.</string>
     <string name="kernelsu_features">KernelSU funktsioonid</string>
     <string name="yukisu_features">YukiSU funktsioonid</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk on lubatud; see moodul on konfliktide vältimiseks keelatud</string>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_absolute_path">أدخل مسارًا مطلقًا</string>
-    <string name="kasumi_advanced">متقدم</string>
     <string name="kasumi_apply_failed">لم يُطبّق الإعداد المحفوظ على النواة بعد</string>
     <string name="kasumi_backend_enable_desc">السماح لمخطط التركيب باستخدام هذه الواجهة الخلفية</string>
     <string name="kasumi_check_conflicts">التحقق من تعارضات التركيب</string>
@@ -16,7 +15,6 @@
     <string name="kasumi_fs_type_ext4">صورة EXT4</string>
     <string name="kasumi_fs_type_title">نظام ملفات التخزين</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">عام</string>
     <string name="kasumi_global_override">التجاوز العام: %1$s</string>
     <string name="kasumi_hide_aggressive">هجومي</string>
     <string name="kasumi_hide_normal">عادي</string>
@@ -135,10 +133,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">غير مركّب</string>
     <string name="kasumi_system_info">معلومات النظام</string>
-    <string name="kasumi_tab_logs">السجلات</string>
-    <string name="kasumi_tab_rules">القواعد</string>
-    <string name="kasumi_tab_settings">الإعدادات</string>
-    <string name="kasumi_tab_status">الحالة</string>
     <string name="kasumi_tempdir">نقطة تركيب مؤقتة</string>
     <string name="kasumi_tempdir_desc">المسار الأساسي لعمليات التركيب المؤقتة (اتركه فارغاً للتلقائي)</string>
     <string name="kasumi_title">إعداد Kasumi</string>

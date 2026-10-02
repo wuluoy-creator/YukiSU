@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_absolute_path">Inserisci un percorso assoluto</string>
-    <string name="kasumi_advanced">Avanzate</string>
     <string name="kasumi_apply_failed">La configurazione salvata non è ancora stata applicata al kernel</string>
     <string name="kasumi_backend_enable_desc">Consenti al pianificatore dei montaggi di usare questo motore</string>
     <string name="kasumi_check_conflicts">Verifica conflitti di montaggio</string>
@@ -16,7 +15,6 @@
     <string name="kasumi_fs_type_ext4">Immagine EXT4</string>
     <string name="kasumi_fs_type_title">File system di archiviazione</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">Generale</string>
     <string name="kasumi_global_override">Sostituzione globale: %1$s</string>
     <string name="kasumi_hide_aggressive">Aggressivo</string>
     <string name="kasumi_hide_normal">Normale</string>
@@ -129,10 +127,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Non montato</string>
     <string name="kasumi_system_info">Informazioni di sistema</string>
-    <string name="kasumi_tab_logs">Registri</string>
-    <string name="kasumi_tab_rules">Regole</string>
-    <string name="kasumi_tab_settings">Impostazioni</string>
-    <string name="kasumi_tab_status">Stato</string>
     <string name="kasumi_tempdir">Punto di montaggio temporaneo</string>
     <string name="kasumi_tempdir_desc">Percorso di base dei montaggi temporanei (lascia vuoto per automatico)</string>
     <string name="kasumi_title">Configurazione Kasumi</string>

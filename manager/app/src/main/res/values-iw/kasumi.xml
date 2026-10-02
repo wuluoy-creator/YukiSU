@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_absolute_path">יש להזין נתיב מוחלט</string>
-    <string name="kasumi_advanced">מתקדם</string>
     <string name="kasumi_apply_failed">התצורה שנשמרה עדיין לא הוחלה על הליבה</string>
     <string name="kasumi_backend_enable_desc">לאפשר למתכנן העיגון להשתמש במנוע זה</string>
     <string name="kasumi_check_conflicts">בדיקת התנגשויות עיגון</string>
@@ -16,7 +15,6 @@
     <string name="kasumi_fs_type_ext4">תמונת EXT4</string>
     <string name="kasumi_fs_type_title">מערכת קבצים לאחסון</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">כללי</string>
     <string name="kasumi_global_override">עקיפה כללית: %1$s</string>
     <string name="kasumi_hide_aggressive">אגרסיבי</string>
     <string name="kasumi_hide_normal">רגיל</string>
@@ -129,10 +127,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">לא מעוגן</string>
     <string name="kasumi_system_info">מידע על המערכת</string>
-    <string name="kasumi_tab_logs">יומנים</string>
-    <string name="kasumi_tab_rules">כללים</string>
-    <string name="kasumi_tab_settings">הגדרות</string>
-    <string name="kasumi_tab_status">סטטוס</string>
     <string name="kasumi_tempdir">נקודת עיגון זמנית</string>
     <string name="kasumi_tempdir_desc">נתיב בסיס לעיגונים זמניים (השאר ריק לאוטומטי)</string>
     <string name="kasumi_title">תצורת Kasumi</string>

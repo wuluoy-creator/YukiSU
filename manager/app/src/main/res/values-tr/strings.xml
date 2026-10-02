@@ -227,9 +227,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM onarımı/yükle</string>
-    <string name="configuration">Yapılandır</string>
-    <string name="app_settings">Uygulama Ayarları</string>
-    <string name="tools">Araçlar</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Uygulama bulunamadı</string>
     <string name="selinux_enabled_toast">SELinux Etkin</string>
@@ -241,7 +238,6 @@
     <string name="hide_bl_enabled_toast">Kilit açma durumunu gizleme etkinleştirildi, uygulamak için yeniden başlatın</string>
     <string name="hide_bl_disabled_toast">Kilit açma durumunu gizleme devre dışı bırakıldı</string>
     <string name="hide_bl_change_failed">Kilit açma durumunu gizleme ayarı değiştirilemedi</string>
-    <string name="advanced_settings">Gelişmiş Ayarlar</string>
     <string name="appearance_settings">Araç çubuğunu özelleştir</string>
     <string name="back">Geri</string>
     <string name="background_set_success">Arka plan başarıyla ayarlandı</string>
@@ -326,7 +322,6 @@
     <string name="author">Geliştirici</string>
     <string name="description">Açıklama</string>
     <string name="log_viewer_title">Günlük Görüntüleyici</string>
-    <string name="log_viewer_back">Geri</string>
     <string name="log_viewer_search">Ara</string>
     <string name="log_viewer_clear_logs">Günlükleri Temizle</string>
     <string name="log_viewer_clear_logs_confirm">Seçili günlük dosyasını temizlemek istediğinizden emin misiniz? Bu işlem geri alınamaz</string>
@@ -343,8 +338,6 @@
     <string name="log_viewer_raw_log">Ham Günlük</string>
     <string name="log_viewer_search_placeholder">UID, komut veya ayrıntılara göre ara…</string>
     <string name="log_viewer_clear_search">Aramayı temizle</string>
-    <string name="log_viewer_view_logs">Kullanım Günlüklerini Görüntüle</string>
-    <string name="log_viewer_view_logs_summary">KernelSU süper kullanıcı erişim günlüklerini görüntüle</string>
     <string name="log_viewer_exclude_subtypes">Alt türleri hariç tut</string>
     <string name="log_viewer_exclude_current_app">Mevcut Uygulama</string>
     <string name="log_viewer_exclude_viewer_refresh">Günlük görüntüleyici kendi kendine yenileme</string>
@@ -362,7 +355,6 @@
     <string name="log_viewer_all_logs_loaded">Tüm günlükler görüntülendi</string>
     <string name="incompatible_kernel_msg">Mevcut yönetici bu çekirdekle uyumsuz! Lütfen çekirdeği %2$d veya daha yüksek bir sürüme yükseltin (mevcut sürüm %1$d)</string>
     <string name="umount_path_manager">Bağlantı Kaldırma Yolu Yönetimi</string>
-    <string name="umount_path_manager_summary">Çekirdek bağlantı kaldırma yollarını yönetin</string>
     <string name="umount_path_restart_notice">Değişikliklerin etkili olması için yeniden başlatma gereklidir. Sistem yeni yapılandırmayı bir sonraki önyüklemede uygulayacaktır</string>
     <string name="add_umount_path">Bağlantı Kaldırma Yolu Ekle</string>
     <string name="mount_path">Bağlama Yolu</string>
@@ -616,7 +608,6 @@
     <string name="predictive_back_gesture">Öngörülü geri hareketi</string>
     <string name="predictive_back_gesture_summary">Geri hareketini izleyerek önceki sayfanın önizlemesini gösterir. Varsayılan olarak kapalıdır</string>
     <string name="feature_control">Özellik denetimi</string>
-    <string name="feature_control_summary">Geçerli çekirdeğin desteklediği özellikleri yönetir.</string>
     <string name="kernelsu_features">KernelSU özellikleri</string>
     <string name="yukisu_features">YukiSU özellikleri</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk etkin. Çakışmayı önlemek için bu modül devre dışı bırakıldı</string>

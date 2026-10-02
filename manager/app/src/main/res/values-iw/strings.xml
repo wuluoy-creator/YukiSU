@@ -227,9 +227,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">תיקון/התקנה של LKM</string>
-    <string name="configuration">הגדר</string>
-    <string name="app_settings">הגדרות אפליקציה</string>
-    <string name="tools">כלים</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">האפליקציה לא נמצאה</string>
     <string name="selinux_enabled_toast">SELinux מופעל</string>
@@ -241,7 +238,6 @@
     <string name="hide_bl_enabled_toast">הסתרת מצב ביטול הנעילה הופעלה, הפעל מחדש כדי להחיל</string>
     <string name="hide_bl_disabled_toast">הסתרת מצב ביטול הנעילה הושבתה</string>
     <string name="hide_bl_change_failed">שינוי הגדרת הסתרת מצב ביטול הנעילה נכשל</string>
-    <string name="advanced_settings">הגדרות מתקדמות</string>
     <string name="appearance_settings">התאם אישית את סרגל הכלים</string>
     <string name="back">חזרה</string>
     <string name="background_set_success">הרקע הוגדר בהצלחה</string>
@@ -326,7 +322,6 @@
     <string name="author">מחבר</string>
     <string name="description">תיאור</string>
     <string name="log_viewer_title">מציג היומנים</string>
-    <string name="log_viewer_back">חזרה</string>
     <string name="log_viewer_search">חפש</string>
     <string name="log_viewer_clear_logs">נקה יומנים</string>
     <string name="log_viewer_clear_logs_confirm">האם אתה בטוח שברצונך לנקות את קובץ היומן הנבחר? לא ניתן לבטל פעולה זו</string>
@@ -343,8 +338,6 @@
     <string name="log_viewer_raw_log">יומן גולמי</string>
     <string name="log_viewer_search_placeholder">חפש לפי UID, פקודה או פרטים…</string>
     <string name="log_viewer_clear_search">נקה חיפוש</string>
-    <string name="log_viewer_view_logs">צפה ביומני שימוש</string>
-    <string name="log_viewer_view_logs_summary">צפה ביומני גישת משתמש-על של KernelSU</string>
     <string name="log_viewer_exclude_subtypes">החרג תת-סוגים</string>
     <string name="log_viewer_exclude_current_app">האפליקציה הנוכחית</string>
     <string name="log_viewer_exclude_viewer_refresh">רענון עצמי של מציג היומנים</string>
@@ -362,7 +355,6 @@
     <string name="log_viewer_all_logs_loaded">כל היומנים מוצגים</string>
     <string name="incompatible_kernel_msg">המנהל הנוכחי אינו תואם לליבה זו! אנא שדרג את הליבה לגרסה %2$d או גבוהה יותר (כעת %1$d)</string>
     <string name="umount_path_manager">ניהול נתיבי umount</string>
-    <string name="umount_path_manager_summary">נהל את נתיבי ביטול העיגון של הליבה</string>
     <string name="umount_path_restart_notice">נדרשת הפעלה מחדש כדי שהשינויים ייכנסו לתוקף. המערכת תחיל את התצורה החדשה באתחול הבא</string>
     <string name="add_umount_path">הוסף נתיב umount</string>
     <string name="mount_path">נתיב עיגון</string>
@@ -616,7 +608,6 @@
     <string name="predictive_back_gesture">מחוות חזרה חזויה</string>
     <string name="predictive_back_gesture_summary">תצוגה מקדימה של הדף הקודם בהתאם למחוות החזרה. כבוי כברירת מחדל</string>
     <string name="feature_control">שליטה בתכונות</string>
-    <string name="feature_control_summary">ניהול התכונות שבהן תומכת הליבה הנוכחית.</string>
     <string name="kernelsu_features">תכונות KernelSU</string>
     <string name="yukisu_features">תכונות YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk מופעל. מודול זה הושבת למניעת התנגשויות</string>

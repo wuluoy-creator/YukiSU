@@ -243,9 +243,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM 修補/安裝</string>
-    <string name="configuration">配置</string>
-    <string name="app_settings">應用程式設定</string>
-    <string name="tools">工具</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">未找到應用程式</string>
     <string name="selinux_enabled_toast">SELinux 已設為啟用狀態</string>
@@ -257,7 +254,6 @@
     <string name="hide_bl_enabled_toast">解鎖狀態隱藏已啟用</string>
     <string name="hide_bl_disabled_toast">解鎖狀態隱藏已停用</string>
     <string name="hide_bl_change_failed">解鎖狀態隱藏設定失敗</string>
-    <string name="advanced_settings">進階設定</string>
     <string name="appearance_settings">外觀設定</string>
     <string name="back">返回</string>
     <string name="background_set_success">背景設定成功</string>
@@ -346,7 +342,6 @@
     <string name="author">作者</string>
     <string name="description">描述</string>
     <string name="log_viewer_title">日誌檢視器</string>
-    <string name="log_viewer_back">上一步</string>
     <string name="log_viewer_search">搜尋</string>
     <string name="log_viewer_clear_logs">清除日誌</string>
     <string name="log_viewer_clear_logs_confirm">您確定想要清除已選取的日誌檔案嗎？這個作業將無法還原</string>
@@ -363,8 +358,6 @@
     <string name="log_viewer_raw_log">原始日誌</string>
     <string name="log_viewer_search_placeholder">按 UID、指令或詳細搜尋…</string>
     <string name="log_viewer_clear_search">清除搜尋</string>
-    <string name="log_viewer_view_logs">檢視使用日誌</string>
-    <string name="log_viewer_view_logs_summary">檢視 KernelSU 超級使用者的存取日誌</string>
     <string name="log_viewer_exclude_subtypes">排除子類型</string>
     <string name="log_viewer_exclude_current_app">目前應用程式</string>
     <string name="log_viewer_exclude_viewer_refresh">日誌檢視器自動重新整理</string>
@@ -383,7 +376,6 @@
     <string name="incompatible_kernel_msg">    目前管理器與此核心不相容！請升級核心到 %2$d 或是更高版本(：%1$d)
     </string>
     <string name="umount_path_manager">卸載路徑管理</string>
-    <string name="umount_path_manager_summary">管理核心卸載路徑</string>
     <string name="umount_path_restart_notice">需要重新啟動系統才能套用。系統將會在下次啟動時套用新的配置</string>
     <string name="add_umount_path">新增卸載路徑</string>
     <string name="mount_path">掛載路徑</string>
@@ -625,7 +617,6 @@
     <string name="hide_seccomp_status">隱藏 Seccomp 狀態</string>
     <string name="hide_seccomp_status_summary">隱藏主頁的 Seccomp 狀態資訊</string>
     <string name="feature_control">功能控制</string>
-    <string name="feature_control_summary">管理目前核心支援的功能。</string>
     <string name="kernelsu_features">KernelSU 功能</string>
     <string name="yukisu_features">YukiSU 功能</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk 已啟用，為防止衝突，此模組已停用</string>

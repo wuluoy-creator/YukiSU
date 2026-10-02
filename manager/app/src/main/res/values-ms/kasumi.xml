@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kasumi_advanced">Lanjutan</string>
     <string name="kasumi_debug">Pengelogan nyahpepijat</string>
     <string name="kasumi_filter_all">Semua</string>
     <string name="kasumi_fs_type_erofs">Imej EROFS</string>
     <string name="kasumi_fs_type_ext4">Imej EXT4</string>
     <string name="kasumi_fs_type_title">Sistem fail storan</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">Umum</string>
     <string name="kasumi_info_active_mounts">Lekapan aktif:</string>
     <string name="kasumi_info_kernel">Kernel</string>
     <string name="kasumi_info_mount_base">Asas Lekapan</string>
@@ -73,10 +71,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Tidak dilekap</string>
     <string name="kasumi_system_info">Maklumat Sistem</string>
-    <string name="kasumi_tab_logs">Log</string>
-    <string name="kasumi_tab_rules">Peraturan</string>
-    <string name="kasumi_tab_settings">Tetapan</string>
-    <string name="kasumi_tab_status">Status</string>
     <string name="kasumi_tempdir">Titik Lekapan Sementara</string>
     <string name="kasumi_tempdir_desc">Laluan asas untuk lekapan sementara (biarkan kosong untuk automatik)</string>
     <string name="kasumi_title">Konfigurasi Kasumi</string>

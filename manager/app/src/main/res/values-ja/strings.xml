@@ -229,9 +229,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM の修復またはインストール</string>
-    <string name="configuration">設定</string>
-    <string name="app_settings">アプリの設定</string>
-    <string name="tools">ツール</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">アプリがありません</string>
     <string name="selinux_enabled_toast">SELinux 有効</string>
@@ -243,7 +240,6 @@
     <string name="hide_bl_enabled_toast">ロック解除状態の隠蔽を有効にしました。再起動して適用してください</string>
     <string name="hide_bl_disabled_toast">ロック解除状態の隠蔽を無効にしました</string>
     <string name="hide_bl_change_failed">ロック解除状態の隠蔽設定の変更に失敗しました</string>
-    <string name="advanced_settings">高度な設定</string>
     <string name="appearance_settings">ツールバーをカスタマイズ</string>
     <string name="back">戻る</string>
     <string name="background_set_success">背景の設定が成功しました</string>
@@ -328,7 +324,6 @@
     <string name="author">作者</string>
     <string name="description">説明</string>
     <string name="log_viewer_title">ログビューア</string>
-    <string name="log_viewer_back">戻る</string>
     <string name="log_viewer_search">検索</string>
     <string name="log_viewer_clear_logs">ログを消去</string>
     <string name="log_viewer_clear_logs_confirm">選択したログファイルを消去してもよろしいですか？この操作は元に戻せません</string>
@@ -345,8 +340,6 @@
     <string name="log_viewer_raw_log">生のログ</string>
     <string name="log_viewer_search_placeholder">UID、コマンドまたは詳細で検索…</string>
     <string name="log_viewer_clear_search">検索を消去</string>
-    <string name="log_viewer_view_logs">使用ログを表示</string>
-    <string name="log_viewer_view_logs_summary">KernelSU スーパーユーザーアクセスログを表示</string>
     <string name="log_viewer_exclude_subtypes">サブタイプを除外</string>
     <string name="log_viewer_exclude_current_app">現在のアプリ</string>
     <string name="log_viewer_exclude_viewer_refresh">ログビューアーの自動更新</string>
@@ -364,7 +357,6 @@
     <string name="log_viewer_all_logs_loaded">すべてのログを表示しました</string>
     <string name="incompatible_kernel_msg">現在のマネージャーはこのカーネルと互換性がありません。カーネルをバージョン %2$d 以上にアップグレードしてください（現在 %1$d）</string>
     <string name="umount_path_manager">アンマウントパスの管理</string>
-    <string name="umount_path_manager_summary">カーネルアンマウントパスの管理</string>
     <string name="umount_path_restart_notice">変更を有効にするには再起動が必要です。システムは次回起動時に新しい設定を適用します</string>
     <string name="add_umount_path">アンマウントパスを追加</string>
     <string name="mount_path">マウントパス</string>
@@ -636,7 +628,6 @@
     <string name="predictive_back_gesture">予測型「戻る」ジェスチャー</string>
     <string name="predictive_back_gesture_summary">戻るジェスチャーに合わせて前の画面をプレビューします。デフォルトではオフです</string>
     <string name="feature_control">機能の制御</string>
-    <string name="feature_control_summary">現在のカーネルが対応する機能を管理します。</string>
     <string name="kernelsu_features">KernelSU の機能</string>
     <string name="yukisu_features">YukiSU の機能</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk が有効なため、競合を防ぐためにこのモジュールを無効にしました</string>

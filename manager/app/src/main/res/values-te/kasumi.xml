@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kasumi_advanced">అధునాతన</string>
     <string name="kasumi_debug">డీబగ్ లాగింగ్</string>
     <string name="kasumi_filter_all">అన్నీ</string>
     <string name="kasumi_fs_type_erofs">EROFS చిత్రం</string>
     <string name="kasumi_fs_type_ext4">EXT4 చిత్రం</string>
     <string name="kasumi_fs_type_title">నిల్వ ఫైల్ సిస్టమ్</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">సాధారణ</string>
     <string name="kasumi_info_active_mounts">క్రియాశీల మౌంట్‌లు:</string>
     <string name="kasumi_info_kernel">కెర్నల్</string>
     <string name="kasumi_info_mount_base">మౌంట్ బేస్</string>
@@ -73,10 +71,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">మౌంట్ చేయబడలేదు</string>
     <string name="kasumi_system_info">సిస్టమ్ సమాచారం</string>
-    <string name="kasumi_tab_logs">లాగ్‌లు</string>
-    <string name="kasumi_tab_rules">నియమాలు</string>
-    <string name="kasumi_tab_settings">సెట్టింగ్‌లు</string>
-    <string name="kasumi_tab_status">స్థితి</string>
     <string name="kasumi_tempdir">తాత్కాలిక మౌంట్ పాయింట్</string>
     <string name="kasumi_tempdir_desc">తాత్కాలిక మౌంట్‌ల కోసం బేస్ పాత్ (స్వయంచాలకం కోసం ఖాళీగా ఉంచండి)</string>
     <string name="kasumi_title">Kasumi కాన్ఫిగరేషన్</string>

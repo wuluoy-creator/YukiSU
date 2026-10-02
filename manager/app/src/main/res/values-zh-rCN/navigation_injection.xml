@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="injection_section_overview">概览</string>
+    <string name="injection_section_configuration">配置</string>
+    <string name="injection_section_diagnostics">诊断</string>
+    <string name="injection_denylist_title">排除列表模式</string>
+</resources>

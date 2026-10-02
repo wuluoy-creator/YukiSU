@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_absolute_path">Adjon meg egy abszolút elérési utat</string>
-    <string name="kasumi_advanced">Speciális</string>
     <string name="kasumi_apply_failed">A mentett konfiguráció még nincs alkalmazva a kernelre</string>
     <string name="kasumi_backend_enable_desc">A csatolástervező használhatja ezt a háttérmotort</string>
     <string name="kasumi_check_conflicts">Csatolási ütközések keresése</string>
@@ -16,7 +15,6 @@
     <string name="kasumi_fs_type_ext4">EXT4 kép</string>
     <string name="kasumi_fs_type_title">Tároló fájlrendszer</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">Általános</string>
     <string name="kasumi_global_override">Globális felülbírálás: %1$s</string>
     <string name="kasumi_hide_aggressive">Agresszív</string>
     <string name="kasumi_hide_normal">Normál</string>
@@ -127,10 +125,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Nincs csatolva</string>
     <string name="kasumi_system_info">Rendszerinformáció</string>
-    <string name="kasumi_tab_logs">Naplók</string>
-    <string name="kasumi_tab_rules">Szabályok</string>
-    <string name="kasumi_tab_settings">Beállítások</string>
-    <string name="kasumi_tab_status">Állapot</string>
     <string name="kasumi_tempdir">Ideiglenes csatolási pont</string>
     <string name="kasumi_tempdir_desc">Az ideiglenes csatolások alapútvonala (hagyja üresen az automatikushoz)</string>
     <string name="kasumi_title">Kasumi konfiguráció</string>

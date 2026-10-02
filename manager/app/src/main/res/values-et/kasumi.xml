@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_absolute_path">Sisesta absoluutne tee</string>
-    <string name="kasumi_advanced">Täpsem</string>
     <string name="kasumi_apply_failed">Salvestatud seadistust pole veel tuumale rakendatud</string>
     <string name="kasumi_backend_enable_desc">Luba haakimisplaneerijal seda taustsüsteemi kasutada</string>
     <string name="kasumi_check_conflicts">Kontrolli haakimiskonflikte</string>
@@ -16,7 +15,6 @@
     <string name="kasumi_fs_type_ext4">EXT4 tõmmis</string>
     <string name="kasumi_fs_type_title">Salvestusruumi failisüsteem</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">Üldine</string>
     <string name="kasumi_global_override">Globaalne alistus: %1$s</string>
     <string name="kasumi_hide_aggressive">Agressiivne</string>
     <string name="kasumi_hide_normal">Tavaline</string>
@@ -127,10 +125,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Haakimata</string>
     <string name="kasumi_system_info">Süsteemiteave</string>
-    <string name="kasumi_tab_logs">Logid</string>
-    <string name="kasumi_tab_rules">Reeglid</string>
-    <string name="kasumi_tab_settings">Seaded</string>
-    <string name="kasumi_tab_status">Olek</string>
     <string name="kasumi_tempdir">Ajutine haakimispunkt</string>
     <string name="kasumi_tempdir_desc">Ajutiste haakimiste baastee (jätke tühjaks automaatseks)</string>
     <string name="kasumi_title">Kasumi konfiguratsioon</string>

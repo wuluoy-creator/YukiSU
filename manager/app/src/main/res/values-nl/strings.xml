@@ -229,9 +229,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM repareren/installeren</string>
-    <string name="configuration">Configureren</string>
-    <string name="app_settings">App-instellingen</string>
-    <string name="tools">Gereedschappen</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Applicatie niet gevonden</string>
     <string name="selinux_enabled_toast">SELinux ingeschakeld</string>
@@ -243,7 +240,6 @@
     <string name="hide_bl_enabled_toast">Verbergen van ontgrendelingsstatus ingeschakeld, herstart om toe te passen</string>
     <string name="hide_bl_disabled_toast">Verbergen van ontgrendelingsstatus uitgeschakeld</string>
     <string name="hide_bl_change_failed">Kan de instelling voor het verbergen van de ontgrendelingsstatus niet wijzigen</string>
-    <string name="advanced_settings">Geavanceerde instellingen</string>
     <string name="appearance_settings">De werkbalk aanpassen</string>
     <string name="back">Terug</string>
     <string name="background_set_success">Achtergrond succesvol ingesteld</string>
@@ -328,7 +324,6 @@
     <string name="author">Auteur</string>
     <string name="description">Beschrijving</string>
     <string name="log_viewer_title">Logboekviewer</string>
-    <string name="log_viewer_back">Terug</string>
     <string name="log_viewer_search">Zoeken</string>
     <string name="log_viewer_clear_logs">Logboeken wissen</string>
     <string name="log_viewer_clear_logs_confirm">Weet je zeker dat je het geselecteerde logboekbestand wilt wissen? Deze actie kan niet ongedaan worden gemaakt</string>
@@ -345,8 +340,6 @@
     <string name="log_viewer_raw_log">Onbewerkt logboek</string>
     <string name="log_viewer_search_placeholder">Zoeken op UID, opdracht of details…</string>
     <string name="log_viewer_clear_search">Zoekopdracht wissen</string>
-    <string name="log_viewer_view_logs">Gebruikslogboeken bekijken</string>
-    <string name="log_viewer_view_logs_summary">Bekijk de supergebruiker-toegangslogboeken van KernelSU</string>
     <string name="log_viewer_exclude_subtypes">Subtypes uitsluiten</string>
     <string name="log_viewer_exclude_current_app">Huidige app</string>
     <string name="log_viewer_exclude_viewer_refresh">Automatisch vernieuwen van logboekviewer</string>
@@ -364,7 +357,6 @@
     <string name="log_viewer_all_logs_loaded">Alle logboeken weergegeven</string>
     <string name="incompatible_kernel_msg">De huidige beheerder is niet compatibel met deze kernel! Werk de kernel bij naar versie %2$d of hoger (momenteel %1$d)</string>
     <string name="umount_path_manager">Beheer van umount-paden</string>
-    <string name="umount_path_manager_summary">Beheer de ontkoppelpaden van de kernel</string>
     <string name="umount_path_restart_notice">Een herstart is vereist om de wijzigingen door te voeren. Het systeem past de nieuwe configuratie toe bij de volgende keer opstarten</string>
     <string name="add_umount_path">Umount-pad toevoegen</string>
     <string name="mount_path">Koppelpad</string>
@@ -618,7 +610,6 @@
     <string name="predictive_back_gesture">Voorspellend teruggebaar</string>
     <string name="predictive_back_gesture_summary">Tijdens het teruggebaar een voorbeeld van de vorige pagina tonen. Standaard uitgeschakeld.</string>
     <string name="feature_control">Functiebeheer</string>
-    <string name="feature_control_summary">Functies beheren die door de huidige kernel worden ondersteund.</string>
     <string name="kernelsu_features">KernelSU-functies</string>
     <string name="yukisu_features">YukiSU-functies</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk is ingeschakeld. Deze module is uitgeschakeld om conflicten te voorkomen.</string>

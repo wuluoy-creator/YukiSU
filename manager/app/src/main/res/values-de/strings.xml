@@ -229,9 +229,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM Reparatur/Installation</string>
-    <string name="configuration">Konfigurieren</string>
-    <string name="app_settings">Anwendungs-Einstellungen</string>
-    <string name="tools">Werkzeuge</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Anwendung nicht gefunden</string>
     <string name="selinux_enabled_toast">SELinux aktiviert</string>
@@ -243,7 +240,6 @@
     <string name="hide_bl_enabled_toast">Verbergen des Entsperrstatus aktiviert, zum Anwenden neu starten</string>
     <string name="hide_bl_disabled_toast">Verbergen des Entsperrstatus deaktiviert</string>
     <string name="hide_bl_change_failed">Einstellung zum Verbergen des Entsperrstatus konnte nicht geändert werden</string>
-    <string name="advanced_settings">Erweiterte Einstellungen</string>
     <string name="appearance_settings">Passt die Symbolleiste an.</string>
     <string name="back">Zurück</string>
     <string name="background_set_success">Hintergrund erfolgreich gesetzt</string>
@@ -328,7 +324,6 @@
     <string name="author">Autor</string>
     <string name="description">Beschreibung</string>
     <string name="log_viewer_title">Protokollanzeige</string>
-    <string name="log_viewer_back">Zurück</string>
     <string name="log_viewer_search">Suchen</string>
     <string name="log_viewer_clear_logs">Protokolle löschen</string>
     <string name="log_viewer_clear_logs_confirm">Möchtest du die ausgewählte Protokolldatei wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden</string>
@@ -345,8 +340,6 @@
     <string name="log_viewer_raw_log">Rohprotokoll</string>
     <string name="log_viewer_search_placeholder">Nach UID, Befehl oder Details suchen…</string>
     <string name="log_viewer_clear_search">Suche löschen</string>
-    <string name="log_viewer_view_logs">Nutzungsprotokolle anzeigen</string>
-    <string name="log_viewer_view_logs_summary">KernelSU-Superuser-Zugriffsprotokolle anzeigen</string>
     <string name="log_viewer_exclude_subtypes">Untertypen ausschließen</string>
     <string name="log_viewer_exclude_current_app">Aktuelle App</string>
     <string name="log_viewer_exclude_viewer_refresh">Selbstaktualisierung der Protokollanzeige</string>
@@ -364,7 +357,6 @@
     <string name="log_viewer_all_logs_loaded">Alle Protokolle angezeigt</string>
     <string name="incompatible_kernel_msg">Der aktuelle Manager ist mit diesem Kernel nicht kompatibel! Bitte aktualisiere den Kernel auf Version %2$d oder höher (aktuell %1$d)</string>
     <string name="umount_path_manager">Verwaltung der Aushängepfade</string>
-    <string name="umount_path_manager_summary">Kernel-Aushängepfade verwalten</string>
     <string name="umount_path_restart_notice">Damit die Änderungen wirksam werden, ist ein Neustart erforderlich. Das System wendet die neue Konfiguration beim nächsten Start an</string>
     <string name="add_umount_path">Aushängepfad hinzufügen</string>
     <string name="mount_path">Einhängepfad</string>
@@ -618,7 +610,6 @@
     <string name="predictive_back_gesture">Vorausschauende Zurück-Geste</string>
     <string name="predictive_back_gesture_summary">Beim Zurückgehen eine Vorschau der vorherigen Seite passend zur Geste anzeigen. Standardmäßig deaktiviert.</string>
     <string name="feature_control">Funktionssteuerung</string>
-    <string name="feature_control_summary">Vom aktuellen Kernel unterstützte Funktionen verwalten.</string>
     <string name="kernelsu_features">KernelSU-Funktionen</string>
     <string name="yukisu_features">YukiSU-Funktionen</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk ist aktiviert. Dieses Modul wurde deaktiviert, um Konflikte zu vermeiden.</string>

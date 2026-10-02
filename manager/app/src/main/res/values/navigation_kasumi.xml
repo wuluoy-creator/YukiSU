@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="kasumi_workspace_status" tools:ignore="MissingTranslation">System status</string>
+    <string name="kasumi_workspace_mount" tools:ignore="MissingTranslation">Mount settings</string>
+    <string name="kasumi_workspace_isolation" tools:ignore="MissingTranslation">App isolation</string>
+    <string name="kasumi_workspace_rules" tools:ignore="MissingTranslation">Runtime rules</string>
+    <string name="kasumi_workspace_logs" tools:ignore="MissingTranslation">Mount and isolation logs</string>
+    <string name="kasumi_workspace_debug" tools:ignore="MissingTranslation">Mount and isolation diagnostics</string>
+    <string name="kasumi_workspace_rules_cleared" tools:ignore="MissingTranslation">All rules cleared</string>
+    <string name="kasumi_workspace_rules_clear_failed" tools:ignore="MissingTranslation">Failed to clear rules</string>
+</resources>

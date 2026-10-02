@@ -227,9 +227,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">Відновлення/встановлення LKM</string>
-    <string name="configuration">Налаштувати</string>
-    <string name="app_settings">Налаштування додатку</string>
-    <string name="tools">Інструменти</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Додаток не знайдено</string>
     <string name="selinux_enabled_toast">SELinux увімкнено</string>
@@ -241,7 +238,6 @@
     <string name="hide_bl_enabled_toast">Приховування стану розблокування увімкнено, перезавантажте, щоб застосувати</string>
     <string name="hide_bl_disabled_toast">Приховування стану розблокування вимкнено</string>
     <string name="hide_bl_change_failed">Не вдалося змінити налаштування приховування стану розблокування</string>
-    <string name="advanced_settings">Розширені налаштування</string>
     <string name="appearance_settings">Налаштувати панель інструментів</string>
     <string name="back">Повернутися</string>
     <string name="background_set_success">Фон успішно встановлено</string>
@@ -326,7 +322,6 @@
     <string name="author">Автор</string>
     <string name="description">Опис</string>
     <string name="log_viewer_title">Переглядач журналів</string>
-    <string name="log_viewer_back">Назад</string>
     <string name="log_viewer_search">Пошук</string>
     <string name="log_viewer_clear_logs">Очистити журнали</string>
     <string name="log_viewer_clear_logs_confirm">Ви впевнені, що хочете очистити вибраний файл журналу? Цю дію не можна скасувати</string>
@@ -343,8 +338,6 @@
     <string name="log_viewer_raw_log">Необроблений журнал</string>
     <string name="log_viewer_search_placeholder">Пошук за UID, командою або деталями…</string>
     <string name="log_viewer_clear_search">Очистити пошук</string>
-    <string name="log_viewer_view_logs">Переглянути журнали використання</string>
-    <string name="log_viewer_view_logs_summary">Переглянути журнали доступу суперкористувача KernelSU</string>
     <string name="log_viewer_exclude_subtypes">Виключити підтипи</string>
     <string name="log_viewer_exclude_current_app">Поточний застосунок</string>
     <string name="log_viewer_exclude_viewer_refresh">Самооновлення переглядача журналів</string>
@@ -362,7 +355,6 @@
     <string name="log_viewer_all_logs_loaded">Показано всі журнали</string>
     <string name="incompatible_kernel_msg">Поточний менеджер несумісний з цим ядром! Оновіть ядро до версії %2$d або вищої (наразі %1$d)</string>
     <string name="umount_path_manager">Керування шляхами umount</string>
-    <string name="umount_path_manager_summary">Керувати шляхами розмонтування ядра</string>
     <string name="umount_path_restart_notice">Для застосування змін потрібне перезавантаження. Система застосує нову конфігурацію під час наступного завантаження</string>
     <string name="add_umount_path">Додати шлях umount</string>
     <string name="mount_path">Шлях монтування</string>
@@ -618,7 +610,6 @@
     <string name="predictive_back_gesture">Передбачувальний жест «Назад»</string>
     <string name="predictive_back_gesture_summary">Показувати попередню сторінку відповідно до жесту повернення. Типово вимкнено</string>
     <string name="feature_control">Керування функціями</string>
-    <string name="feature_control_summary">Керування функціями, які підтримує поточне ядро.</string>
     <string name="kernelsu_features">Функції KernelSU</string>
     <string name="yukisu_features">Функції YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk увімкнено. Цей модуль вимкнено, щоб запобігти конфліктам</string>

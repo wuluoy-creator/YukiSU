@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_absolute_path">Introduceți o cale absolută</string>
-    <string name="kasumi_advanced">Avansat</string>
     <string name="kasumi_apply_failed">Configurația salvată nu a fost încă aplicată nucleului</string>
     <string name="kasumi_backend_enable_desc">Permite planificatorului de montări să utilizeze acest motor</string>
     <string name="kasumi_check_conflicts">Verifică conflictele de montare</string>
@@ -16,7 +15,6 @@
     <string name="kasumi_fs_type_ext4">Imagine EXT4</string>
     <string name="kasumi_fs_type_title">Sistem de fișiere de stocare</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">General</string>
     <string name="kasumi_global_override">Suprascriere globală: %1$s</string>
     <string name="kasumi_hide_aggressive">Agresiv</string>
     <string name="kasumi_hide_normal">Normal</string>
@@ -129,10 +127,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Nemontat</string>
     <string name="kasumi_system_info">Informații despre sistem</string>
-    <string name="kasumi_tab_logs">Jurnale</string>
-    <string name="kasumi_tab_rules">Reguli</string>
-    <string name="kasumi_tab_settings">Setări</string>
-    <string name="kasumi_tab_status">Stare</string>
     <string name="kasumi_tempdir">Punct de montare temporar</string>
     <string name="kasumi_tempdir_desc">Calea de bază pentru montările temporare (lăsați gol pentru automat)</string>
     <string name="kasumi_title">Configurare Kasumi</string>

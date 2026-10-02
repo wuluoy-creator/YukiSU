@@ -23,6 +23,14 @@ import ui.screen.moreSettings.component.*
 @Preview(name = "Landscape", widthDp = 800, heightDp = 360)
 @Composable
 private fun UtilitySettingsPreview() {
+    UtilityPreviewTheme {
+        UtilitySettingsPreviewContent()
+    }
+}
+
+/** A preview-only theme that does not read preferences or initialize Root services. */
+@Composable
+internal fun UtilityPreviewTheme(content: @Composable () -> Unit) {
     val dark = isSystemInDarkTheme()
     val brand = ThemeColors.Default
     val scheme = (if (dark) darkColorScheme() else lightColorScheme()).copy(
@@ -32,33 +40,38 @@ private fun UtilitySettingsPreview() {
         onPrimaryContainer = if (dark) brand.onPrimaryContainerDark else brand.onPrimaryContainerLight,
     ).utilitySurfaces(dark, false)
     MaterialTheme(colorScheme = scheme, typography = Typography, shapes = ExpressiveShapes) {
-        Surface(color = MaterialTheme.colorScheme.background) {
-            Column(
-                Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)
-            ) {
-                Text("YukiSU", style = MaterialTheme.typography.titleLarge)
-                SettingsCard(title = "管理设置") {
-                    SettingItem(
-                        icon = Icons.Outlined.Security,
-                        title = "Root 授权管理",
-                        subtitle = "应用名称、软件包与授权状态保持清晰可读",
-                        onClick = {},
-                    )
-                    SwitchSettingItem(
-                        icon = Icons.Outlined.DarkMode,
-                        title = "跟随系统外观",
-                        summary = "浅色与深色模式使用相同的信息层级",
-                        checked = true,
-                        onChange = {},
-                    )
-                    SettingItem(
-                        icon = Icons.Outlined.Info,
-                        title = "A long application name for checking text wrapping",
-                        subtitle = "com.example.application.with.a.long.package.name · 1.0.0",
-                        groupPosition = MoreSettingsItemPosition.Last,
-                        onClick = {},
-                    )
-                }
+        content()
+    }
+}
+
+@Composable
+private fun UtilitySettingsPreviewContent() {
+    Surface(color = MaterialTheme.colorScheme.background) {
+        Column(
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)
+        ) {
+            Text("YukiSU", style = MaterialTheme.typography.titleLarge)
+            SettingsCard(title = "管理设置") {
+                SettingItem(
+                    icon = Icons.Outlined.Security,
+                    title = "Root 授权管理",
+                    subtitle = "应用名称、软件包与授权状态保持清晰可读",
+                    onClick = {},
+                )
+                SwitchSettingItem(
+                    icon = Icons.Outlined.DarkMode,
+                    title = "跟随系统外观",
+                    summary = "浅色与深色模式使用相同的信息层级",
+                    checked = true,
+                    onChange = {},
+                )
+                SettingItem(
+                    icon = Icons.Outlined.Info,
+                    title = "A long application name for checking text wrapping",
+                    subtitle = "com.example.application.with.a.long.package.name · 1.0.0",
+                    groupPosition = MoreSettingsItemPosition.Last,
+                    onClick = {},
+                )
             }
         }
     }

@@ -227,9 +227,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM taisymas/diegimas</string>
-    <string name="configuration">Konfigūruoti</string>
-    <string name="app_settings">Programos parametrai</string>
-    <string name="tools">Įrankiai</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Programa nerasta</string>
     <string name="selinux_enabled_toast">SELinux įjungtas</string>
@@ -241,7 +238,6 @@
     <string name="hide_bl_enabled_toast">Atrakinimo būsenos slėpimas įjungtas, paleiskite iš naujo, kad pritaikytumėte</string>
     <string name="hide_bl_disabled_toast">Atrakinimo būsenos slėpimas išjungtas</string>
     <string name="hide_bl_change_failed">Nepavyko pakeisti atrakinimo būsenos slėpimo parametro</string>
-    <string name="advanced_settings">Išplėstiniai parametrai</string>
     <string name="appearance_settings">Tinkinti įrankių juostą</string>
     <string name="back">Atgal</string>
     <string name="background_set_success">Fonas sėkmingai nustatytas</string>
@@ -326,7 +322,6 @@
     <string name="author">Autorius</string>
     <string name="description">Aprašymas</string>
     <string name="log_viewer_title">Žurnalų peržiūros priemonė</string>
-    <string name="log_viewer_back">Atgal</string>
     <string name="log_viewer_search">Ieškoti</string>
     <string name="log_viewer_clear_logs">Išvalyti žurnalus</string>
     <string name="log_viewer_clear_logs_confirm">Ar tikrai norite išvalyti pasirinktą žurnalo failą? Šio veiksmo negalima anuliuoti</string>
@@ -343,8 +338,6 @@
     <string name="log_viewer_raw_log">Neapdorotas žurnalas</string>
     <string name="log_viewer_search_placeholder">Ieškoti pagal UID, komandą arba išsamią informaciją…</string>
     <string name="log_viewer_clear_search">Išvalyti paiešką</string>
-    <string name="log_viewer_view_logs">Peržiūrėti naudojimo žurnalus</string>
-    <string name="log_viewer_view_logs_summary">Peržiūrėti KernelSU supervartotojo prieigos žurnalus</string>
     <string name="log_viewer_exclude_subtypes">Išskirti potipius</string>
     <string name="log_viewer_exclude_current_app">Dabartinė programa</string>
     <string name="log_viewer_exclude_viewer_refresh">Žurnalų peržiūros priemonės automatinis atnaujinimas</string>
@@ -362,7 +355,6 @@
     <string name="log_viewer_all_logs_loaded">Rodomi visi žurnalai</string>
     <string name="incompatible_kernel_msg">Dabartinė tvarkyklė nesuderinama su šiuo branduoliu! Atnaujinkite branduolį į versiją %2$d arba naujesnę (dabar %1$d)</string>
     <string name="umount_path_manager">Umount kelių tvarkymas</string>
-    <string name="umount_path_manager_summary">Tvarkyti branduolio atjungimo kelius</string>
     <string name="umount_path_restart_notice">Kad pakeitimai įsigaliotų, reikia paleisti iš naujo. Sistema pritaikys naują konfigūraciją kitą kartą paleidžiant</string>
     <string name="add_umount_path">Pridėti umount kelią</string>
     <string name="mount_path">Prijungimo kelias</string>
@@ -616,7 +608,6 @@
     <string name="predictive_back_gesture">Nuspėjamasis grįžimo gestas</string>
     <string name="predictive_back_gesture_summary">Grįžtant pagal gestą peržiūrėti ankstesnį puslapį. Pagal numatymą išjungta.</string>
     <string name="feature_control">Funkcijų valdymas</string>
-    <string name="feature_control_summary">Valdyti dabartinio branduolio palaikomas funkcijas.</string>
     <string name="kernelsu_features">KernelSU funkcijos</string>
     <string name="yukisu_features">YukiSU funkcijos</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk įjungtas; šis modulis išjungtas siekiant išvengti konfliktų</string>

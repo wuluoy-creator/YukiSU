@@ -27,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
@@ -44,8 +43,11 @@ import com.anatdx.yukisu.ui.component.YukiIcon
 import com.anatdx.yukisu.ui.theme.*
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ui.screen.moreSettings.component.ColorCircle
 import ui.screen.moreSettings.component.LanguageSelectionDialog
 import ui.screen.moreSettings.component.MoreSettingsDialogs
@@ -59,20 +61,41 @@ import ui.screen.moreSettings.state.MoreSettingsState
 import ui.screen.moreSettings.util.LocaleHelper
 import kotlin.math.roundToInt
 
-@SuppressLint("LocalContextConfigurationRead", "LocalContextResourcesRead", "ObsoleteSdkInt")
+enum class PreferenceCategory(val titleRes: Int) {
+    Appearance(R.string.settings_category_appearance),
+    Display(R.string.settings_category_display),
+    Advanced(R.string.settings_category_security),
+    WebUI(R.string.settings_category_webui),
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination<RootGraph>
 @Composable
-fun MoreSettingsScreen(
-    navigator: DestinationsNavigator
-) {
-
-    val topAppBarState = rememberTopAppBarState()
-    val scrollBehavior = if (isExpressiveUi) {
-        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-    } else {
-        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
+fun MoreSettingsScreen(navigator: DestinationsNavigator) {
+    var selectedCategory by rememberSaveable { mutableStateOf(PreferenceCategory.Appearance) }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    Scaffold(
+        topBar = { MoreSettingsTopBar(onBack = { navigator.popBackStack() }, scrollBehavior = scrollBehavior) },
+        contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
+    ) { padding ->
+        Column(Modifier.fillMaxSize().padding(padding).consumeWindowInsets(padding)) {
+            PrimaryScrollableTabRow(selectedTabIndex = selectedCategory.ordinal) {
+                PreferenceCategory.entries.forEach { category ->
+                    Tab(
+                        selected = selectedCategory == category,
+                        onClick = { selectedCategory = category },
+                        text = { Text(stringResource(category.titleRes)) },
+                    )
+                }
+            }
+            MoreSettingsContent(selectedCategory)
+        }
     }
+}
+
+@SuppressLint("LocalContextConfigurationRead", "LocalContextResourcesRead", "ObsoleteSdkInt")
+@Composable
+fun MoreSettingsContent(category: PreferenceCategory) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val prefs = remember { context.getSharedPreferences("settings", Context.MODE_PRIVATE) }
@@ -80,6 +103,7 @@ fun MoreSettingsScreen(
 
     val settingsState = remember { MoreSettingsState(context, prefs, systemIsDark) }
     val settingsHandlers = remember { MoreSettingsHandlers(context, prefs, settingsState) }
+    var settingsLoaded by remember { mutableStateOf(false) }
     val cropToolbarColor = MaterialTheme.colorScheme.surfaceContainerHighest
     val cropToolbarWidgetColor = MaterialTheme.colorScheme.onSurface
     val cropAccentColor = MaterialTheme.colorScheme.primary
@@ -134,6 +158,15 @@ fun MoreSettingsScreen(
 
     LaunchedEffect(Unit) {
         settingsHandlers.initializeSettings()
+        settingsLoaded = true
+    }
+
+    // Native and theme values must be loaded before an editable control is shown.
+    if (!settingsLoaded) {
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+        return
     }
 
     MoreSettingsDialogs(
@@ -141,45 +174,21 @@ fun MoreSettingsScreen(
         handlers = settingsHandlers
     )
 
-    Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            MoreSettingsTopBar(
-                onBack = { navigator.popBackStack() },
-                scrollBehavior = scrollBehavior
-            )
-        },
-        contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp)
-                .padding(top = 8.dp)
-        ) {
-
-            AppearanceSettings(
+    Column(
+        modifier = Modifier.fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+    ) {
+        when (category) {
+            PreferenceCategory.Appearance -> AppearanceSettings(
                 state = settingsState,
                 handlers = settingsHandlers,
                 pickImageLauncher = pickImageLauncher,
-                coroutineScope = coroutineScope
+                coroutineScope = coroutineScope,
             )
-
-
-            CustomizationSettings(
-                state = settingsState,
-                handlers = settingsHandlers
-            )
-
-
-            KsuIsValid {
-                AdvancedSettings(
-                    state = settingsState,
-                    handlers = settingsHandlers,
-                )
-            }
+            PreferenceCategory.Display -> CustomizationSettings(settingsState, settingsHandlers)
+            PreferenceCategory.Advanced -> KsuIsValid { AdvancedSettings(settingsState, settingsHandlers) }
+            PreferenceCategory.WebUI -> KsuIsValid { WebUIDebugSettings(settingsState, settingsHandlers) }
         }
     }
 }
@@ -443,58 +452,48 @@ private fun HideOptionsSettings(
 }
 
 @Composable
-private fun AdvancedSettings(
-    state: MoreSettingsState,
-    handlers: MoreSettingsHandlers,
-) {
-    SettingsCard(title = stringResource(R.string.advanced_settings)) {
+private fun AdvancedSettings(state: MoreSettingsState, handlers: MoreSettingsHandlers) {
+    SettingsCard(title = stringResource(R.string.settings_category_security)) {
         SwitchSettingItem(
             icon = Icons.Filled.Security,
             title = stringResource(R.string.selinux),
-            summary = if (state.selinuxEnabled)
-                stringResource(R.string.selinux_enabled) else
-                stringResource(R.string.selinux_disabled),
+            summary = if (state.selinuxEnabled) stringResource(R.string.selinux_enabled) else stringResource(R.string.selinux_disabled),
             checked = state.selinuxEnabled,
             groupPosition = MoreSettingsItemPosition.First,
-            onChange = handlers::handleSelinuxChange
+            onChange = handlers::handleSelinuxChange,
         )
-
         SwitchSettingItem(
             icon = Icons.Filled.AdminPanelSettings,
             title = stringResource(R.string.allow_any_dynamic_manager),
             summary = stringResource(R.string.allow_any_dynamic_manager_summary),
             checked = state.allowAnyDynamicManager,
-            groupPosition = if (BuildConfig.DEBUG) {
-                MoreSettingsItemPosition.Middle
-            } else {
-                MoreSettingsItemPosition.Last
-            },
-            onChange = handlers::handleAllowAnyDynamicManagerChange
+            groupPosition = MoreSettingsItemPosition.Last,
+            onChange = handlers::handleAllowAnyDynamicManagerChange,
         )
+    }
+}
 
-        // Web debugging and the Eruda console it feeds are developer tools, and
-        // the Eruda bundle is stripped from release APKs, so the toggles would
-        // have nothing to switch on there.
-        if (BuildConfig.DEBUG) {
-            SettingsDivider()
-
+@Composable
+private fun WebUIDebugSettings(state: MoreSettingsState, handlers: MoreSettingsHandlers) {
+    // Release APKs do not contain the Eruda console; keep the existing build guard.
+    if (BuildConfig.DEBUG) {
+        SettingsCard(title = stringResource(R.string.settings_category_webui)) {
             SwitchSettingItem(
                 icon = Icons.Filled.DeveloperMode,
                 title = stringResource(R.string.enable_web_debugging),
                 summary = stringResource(R.string.enable_web_debugging_summary),
                 checked = state.enableWebDebugging,
                 groupPosition = if (state.enableWebDebugging && state.webuiEngine == "wx") {
-                    MoreSettingsItemPosition.Middle
+                    MoreSettingsItemPosition.First
                 } else {
-                    MoreSettingsItemPosition.Last
+                    MoreSettingsItemPosition.Only
                 },
-                onChange = handlers::handleWebDebuggingChange
+                onChange = handlers::handleWebDebuggingChange,
             )
-
             AnimatedVisibility(
                 visible = state.enableWebDebugging && state.webuiEngine == "wx",
                 enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically()
+                exit = fadeOut() + shrinkVertically(),
             ) {
                 SwitchSettingItem(
                     icon = Icons.Filled.FormatListNumbered,
@@ -502,7 +501,7 @@ private fun AdvancedSettings(
                     summary = stringResource(R.string.use_webuix_eruda_summary),
                     checked = state.useWebUIXEruda,
                     groupPosition = MoreSettingsItemPosition.Last,
-                    onChange = handlers::handleWebUIXErudaChange
+                    onChange = handlers::handleWebUIXErudaChange,
                 )
             }
         }
@@ -770,8 +769,10 @@ private fun AlphaSlider(
             handlers.handleCardAlphaChange(newValue)
         },
         onValueChangeFinished = {
-            coroutineScope.launch(Dispatchers.IO) {
-                saveCardConfig(handlers.context)
+            coroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
+                withContext(NonCancellable + Dispatchers.IO) {
+                    saveCardConfig(handlers.context)
+                }
             }
         },
         valueRange = 0f..1f,
@@ -823,8 +824,10 @@ private fun DimSlider(
             handlers.handleCardDimChange(newValue)
         },
         onValueChangeFinished = {
-            coroutineScope.launch(Dispatchers.IO) {
-                saveCardConfig(handlers.context)
+            coroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
+                withContext(NonCancellable + Dispatchers.IO) {
+                    saveCardConfig(handlers.context)
+                }
             }
         },
         valueRange = 0f..1f,

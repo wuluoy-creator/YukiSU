@@ -228,9 +228,6 @@ A</string>
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM javítás/telepítés</string>
-    <string name="configuration">Konfigurálás</string>
-    <string name="app_settings">Alkalmazás beállításai</string>
-    <string name="tools">Eszközök</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Alkalmazás nem található</string>
     <string name="selinux_enabled_toast">SELinux engedélyezve</string>
@@ -242,7 +239,6 @@ A</string>
     <string name="hide_bl_enabled_toast">Feloldási állapot elrejtése engedélyezve, indítsa újra az alkalmazáshoz</string>
     <string name="hide_bl_disabled_toast">Feloldási állapot elrejtése letiltva</string>
     <string name="hide_bl_change_failed">Nem sikerült módosítani a feloldási állapot elrejtésének beállítását</string>
-    <string name="advanced_settings">Speciális beállítások</string>
     <string name="appearance_settings">Eszköztár testreszabása</string>
     <string name="back">Vissza</string>
     <string name="background_set_success">Háttér sikeresen beállítva</string>
@@ -327,7 +323,6 @@ A</string>
     <string name="author">Szerző</string>
     <string name="description">Leírás</string>
     <string name="log_viewer_title">Naplónézegető</string>
-    <string name="log_viewer_back">Vissza</string>
     <string name="log_viewer_search">Keresés</string>
     <string name="log_viewer_clear_logs">Naplók törlése</string>
     <string name="log_viewer_clear_logs_confirm">Biztosan törli a kiválasztott naplófájlt? Ez a művelet nem vonható vissza</string>
@@ -344,8 +339,6 @@ A</string>
     <string name="log_viewer_raw_log">Nyers napló</string>
     <string name="log_viewer_search_placeholder">Keresés UID, parancs vagy részletek alapján…</string>
     <string name="log_viewer_clear_search">Keresés törlése</string>
-    <string name="log_viewer_view_logs">Használati naplók megtekintése</string>
-    <string name="log_viewer_view_logs_summary">A KernelSU rendszergazdai hozzáférési naplóinak megtekintése</string>
     <string name="log_viewer_exclude_subtypes">Altípusok kizárása</string>
     <string name="log_viewer_exclude_current_app">Aktuális alkalmazás</string>
     <string name="log_viewer_exclude_viewer_refresh">Naplónézegető önfrissítése</string>
@@ -363,7 +356,6 @@ A</string>
     <string name="log_viewer_all_logs_loaded">Minden napló megjelenítve</string>
     <string name="incompatible_kernel_msg">A jelenlegi kezelő nem kompatibilis ezzel a kernellel! Kérjük, frissítse a kernelt a(z) %2$d vagy újabb verzióra (jelenleg %1$d)</string>
     <string name="umount_path_manager">Umount útvonalak kezelése</string>
-    <string name="umount_path_manager_summary">A kernel leválasztási útvonalainak kezelése</string>
     <string name="umount_path_restart_notice">Az újraindítás szükséges a módosítások érvénybe lépéséhez. A rendszer a következő indításkor alkalmazza az új konfigurációt</string>
     <string name="add_umount_path">Umount útvonal hozzáadása</string>
     <string name="mount_path">Csatolási útvonal</string>
@@ -617,7 +609,6 @@ A</string>
     <string name="predictive_back_gesture">Prediktív visszalépési gesztus</string>
     <string name="predictive_back_gesture_summary">A visszalépési gesztust követve megjeleníti az előző oldal előnézetét. Alapértelmezés szerint kikapcsolva</string>
     <string name="feature_control">Funkciók vezérlése</string>
-    <string name="feature_control_summary">Az aktuális kernel által támogatott funkciók kezelése.</string>
     <string name="kernelsu_features">KernelSU funkciók</string>
     <string name="yukisu_features">YukiSU funkciók</string>
     <string name="module_disabled_by_yukizygisk">A YukiZygisk engedélyezve van. Az ütközések elkerülésére ez a modul letiltva</string>

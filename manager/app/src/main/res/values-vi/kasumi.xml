@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kasumi_advanced">Nâng cao</string>
     <string name="kasumi_debug">Nhật ký gỡ lỗi</string>
     <string name="kasumi_filter_all">Tất cả</string>
     <string name="kasumi_fs_type_erofs">Ảnh EROFS</string>
     <string name="kasumi_fs_type_ext4">Ảnh EXT4</string>
     <string name="kasumi_fs_type_title">Hệ thống tệp lưu trữ</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">Chung</string>
     <string name="kasumi_info_active_mounts">Gắn kết đang hoạt động:</string>
     <string name="kasumi_info_kernel">Kernel</string>
     <string name="kasumi_info_mount_base">Cơ sở gắn kết</string>
@@ -73,10 +71,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Chưa gắn kết</string>
     <string name="kasumi_system_info">Thông tin hệ thống</string>
-    <string name="kasumi_tab_logs">Nhật ký</string>
-    <string name="kasumi_tab_rules">Quy tắc</string>
-    <string name="kasumi_tab_settings">Cài đặt</string>
-    <string name="kasumi_tab_status">Trạng thái</string>
     <string name="kasumi_tempdir">Điểm gắn kết tạm thời</string>
     <string name="kasumi_tempdir_desc">Đường dẫn gốc cho các gắn kết tạm thời (để trống để tự động)</string>
     <string name="kasumi_title">Cấu hình Kasumi</string>

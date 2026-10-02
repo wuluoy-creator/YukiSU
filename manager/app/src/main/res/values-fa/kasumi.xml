@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_absolute_path">یک مسیر مطلق وارد کنید</string>
-    <string name="kasumi_advanced">پیشرفته</string>
     <string name="kasumi_apply_failed">پیکربندی ذخیره‌شده هنوز روی هسته اعمال نشده است</string>
     <string name="kasumi_backend_enable_desc">اجازه به برنامه‌ریز اتصال برای استفاده از این زیرسامانه</string>
     <string name="kasumi_check_conflicts">بررسی تداخل‌های اتصال</string>
@@ -16,7 +15,6 @@
     <string name="kasumi_fs_type_ext4">تصویر EXT4</string>
     <string name="kasumi_fs_type_title">سیستم فایل ذخیره‌سازی</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">عمومی</string>
     <string name="kasumi_global_override">جایگزینی سراسری: %1$s</string>
     <string name="kasumi_hide_aggressive">تهاجمی</string>
     <string name="kasumi_hide_normal">عادی</string>
@@ -127,10 +125,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">مانت نشده</string>
     <string name="kasumi_system_info">اطلاعات سیستم</string>
-    <string name="kasumi_tab_logs">لاگ‌ها</string>
-    <string name="kasumi_tab_rules">قوانین</string>
-    <string name="kasumi_tab_settings">تنظیمات</string>
-    <string name="kasumi_tab_status">وضعیت</string>
     <string name="kasumi_tempdir">نقطه مانت موقت</string>
     <string name="kasumi_tempdir_desc">مسیر پایه برای مانت‌های موقت (برای خودکار خالی بگذارید)</string>
     <string name="kasumi_title">پیکربندی Kasumi</string>

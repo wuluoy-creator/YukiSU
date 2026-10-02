@@ -114,6 +114,16 @@ private fun loadExcludedSubTypes(context: Context): Set<LogExclType> {
 @Destination<RootGraph>
 @Composable
 fun LogViewerScreen(navigator: DestinationsNavigator) {
+    LogViewerPage(navigator)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun LogViewerPage(
+    navigator: DestinationsNavigator,
+    showBack: Boolean = true,
+    sectionNavigation: @Composable () -> Unit = {},
+) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val snackBarHost = LocalSnackbarHost.current
     val context = LocalContext.current
@@ -123,7 +133,6 @@ fun LogViewerScreen(navigator: DestinationsNavigator) {
     var isLoading by remember { mutableStateOf(false) }
     var filterType by rememberSaveable { mutableStateOf<LogType?>(null) }
     var searchQuery by rememberSaveable { mutableStateOf("") }
-    var showSearchBar by rememberSaveable { mutableStateOf(false) }
     var pageInfo by remember { mutableStateOf(LogPageInfo()) }
     var lastLogFileHash by remember { mutableStateOf("") }
     var currentLogPath by remember { mutableStateOf(DEFAULT_LOG_PATH) }
@@ -260,13 +269,12 @@ fun LogViewerScreen(navigator: DestinationsNavigator) {
 
     Scaffold(
         topBar = {
+            Column {
             LogViewerTopBar(
                 scrollBehavior = scrollBehavior,
-                onBackClick = { navigator.navigateUp() },
-                showSearchBar = showSearchBar,
+                onBackClick = if (showBack) ({ navigator.navigateUp() }) else null,
                 searchQuery = searchQuery,
                 onSearchQueryChange = { searchQuery = it },
-                onSearchToggle = { showSearchBar = !showSearchBar },
                 onRefresh = onManualRefresh,
                 canManageLogs = currentLogPath.isNotBlank(),
                 manageLogsTitle = currentManageTitle,
@@ -290,6 +298,8 @@ fun LogViewerScreen(navigator: DestinationsNavigator) {
                     }
                 }
             )
+                sectionNavigation()
+            }
         },
         contentWindowInsets = WindowInsets.safeDrawing
     ) { paddingValues ->
@@ -950,99 +960,31 @@ private fun EmptyLogState(
 @Composable
 private fun LogViewerTopBar(
     scrollBehavior: TopAppBarScrollBehavior? = null,
-    onBackClick: () -> Unit,
-    showSearchBar: Boolean,
+    onBackClick: (() -> Unit)?,
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
-    onSearchToggle: () -> Unit,
     onRefresh: () -> Unit,
     canManageLogs: Boolean,
     manageLogsTitle: String,
-    onClearLogs: () -> Unit
+    onClearLogs: () -> Unit,
 ) {
-    val colorScheme = MaterialTheme.colorScheme
-    val cardColor = if (CardConfig.isCustomBackgroundEnabled) {
-        colorScheme.surfaceContainerLow
-    } else {
-        colorScheme.background
-    }
-
-    Column {
-        TopAppBar(
-            title = {
-                Text(
-                    text = stringResource(R.string.log_viewer_title),
-                    style = MaterialTheme.typography.titleLarge
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = onBackClick) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.log_viewer_back)
-                    )
-                }
-            },
-            actions = {
-                IconButton(onClick = onSearchToggle) {
-                    Icon(
-                        imageVector = if (showSearchBar) Icons.Filled.SearchOff else Icons.Filled.Search,
-                        contentDescription = stringResource(R.string.log_viewer_search)
-                    )
-                }
-                IconButton(onClick = onRefresh) {
-                    Icon(
-                        imageVector = Icons.Filled.Refresh,
-                        contentDescription = stringResource(R.string.log_viewer_refresh)
-                    )
-                }
-                IconButton(onClick = onClearLogs, enabled = canManageLogs) {
-                    Icon(
-                        imageVector = Icons.Filled.DeleteSweep,
-                        contentDescription = manageLogsTitle
-                    )
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = cardColor,
-                scrolledContainerColor = cardColor
-            ),
-            windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
-            scrollBehavior = scrollBehavior
-        )
-
-        AnimatedVisibility(
-            visible = showSearchBar,
-            enter = fadeIn() + expandVertically(),
-            exit = fadeOut() + shrinkVertically()
-        ) {
-            OutlinedTextField(
-                value = searchQuery,
-                onValueChange = onSearchQueryChange,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = SPACING_LARGE, vertical = SPACING_MEDIUM),
-                placeholder = { Text(stringResource(R.string.log_viewer_search_placeholder)) },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Filled.Search,
-                        contentDescription = null
-                    )
-                },
-                trailingIcon = {
-                    if (searchQuery.isNotEmpty()) {
-                        IconButton(onClick = { onSearchQueryChange("") }) {
-                            Icon(
-                                imageVector = Icons.Filled.Clear,
-                                contentDescription = stringResource(R.string.log_viewer_clear_search)
-                            )
-                        }
-                    }
-                },
-                singleLine = true
-            )
-        }
-    }
+    SearchAppBar(
+        title = { Text(stringResource(if (onBackClick == null) R.string.nav_authorization else R.string.log_viewer_title)) },
+        searchText = searchQuery,
+        onSearchTextChange = onSearchQueryChange,
+        onClearClick = { onSearchQueryChange("") },
+        placeholder = { Text(stringResource(R.string.log_viewer_search_placeholder)) },
+        onBackClick = onBackClick,
+        scrollBehavior = scrollBehavior,
+        dropdownContent = {
+            IconButton(onClick = onRefresh) {
+                YukiIcon(Icons.Filled.Refresh, stringResource(R.string.log_viewer_refresh))
+            }
+            IconButton(onClick = onClearLogs, enabled = canManageLogs) {
+                YukiIcon(Icons.Filled.DeleteSweep, manageLogsTitle)
+            }
+        },
+    )
 }
 
 private suspend fun checkForNewLogs(

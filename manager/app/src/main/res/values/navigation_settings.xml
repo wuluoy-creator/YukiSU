@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="settings_workspace_personalization" tools:ignore="MissingTranslation">Personalization</string>
+    <string name="settings_workspace_system" tools:ignore="MissingTranslation">System and support</string>
+    <string name="settings_category_appearance" tools:ignore="MissingTranslation">Appearance</string>
+    <string name="settings_category_appearance_summary" tools:ignore="MissingTranslation">Theme, language, background and display size</string>
+    <string name="settings_category_display" tools:ignore="MissingTranslation">Content and display</string>
+    <string name="settings_category_display_summary" tools:ignore="MissingTranslation">Home information, module details and visibility</string>
+    <string name="settings_category_app" tools:ignore="MissingTranslation">App and updates</string>
+    <string name="settings_category_app_summary" tools:ignore="MissingTranslation">Manager updates, daemon updates and WebUI engine</string>
+    <string name="settings_category_kernel" tools:ignore="MissingTranslation">Kernel and isolation</string>
+    <string name="settings_category_kernel_summary" tools:ignore="MissingTranslation">Kernel features, security and isolation policies</string>
+    <string name="settings_category_diagnostics" tools:ignore="MissingTranslation">Diagnostics</string>
+    <string name="settings_category_diagnostics_summary" tools:ignore="MissingTranslation">Logs, reports and debugging controls</string>
+    <string name="settings_category_maintenance" tools:ignore="MissingTranslation">Maintenance and about</string>
+    <string name="settings_category_maintenance_summary" tools:ignore="MissingTranslation">Restore, uninstall and app information</string>
+    <string name="settings_category_security" tools:ignore="MissingTranslation">Security</string>
+    <string name="settings_category_webui" tools:ignore="MissingTranslation">WebUI debugging</string>
+    <string name="settings_authorization_defaults" tools:ignore="MissingTranslation">Authorization defaults</string>
+</resources>

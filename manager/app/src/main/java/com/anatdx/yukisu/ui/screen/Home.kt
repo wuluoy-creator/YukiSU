@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.system.Os
 import androidx.annotation.DrawableRes
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
@@ -27,6 +28,7 @@ import androidx.compose.material.icons.outlined.TaskAlt
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,8 +49,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.InstallScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.YukiZygiskScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.KasumiConfigScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.DiagnosticsScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.ExtensionRuntimeScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.anatdx.yukisu.KernelVersion
 import com.anatdx.yukisu.Natives
@@ -57,6 +59,8 @@ import com.anatdx.yukisu.integrity.KsudIntegrity
 import com.anatdx.yukisu.integrity.KsudIntegrityStatus
 import com.anatdx.yukisu.superkey.SuperKeyHelper
 import com.anatdx.yukisu.ui.component.KsuIsValid
+import com.anatdx.yukisu.ui.kasumi.KasumiSection
+import com.anatdx.yukisu.ui.kasumi.KasumiWorkspace
 import com.anatdx.yukisu.ui.component.rememberConfirmDialog
 import com.anatdx.yukisu.ui.component.YukiIcon
 import com.anatdx.yukisu.ui.component.YukiPullToRefreshBox
@@ -127,8 +131,124 @@ fun HomeScreen(navigator: DestinationsNavigator) {
         }
     }
 
+    // SuperKey 对话框
+    val superKeyDialog = rememberSuperKeyDialog()
+    var superKeyAuthSuccess by remember { mutableStateOf(false) }
+    val snackbarHostState = LocalSnackbarHost.current
+
+    LaunchedEffect(viewModel.isCoreDataLoaded, superKeyAuthSuccess) {
+        if (viewModel.isCoreDataLoaded) {
+            KsudIntegrity.refresh(context, notifyOnMismatch = false)
+        }
+    }
+
+    LaunchedEffect(viewModel.isCoreDataLoaded, viewModel.systemStatus.ksuVersion) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            viewModel.isCoreDataLoaded &&
+            viewModel.systemStatus.ksuVersion != null &&
+            context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            val preferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
+            if (!preferences.getBoolean(
+                    KsudIntegrity.NOTIFICATION_PERMISSION_REQUESTED,
+                    false,
+                )
+            ) {
+                preferences.edit {
+                    putBoolean(KsudIntegrity.NOTIFICATION_PERMISSION_REQUESTED, true)
+                }
+                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
+
+    // 检查内核是否配置了 SuperKey / 签名（异步，避免阻塞主线程）
+    val isSuperKeyConfigured by produceState(initialValue = false) {
+        value = withContext(Dispatchers.IO) { Natives.isSuperKeyConfigured() }
+    }
+    val isSignatureOk by produceState(initialValue = false) {
+        value = withContext(Dispatchers.IO) { Natives.isSignatureOk() }
+    }
+    SuperKeyDialog(
+        state = superKeyDialog,
+        onAuthenticate = { superKey ->
+            // 在 IO 线程执行 Native 调用，避免阻塞主线程
+            try {
+                kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+                    val success = Natives.authenticateSuperKey(superKey)
+                    if (success) {
+                        SuperKeyHelper.saveSuperKey(context, superKey)
+                    }
+                    success
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("SuperKey", "Authentication error", e)
+                false
+            }
+        },
+        onResult = { result ->
+            when (result) {
+                is SuperKeyAuthResult.Success -> {
+                    superKeyAuthSuccess = true
+                    // 强制刷新状态 - 认证成功后需要重新创建 Shell
+                    coroutineScope.launch {
+                        // 等待内核状态更新
+                        delay(100)
+                        // 重新创建 Shell（之前的 Shell 没有 root 权限）
+                        withContext(Dispatchers.IO) {
+                            KsuCli.refreshShells()
+                        }
+                        // 强制刷新数据
+                        viewModel.refreshData(context, forceRefresh = true)
+                        withContext(Dispatchers.IO) {
+                            AppData.DataRefreshManager.refreshData()
+                        }
+                    }
+                }
+                is SuperKeyAuthResult.Error -> {
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(result.message)
+                    }
+                }
+                SuperKeyAuthResult.Canceled -> {}
+            }
+        }
+    )
+
+    // 自动尝试用保存的 SuperKey 认证
+    LaunchedEffect(viewModel.isCoreDataLoaded) {
+        if (viewModel.isCoreDataLoaded && !viewModel.systemStatus.isManager) {
+            val savedKey = SuperKeyHelper.getSavedSuperKey(context)
+            if (!savedKey.isNullOrBlank()) {
+                try {
+                    // 在 IO 线程执行 Native 调用和 Shell 刷新
+                    val success = withContext(Dispatchers.IO) {
+                        val authSuccess = Natives.authenticateSuperKey(savedKey)
+                        if (authSuccess) {
+                            // 重新创建 Shell（之前的 Shell 没有 root 权限）
+                            KsuCli.refreshShells()
+                        }
+                        authSuccess
+                    }
+                    if (success) {
+                        superKeyAuthSuccess = true
+                        // 强制刷新数据
+                        viewModel.refreshData(context, forceRefresh = true)
+                        withContext(Dispatchers.IO) {
+                            AppData.DataRefreshManager.refreshData()
+                        }
+                    }
+                } catch (e: Exception) {
+                    android.util.Log.e("SuperKey", "Auto-auth error", e)
+                }
+            }
+        }
+    }
+
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val scrollState = rememberScrollState()
+    var homePage by rememberSaveable { mutableIntStateOf(0) }
 
     Scaffold(
         topBar = {
@@ -142,234 +262,141 @@ fun HomeScreen(navigator: DestinationsNavigator) {
             WindowInsetsSides.Top + WindowInsetsSides.Horizontal
         )
     ) { innerPadding ->
-        YukiPullToRefreshBox(
-            isRefreshing = viewModel.isRefreshing,
-            onRefresh = { viewModel.onPullRefresh(context) },
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
+        Column(
+            Modifier.fillMaxSize().padding(innerPadding).consumeWindowInsets(innerPadding)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(scrollState)
-                    .padding(top = 12.dp, start = 16.dp, end = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                // SuperKey 对话框
-                val superKeyDialog = rememberSuperKeyDialog()
-                var superKeyAuthSuccess by remember { mutableStateOf(false) }
-                val snackbarHostState = LocalSnackbarHost.current
-
-                LaunchedEffect(viewModel.isCoreDataLoaded, superKeyAuthSuccess) {
-                    if (viewModel.isCoreDataLoaded) {
-                        KsudIntegrity.refresh(context, notifyOnMismatch = false)
-                    }
-                }
-
-                LaunchedEffect(viewModel.isCoreDataLoaded, viewModel.systemStatus.ksuVersion) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-                        viewModel.isCoreDataLoaded &&
-                        viewModel.systemStatus.ksuVersion != null &&
-                        context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) !=
-                        PackageManager.PERMISSION_GRANTED
-                    ) {
-                        val preferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
-                        if (!preferences.getBoolean(
-                                KsudIntegrity.NOTIFICATION_PERMISSION_REQUESTED,
-                                false,
-                            )
-                        ) {
-                            preferences.edit {
-                                putBoolean(KsudIntegrity.NOTIFICATION_PERMISSION_REQUESTED, true)
-                            }
-                            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                        }
-                    }
-                }
-                
-                // 检查内核是否配置了 SuperKey / 签名（异步，避免阻塞主线程）
-                val isSuperKeyConfigured by produceState(initialValue = false) {
-                    value = withContext(Dispatchers.IO) { Natives.isSuperKeyConfigured() }
-                }
-                val isSignatureOk by produceState(initialValue = false) {
-                    value = withContext(Dispatchers.IO) { Natives.isSignatureOk() }
-                }
-                SuperKeyDialog(
-                    state = superKeyDialog,
-                    onAuthenticate = { superKey ->
-                        // 在 IO 线程执行 Native 调用，避免阻塞主线程
-                        try {
-                            kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
-                                val success = Natives.authenticateSuperKey(superKey)
-                                if (success) {
-                                    SuperKeyHelper.saveSuperKey(context, superKey)
-                                }
-                                success
-                            }
-                        } catch (e: Exception) {
-                            android.util.Log.e("SuperKey", "Authentication error", e)
-                            false
-                        }
-                    },
-                    onResult = { result ->
-                        when (result) {
-                            is SuperKeyAuthResult.Success -> {
-                                superKeyAuthSuccess = true
-                                // 强制刷新状态 - 认证成功后需要重新创建 Shell
-                                coroutineScope.launch {
-                                    // 等待内核状态更新
-                                    delay(100)
-                                    // 重新创建 Shell（之前的 Shell 没有 root 权限）
-                                    withContext(Dispatchers.IO) {
-                                        KsuCli.refreshShells()
-                                    }
-                                    // 强制刷新数据
-                                    viewModel.refreshData(context, forceRefresh = true)
-                                    withContext(Dispatchers.IO) {
-                                        AppData.DataRefreshManager.refreshData()
-                                    }
-                                }
-                            }
-                            is SuperKeyAuthResult.Error -> {
-                                coroutineScope.launch {
-                                    snackbarHostState.showSnackbar(result.message)
-                                }
-                            }
-                            SuperKeyAuthResult.Canceled -> {}
-                        }
-                    }
-                )
-                
-                // 自动尝试用保存的 SuperKey 认证
-                LaunchedEffect(viewModel.isCoreDataLoaded) {
-                    if (viewModel.isCoreDataLoaded && !viewModel.systemStatus.isManager) {
-                        val savedKey = SuperKeyHelper.getSavedSuperKey(context)
-                        if (!savedKey.isNullOrBlank()) {
-                            try {
-                                // 在 IO 线程执行 Native 调用和 Shell 刷新
-                                val success = withContext(Dispatchers.IO) {
-                                    val authSuccess = Natives.authenticateSuperKey(savedKey)
-                                    if (authSuccess) {
-                                        // 重新创建 Shell（之前的 Shell 没有 root 权限）
-                                        KsuCli.refreshShells()
-                                    }
-                                    authSuccess
-                                }
-                                if (success) {
-                                    superKeyAuthSuccess = true
-                                    // 强制刷新数据
-                                    viewModel.refreshData(context, forceRefresh = true)
-                                    withContext(Dispatchers.IO) {
-                                        AppData.DataRefreshManager.refreshData()
-                                    }
-                                }
-                            } catch (e: Exception) {
-                                android.util.Log.e("SuperKey", "Auto-auth error", e)
-                            }
-                        }
-                    }
-                }
-
-                // 状态卡片
-                if (viewModel.isCoreDataLoaded) {
-                    val isNotManager = !viewModel.systemStatus.isManager
-                    val needsSuperKeyAuth = isNotManager && !superKeyAuthSuccess && viewModel.systemStatus.ksuVersion == null
-                    
-                    StatusCard(
-                        systemStatus = viewModel.systemStatus,
-                        // SuperKey 模式用于表示「主要依赖 SuperKey」，
-                        // 显示规则交给 StatusCard 内部根据 isSuperKeyMode + isSignatureOk 决定徽章组合。
-                        isSuperKeyMode = isSuperKeyConfigured || superKeyAuthSuccess,
-                        needsSuperKeyAuth = needsSuperKeyAuth,
-                        onClickInstall = {
-                            navigator.navigate(InstallScreenDestination)
-                        },
-                        onSuperKeyAuth = {
-                            superKeyDialog.show()
-                        },
-                        isSignatureOk = isSignatureOk,
+            val canShowSystem = viewModel.isCoreDataLoaded &&
+                viewModel.systemStatus.isManager && viewModel.systemStatus.ksuVersion != null
+            val selectedHomePage = if (canShowSystem) homePage else 0
+            if (canShowSystem) {
+                BackHandler(selectedHomePage != 0) { homePage = 0 }
+                KsuIsValid {
+                    WorkspaceTabs(
+                        labels = listOf(stringResource(R.string.nav_home_overview), stringResource(R.string.nav_home_system)),
+                        selected = selectedHomePage,
+                        onSelected = { homePage = it },
                     )
-
-                    CiUpdateCard()
-
-                    if (ksudIntegrityStatus == KsudIntegrityStatus.MISMATCH) {
-                        WarningCard(stringResource(R.string.ksud_integrity_warning))
-                    }
-
-                    if (viewModel.systemStatus.requireNewKernel) {
-                        WarningCard(
-                            message = stringResource(R.string.require_kernel_version),
-                            onClick = { navigator.navigate(InstallScreenDestination) },
-                        )
-                    }
-                    if (viewModel.systemStatus.requireNewManager) {
-                        WarningCard(stringResource(R.string.require_manager_version))
-                    }
-                    if (viewModel.systemStatus.showLkmUpdate) {
-                        WarningCard(
-                            message = stringResource(R.string.home_lkm_update_available),
-                            color = MaterialTheme.colorScheme.primary,
-                            onClick = { navigator.navigate(InstallScreenDestination) },
-                        )
-                    }
-
-                    if (viewModel.systemStatus.ksuVersion != null && !viewModel.systemStatus.isRootAvailable) {
-                        WarningCard(
-                            stringResource(id = R.string.grant_root_failed)
-                        )
-                    }
-
                 }
-
-                if (viewModel.isExtendedDataLoaded) {
-                    val checkUpdate = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
-                        .getBoolean("check_update", true)
-                    if (checkUpdate) {
-                        UpdateCard()
-                    }
-
-                    // 信息卡片
-                    InfoCard(
-                        systemInfo = viewModel.systemInfo,
-                        isSimpleMode = viewModel.isSimpleMode,
-                        canReadHookType = viewModel.systemStatus.isManager &&
-                            viewModel.systemStatus.ksuVersion != null,
-                        isHideZygiskImplement = viewModel.isHideZygiskImplement,
-                        isHideMetaModuleImplement = viewModel.isHideMetaModuleImplement,
-                        isHideSeccompStatus = viewModel.isHideSeccompStatus,
-                        ksudIntegrityStatus = ksudIntegrityStatus,
-                        onYukiZygiskClick = { navigator.navigate(YukiZygiskScreenDestination) },
-                    )
-
-                    // 链接卡片
-                    if (!viewModel.isSimpleMode && !viewModel.isHideLinkCard) {
-                        ElevatedCard(
-                            colors = getCardColors(MaterialTheme.colorScheme.surfaceContainerLow),
-                            elevation = getCardElevation(),
-                        ) {
-                            ContributionCard()
-                            HorizontalDivider(
-                                modifier = Modifier.padding(start = 56.dp, end = 16.dp),
-                                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f),
-                            )
-                            DonateCard()
-                        }
-                    }
-                }
-
-                if (!viewModel.isExtendedDataLoaded) {
-                    Box(
+            }
+            Box(Modifier.fillMaxWidth().weight(1f)) {
+                if (selectedHomePage == 1) {
+                    KsuIsValid { KasumiWorkspace(KasumiSection.Status) }
+                } else {
+                    YukiPullToRefreshBox(
+                        isRefreshing = viewModel.isRefreshing,
+                        onRefresh = { viewModel.onPullRefresh(context) },
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(24.dp),
-                        contentAlignment = Alignment.Center
+                            .fillMaxSize()
                     ) {
-                        CircularProgressIndicator()
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .verticalScroll(scrollState)
+                                .padding(top = 12.dp, start = 16.dp, end = 16.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            // 状态卡片
+                            if (viewModel.isCoreDataLoaded) {
+                                val isNotManager = !viewModel.systemStatus.isManager
+                                val needsSuperKeyAuth = isNotManager && !superKeyAuthSuccess && viewModel.systemStatus.ksuVersion == null
+
+                                StatusCard(
+                                    systemStatus = viewModel.systemStatus,
+                                    // SuperKey 模式用于表示「主要依赖 SuperKey」，
+                                    // 显示规则交给 StatusCard 内部根据 isSuperKeyMode + isSignatureOk 决定徽章组合。
+                                    isSuperKeyMode = isSuperKeyConfigured || superKeyAuthSuccess,
+                                    needsSuperKeyAuth = needsSuperKeyAuth,
+                                    onClickInstall = {
+                                        navigator.navigate(InstallScreenDestination)
+                                    },
+                                    onSuperKeyAuth = {
+                                        superKeyDialog.show()
+                                    },
+                                    isSignatureOk = isSignatureOk,
+                                )
+
+                                CiUpdateCard()
+
+                                if (ksudIntegrityStatus == KsudIntegrityStatus.MISMATCH) {
+                                    WarningCard(stringResource(R.string.ksud_integrity_warning))
+                                }
+
+                                if (viewModel.systemStatus.requireNewKernel) {
+                                    WarningCard(
+                                        message = stringResource(R.string.require_kernel_version),
+                                        onClick = { navigator.navigate(InstallScreenDestination) },
+                                    )
+                                }
+                                if (viewModel.systemStatus.requireNewManager) {
+                                    WarningCard(stringResource(R.string.require_manager_version))
+                                }
+                                if (viewModel.systemStatus.showLkmUpdate) {
+                                    WarningCard(
+                                        message = stringResource(R.string.home_lkm_update_available),
+                                        color = MaterialTheme.colorScheme.primary,
+                                        onClick = { navigator.navigate(InstallScreenDestination) },
+                                    )
+                                }
+
+                                if (viewModel.systemStatus.ksuVersion != null && !viewModel.systemStatus.isRootAvailable) {
+                                    WarningCard(
+                                        stringResource(id = R.string.grant_root_failed)
+                                    )
+                                }
+
+                            }
+
+                            if (viewModel.isExtendedDataLoaded) {
+                                val checkUpdate = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
+                                    .getBoolean("check_update", true)
+                                if (checkUpdate) {
+                                    UpdateCard()
+                                }
+
+                                // 信息卡片
+                                InfoCard(
+                                    systemInfo = viewModel.systemInfo,
+                                    isSimpleMode = viewModel.isSimpleMode,
+                                    canReadHookType = viewModel.systemStatus.isManager &&
+                                        viewModel.systemStatus.ksuVersion != null,
+                                    isHideZygiskImplement = viewModel.isHideZygiskImplement,
+                                    isHideMetaModuleImplement = viewModel.isHideMetaModuleImplement,
+                                    isHideSeccompStatus = viewModel.isHideSeccompStatus,
+                                    ksudIntegrityStatus = ksudIntegrityStatus,
+                                    onYukiZygiskClick = { navigator.navigate(ExtensionRuntimeScreenDestination(initialPage = 1)) },
+                                )
+
+                                // 链接卡片
+                                if (!viewModel.isSimpleMode && !viewModel.isHideLinkCard) {
+                                    ElevatedCard(
+                                        colors = getCardColors(MaterialTheme.colorScheme.surfaceContainerLow),
+                                        elevation = getCardElevation(),
+                                    ) {
+                                        ContributionCard()
+                                        HorizontalDivider(
+                                            modifier = Modifier.padding(start = 56.dp, end = 16.dp),
+                                            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f),
+                                        )
+                                        DonateCard()
+                                    }
+                                }
+                            }
+
+                            if (!viewModel.isExtendedDataLoaded) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(24.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    CircularProgressIndicator()
+                                }
+                            }
+
+                            Spacer(Modifier.height(16.dp))
+                        }
                     }
                 }
-
-                Spacer(Modifier.height(16.dp))
             }
         }
     }
@@ -510,11 +537,11 @@ private fun TopBar(
         ),
         actions = {
             if (isDataLoaded) {
-                IconButton(onClick = { navigator.navigate(KasumiConfigScreenDestination) }) {
-                    Icon(Icons.Filled.Tune, contentDescription = stringResource(R.string.kasumi_title))
-                }
                 var showDropdown by remember { mutableStateOf(false) }
                 KsuIsValid {
+                    IconButton(onClick = { navigator.navigate(DiagnosticsScreenDestination) }) {
+                        Icon(Icons.Filled.BugReport, contentDescription = stringResource(R.string.injection_section_diagnostics))
+                    }
                     IconButton(onClick = {
                         showDropdown = true
                     }) {
@@ -754,7 +781,7 @@ private fun StatusCard(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-                    
+
                     // 超级密钥认证按钮
                     IconButton(
                         onClick = onSuperKeyAuth,

@@ -10,6 +10,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -17,6 +21,7 @@ import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.utils.isRouteOnBackStackAsState
 import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 import com.anatdx.yukisu.ui.MainActivity
+import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.YukiIcon
 import com.anatdx.yukisu.ui.activity.util.AppData
 import com.anatdx.yukisu.ui.screen.BottomBarDestination
@@ -49,8 +54,7 @@ fun BottomBar(navController: NavHostController) {
                     val selected by navController.isRouteOnBackStackAsState(destination.direction)
                     val count = when (destination) {
                         BottomBarDestination.SuperUser -> superuserCount
-                        BottomBarDestination.Module -> moduleCount
-                        BottomBarDestination.Plugin -> pluginCount
+                        BottomBarDestination.Module -> moduleCount + pluginCount
                         else -> 0
                     }
                     NavigationBarItem(
@@ -68,16 +72,24 @@ fun BottomBar(navController: NavHostController) {
                         icon = {
                             BadgedBox(badge = {
                                 if (count > 0 && !settings.isHideOtherInfo) {
+                                    val countDescription = pluralStringResource(R.plurals.ui_navigation_item_count, count, count)
                                     Badge(
-                                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                                    ) { Text(count.toString()) }
+                                        modifier = Modifier.semantics { contentDescription = countDescription },
+                                        containerColor = MaterialTheme.colorScheme.primary,
+                                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                                    ) {
+                                        Text(if (count > 99) "99+" else count.toString(),
+                                            modifier = Modifier.clearAndSetSemantics {})
+                                    }
                                 }
                             }) {
-                                YukiIcon(
-                                    if (selected) destination.iconSelected else destination.iconNotSelected,
-                                    contentDescription = null,
-                                )
+                                Box(Modifier.size(32.dp), contentAlignment = Alignment.Center) {
+                                    YukiIcon(
+                                        if (selected) destination.iconSelected else destination.iconNotSelected,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(24.dp),
+                                    )
+                                }
                             }
                         },
                         label = { Text(stringResource(destination.label), style = MaterialTheme.typography.labelMedium) },

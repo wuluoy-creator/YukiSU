@@ -302,6 +302,16 @@ private fun RepositoryTopAppBar(
 @Destination<RootGraph>
 @Composable
 fun ModuleRepositoryScreen(navigator: DestinationsNavigator) {
+    ModuleRepositoryPage(navigator)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun ModuleRepositoryPage(
+    navigator: DestinationsNavigator,
+    workspace: Boolean = false,
+    sectionNavigation: @Composable () -> Unit = {},
+) {
     val viewModel = viewModel<ModuleRepositoryViewModel>()
     val sources by viewModel.sources.collectAsState()
     val catalog by viewModel.catalog.collectAsState()
@@ -319,10 +329,11 @@ fun ModuleRepositoryScreen(navigator: DestinationsNavigator) {
 
     Scaffold(
         topBar = {
+            Column {
             SearchAppBar(
                 title = {
                     Text(
-                        stringResource(R.string.module_repositories),
+                        stringResource(if (workspace) R.string.nav_repository else R.string.module_repositories),
                         fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
                     )
                 },
@@ -340,6 +351,8 @@ fun ModuleRepositoryScreen(navigator: DestinationsNavigator) {
                 },
                 scrollBehavior = scrollBehavior,
             )
+                sectionNavigation()
+            }
         },
         contentWindowInsets = WindowInsets.safeDrawing.only(
             WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom

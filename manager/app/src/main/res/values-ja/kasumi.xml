@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kasumi_advanced">詳細</string>
     <string name="kasumi_debug">デバッグログ</string>
     <string name="kasumi_filter_all">すべて</string>
     <string name="kasumi_fs_type_erofs">EROFS イメージ</string>
     <string name="kasumi_fs_type_ext4">EXT4 イメージ</string>
     <string name="kasumi_fs_type_title">ストレージファイルシステム</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">一般</string>
     <string name="kasumi_info_active_mounts">アクティブなマウント:</string>
     <string name="kasumi_info_kernel">カーネル</string>
     <string name="kasumi_info_mount_base">マウントベース</string>
@@ -73,10 +71,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">未マウント</string>
     <string name="kasumi_system_info">システム情報</string>
-    <string name="kasumi_tab_logs">ログ</string>
-    <string name="kasumi_tab_rules">ルール</string>
-    <string name="kasumi_tab_settings">設定</string>
-    <string name="kasumi_tab_status">ステータス</string>
     <string name="kasumi_tempdir">一時マウントポイント</string>
     <string name="kasumi_tempdir_desc">一時マウントのベースパス（空欄で自動）</string>
     <string name="kasumi_title">Kasumi 設定</string>

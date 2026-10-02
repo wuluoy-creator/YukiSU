@@ -227,9 +227,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">Pag-aayos/pag-install ng LKM</string>
-    <string name="configuration">I-configure</string>
-    <string name="app_settings">Mga Setting ng Application</string>
-    <string name="tools">Mga Tool</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Hindi nahanap ang application</string>
     <string name="selinux_enabled_toast">Naka-enable ang SELinux</string>
@@ -241,7 +238,6 @@
     <string name="hide_bl_enabled_toast">Naka-enable ang Itago ang Unlock Status, i-reboot para mailapat</string>
     <string name="hide_bl_disabled_toast">Naka-disable ang Itago ang Unlock Status</string>
     <string name="hide_bl_change_failed">Nabigong baguhin ang setting ng Itago ang Unlock Status</string>
-    <string name="advanced_settings">Mga Advanced na Setting</string>
     <string name="appearance_settings">I-customize ang toolbar</string>
     <string name="back">Bumalik</string>
     <string name="background_set_success">Matagumpay na naitakda ang background</string>
@@ -326,7 +322,6 @@
     <string name="author">May-akda</string>
     <string name="description">Paglalarawan</string>
     <string name="log_viewer_title">Log Viewer</string>
-    <string name="log_viewer_back">Bumalik</string>
     <string name="log_viewer_search">Maghanap</string>
     <string name="log_viewer_clear_logs">I-clear ang mga Log</string>
     <string name="log_viewer_clear_logs_confirm">Sigurado ka bang gusto mong i-clear ang napiling log file? Hindi na maibabalik ang aksyong ito</string>
@@ -343,8 +338,6 @@
     <string name="log_viewer_raw_log">Raw Log</string>
     <string name="log_viewer_search_placeholder">Maghanap ayon sa UID, command, o mga detalye…</string>
     <string name="log_viewer_clear_search">I-clear ang paghahanap</string>
-    <string name="log_viewer_view_logs">Tingnan ang mga Usage Log</string>
-    <string name="log_viewer_view_logs_summary">Tingnan ang mga superuser access log ng KernelSU</string>
     <string name="log_viewer_exclude_subtypes">Ibukod ang mga sub-type</string>
     <string name="log_viewer_exclude_current_app">Kasalukuyang App</string>
     <string name="log_viewer_exclude_viewer_refresh">Self-Refresh ng Log Viewer</string>
@@ -362,7 +355,6 @@
     <string name="log_viewer_all_logs_loaded">Naipakita na ang lahat ng log</string>
     <string name="incompatible_kernel_msg">Hindi tugma ang kasalukuyang manager sa kernel na ito! Mangyaring i-upgrade ang kernel sa version %2$d o mas mataas (kasalukuyang %1$d)</string>
     <string name="umount_path_manager">Pamamahala ng Umount Path</string>
-    <string name="umount_path_manager_summary">Pamahalaan ang mga unmount path ng kernel</string>
     <string name="umount_path_restart_notice">Kailangan ng reboot para magkabisa ang mga pagbabago. Ilalapat ng system ang bagong configuration sa susunod na boot</string>
     <string name="add_umount_path">Magdagdag ng Umount Path</string>
     <string name="mount_path">Mount Path</string>
@@ -634,7 +626,6 @@
     <string name="predictive_back_gesture">Predictive na galaw ng pagbabalik</string>
     <string name="predictive_back_gesture_summary">I-preview ang nakaraang pahina kasabay ng galaw ng pagbabalik. Naka-off bilang default</string>
     <string name="feature_control">Kontrol ng mga tampok</string>
-    <string name="feature_control_summary">Pamahalaan ang mga tampok na suportado ng kasalukuyang kernel.</string>
     <string name="kernelsu_features">Mga tampok ng KernelSU</string>
     <string name="yukisu_features">Mga tampok ng YukiSU</string>
     <string name="module_disabled_by_yukizygisk">Pinagana ang YukiZygisk. Hindi pinagana ang module na ito upang maiwasan ang salungatan</string>

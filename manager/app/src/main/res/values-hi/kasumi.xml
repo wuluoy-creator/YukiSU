@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kasumi_advanced">उन्नत</string>
     <string name="kasumi_debug">डिबग लॉगिंग</string>
     <string name="kasumi_filter_all">सभी</string>
     <string name="kasumi_fs_type_erofs">EROFS छवि</string>
     <string name="kasumi_fs_type_ext4">EXT4 छवि</string>
     <string name="kasumi_fs_type_title">भंडारण फ़ाइल सिस्टम</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">सामान्य</string>
     <string name="kasumi_info_active_mounts">सक्रिय माउंट:</string>
     <string name="kasumi_info_kernel">कर्नेल</string>
     <string name="kasumi_info_mount_base">माउंट आधार</string>
@@ -73,10 +71,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">माउंट नहीं किया गया</string>
     <string name="kasumi_system_info">सिस्टम जानकारी</string>
-    <string name="kasumi_tab_logs">लॉग</string>
-    <string name="kasumi_tab_rules">नियम</string>
-    <string name="kasumi_tab_settings">सेटिंग्स</string>
-    <string name="kasumi_tab_status">स्थिति</string>
     <string name="kasumi_tempdir">अस्थायी माउंट बिंदु</string>
     <string name="kasumi_tempdir_desc">अस्थायी माउंट के लिए आधार पथ (स्वचालित के लिए खाली छोड़ें)</string>
     <string name="kasumi_title">Kasumi कॉन्फ़िगरेशन</string>

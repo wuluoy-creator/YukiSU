@@ -229,9 +229,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">Reparo/instalação do LKM</string>
-    <string name="configuration">Configurar</string>
-    <string name="app_settings">Configurações do aplicativo</string>
-    <string name="tools">Ferramentas</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Aplicativo não encontrado</string>
     <string name="selinux_enabled_toast">SELinux ativado</string>
@@ -243,7 +240,6 @@
     <string name="hide_bl_enabled_toast">Ocultação do status de desbloqueio ativada, reinicie para aplicar</string>
     <string name="hide_bl_disabled_toast">Ocultação do status de desbloqueio desativada</string>
     <string name="hide_bl_change_failed">Falha ao alterar a configuração de ocultação do status de desbloqueio</string>
-    <string name="advanced_settings">Configurações avançadas</string>
     <string name="appearance_settings">Personalizar a barra de ferramentas</string>
     <string name="back">Voltar</string>
     <string name="background_set_success">Plano de fundo definido com sucesso</string>
@@ -328,7 +324,6 @@
     <string name="author">Autor</string>
     <string name="description">Descrição</string>
     <string name="log_viewer_title">Visualizador de registros</string>
-    <string name="log_viewer_back">Voltar</string>
     <string name="log_viewer_search">Pesquisar</string>
     <string name="log_viewer_clear_logs">Limpar registros</string>
     <string name="log_viewer_clear_logs_confirm">Tem certeza de que deseja limpar o arquivo de registro selecionado? Esta ação não pode ser desfeita</string>
@@ -345,8 +340,6 @@
     <string name="log_viewer_raw_log">Registro bruto</string>
     <string name="log_viewer_search_placeholder">Pesquisar por UID, comando ou detalhes…</string>
     <string name="log_viewer_clear_search">Limpar pesquisa</string>
-    <string name="log_viewer_view_logs">Ver registros de uso</string>
-    <string name="log_viewer_view_logs_summary">Ver os registros de acesso de superusuário do KernelSU</string>
     <string name="log_viewer_exclude_subtypes">Excluir subtipos</string>
     <string name="log_viewer_exclude_current_app">Aplicativo atual</string>
     <string name="log_viewer_exclude_viewer_refresh">Autoatualização do visualizador de registros</string>
@@ -364,7 +357,6 @@
     <string name="log_viewer_all_logs_loaded">Todos os registros exibidos</string>
     <string name="incompatible_kernel_msg">O gerenciador atual é incompatível com este kernel! Atualize o kernel para a versão %2$d ou superior (atualmente %1$d)</string>
     <string name="umount_path_manager">Gerenciamento de caminhos de umount</string>
-    <string name="umount_path_manager_summary">Gerenciar os caminhos de desmontagem do kernel</string>
     <string name="umount_path_restart_notice">É necessário reiniciar para que as alterações tenham efeito. O sistema aplicará a nova configuração na próxima inicialização</string>
     <string name="add_umount_path">Adicionar caminho de umount</string>
     <string name="mount_path">Caminho de montagem</string>
@@ -616,7 +608,6 @@
     <string name="predictive_back_gesture">Gesto de voltar preditivo</string>
     <string name="predictive_back_gesture_summary">Visualizar a página anterior durante o gesto de voltar. Desativado por padrão.</string>
     <string name="feature_control">Controle de recursos</string>
-    <string name="feature_control_summary">Gerenciar os recursos compatíveis com o kernel atual.</string>
     <string name="kernelsu_features">Recursos do KernelSU</string>
     <string name="yukisu_features">Recursos do YukiSU</string>
     <string name="module_disabled_by_yukizygisk">O YukiZygisk está ativado. Este módulo foi desativado para evitar conflitos.</string>

@@ -227,9 +227,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM ದುರಸ್ತಿ/ಸ್ಥಾಪನೆ</string>
-    <string name="configuration">ಕಾನ್ಫಿಗರ್ ಮಾಡಿ</string>
-    <string name="app_settings">ಅಪ್ಲಿಕೇಶನ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</string>
-    <string name="tools">ಸಾಧನಗಳು</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">ಅಪ್ಲಿಕೇಶನ್ ಕಂಡುಬಂದಿಲ್ಲ</string>
     <string name="selinux_enabled_toast">SELinux ಸಕ್ರಿಯ</string>
@@ -241,7 +238,6 @@
     <string name="hide_bl_enabled_toast">ಅನ್‌ಲಾಕ್ ಸ್ಥಿತಿ ಮರೆಮಾಡುವಿಕೆ ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ, ಅನ್ವಯಿಸಲು ರೀಬೂಟ್ ಮಾಡಿ</string>
     <string name="hide_bl_disabled_toast">ಅನ್‌ಲಾಕ್ ಸ್ಥಿತಿ ಮರೆಮಾಡುವಿಕೆ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</string>
     <string name="hide_bl_change_failed">ಅನ್‌ಲಾಕ್ ಸ್ಥಿತಿ ಮರೆಮಾಡುವಿಕೆ ಸೆಟ್ಟಿಂಗ್ ಬದಲಾಯಿಸಲು ವಿಫಲವಾಗಿದೆ</string>
-    <string name="advanced_settings">ಸುಧಾರಿತ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</string>
     <string name="appearance_settings">ಟೂಲ್‌ಬಾರ್ ಕಸ್ಟಮೈಸ್ ಮಾಡಿ</string>
     <string name="back">ಹಿಂದೆ</string>
     <string name="background_set_success">ಹಿನ್ನೆಲೆ ಯಶಸ್ವಿಯಾಗಿ ಹೊಂದಿಸಲಾಗಿದೆ</string>
@@ -326,7 +322,6 @@
     <string name="author">ಲೇಖಕ</string>
     <string name="description">ವಿವರಣೆ</string>
     <string name="log_viewer_title">ಲಾಗ್ ವೀಕ್ಷಕ</string>
-    <string name="log_viewer_back">ಹಿಂದೆ</string>
     <string name="log_viewer_search">ಹುಡುಕಿ</string>
     <string name="log_viewer_clear_logs">ಲಾಗ್‌ಗಳನ್ನು ತೆರವುಗೊಳಿಸಿ</string>
     <string name="log_viewer_clear_logs_confirm">ನೀವು ಆಯ್ಕೆಮಾಡಿದ ಲಾಗ್ ಫೈಲ್ ಅನ್ನು ತೆರವುಗೊಳಿಸಲು ಬಯಸುತ್ತೀರಿ ಎಂದು ಖಚಿತವೇ? ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದುಗೊಳಿಸಲಾಗುವುದಿಲ್ಲ</string>
@@ -343,8 +338,6 @@
     <string name="log_viewer_raw_log">ಕಚ್ಚಾ ಲಾಗ್</string>
     <string name="log_viewer_search_placeholder">UID, ಕಮಾಂಡ್, ಅಥವಾ ವಿವರಗಳ ಪ್ರಕಾರ ಹುಡುಕಿ…</string>
     <string name="log_viewer_clear_search">ಹುಡುಕಾಟ ತೆರವುಗೊಳಿಸಿ</string>
-    <string name="log_viewer_view_logs">ಬಳಕೆ ಲಾಗ್‌ಗಳನ್ನು ವೀಕ್ಷಿಸಿ</string>
-    <string name="log_viewer_view_logs_summary">KernelSU ಸೂಪರ್‌ಯೂಸರ್ ಪ್ರವೇಶ ಲಾಗ್‌ಗಳನ್ನು ವೀಕ್ಷಿಸಿ</string>
     <string name="log_viewer_exclude_subtypes">ಉಪ-ಪ್ರಕಾರಗಳನ್ನು ಹೊರತುಪಡಿಸಿ</string>
     <string name="log_viewer_exclude_current_app">ಪ್ರಸ್ತುತ ಆ್ಯಪ್</string>
     <string name="log_viewer_exclude_viewer_refresh">ಲಾಗ್ ವೀಕ್ಷಕ ಸ್ವಯಂ-ರಿಫ್ರೆಶ್</string>
@@ -362,7 +355,6 @@
     <string name="log_viewer_all_logs_loaded">ಎಲ್ಲಾ ಲಾಗ್‌ಗಳನ್ನು ಪ್ರದರ್ಶಿಸಲಾಗಿದೆ</string>
     <string name="incompatible_kernel_msg">ಪ್ರಸ್ತುತ ನಿರ್ವಾಹಕ ಈ ಕರ್ನಲ್‌ನೊಂದಿಗೆ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ! ದಯವಿಟ್ಟು ಕರ್ನಲ್ ಅನ್ನು ಆವೃತ್ತಿ %2$d ಅಥವಾ ಹೆಚ್ಚಿನದಕ್ಕೆ ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ (ಪ್ರಸ್ತುತ %1$d)</string>
     <string name="umount_path_manager">Umount ಪಥ ನಿರ್ವಹಣೆ</string>
-    <string name="umount_path_manager_summary">ಕರ್ನಲ್ ಅನ್‌ಮೌಂಟ್ ಪಥಗಳನ್ನು ನಿರ್ವಹಿಸಿ</string>
     <string name="umount_path_restart_notice">ಬದಲಾವಣೆಗಳು ಜಾರಿಗೆ ಬರಲು ರೀಬೂಟ್ ಅಗತ್ಯವಿದೆ. ಸಿಸ್ಟಂ ಮುಂದಿನ ಬೂಟ್‌ನಲ್ಲಿ ಹೊಸ ಕಾನ್ಫಿಗರೇಶನ್ ಅನ್ನು ಅನ್ವಯಿಸುತ್ತದೆ</string>
     <string name="add_umount_path">Umount ಪಥ ಸೇರಿಸಿ</string>
     <string name="mount_path">ಮೌಂಟ್ ಪಥ</string>
@@ -634,7 +626,6 @@
     <string name="predictive_back_gesture">ಮುನ್ಸೂಚಕ ಹಿಂದಿರುಗುವ ಗೆಸ್ಚರ್</string>
     <string name="predictive_back_gesture_summary">ಹಿಂದಿರುಗುವ ಗೆಸ್ಚರ್‌ನೊಂದಿಗೆ ಹಿಂದಿನ ಪುಟದ ಪೂರ್ವವೀಕ್ಷಣೆ ತೋರಿಸಿ. ಪೂರ್ವನಿಯೋಜಿತವಾಗಿ ಆಫ್</string>
     <string name="feature_control">ವೈಶಿಷ್ಟ್ಯ ನಿಯಂತ್ರಣ</string>
-    <string name="feature_control_summary">ಪ್ರಸ್ತುತ ಕರ್ನಲ್ ಬೆಂಬಲಿಸುವ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ನಿರ್ವಹಿಸಿ.</string>
     <string name="kernelsu_features">KernelSU ವೈಶಿಷ್ಟ್ಯಗಳು</string>
     <string name="yukisu_features">YukiSU ವೈಶಿಷ್ಟ್ಯಗಳು</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk ಸಕ್ರಿಯವಾಗಿದೆ. ಸಂಘರ್ಷ ತಡೆಯಲು ಈ ಮಾಡ್ಯೂಲ್ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</string>

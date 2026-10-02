@@ -227,9 +227,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">Sửa chữa/cài đặt LKM</string>
-    <string name="configuration">Cấu hình</string>
-    <string name="app_settings">Cài đặt ứng dụng</string>
-    <string name="tools">Công cụ</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Không tìm thấy ứng dụng</string>
     <string name="selinux_enabled_toast">SELinux đã bật</string>
@@ -241,7 +238,6 @@
     <string name="hide_bl_enabled_toast">Đã bật ẩn trạng thái mở khóa, khởi động lại để áp dụng</string>
     <string name="hide_bl_disabled_toast">Đã tắt ẩn trạng thái mở khóa</string>
     <string name="hide_bl_change_failed">Không thể thay đổi cài đặt ẩn trạng thái mở khóa</string>
-    <string name="advanced_settings">Cài đặt nâng cao</string>
     <string name="appearance_settings">Cài đặt giao diện</string>
     <string name="back">Trở lại</string>
     <string name="background_set_success">Đã cài đặt hình nền thành công</string>
@@ -326,7 +322,6 @@
     <string name="author">Tác giả</string>
     <string name="description">Mô tả</string>
     <string name="log_viewer_title">Trình xem nhật ký</string>
-    <string name="log_viewer_back">Trở lại</string>
     <string name="log_viewer_search">Tìm kiếm</string>
     <string name="log_viewer_clear_logs">Xoá nhật ký</string>
     <string name="log_viewer_clear_logs_confirm">Bạn có chắc chắn muốn xóa tệp nhật ký đã chọn không? Thao tác này không thể hoàn tác</string>
@@ -343,8 +338,6 @@
     <string name="log_viewer_raw_log">Nhật ký thô</string>
     <string name="log_viewer_search_placeholder">Tìm kiếm theo UID, lệnh hoặc chi tiết…</string>
     <string name="log_viewer_clear_search">Xoá tìm kiếm</string>
-    <string name="log_viewer_view_logs">Xem nhật ký sử dụng</string>
-    <string name="log_viewer_view_logs_summary">Xem nhật ký truy cập Superuser</string>
     <string name="log_viewer_exclude_subtypes">Loại trừ các phân loại</string>
     <string name="log_viewer_exclude_current_app">Ứng dụng hiện tại</string>
     <string name="log_viewer_exclude_viewer_refresh">Tự làm mới trình xem nhật ký</string>
@@ -362,7 +355,6 @@
     <string name="log_viewer_all_logs_loaded">Tất cả nhật ký đã được hiển thị</string>
     <string name="incompatible_kernel_msg">Trình quản lý hiện tại không tương thích với Kernel này! Vui lòng nâng cấp Kernel lên phiên bản %2$d hoặc cao hơn (hiện tại là %1$d)</string>
     <string name="umount_path_manager">Quản lý Đường dẫn Umount</string>
-    <string name="umount_path_manager_summary">Quản lý Đường dẫn Kernel Umount</string>
     <string name="umount_path_restart_notice">Cần khởi động lại để các thay đổi có hiệu lực. Hệ thống sẽ áp dụng cấu hình mới vào lần khởi động tiếp theo</string>
     <string name="add_umount_path">Thêm Đường dẫn Umount</string>
     <string name="mount_path">Đường dẫn Mount</string>
@@ -634,7 +626,6 @@
     <string name="predictive_back_gesture">Cử chỉ quay lại dự đoán</string>
     <string name="predictive_back_gesture_summary">Xem trước trang trước theo cử chỉ quay lại. Mặc định tắt</string>
     <string name="feature_control">Điều khiển tính năng</string>
-    <string name="feature_control_summary">Quản lý các tính năng được nhân hiện tại hỗ trợ.</string>
     <string name="kernelsu_features">Tính năng KernelSU</string>
     <string name="yukisu_features">Tính năng YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk đã bật. Mô-đun này bị tắt để tránh xung đột</string>

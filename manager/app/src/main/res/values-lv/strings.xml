@@ -229,9 +229,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM labošana/instalēšana</string>
-    <string name="configuration">Konfigurēt</string>
-    <string name="app_settings">Lietotnes iestatījumi</string>
-    <string name="tools">Rīki</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Lietotne nav atrasta</string>
     <string name="selinux_enabled_toast">SELinux iespējots</string>
@@ -243,7 +240,6 @@
     <string name="hide_bl_enabled_toast">Atbloķēšanas statusa slēpšana iespējota, restartējiet, lai lietotu</string>
     <string name="hide_bl_disabled_toast">Atbloķēšanas statusa slēpšana atspējota</string>
     <string name="hide_bl_change_failed">Neizdevās mainīt atbloķēšanas statusa slēpšanas iestatījumu</string>
-    <string name="advanced_settings">Papildu iestatījumi</string>
     <string name="appearance_settings">Pielāgot rīkjoslu</string>
     <string name="back">Atpakaļ</string>
     <string name="background_set_success">Fons veiksmīgi iestatīts</string>
@@ -328,7 +324,6 @@
     <string name="author">Autors</string>
     <string name="description">Apraksts</string>
     <string name="log_viewer_title">Žurnālu skatītājs</string>
-    <string name="log_viewer_back">Atpakaļ</string>
     <string name="log_viewer_search">Meklēt</string>
     <string name="log_viewer_clear_logs">Notīrīt žurnālus</string>
     <string name="log_viewer_clear_logs_confirm">Vai tiešām vēlaties notīrīt atlasīto žurnāla failu? Šo darbību nevar atsaukt</string>
@@ -345,8 +340,6 @@
     <string name="log_viewer_raw_log">Neapstrādāts žurnāls</string>
     <string name="log_viewer_search_placeholder">Meklēt pēc UID, komandas vai detaļām…</string>
     <string name="log_viewer_clear_search">Notīrīt meklēšanu</string>
-    <string name="log_viewer_view_logs">Skatīt lietošanas žurnālus</string>
-    <string name="log_viewer_view_logs_summary">Skatīt KernelSU superlietotāja piekļuves žurnālus</string>
     <string name="log_viewer_exclude_subtypes">Izslēgt apakštipus</string>
     <string name="log_viewer_exclude_current_app">Pašreizējā lietotne</string>
     <string name="log_viewer_exclude_viewer_refresh">Žurnālu skatītāja automātiskā atjaunošana</string>
@@ -364,7 +357,6 @@
     <string name="log_viewer_all_logs_loaded">Visi žurnāli parādīti</string>
     <string name="incompatible_kernel_msg">Pašreizējais pārvaldnieks nav saderīgs ar šo kodolu! Lūdzu, atjauniniet kodolu uz versiju %2$d vai jaunāku (pašreiz %1$d)</string>
     <string name="umount_path_manager">Paaugstināta ceļa pārvaldība</string>
-    <string name="umount_path_manager_summary">Pārvaldīt kodola atmontēšanas ceļus</string>
     <string name="umount_path_restart_notice">Lai izmaiņas stātos spēkā, nepieciešama restartēšana. Sistēma lietos jauno konfigurāciju nākamajā sāknēšanā</string>
     <string name="add_umount_path">Pievienot umount ceļu</string>
     <string name="mount_path">Montēšanas ceļš</string>
@@ -618,7 +610,6 @@
     <string name="predictive_back_gesture">Paredzošais atpakaļžests</string>
     <string name="predictive_back_gesture_summary">Atgriežoties priekšskatīt iepriekšējo lapu atbilstoši žestam. Pēc noklusējuma izslēgts.</string>
     <string name="feature_control">Funkciju pārvaldība</string>
-    <string name="feature_control_summary">Pārvaldīt pašreizējā kodola atbalstītās funkcijas.</string>
     <string name="kernelsu_features">KernelSU funkcijas</string>
     <string name="yukisu_features">YukiSU funkcijas</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk ir iespējots; šis modulis atspējots, lai novērstu konfliktus</string>

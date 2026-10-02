@@ -227,9 +227,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM bərpası/quraşdırılması</string>
-    <string name="configuration">Konfiqurasiya et</string>
-    <string name="app_settings">Tətbiq Ayarları</string>
-    <string name="tools">Alətlər</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Tətbiq tapılmadı</string>
     <string name="selinux_enabled_toast">SELinux Aktivdir</string>
@@ -241,7 +238,6 @@
     <string name="hide_bl_enabled_toast">Kilid açılma statusunu gizlətmə aktivləşdirildi, tətbiq üçün yenidən başladın</string>
     <string name="hide_bl_disabled_toast">Kilid açılma statusunu gizlətmə deaktiv edildi</string>
     <string name="hide_bl_change_failed">Kilid açılma statusunu gizlətmə ayarı dəyişdirilə bilmədi</string>
-    <string name="advanced_settings">Qabaqcıl Ayarlar</string>
     <string name="appearance_settings">Alət panelini fərdiləşdir</string>
     <string name="back">Geri</string>
     <string name="background_set_success">Fon uğurla təyin edildi</string>
@@ -326,7 +322,6 @@
     <string name="author">Müəllif</string>
     <string name="description">Təsvir</string>
     <string name="log_viewer_title">Jurnal görüntüləyicisi</string>
-    <string name="log_viewer_back">Geri</string>
     <string name="log_viewer_search">Axtar</string>
     <string name="log_viewer_clear_logs">Jurnalları Təmizlə</string>
     <string name="log_viewer_clear_logs_confirm">Seçilmiş jurnal faylını təmizləmək istədiyinizə əminsiniz? Bu əməliyyat geri qaytarıla bilməz</string>
@@ -343,8 +338,6 @@
     <string name="log_viewer_raw_log">Xam Jurnal</string>
     <string name="log_viewer_search_placeholder">UID, əmr və ya təfərrüata görə axtar…</string>
     <string name="log_viewer_clear_search">Axtarışı təmizlə</string>
-    <string name="log_viewer_view_logs">İstifadə Jurnallarına Bax</string>
-    <string name="log_viewer_view_logs_summary">KernelSU superistifadəçi giriş jurnallarına bax</string>
     <string name="log_viewer_exclude_subtypes">Alt növləri istisna et</string>
     <string name="log_viewer_exclude_current_app">Cari Tətbiq</string>
     <string name="log_viewer_exclude_viewer_refresh">Jurnal göstəricisinin öz-özünə yenilənməsi</string>
@@ -362,7 +355,6 @@
     <string name="log_viewer_all_logs_loaded">Bütün jurnallar göstərildi</string>
     <string name="incompatible_kernel_msg">Cari menecer bu nüvə ilə uyğun deyil! Zəhmət olmasa nüvəni %2$d və ya daha yüksək versiyaya yeniləyin (hazırda %1$d)</string>
     <string name="umount_path_manager">Ayırma Yolu İdarəetməsi</string>
-    <string name="umount_path_manager_summary">Nüvə ayırma yollarını idarə edin</string>
     <string name="umount_path_restart_notice">Dəyişikliklərin qüvvəyə minməsi üçün yenidən başlatma lazımdır. Sistem yeni konfiqurasiyanı növbəti yüklənmədə tətbiq edəcək</string>
     <string name="add_umount_path">Ayırma Yolu Əlavə Et</string>
     <string name="mount_path">Bağlama Yolu</string>
@@ -616,7 +608,6 @@
     <string name="predictive_back_gesture">Proqnozlaşdırılan geri jesti</string>
     <string name="predictive_back_gesture_summary">Geri jestinə uyğun olaraq əvvəlki səhifənin önbaxışını göstərir. Standart olaraq söndürülüb</string>
     <string name="feature_control">Funksiyaların idarə edilməsi</string>
-    <string name="feature_control_summary">Cari nüvənin dəstəklədiyi funksiyaları idarə edir.</string>
     <string name="kernelsu_features">KernelSU funksiyaları</string>
     <string name="yukisu_features">YukiSU funksiyaları</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk aktivdir. Ziddiyyətin qarşısını almaq üçün bu modul söndürülüb</string>

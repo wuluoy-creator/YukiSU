@@ -1,23 +1,29 @@
 package ui.screen.yukizygisk
 
 import android.util.Log
-import androidx.compose.foundation.background
+import android.content.res.Configuration
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -33,46 +39,45 @@ import androidx.compose.material.icons.outlined.Link
 import androidx.compose.material.icons.outlined.TaskAlt
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material.icons.outlined.Warning
-import androidx.compose.material3.ButtonGroupDefaults
-import androidx.compose.material3.Card
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.PrimaryScrollableTabRow
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.ToggleButton
+import androidx.compose.material3.Tab
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
@@ -81,17 +86,17 @@ import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.YukiIcon
 import com.anatdx.yukisu.ui.component.YukiAlertDialog
 import com.anatdx.yukisu.ui.theme.CardConfig
-import com.anatdx.yukisu.ui.theme.ExpressiveListGroupMinHeight
+import com.anatdx.yukisu.ui.theme.UtilityPreviewTheme
 import com.anatdx.yukisu.ui.util.rememberSnackbarController
+import com.anatdx.yukisu.ui.util.LocalSnackbarHost
 import com.anatdx.yukisu.ui.util.execKsud
 import com.anatdx.yukisu.ui.util.getYukiZygiskStatusJson
 import com.anatdx.yukisu.ui.util.ksudReadString
-import com.anatdx.yukisu.ui.theme.getCardColors
-import com.anatdx.yukisu.ui.theme.getCardElevation
-import com.anatdx.yukisu.ui.theme.isExpressiveUi
 import com.topjohnwu.superuser.io.SuFile
 import com.topjohnwu.superuser.io.SuFileInputStream
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -104,6 +109,12 @@ import ui.screen.moreSettings.component.SwitchSettingItem
 
 private const val TAG = "YukiZygiskScreen"
 private val yzConfigWriteMutex = Mutex()
+
+enum class InjectionSection {
+    Overview,
+    Configuration,
+    Diagnostics,
+}
 
 data class YzConfig(
     val yukilinker: Boolean = true,
@@ -516,15 +527,62 @@ private fun zygiskModuleState(
 @Composable
 fun YukiZygiskScreen(navigator: DestinationsNavigator) {
     val topAppBarState = rememberTopAppBarState()
-    val scrollBehavior = if (isExpressiveUi) {
-        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-    } else {
-        TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
+    var section by rememberSaveable { mutableStateOf(InjectionSection.Overview) }
+    var saving by remember { mutableStateOf(false) }
+    BackHandler(saving) {}
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            YukiZygiskTopBar(
+                onBack = { if (!saving) navigator.popBackStack() },
+                backEnabled = !saving,
+                scrollBehavior = scrollBehavior,
+            )
+        },
+        contentWindowInsets = WindowInsets.safeDrawing,
+    ) { padding ->
+        Column(Modifier.fillMaxSize().padding(padding).consumeWindowInsets(padding)) {
+            PrimaryScrollableTabRow(
+                selectedTabIndex = section.ordinal,
+                edgePadding = 0.dp,
+                containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+            ) {
+                InjectionSection.entries.forEach { item ->
+                    Tab(
+                        selected = section == item,
+                        enabled = !saving,
+                        onClick = { section = item },
+                        text = { Text(stringResource(when (item) {
+                            InjectionSection.Overview -> R.string.injection_section_overview
+                            InjectionSection.Configuration -> R.string.injection_section_configuration
+                            InjectionSection.Diagnostics -> R.string.injection_section_diagnostics
+                        })) },
+                    )
+                }
+            }
+            InjectionWorkspace(section, onSavingChanged = { saving = it })
+        }
     }
+}
+
+/** The host owns its app bar/insets; non-scrolling content also uses its gutters/snackbar. */
+@Composable
+fun InjectionWorkspace(
+    section: InjectionSection,
+    scrollable: Boolean = true,
+    onSavingChanged: (Boolean) -> Unit = {},
+) {
     val scope = rememberCoroutineScope()
-    val snackBarHost = rememberSnackbarController()
+    val localSnackbar = rememberSnackbarController()
+    val snackBarHost = if (scrollable) localSnackbar else LocalSnackbarHost.current
 
     var config by remember { mutableStateOf(YzConfig()) }
+    var configLoaded by remember { mutableStateOf(false) }
+    var saving by remember { mutableStateOf(false) }
+    val savingCallback by rememberUpdatedState(onSavingChanged)
+    SideEffect { savingCallback(saving) }
+    DisposableEffect(Unit) { onDispose { savingCallback(false) } }
     var monitoredZygotes by remember { mutableStateOf<List<ZygoteMonitorEntry>>(emptyList()) }
     var zygiskModules by remember { mutableStateOf<List<ModuleDisplayEntry>>(emptyList()) }
     var nativeModules by remember { mutableStateOf<List<NativeModuleEntry>>(emptyList()) }
@@ -532,12 +590,17 @@ fun YukiZygiskScreen(navigator: DestinationsNavigator) {
     var crashEvidence by remember { mutableStateOf<List<CrashEvidence>>(emptyList()) }
     var nativeMonitorMode by remember { mutableStateOf(NativeMonitorMode.Module) }
     var monitorDialog by remember { mutableStateOf<MonitorDialogState?>(null) }
+    val overviewScrollState = rememberScrollState()
+    val configurationScrollState = rememberScrollState()
+    val diagnosticsScrollState = rememberScrollState()
 
     LaunchedEffect(Unit) {
         config = readYzConfig()
+        configLoaded = true
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(section) {
+        if (section != InjectionSection.Overview) return@LaunchedEffect
         val moduleNameCache = mutableMapOf<String, String>()
         val moduleAbiCache = mutableMapOf<String, List<String>>()
         while (true) {
@@ -597,16 +660,25 @@ fun YukiZygiskScreen(navigator: DestinationsNavigator) {
 
     val saveFailedMessage = stringResource(R.string.yukizygisk_config_save_failed)
     fun save(newCfg: YzConfig) {
+        if (!configLoaded || saving) return
+        saving = true
         config = newCfg
-        scope.launch {
-            if (!writeYzConfig(newCfg)) {
-                config = readYzConfig()
-                snackBarHost.showSnackbar(saveFailedMessage)
+        // Enter the protected write before a host disposal can cancel a queued launch.
+        scope.launch(start = CoroutineStart.UNDISPATCHED) {
+            val saved = withContext(NonCancellable) {
+                try {
+                    val success = writeYzConfig(newCfg)
+                    if (!success) config = readYzConfig()
+                    success
+                } finally {
+                    saving = false
+                }
             }
+            if (!saved) snackBarHost.showSnackbar(saveFailedMessage)
         }
     }
 
-    monitorDialog?.let { dialog ->
+    monitorDialog?.takeIf { section == InjectionSection.Overview }?.let { dialog ->
         YukiAlertDialog(
             onDismissRequest = { monitorDialog = null },
             title = { Text(dialog.title) },
@@ -619,187 +691,185 @@ fun YukiZygiskScreen(navigator: DestinationsNavigator) {
         )
     }
 
-    Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            YukiZygiskTopBar(
-                onBack = { navigator.popBackStack() },
-                scrollBehavior = scrollBehavior,
-            )
-        },
-        snackbarHost = { SnackbarHost(snackBarHost.hostState) },
-        contentWindowInsets = WindowInsets.safeDrawing.only(
-            WindowInsetsSides.Top + WindowInsetsSides.Horizontal
-        ),
-    ) { padding ->
+    Box(if (scrollable) Modifier.fillMaxSize() else Modifier.fillMaxWidth()) {
         Column(
-            modifier = Modifier
+            modifier = if (scrollable) Modifier
                 .fillMaxSize()
-                .padding(padding)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(when (section) {
+                    InjectionSection.Overview -> overviewScrollState
+                    InjectionSection.Configuration -> configurationScrollState
+                    InjectionSection.Diagnostics -> diagnosticsScrollState
+                })
                 .padding(horizontal = 16.dp)
-                .padding(top = 8.dp),
+                .padding(top = 8.dp, bottom = 8.dp)
+                else Modifier.fillMaxWidth(),
         ) {
-            SettingsCard(title = stringResource(R.string.yukizygisk_injected_zygotes)) {
-                if (monitoredZygotes.isEmpty()) {
-                    EmptyMonitorGroup(stringResource(R.string.yukizygisk_no_zygotes))
-                } else {
-                    monitoredZygotes.forEach { zygote ->
-                        val dialog = zygoteDialog(zygote)
-                        ZygoteMonitorRow(zygote) {
-                            monitorDialog = dialog
+            if (saving) {
+                LinearProgressIndicator(
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp).height(2.dp),
+                )
+            }
+            if (section == InjectionSection.Overview) {
+                MonitorCard(title = stringResource(R.string.yukizygisk_injected_zygotes)) {
+                    if (monitoredZygotes.isEmpty()) {
+                        EmptyMonitorGroup(stringResource(R.string.yukizygisk_no_zygotes))
+                    } else {
+                        monitoredZygotes.forEachIndexed { index, zygote ->
+                            if (index > 0) MonitorDivider()
+                            val dialog = zygoteDialog(zygote)
+                            ZygoteMonitorRow(zygote) {
+                                monitorDialog = dialog
+                            }
                         }
                     }
                 }
-            }
 
-            MonitorCard(title = stringResource(R.string.yukizygisk_modules)) {
-                if (zygiskModules.isEmpty()) {
-                    EmptyMonitorGroup(stringResource(R.string.yukizygisk_no_modules))
-                } else {
-                    zygiskModules.forEach { module ->
-                        val dialog = zygiskModuleDialog(module)
-                        ZygiskModuleRow(module) { monitorDialog = dialog }
+                MonitorCard(title = stringResource(R.string.yukizygisk_modules)) {
+                    if (zygiskModules.isEmpty()) {
+                        EmptyMonitorGroup(stringResource(R.string.yukizygisk_no_modules))
+                    } else {
+                        zygiskModules.forEachIndexed { index, module ->
+                            if (index > 0) MonitorDivider()
+                            val dialog = zygiskModuleDialog(module)
+                            ZygiskModuleRow(module) { monitorDialog = dialog }
+                        }
                     }
                 }
-            }
 
-            MonitorCard(
-                title = stringResource(R.string.yukizygisk_native_injections),
-                trailing = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.clickable {
-                            nativeMonitorMode = when (nativeMonitorMode) {
-                                NativeMonitorMode.Module -> NativeMonitorMode.Process
-                                NativeMonitorMode.Process -> NativeMonitorMode.Module
-                            }
-                        },
-                    ) {
-                        Text(
-                            when (nativeMonitorMode) {
-                                NativeMonitorMode.Module ->
-                                    stringResource(R.string.yukizygisk_native_mode_module)
-                                NativeMonitorMode.Process ->
-                                    stringResource(R.string.yukizygisk_native_mode_process)
-                            },
-                            style = MaterialTheme.typography.bodySmall,
-                            fontWeight = FontWeight.Light,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                        IconButton(
+                MonitorCard(
+                    title = stringResource(R.string.yukizygisk_native_injections),
+                    trailing = {
+                        NativeMonitorModeToggle(
+                            mode = nativeMonitorMode,
                             onClick = {
                                 nativeMonitorMode = when (nativeMonitorMode) {
                                     NativeMonitorMode.Module -> NativeMonitorMode.Process
                                     NativeMonitorMode.Process -> NativeMonitorMode.Module
                                 }
                             },
-                            modifier = Modifier.size(36.dp),
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.SwapHoriz,
-                                contentDescription = null,
-                                modifier = Modifier.size(20.dp),
-                            )
-                        }
+                        )
+                    },
+                ) {
+                    val moduleRows = remember(nativeModules, nativeInjections, crashEvidence) {
+                        buildNativeModuleRows(nativeModules, nativeInjections, crashEvidence)
                     }
-                },
-            ) {
-                val moduleRows = remember(nativeModules, nativeInjections, crashEvidence) {
-                    buildNativeModuleRows(nativeModules, nativeInjections, crashEvidence)
-                }
-                val processRows = remember(nativeInjections) {
-                    nativeInjections
-                        .groupBy { it.pid to it.process }
-                        .map { (_, rows) ->
-                            val first = rows.first()
-                            val state = aggregateMonitorState(rows.map { it.state })
-                            NativeProcessEntry(
-                                pid = first.pid,
-                                process = nativeProcessDisplayName(
-                                    first.process.ifEmpty { first.target }
-                                ),
-                                abi = first.abi,
-                                modules = rows.map { it.module }.distinct(),
-                                state = state,
-                            )
-                        }
-                        .sortedWith(compareBy<NativeProcessEntry> { it.process }.thenBy { it.pid })
-                }
+                    val processRows = remember(nativeInjections) {
+                        nativeInjections
+                            .groupBy { it.pid to it.process }
+                            .map { (_, rows) ->
+                                val first = rows.first()
+                                val state = aggregateMonitorState(rows.map { it.state })
+                                NativeProcessEntry(
+                                    pid = first.pid,
+                                    process = nativeProcessDisplayName(
+                                        first.process.ifEmpty { first.target }
+                                    ),
+                                    abi = first.abi,
+                                    modules = rows.map { it.module }.distinct(),
+                                    state = state,
+                                )
+                            }
+                            .sortedWith(compareBy<NativeProcessEntry> { it.process }.thenBy { it.pid })
+                    }
 
-                if (nativeMonitorMode == NativeMonitorMode.Module && moduleRows.isEmpty()) {
-                    EmptyMonitorGroup(stringResource(R.string.yukizygisk_no_native_modules))
-                } else if (nativeMonitorMode == NativeMonitorMode.Process && processRows.isEmpty()) {
-                    EmptyMonitorGroup(stringResource(R.string.yukizygisk_no_native_injections))
-                } else if (nativeMonitorMode == NativeMonitorMode.Module) {
-                    moduleRows.forEach { module ->
-                        val dialog = nativeModuleDialog(module)
-                        NativeModuleMonitorRow(module) {
-                            monitorDialog = dialog
+                    if (nativeMonitorMode == NativeMonitorMode.Module && moduleRows.isEmpty()) {
+                        EmptyMonitorGroup(stringResource(R.string.yukizygisk_no_native_modules))
+                    } else if (nativeMonitorMode == NativeMonitorMode.Process && processRows.isEmpty()) {
+                        EmptyMonitorGroup(stringResource(R.string.yukizygisk_no_native_injections))
+                    } else if (nativeMonitorMode == NativeMonitorMode.Module) {
+                        moduleRows.forEachIndexed { index, module ->
+                            if (index > 0) MonitorDivider()
+                            val dialog = nativeModuleDialog(module)
+                            NativeModuleMonitorRow(module) {
+                                monitorDialog = dialog
+                            }
                         }
-                    }
-                } else {
-                    processRows.forEach { process ->
-                        val dialog = nativeProcessDialog(process)
-                        NativeProcessMonitorRow(process) {
-                            monitorDialog = dialog
+                    } else {
+                        processRows.forEachIndexed { index, process ->
+                            if (index > 0) MonitorDivider()
+                            val dialog = nativeProcessDialog(process)
+                            NativeProcessMonitorRow(process) {
+                                monitorDialog = dialog
+                            }
                         }
                     }
                 }
             }
 
-            SettingsCard(title = stringResource(R.string.yukizygisk_module_loading)) {
-                SwitchSettingItem(
-                    icon = Icons.Outlined.VisibilityOff,
-                    title = stringResource(R.string.yukizygisk_anonymous_memory_title),
-                    summary = stringResource(R.string.yukizygisk_anonymous_memory_summary),
-                    checked = config.anonymousMemory,
-                    groupPosition = MoreSettingsItemPosition.First,
-                    onChange = { save(config.copy(anonymousMemory = it)) },
-                )
-                SwitchSettingItem(
-                    icon = Icons.Outlined.Link,
-                    title = stringResource(R.string.yukizygisk_yukilinker_title),
-                    summary = stringResource(R.string.yukizygisk_yukilinker_summary),
-                    checked = config.yukilinker,
-                    groupPosition = MoreSettingsItemPosition.Middle,
-                    onChange = { save(config.copy(yukilinker = it)) },
-                )
-                SwitchSettingItem(
-                    icon = Icons.Filled.Bolt,
-                    title = stringResource(R.string.yukizygisk_early_load_title),
-                    summary = stringResource(R.string.yukizygisk_early_load_summary),
-                    checked = config.earlyLoad,
-                    groupPosition = MoreSettingsItemPosition.Middle,
-                    onChange = { save(config.copy(earlyLoad = it)) },
-                )
-                SwitchSettingItem(
-                    icon = Icons.Outlined.Warning,
-                    title = stringResource(R.string.yukizygisk_crash_protection_title),
-                    summary = stringResource(R.string.yukizygisk_crash_protection_summary),
-                    checked = config.crashProtection,
-                    groupPosition = MoreSettingsItemPosition.Last,
-                    onChange = { save(config.copy(crashProtection = it)) },
-                )
-                DenylistModeSelector(
-                    mode = config.denylistMode,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                ) { save(config.copy(denylistMode = it)) }
+            if (section == InjectionSection.Configuration) {
+                InjectionConfiguration(config, configLoaded && !saving, ::save)
             }
 
-            SettingsCard(title = stringResource(R.string.yukizygisk_logging_title)) {
-                SwitchSettingItem(
-                    icon = Icons.AutoMirrored.Filled.Article,
-                    title = stringResource(R.string.yukizygisk_log_dmesg_title),
-                    summary = stringResource(R.string.yukizygisk_log_dmesg_summary),
-                    checked = config.dmesgLog,
-                    groupPosition = MoreSettingsItemPosition.Only,
-                    onChange = { save(config.copy(dmesgLog = it)) },
-                )
+            if (section == InjectionSection.Diagnostics) {
+                InjectionDiagnostics(config, configLoaded && !saving, ::save)
             }
         }
+        if (scrollable) {
+            SnackbarHost(snackBarHost.hostState, Modifier.align(Alignment.BottomCenter))
+        }
+    }
+}
+
+@Composable
+private fun InjectionConfiguration(config: YzConfig, enabled: Boolean, onConfigChange: (YzConfig) -> Unit) {
+    SettingsCard(title = stringResource(R.string.yukizygisk_module_loading)) {
+        SwitchSettingItem(
+            icon = Icons.Outlined.VisibilityOff,
+            title = stringResource(R.string.yukizygisk_anonymous_memory_title),
+            summary = stringResource(R.string.yukizygisk_anonymous_memory_summary),
+            checked = config.anonymousMemory,
+            enabled = enabled,
+            groupPosition = MoreSettingsItemPosition.First,
+            onChange = { onConfigChange(config.copy(anonymousMemory = it)) },
+        )
+        SwitchSettingItem(
+            icon = Icons.Outlined.Link,
+            title = stringResource(R.string.yukizygisk_yukilinker_title),
+            summary = stringResource(R.string.yukizygisk_yukilinker_summary),
+            checked = config.yukilinker,
+            enabled = enabled,
+            groupPosition = MoreSettingsItemPosition.Middle,
+            onChange = { onConfigChange(config.copy(yukilinker = it)) },
+        )
+        SwitchSettingItem(
+            icon = Icons.Filled.Bolt,
+            title = stringResource(R.string.yukizygisk_early_load_title),
+            summary = stringResource(R.string.yukizygisk_early_load_summary),
+            checked = config.earlyLoad,
+            enabled = enabled,
+            groupPosition = MoreSettingsItemPosition.Middle,
+            onChange = { onConfigChange(config.copy(earlyLoad = it)) },
+        )
+        SwitchSettingItem(
+            icon = Icons.Outlined.Warning,
+            title = stringResource(R.string.yukizygisk_crash_protection_title),
+            summary = stringResource(R.string.yukizygisk_crash_protection_summary),
+            checked = config.crashProtection,
+            enabled = enabled,
+            groupPosition = MoreSettingsItemPosition.Last,
+            onChange = { onConfigChange(config.copy(crashProtection = it)) },
+        )
+    }
+    SettingsCard(title = stringResource(R.string.injection_denylist_title)) {
+        DenylistModeSelector(
+            mode = config.denylistMode,
+            enabled = enabled,
+        ) { onConfigChange(config.copy(denylistMode = it)) }
+    }
+}
+
+@Composable
+private fun InjectionDiagnostics(config: YzConfig, enabled: Boolean, onConfigChange: (YzConfig) -> Unit) {
+    SettingsCard(title = stringResource(R.string.yukizygisk_logging_title)) {
+        SwitchSettingItem(
+            icon = Icons.AutoMirrored.Filled.Article,
+            title = stringResource(R.string.yukizygisk_log_dmesg_title),
+            summary = stringResource(R.string.yukizygisk_log_dmesg_summary),
+            checked = config.dmesgLog,
+            enabled = enabled,
+            groupPosition = MoreSettingsItemPosition.Only,
+            onChange = { onConfigChange(config.copy(dmesgLog = it)) },
+        )
     }
 }
 
@@ -807,309 +877,177 @@ fun YukiZygiskScreen(navigator: DestinationsNavigator) {
 @Composable
 private fun YukiZygiskTopBar(
     onBack: () -> Unit,
+    backEnabled: Boolean = true,
     scrollBehavior: androidx.compose.material3.TopAppBarScrollBehavior,
 ) {
-    val title: @Composable () -> Unit = {
-        Text(
-            text = stringResource(R.string.settings_yukizygisk),
-            fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
-        )
-    }
-    val navigationIcon: @Composable () -> Unit = {
-        IconButton(onClick = onBack) {
-            YukiIcon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = stringResource(R.string.back),
-            )
-        }
-    }
-    val colors = TopAppBarDefaults.topAppBarColors(
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-        scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+    TopAppBar(
+        title = { Text(stringResource(R.string.settings_yukizygisk)) },
+        navigationIcon = {
+            IconButton(onClick = onBack, enabled = backEnabled) {
+                YukiIcon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+            scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+        ),
+        windowInsets = WindowInsets.safeDrawing.only(
+            WindowInsetsSides.Top + WindowInsetsSides.Horizontal
+        ),
+        scrollBehavior = scrollBehavior,
     )
-    val windowInsets = WindowInsets.safeDrawing.only(
-        WindowInsetsSides.Top + WindowInsetsSides.Horizontal
-    )
-
-    if (isExpressiveUi) {
-        TopAppBar(
-            title = title,
-            navigationIcon = navigationIcon,
-            colors = colors,
-            windowInsets = windowInsets,
-            scrollBehavior = scrollBehavior,
-        )
-    } else {
-        TopAppBar(
-            title = title,
-            navigationIcon = navigationIcon,
-            colors = colors,
-            windowInsets = windowInsets,
-            scrollBehavior = scrollBehavior,
-        )
-    }
 }
 
 @Composable
 private fun ZygoteMonitorRow(zygote: ZygoteMonitorEntry, onStatusClick: () -> Unit) {
-    ListItem(
-        modifier = Modifier.monitorGroup(),
-        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-        leadingContent = {
-            YukiIcon(
-                imageVector = Icons.Filled.Adb,
-                contentDescription = null,
-                tint = if (isExpressiveUi) {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                } else {
-                    MaterialTheme.colorScheme.primary
-                },
-                modifier = Modifier
-                    .padding(4.dp)
-                    .size(28.dp),
-            )
-        },
-        content = {
-            Text(
-                zygote.name,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        },
-        supportingContent = {
-            Text(
-                stringResource(
-                    R.string.yukizygisk_zygote_detail,
-                    zygote.abi,
-                    zygote.pid,
-                ),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        },
-        trailingContent = {
-            MonitorStateButton(zygote.state, onStatusClick)
-        },
+    MonitorRow(
+        title = zygote.name,
+        summary = stringResource(R.string.yukizygisk_zygote_detail, zygote.abi, zygote.pid),
+        icon = Icons.Filled.Adb,
+        state = zygote.state,
+        onClick = onStatusClick,
     )
 }
 
 @Composable
 private fun ZygiskModuleRow(module: ModuleDisplayEntry, onStatusClick: () -> Unit) {
-    ListItem(
-        modifier = Modifier
-            .monitorGroup()
-            .clickable(onClick = onStatusClick),
-        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-        leadingContent = {
-            YukiIcon(
-                imageVector = Icons.Filled.Extension,
-                contentDescription = null,
-                tint = if (isExpressiveUi) {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                } else {
-                    MaterialTheme.colorScheme.primary
-                },
-                modifier = Modifier
-                    .padding(4.dp)
-                    .size(28.dp),
-            )
+    val warning = when {
+        module.suspended -> stringResource(R.string.yukizygisk_module_suspended)
+        module.crashEvidence.isNotEmpty() -> stringResource(R.string.yukizygisk_module_crash_badge)
+        else -> null
+    }
+    MonitorRow(
+        title = module.name,
+        summary = module.id,
+        icon = Icons.Filled.Extension,
+        state = when {
+            module.suspended -> MonitorState.Crashed
+            module.state == MonitorState.Crashed -> MonitorState.Failed
+            else -> module.state
         },
-        content = {
-            Column {
-                Text(
-                    module.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Text(
-                    module.id,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
-        },
-        supportingContent = {
-            if (module.suspended || module.crashEvidence.isNotEmpty()) {
-                Text(
-                    stringResource(if (module.suspended) R.string.yukizygisk_module_suspended
-                        else R.string.yukizygisk_module_crash_badge),
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.labelMedium,
-                )
-            }
-        },
-        trailingContent = {
-            if (module.suspended) {
-                MonitorStatusButton(
-                    icon = Icons.Outlined.Warning,
-                    tint = MaterialTheme.colorScheme.error,
-                    onClick = onStatusClick,
-                    contentDescription = stringResource(R.string.yukizygisk_module_suspended),
-                )
-            } else {
-                MonitorStateButton(
-                    if (module.state == MonitorState.Crashed) MonitorState.Failed else module.state,
-                    onStatusClick,
-                )
-            }
-        },
+        warning = warning,
+        statusDescription = if (module.suspended) warning else null,
+        onClick = onStatusClick,
     )
 }
 
 @Composable
 private fun NativeModuleMonitorRow(module: NativeModuleMonitorEntry, onStatusClick: () -> Unit) {
-    ListItem(
-        modifier = Modifier
-            .monitorGroup()
-            .clickable(onClick = onStatusClick),
-        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-        leadingContent = {
-            YukiIcon(
-                imageVector = Icons.Filled.Extension,
-                contentDescription = null,
-                tint = if (isExpressiveUi) {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                } else {
-                    MaterialTheme.colorScheme.primary
-                },
-                modifier = Modifier
-                    .padding(4.dp)
-                    .size(28.dp),
-            )
-        },
-        content = {
-            Column {
-                Text(
-                    module.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Text(
-                    module.id,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
-        },
-        supportingContent = {
-            if (module.crashEvidence.isNotEmpty()) {
-                Text(
-                    stringResource(R.string.yukizygisk_module_crash_badge),
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.labelMedium,
-                )
-            }
-        },
-        trailingContent = {
-            MonitorStateButton(
-                if (module.state == MonitorState.Crashed) MonitorState.Failed else module.state,
-                onStatusClick,
-            )
-        },
+    MonitorRow(
+        title = module.name,
+        summary = module.id,
+        icon = Icons.Filled.Extension,
+        state = if (module.state == MonitorState.Crashed) MonitorState.Failed else module.state,
+        warning = if (module.crashEvidence.isNotEmpty()) {
+            stringResource(R.string.yukizygisk_module_crash_badge)
+        } else null,
+        onClick = onStatusClick,
     )
 }
 
 @Composable
 private fun NativeProcessMonitorRow(process: NativeProcessEntry, onStatusClick: () -> Unit) {
-    ListItem(
-        modifier = Modifier.monitorGroup(),
-        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-        leadingContent = {
-            YukiIcon(
-                imageVector = Icons.Filled.Terminal,
-                contentDescription = null,
-                tint = if (isExpressiveUi) {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                } else {
-                    MaterialTheme.colorScheme.primary
-                },
-                modifier = Modifier
-                    .padding(4.dp)
-                    .size(28.dp),
-            )
-        },
-        content = {
-            Text(
-                process.process,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        },
-        supportingContent = {
-            Text(
-                stringResource(
-                    R.string.yukizygisk_native_process_detail,
-                    process.abi,
-                    process.pid,
-                ),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        },
-        trailingContent = {
-            MonitorStateButton(process.state, onStatusClick)
-        },
+    MonitorRow(
+        title = process.process,
+        summary = stringResource(R.string.yukizygisk_native_process_detail, process.abi, process.pid),
+        icon = Icons.Filled.Terminal,
+        state = process.state,
+        onClick = onStatusClick,
     )
 }
 
+/** One surface belongs to the section; rows only provide content and a single action target. */
 @Composable
-private fun MonitorStateButton(state: MonitorState, onClick: () -> Unit) {
+private fun MonitorRow(
+    title: String,
+    summary: String,
+    icon: ImageVector,
+    state: MonitorState,
+    onClick: () -> Unit,
+    warning: String? = null,
+    statusDescription: String? = null,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 72.dp)
+            .clickable(role = Role.Button, onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        YukiIcon(icon, null, Modifier.size(24.dp), MaterialTheme.colorScheme.onSurfaceVariant)
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(title, style = MaterialTheme.typography.bodyLarge)
+            Text(
+                summary,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            if (warning != null) {
+                Text(
+                    warning,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+        }
+        MonitorStateIcon(state, statusDescription)
+    }
+}
+
+@Composable
+private fun MonitorStateIcon(state: MonitorState, contentDescription: String? = null) {
     val icon: ImageVector
     val tint: Color
+    val label: Int
     when (state) {
         MonitorState.Injected -> {
             icon = Icons.Outlined.TaskAlt
             tint = MaterialTheme.colorScheme.primary
+            label = R.string.yukizygisk_native_scope_injected_no_process
         }
         MonitorState.Unsupported32 -> {
             icon = Icons.Outlined.Warning
             tint = MaterialTheme.colorScheme.tertiary
+            label = R.string.yukizygisk_native_scope_unsupported
         }
         MonitorState.Crashed -> {
             icon = Icons.Outlined.Warning
             tint = MaterialTheme.colorScheme.error
+            label = R.string.yukizygisk_native_scope_crashed
         }
         MonitorState.Failed -> {
             icon = Icons.Outlined.Cancel
             tint = MaterialTheme.colorScheme.error
+            label = R.string.yukizygisk_native_scope_failed
         }
         MonitorState.Unknown -> {
             icon = Icons.AutoMirrored.Outlined.HelpOutline
             tint = MaterialTheme.colorScheme.onSurfaceVariant
+            label = R.string.yukizygisk_native_scope_unobserved
         }
     }
-    MonitorStatusButton(icon, tint, onClick)
+    YukiIcon(icon, contentDescription ?: stringResource(label), Modifier.size(24.dp), tint)
 }
 
 @Composable
-private fun MonitorStatusButton(
-    icon: ImageVector,
-    tint: Color,
-    onClick: () -> Unit,
-    contentDescription: String? = null,
-) {
-    IconButton(
-        onClick = onClick,
-        modifier = Modifier
-            .padding(start = 8.dp)
-            .size(40.dp),
-    ) {
-        YukiIcon(
-            imageVector = icon,
-            contentDescription = contentDescription,
-            tint = tint,
-            modifier = Modifier.size(22.dp),
-        )
+private fun NativeMonitorModeToggle(mode: NativeMonitorMode, onClick: () -> Unit) {
+    TextButton(onClick = onClick, modifier = Modifier.heightIn(min = 48.dp)) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                stringResource(
+                    if (mode == NativeMonitorMode.Module) R.string.yukizygisk_native_mode_module
+                    else R.string.yukizygisk_native_mode_process
+                ),
+                modifier = Modifier.weight(1f, fill = false),
+                style = MaterialTheme.typography.labelLarge,
+            )
+            Icon(Icons.Filled.SwapHoriz, null, Modifier.size(24.dp))
+        }
     }
 }
 
@@ -1119,58 +1057,36 @@ private fun MonitorCard(
     trailing: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
-    if (isExpressiveUi) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 20.dp),
+    Column(Modifier.fillMaxWidth().padding(bottom = 16.dp)) {
+        FlowRow(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp).heightIn(min = 48.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp)
-                    .padding(horizontal = 8.dp),
-            ) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.Normal,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.weight(1f),
-                )
-                trailing?.invoke()
-            }
-            content()
+            Text(
+                title,
+                modifier = Modifier.align(Alignment.CenterVertically).semantics { heading() },
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            trailing?.invoke()
         }
-    } else {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-            colors = getCardColors(MaterialTheme.colorScheme.surfaceContainerHigh),
-            elevation = getCardElevation(),
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
+            color = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = CardConfig.cardAlpha),
         ) {
-            Column(modifier = Modifier.padding(vertical = 8.dp)) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp)
-                        .padding(start = 16.dp, end = 8.dp),
-                ) {
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.weight(1f),
-                    )
-                    trailing?.invoke()
-                }
-                content()
-            }
+            Column { content() }
         }
     }
+}
+
+@Composable
+private fun MonitorDivider() {
+    HorizontalDivider(
+        modifier = Modifier.padding(start = 56.dp),
+        color = MaterialTheme.colorScheme.outlineVariant,
+    )
 }
 
 @Composable
@@ -1293,52 +1209,21 @@ private fun appendDetail(base: String, detail: String): String =
     if (detail.isBlank()) base else "$base\n$detail"
 
 @Composable
-private fun Modifier.monitorGroup(): Modifier = if (isExpressiveUi) {
-    this
-        .fillMaxWidth()
-        .padding(
-            horizontal = 6.dp,
-            vertical = ListItemDefaults.SegmentedGap / 2,
-        )
-        .defaultMinSize(minHeight = ExpressiveListGroupMinHeight)
-        .clip(ListItemDefaults.shapes().shape)
-        .background(
-            MaterialTheme.colorScheme.surfaceContainer.copy(alpha = CardConfig.cardAlpha)
-        )
-} else {
-    fillMaxWidth()
-}
-
-@Composable
 private fun EmptyMonitorGroup(text: String) {
     Text(
         text = text,
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = if (isExpressiveUi) {
-            Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = 6.dp,
-                    vertical = ListItemDefaults.SegmentedGap / 2,
-                )
-                .defaultMinSize(minHeight = 56.dp)
-                .clip(MaterialTheme.shapes.large)
-                .background(
-                    MaterialTheme.colorScheme.surfaceContainer.copy(alpha = CardConfig.cardAlpha)
-                )
-                .padding(horizontal = 16.dp, vertical = 12.dp)
-        } else {
-            Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
-        },
+        modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = 64.dp)
+            .padding(horizontal = 16.dp, vertical = 20.dp),
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DenylistModeSelector(
     mode: Int,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     onSelect: (Int) -> Unit,
 ) {
     val options = listOf(
@@ -1346,38 +1231,72 @@ private fun DenylistModeSelector(
         stringResource(R.string.yukizygisk_denylist_force),
         stringResource(R.string.yukizygisk_denylist_restore),
     )
-    if (isExpressiveUi) {
-        Row(
-            modifier = modifier.selectableGroup(),
-            horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
-        ) {
-            options.forEachIndexed { index, label ->
-                ToggleButton(
-                    checked = mode == index,
-                    onCheckedChange = { onSelect(index) },
-                    modifier = Modifier
-                        .weight(1f)
-                        .semantics { role = Role.RadioButton },
-                    shapes = when (index) {
-                        0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
-                        options.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
-                        else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
-                    },
+    Column(modifier = modifier.fillMaxWidth().selectableGroup()) {
+        options.forEachIndexed { index, label ->
+            Row(
+                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
+                    .selectable(selected = mode == index, enabled = enabled, role = Role.RadioButton,
+                        onClick = { onSelect(index) })
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                RadioButton(selected = mode == index, onClick = null, enabled = enabled)
+                Text(label, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = if (enabled) 1f else 0.5f))
+            }
+        }
+    }
+}
+
+/** Uses production rows with sample data only: no configuration reads, polling or Root calls. */
+@Preview(name = "YukiZygisk · light", widthDp = 360, heightDp = 740)
+@Preview(name = "YukiZygisk · dark", widthDp = 360, heightDp = 740, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(name = "YukiZygisk · large text", widthDp = 320, heightDp = 900, fontScale = 2f)
+@Preview(name = "YukiZygisk · landscape", widthDp = 800, heightDp = 360)
+@Composable
+private fun YukiZygiskMonitorPreview() {
+    UtilityPreviewTheme {
+        Surface(color = MaterialTheme.colorScheme.background) {
+            Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
+                MonitorCard(title = stringResource(R.string.yukizygisk_injected_zygotes)) {
+                    ZygoteMonitorRow(ZygoteMonitorEntry(1854, "zygote", "arm64-v8a", MonitorState.Injected)) {}
+                    MonitorDivider()
+                    ZygoteMonitorRow(ZygoteMonitorEntry(1855, "zygote32", "armeabi-v7a", MonitorState.Unsupported32)) {}
+                }
+                MonitorCard(title = stringResource(R.string.yukizygisk_modules)) {
+                    ZygiskModuleRow(
+                        ModuleDisplayEntry(
+                            name = "LSPosed · module with a long display name",
+                            id = "org.example.zygisk.module.with.a.long.identifier",
+                            abis = listOf("arm64-v8a"),
+                            state = MonitorState.Injected,
+                        ),
+                    ) {}
+                }
+                MonitorCard(
+                    title = stringResource(R.string.yukizygisk_native_injections),
+                    trailing = { NativeMonitorModeToggle(NativeMonitorMode.Module) {} },
                 ) {
-                    Text(label)
+                    NativeModuleMonitorRow(
+                        NativeModuleMonitorEntry("LSPosed", "zygisk_lsposed", emptyList(), MonitorState.Injected, emptyList()),
+                    ) {}
                 }
             }
         }
-    } else {
-        SingleChoiceSegmentedButtonRow(modifier = modifier) {
-            options.forEachIndexed { index, label ->
-                SegmentedButton(
-                    selected = mode == index,
-                    onClick = { onSelect(index) },
-                    shape = SegmentedButtonDefaults.itemShape(index, options.size),
-                ) {
-                    Text(label)
-                }
+    }
+}
+
+@Preview(name = "Injection configuration · light", widthDp = 360, heightDp = 740)
+@Preview(name = "Injection configuration · dark", widthDp = 360, heightDp = 740, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(name = "Injection configuration · large text", widthDp = 320, heightDp = 900, fontScale = 2f)
+@Preview(name = "Injection configuration · landscape", widthDp = 800, heightDp = 360)
+@Composable
+private fun InjectionConfigurationPreview() {
+    UtilityPreviewTheme {
+        Surface(color = MaterialTheme.colorScheme.background) {
+            Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
+                InjectionConfiguration(YzConfig(), enabled = true, onConfigChange = {})
             }
         }
     }

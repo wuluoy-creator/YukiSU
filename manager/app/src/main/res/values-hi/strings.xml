@@ -227,9 +227,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM मरम्मत/इंस्टॉलेशन</string>
-    <string name="configuration">कॉन्फ़िगर करें</string>
-    <string name="app_settings">एप्लिकेशन सेटिंग्स</string>
-    <string name="tools">उपकरण</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">एप्लिकेशन नहीं मिला</string>
     <string name="selinux_enabled_toast">SELinux सक्षम</string>
@@ -241,7 +238,6 @@
     <string name="hide_bl_enabled_toast">अनलॉक स्थिति छिपाना सक्षम किया गया, लागू करने के लिए रीबूट करें</string>
     <string name="hide_bl_disabled_toast">अनलॉक स्थिति छिपाना अक्षम किया गया</string>
     <string name="hide_bl_change_failed">अनलॉक स्थिति छिपाना सेटिंग बदलने में विफल</string>
-    <string name="advanced_settings">उन्नत सेटिंग्स</string>
     <string name="appearance_settings">टूलबार को अनुकूलित करें</string>
     <string name="back">वापस</string>
     <string name="background_set_success">पृष्ठभूमि सफलतापूर्वक सेट की गई</string>
@@ -326,7 +322,6 @@
     <string name="author">लेखक</string>
     <string name="description">विवरण</string>
     <string name="log_viewer_title">लॉग व्यूअर</string>
-    <string name="log_viewer_back">वापस</string>
     <string name="log_viewer_search">खोजें</string>
     <string name="log_viewer_clear_logs">लॉग साफ़ करें</string>
     <string name="log_viewer_clear_logs_confirm">क्या आप वाकई चयनित लॉग फ़ाइल साफ़ करना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती</string>
@@ -343,8 +338,6 @@
     <string name="log_viewer_raw_log">रॉ लॉग</string>
     <string name="log_viewer_search_placeholder">UID, कमांड, या विवरण के अनुसार खोजें…</string>
     <string name="log_viewer_clear_search">खोज साफ़ करें</string>
-    <string name="log_viewer_view_logs">उपयोग लॉग देखें</string>
-    <string name="log_viewer_view_logs_summary">KernelSU सुपरयूज़र एक्सेस लॉग देखें</string>
     <string name="log_viewer_exclude_subtypes">उप-प्रकार बाहर करें</string>
     <string name="log_viewer_exclude_current_app">वर्तमान ऐप</string>
     <string name="log_viewer_exclude_viewer_refresh">लॉग व्यूअर स्व-रीफ्रेश</string>
@@ -362,7 +355,6 @@
     <string name="log_viewer_all_logs_loaded">सभी लॉग प्रदर्शित किए गए</string>
     <string name="incompatible_kernel_msg">वर्तमान प्रबंधक इस कर्नेल के साथ असंगत है! कृपया कर्नेल को संस्करण %2$d या उच्चतर में अपग्रेड करें (वर्तमान में %1$d)</string>
     <string name="umount_path_manager">Umount पथ प्रबंधन</string>
-    <string name="umount_path_manager_summary">कर्नेल अनमाउंट पथ प्रबंधित करें</string>
     <string name="umount_path_restart_notice">परिवर्तन प्रभावी होने के लिए रीबूट आवश्यक है। सिस्टम अगले बूट पर नई कॉन्फ़िगरेशन लागू करेगा</string>
     <string name="add_umount_path">Umount पथ जोड़ें</string>
     <string name="mount_path">माउंट पथ</string>
@@ -634,7 +626,6 @@
     <string name="predictive_back_gesture">पूर्वानुमानित वापस जाने का जेस्चर</string>
     <string name="predictive_back_gesture_summary">वापस जाने के जेस्चर के साथ पिछले पृष्ठ का पूर्वावलोकन दिखाएँ। डिफ़ॉल्ट रूप से बंद है।</string>
     <string name="feature_control">सुविधा नियंत्रण</string>
-    <string name="feature_control_summary">वर्तमान कर्नेल द्वारा समर्थित सुविधाएँ प्रबंधित करें।</string>
     <string name="kernelsu_features">KernelSU सुविधाएँ</string>
     <string name="yukisu_features">YukiSU सुविधाएँ</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk सक्षम है। टकराव से बचने के लिए यह मॉड्यूल अक्षम किया गया है।</string>

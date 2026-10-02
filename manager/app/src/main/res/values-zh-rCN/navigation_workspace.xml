@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nav_authorization">授权</string>
+    <string name="nav_extensions">扩展</string>
+    <string name="nav_repository">扩展仓库</string>
+    <string name="nav_home_overview">概览</string>
+    <string name="nav_home_system">系统</string>
+    <string name="nav_apps">应用</string>
+    <string name="nav_policies">策略与模板</string>
+    <string name="nav_records">授权记录</string>
+    <string name="nav_records_summary">查看应用的 Root 请求和命令记录</string>
+    <string name="nav_records_disabled">授权日志尚未开启，可在「内核功能」中开启后查看记录。</string>
+    <string name="nav_manage_kernel_features">管理内核功能</string>
+    <string name="nav_extension_runtime">挂载与注入</string>
+    <string name="nav_mount">挂载</string>
+    <string name="nav_injection_monitor">注入监控</string>
+    <string name="nav_injection_config">注入设置</string>
+    <string name="nav_kernel_policy">内核与隔离</string>
+    <string name="nav_isolation">隔离设置</string>
+    <string name="nav_active_rules">生效规则</string>
+    <string name="nav_kernel_features">内核功能</string>
+    <string name="nav_advanced_security">高级安全</string>
+    <string name="nav_umount_paths">卸载路径</string>
+    <string name="nav_umount_paths_summary">管理从应用挂载命名空间卸载的路径</string>
+    <string name="nav_diagnostics">诊断与日志</string>
+    <string name="nav_diagnostic_options">选项与导出</string>
+    <string name="nav_kernel_logs">运行日志</string>
+    <string name="nav_webui_debug">WebUI 调试</string>
+</resources>

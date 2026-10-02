@@ -1,13 +1,8 @@
 package com.anatdx.yukisu.ui.kasumi
 
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
@@ -15,16 +10,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.YukiIcon
 import com.anatdx.yukisu.ui.component.YukiAlertDialog
-import com.anatdx.yukisu.ui.theme.isExpressiveUi
 import com.anatdx.yukisu.ui.kasumi.util.KasumiManager
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
@@ -94,7 +87,7 @@ internal fun KasumiMountConfigDialog(
                 modifier = Modifier
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
                 if (globalMode != "auto") Text(stringResource(R.string.kasumi_global_override, globalMode))
@@ -114,59 +107,42 @@ internal fun KasumiMountConfigDialog(
                             enabled = !isSaving,
                             label = { Text(modeLabels[mode] ?: mode) },
                             leadingIcon = {
-                                if (isExpressiveUi) {
-                                    YukiIcon(
-                                        if (selectedMode == mode) Icons.Outlined.Check else when (mode) {
-                                            "kasumi" -> Icons.Outlined.Memory
-                                            "overlay" -> Icons.Outlined.Layers
-                                            "magic" -> Icons.Outlined.AutoFixHigh
-                                            "none" -> Icons.Outlined.Block
-                                            else -> Icons.Outlined.Settings
-                                        },
-                                        null, Modifier.size(FilterChipDefaults.IconSize),
-                                    )
-                                } else {
-                                    Box(
-                                        modifier = Modifier
-                                            .size(8.dp)
-                                            .background(
-                                                KASUMI_MODE_COLORS[mode] ?: MaterialTheme.colorScheme.primary,
-                                                RoundedCornerShape(4.dp)
-                                            )
-                                    )
-                                }
+                                YukiIcon(
+                                    if (selectedMode == mode) Icons.Outlined.Check else when (mode) {
+                                        "kasumi" -> Icons.Outlined.Memory
+                                        "overlay" -> Icons.Outlined.Layers
+                                        "magic" -> Icons.Outlined.AutoFixHigh
+                                        "none" -> Icons.Outlined.Block
+                                        else -> Icons.Outlined.Settings
+                                    },
+                                    null, Modifier.size(FilterChipDefaults.IconSize),
+                                )
                             }
                         )
                     }
                 }
 
-                if (!isExpressiveUi) HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .then(if (isExpressiveUi) Modifier.clip(MaterialTheme.shapes.large)
-                            .background(MaterialTheme.colorScheme.surfaceContainerHigh) else Modifier)
-                        .clickable { rulesExpanded = !rulesExpanded }
-                        .padding(horizontal = if (isExpressiveUi) 16.dp else 0.dp, vertical = if (isExpressiveUi) 16.dp else 4.dp),
+                        .heightIn(min = 48.dp)
+                        .clickable(role = Role.Button) { rulesExpanded = !rulesExpanded }
+                        .padding(vertical = 8.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = stringResource(R.string.kasumi_module_rules_title),
-                        style = if (isExpressiveUi) MaterialTheme.typography.titleMedium else MaterialTheme.typography.titleSmall
+                        modifier = Modifier.weight(1f),
+                        style = MaterialTheme.typography.titleSmall
                     )
                     YukiIcon(
                         imageVector = if (rulesExpanded) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore,
-                        contentDescription = null
+                        contentDescription = stringResource(if (rulesExpanded) R.string.collapse_menu else R.string.expand_menu)
                     )
                 }
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .animateContentSize(
-                            animationSpec = tween(280, easing = FastOutSlowInEasing)
-                        )
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     if (rulesExpanded) {
                         Column(
@@ -175,21 +151,18 @@ internal fun KasumiMountConfigDialog(
                         ) {
                         rules.forEach { rule: KasumiManager.ModuleRule ->
                             Row(
-                                modifier = Modifier.fillMaxWidth().then(
-                                    if (isExpressiveUi) Modifier.clip(MaterialTheme.shapes.medium)
-                                        .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-                                        .padding(start = 12.dp, end = 4.dp, top = 4.dp, bottom = 4.dp)
-                                    else Modifier),
+                                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
-                                    text = "${rule.path} → ${rule.mode}",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.weight(1f),
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
+                                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                    Text(rule.path, style = MaterialTheme.typography.bodySmall)
+                                    Text(
+                                        modeLabels[rule.mode] ?: rule.mode,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
                                 IconButton(
                                     enabled = !isSaving,
                                     onClick = { editingPath = rule.path; newPath = rule.path; newMode = rule.mode }
@@ -201,7 +174,7 @@ internal fun KasumiMountConfigDialog(
                                         if (editingPath == rule.path) { editingPath = null; newPath = "" }
                                     }
                                 ) {
-                                    YukiIcon(Icons.Outlined.Delete, contentDescription = null)
+                                    YukiIcon(Icons.Outlined.Delete, stringResource(R.string.delete))
                                 }
                             }
                         }
@@ -210,20 +183,21 @@ internal fun KasumiMountConfigDialog(
                             onValueChange = { newPath = it },
                             enabled = !isSaving,
                             isError = newPath.isNotEmpty() && (!newPath.startsWith("/") || rules.any { it.path == newPath.trim() && it.path != editingPath }),
+                            label = { Text(stringResource(R.string.kasumi_absolute_path)) },
                             placeholder = { Text(stringResource(R.string.kasumi_module_rules_placeholder)) },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true
                         )
-                        Row(
+                        FlowRow(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
                             Box {
                                 FilledTonalButton(
                                     enabled = !isSaving,
                                     onClick = { modeExpanded = true },
-                                    shape = if (isExpressiveUi) ButtonDefaults.shape else RoundedCornerShape(20.dp)
+                                    modifier = Modifier.heightIn(min = 48.dp)
                                 ) {
                                     Text(modeLabels[newMode] ?: newMode)
                                     YukiIcon(Icons.Outlined.ArrowDropDown, contentDescription = null)
@@ -252,7 +226,7 @@ internal fun KasumiMountConfigDialog(
                                         editingPath = null
                                     }
                                 },
-                                shape = if (isExpressiveUi) ButtonDefaults.shape else RoundedCornerShape(20.dp)
+                                modifier = Modifier.heightIn(min = 48.dp)
                             ) {
                                 Text(stringResource(if (editingPath == null) R.string.kasumi_module_rules_add else R.string.kasumi_rule_save))
                             }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_absolute_path">Unesite apsolutnu putanju</string>
-    <string name="kasumi_advanced">Napredno</string>
     <string name="kasumi_apply_failed">Spremljena konfiguracija još nije primijenjena na jezgru</string>
     <string name="kasumi_backend_enable_desc">Dopusti planeru montiranja upotrebu ovog pozadinskog sustava</string>
     <string name="kasumi_check_conflicts">Provjeri sukobe montiranja</string>
@@ -16,7 +15,6 @@
     <string name="kasumi_fs_type_ext4">EXT4 slika</string>
     <string name="kasumi_fs_type_title">Datotečni sustav pohrane</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">Općenito</string>
     <string name="kasumi_global_override">Globalno nadjačavanje: %1$s</string>
     <string name="kasumi_hide_aggressive">Agresivno</string>
     <string name="kasumi_hide_normal">Uobičajeno</string>
@@ -129,10 +127,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Nije montirano</string>
     <string name="kasumi_system_info">Informacije o sustavu</string>
-    <string name="kasumi_tab_logs">Zapisnici</string>
-    <string name="kasumi_tab_rules">Pravila</string>
-    <string name="kasumi_tab_settings">Postavke</string>
-    <string name="kasumi_tab_status">Stanje</string>
     <string name="kasumi_tempdir">Privremena točka montiranja</string>
     <string name="kasumi_tempdir_desc">Osnovna putanja za privremena montiranja (ostavite prazno za automatsko)</string>
     <string name="kasumi_title">Konfiguracija Kasumi</string>

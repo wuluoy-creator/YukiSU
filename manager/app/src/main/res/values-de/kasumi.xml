@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_absolute_path">Absoluten Pfad eingeben</string>
-    <string name="kasumi_advanced">Erweitert</string>
     <string name="kasumi_apply_failed">Die gespeicherte Konfiguration wurde noch nicht auf den Kernel angewendet</string>
     <string name="kasumi_backend_enable_desc">Diesem Backend die Nutzung durch den Mount-Planer erlauben</string>
     <string name="kasumi_check_conflicts">Mount-Konflikte prüfen</string>
@@ -16,7 +15,6 @@
     <string name="kasumi_fs_type_ext4">EXT4-Image</string>
     <string name="kasumi_fs_type_title">Speicher-Dateisystem</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">Allgemein</string>
     <string name="kasumi_global_override">Globale Überschreibung: %1$s</string>
     <string name="kasumi_hide_aggressive">Aggressiv</string>
     <string name="kasumi_hide_normal">Normal</string>
@@ -127,10 +125,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Nicht eingehängt</string>
     <string name="kasumi_system_info">Systeminfo</string>
-    <string name="kasumi_tab_logs">Protokolle</string>
-    <string name="kasumi_tab_rules">Regeln</string>
-    <string name="kasumi_tab_settings">Einstellungen</string>
-    <string name="kasumi_tab_status">Status</string>
     <string name="kasumi_tempdir">Temporärer Einhängepunkt</string>
     <string name="kasumi_tempdir_desc">Basispfad für temporäre Einhängungen (leer lassen für automatisch)</string>
     <string name="kasumi_title">Kasumi-Konfiguration</string>

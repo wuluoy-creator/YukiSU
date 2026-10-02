@@ -229,9 +229,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">Naprawa/instalacja LKM</string>
-    <string name="configuration">Konfiguruj</string>
-    <string name="app_settings">Ustawienia aplikacji</string>
-    <string name="tools">Narzędzia</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Nie znaleziono aplikacji</string>
     <string name="selinux_enabled_toast">SELinux włączony</string>
@@ -243,7 +240,6 @@
     <string name="hide_bl_enabled_toast">Ukrywanie statusu odblokowania włączone, uruchom ponownie, aby zastosować</string>
     <string name="hide_bl_disabled_toast">Ukrywanie statusu odblokowania wyłączone</string>
     <string name="hide_bl_change_failed">Nie udało się zmienić ustawienia ukrywania statusu odblokowania</string>
-    <string name="advanced_settings">Ustawienia zaawansowane</string>
     <string name="appearance_settings">Dostosuj pasek narzędzi</string>
     <string name="back">Wstecz</string>
     <string name="background_set_success">Tło ustawione pomyślnie</string>
@@ -328,7 +324,6 @@
     <string name="author">Autor</string>
     <string name="description">Opis</string>
     <string name="log_viewer_title">Przeglądarka dzienników</string>
-    <string name="log_viewer_back">Wstecz</string>
     <string name="log_viewer_search">Szukaj</string>
     <string name="log_viewer_clear_logs">Wyczyść dzienniki</string>
     <string name="log_viewer_clear_logs_confirm">Czy na pewno chcesz wyczyścić wybrany plik dziennika? Tej operacji nie można cofnąć</string>
@@ -345,8 +340,6 @@
     <string name="log_viewer_raw_log">Surowy dziennik</string>
     <string name="log_viewer_search_placeholder">Szukaj według UID, polecenia lub szczegółów…</string>
     <string name="log_viewer_clear_search">Wyczyść wyszukiwanie</string>
-    <string name="log_viewer_view_logs">Wyświetl dzienniki użycia</string>
-    <string name="log_viewer_view_logs_summary">Wyświetl dzienniki dostępu superużytkownika KernelSU</string>
     <string name="log_viewer_exclude_subtypes">Wyklucz podtypy</string>
     <string name="log_viewer_exclude_current_app">Bieżąca aplikacja</string>
     <string name="log_viewer_exclude_viewer_refresh">Automatyczne odświeżanie przeglądarki dzienników</string>
@@ -364,7 +357,6 @@
     <string name="log_viewer_all_logs_loaded">Wyświetlono wszystkie dzienniki</string>
     <string name="incompatible_kernel_msg">Bieżący menedżer jest niezgodny z tym jądrem! Zaktualizuj jądro do wersji %2$d lub wyższej (obecnie %1$d)</string>
     <string name="umount_path_manager">Zarządzanie ścieżkami umount</string>
-    <string name="umount_path_manager_summary">Zarządzaj ścieżkami odmontowywania jądra</string>
     <string name="umount_path_restart_notice">Wymagany jest restart, aby zmiany zaczęły obowiązywać. System zastosuje nową konfigurację przy następnym rozruchu</string>
     <string name="add_umount_path">Dodaj ścieżkę umount</string>
     <string name="mount_path">Ścieżka montowania</string>
@@ -618,7 +610,6 @@
     <string name="predictive_back_gesture">Predykcyjny gest wstecz</string>
     <string name="predictive_back_gesture_summary">Pokazuj podgląd poprzedniej strony podczas wykonywania gestu wstecz. Domyślnie wyłączone.</string>
     <string name="feature_control">Sterowanie funkcjami</string>
-    <string name="feature_control_summary">Zarządzaj funkcjami obsługiwanymi przez bieżące jądro.</string>
     <string name="kernelsu_features">Funkcje KernelSU</string>
     <string name="yukisu_features">Funkcje YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk jest włączony; ten moduł został wyłączony, aby zapobiec konfliktom</string>

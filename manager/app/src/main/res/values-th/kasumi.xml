@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kasumi_advanced">ขั้นสูง</string>
     <string name="kasumi_debug">การบันทึกการดีบัก</string>
     <string name="kasumi_filter_all">ทั้งหมด</string>
     <string name="kasumi_fs_type_erofs">อิมเมจ EROFS</string>
     <string name="kasumi_fs_type_ext4">อิมเมจ EXT4</string>
     <string name="kasumi_fs_type_title">ระบบไฟล์จัดเก็บ</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">ทั่วไป</string>
     <string name="kasumi_info_active_mounts">การเมานต์ที่ใช้งานอยู่:</string>
     <string name="kasumi_info_kernel">เคอร์เนล</string>
     <string name="kasumi_info_mount_base">ฐานการเมานต์</string>
@@ -73,10 +71,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">ยังไม่ได้เมานต์</string>
     <string name="kasumi_system_info">ข้อมูลระบบ</string>
-    <string name="kasumi_tab_logs">บันทึก</string>
-    <string name="kasumi_tab_rules">กฎ</string>
-    <string name="kasumi_tab_settings">การตั้งค่า</string>
-    <string name="kasumi_tab_status">สถานะ</string>
     <string name="kasumi_tempdir">จุดเมานต์ชั่วคราว</string>
     <string name="kasumi_tempdir_desc">พาธฐานสำหรับการเมานต์ชั่วคราว (เว้นว่างไว้เพื่ออัตโนมัติ)</string>
     <string name="kasumi_title">การกำหนดค่า Kasumi</string>

@@ -60,6 +60,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -104,7 +105,10 @@ import com.anatdx.yukisu.ui.viewmodel.PluginQuickAction
 import com.anatdx.yukisu.ui.viewmodel.PluginViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
-import com.ramcosta.composedestinations.generated.destinations.PluginRepositoryScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.ExtensionsScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.PluginScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.ExtensionRuntimeScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.ExtensionRepositoryScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -123,6 +127,16 @@ private data class PluginLogState(
 @Destination<RootGraph>
 @Composable
 fun PluginScreen(navigator: DestinationsNavigator) {
+    PluginPage(navigator)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun PluginPage(
+    navigator: DestinationsNavigator,
+    workspace: Boolean = false,
+    sectionNavigation: @Composable (Boolean) -> Unit = {},
+) {
     val viewModel = viewModel<PluginViewModel>()
     val context = LocalContext.current
     val resources = LocalResources.current
@@ -134,9 +148,9 @@ fun PluginScreen(navigator: DestinationsNavigator) {
     val fabVisible by rememberFabVisibilityState(listState)
     val pendingPluginOperations = remember { mutableStateMapOf<String, Boolean>() }
 
-    var searchQuery by remember { mutableStateOf("") }
+    var searchQuery by rememberSaveable { mutableStateOf("") }
     var showSortSheet by remember { mutableStateOf(false) }
-    var enabledFirst by remember { mutableStateOf(true) }
+    var enabledFirst by rememberSaveable { mutableStateOf(true) }
     var isInstalling by remember { mutableStateOf(false) }
     var isLoadingConfig by remember { mutableStateOf(false) }
     var isSavingConfig by remember { mutableStateOf(false) }
@@ -144,6 +158,9 @@ fun PluginScreen(navigator: DestinationsNavigator) {
     var configValues by remember { mutableStateOf<Map<String, String>>(emptyMap()) }
     var logState by remember { mutableStateOf<PluginLogState?>(null) }
     var isClearingLog by remember { mutableStateOf(false) }
+
+    val operationBusy = isInstalling || isSavingConfig || isLoadingConfig || isClearingLog || pendingPluginOperations.isNotEmpty()
+    WorkspaceOperationGuard(operationBusy, if (workspace) ExtensionsScreenDestination.route else PluginScreenDestination.route)
 
     fun postSnackbar(message: String) {
         scope.launch { snackBarHost.showSnackbar(message) }
@@ -250,10 +267,11 @@ fun PluginScreen(navigator: DestinationsNavigator) {
 
     Scaffold(
         topBar = {
+            Column {
             SearchAppBar(
                 title = {
                     Text(
-                        text = stringResource(R.string.plugin),
+                        text = stringResource(if (workspace) R.string.nav_extensions else R.string.plugin),
                         fontWeight = if (isExpressiveUi) FontWeight.Normal else null,
                     )
                 },
@@ -261,13 +279,16 @@ fun PluginScreen(navigator: DestinationsNavigator) {
                 onSearchTextChange = { searchQuery = it },
                 onClearClick = { searchQuery = "" },
                 dropdownContent = {
-                    IconButton(onClick = { navigator.navigate(PluginRepositoryScreenDestination) }) {
+                    IconButton(enabled = !operationBusy, onClick = { navigator.navigate(ExtensionRepositoryScreenDestination(initialPage = 1)) }) {
                         YukiIcon(
                             imageVector = Icons.Outlined.Inventory2,
                             contentDescription = stringResource(R.string.plugin_repositories),
                         )
                     }
-                    IconButton(onClick = { showSortSheet = true }) {
+                    IconButton(enabled = !operationBusy, onClick = { navigator.navigate(ExtensionRuntimeScreenDestination()) }) {
+                        YukiIcon(Icons.Outlined.Settings, stringResource(R.string.nav_extension_runtime))
+                    }
+                    IconButton(enabled = !operationBusy, onClick = { showSortSheet = true }) {
                         YukiIcon(
                             imageVector = Icons.Filled.MoreVert,
                             contentDescription = stringResource(R.string.plugin_sort_options),
@@ -275,9 +296,11 @@ fun PluginScreen(navigator: DestinationsNavigator) {
                     }
                 },
             )
+                sectionNavigation(!operationBusy)
+            }
         },
         floatingActionButton = {
-            AnimatedFab(visible = fabVisible && !isInstalling) {
+            AnimatedFab(visible = fabVisible && !operationBusy) {
                 FloatingActionButton(
                     shape = if (isExpressiveUi) CircleShape else FloatingActionButtonDefaults.shape,
                     contentColor = MaterialTheme.colorScheme.onPrimary,

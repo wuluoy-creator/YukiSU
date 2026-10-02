@@ -227,9 +227,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM-reparation/installation</string>
-    <string name="configuration">Konfigurer</string>
-    <string name="app_settings">App-indstillinger</string>
-    <string name="tools">Værktøjer</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">App ikke fundet</string>
     <string name="selinux_enabled_toast">SELinux aktiveret</string>
@@ -241,7 +238,6 @@
     <string name="hide_bl_enabled_toast">Skjul oplåsningsstatus aktiveret, genstart for at anvende</string>
     <string name="hide_bl_disabled_toast">Skjul oplåsningsstatus deaktiveret</string>
     <string name="hide_bl_change_failed">Kunne ikke ændre indstilling for skjul af oplåsningsstatus</string>
-    <string name="advanced_settings">Avancerede indstillinger</string>
     <string name="appearance_settings">Tilpas værktøjslinjen</string>
     <string name="back">Tilbage</string>
     <string name="background_set_success">Baggrund indstillet</string>
@@ -326,7 +322,6 @@
     <string name="author">Forfatter</string>
     <string name="description">Beskrivelse</string>
     <string name="log_viewer_title">Logfremviser</string>
-    <string name="log_viewer_back">Tilbage</string>
     <string name="log_viewer_search">Søg</string>
     <string name="log_viewer_clear_logs">Ryd logge</string>
     <string name="log_viewer_clear_logs_confirm">Er du sikker på, at du vil rydde den valgte logfil? Denne handling kan ikke fortrydes</string>
@@ -343,8 +338,6 @@
     <string name="log_viewer_raw_log">Rå log</string>
     <string name="log_viewer_search_placeholder">Søg efter UID, kommando eller detaljer…</string>
     <string name="log_viewer_clear_search">Ryd søgning</string>
-    <string name="log_viewer_view_logs">Vis brugslogge</string>
-    <string name="log_viewer_view_logs_summary">Vis KernelSU superbruger-adgangslogge</string>
     <string name="log_viewer_exclude_subtypes">Udeluk undertyper</string>
     <string name="log_viewer_exclude_current_app">Aktuel app</string>
     <string name="log_viewer_exclude_viewer_refresh">Logfremviserens selvopdatering</string>
@@ -362,7 +355,6 @@
     <string name="log_viewer_all_logs_loaded">Alle logge vises</string>
     <string name="incompatible_kernel_msg">Den nuværende manager er inkompatibel med denne kerne! Opgrader venligst kernen til version %2$d eller højere (i øjeblikket %1$d)</string>
     <string name="umount_path_manager">Administration af afmonteringsstier</string>
-    <string name="umount_path_manager_summary">Administrer kernens afmonteringsstier</string>
     <string name="umount_path_restart_notice">En genstart er påkrævet, før ændringerne træder i kraft. Systemet anvender den nye konfiguration ved næste opstart</string>
     <string name="add_umount_path">Tilføj afmonteringssti</string>
     <string name="mount_path">Monteringssti</string>
@@ -616,7 +608,6 @@
     <string name="predictive_back_gesture">Forudsigende tilbagebevægelse</string>
     <string name="predictive_back_gesture_summary">Vis en forhåndsvisning af den forrige side under tilbagebevægelsen. Deaktiveret som standard.</string>
     <string name="feature_control">Funktionsstyring</string>
-    <string name="feature_control_summary">Administrer funktioner, som den aktuelle kerne understøtter.</string>
     <string name="kernelsu_features">KernelSU-funktioner</string>
     <string name="yukisu_features">YukiSU-funktioner</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk er aktiveret. Dette modul er deaktiveret for at undgå konflikter.</string>

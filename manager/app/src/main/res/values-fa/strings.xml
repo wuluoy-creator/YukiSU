@@ -227,9 +227,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">تعمیر/نصب LKM</string>
-    <string name="configuration">پیکربندی</string>
-    <string name="app_settings">تنظیمات برنامه</string>
-    <string name="tools">ابزارها</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">برنامه یافت نشد</string>
     <string name="selinux_enabled_toast">‏SELinux فعال شد</string>
@@ -241,7 +238,6 @@
     <string name="hide_bl_enabled_toast">پنهان‌سازی وضعیت قفل فعال شد، برای اعمال راه‌اندازی مجدد کنید</string>
     <string name="hide_bl_disabled_toast">پنهان‌سازی وضعیت قفل غیرفعال شد</string>
     <string name="hide_bl_change_failed">تغییر تنظیم پنهان‌سازی وضعیت قفل انجام نشد</string>
-    <string name="advanced_settings">تنظیمات پیشرفته</string>
     <string name="appearance_settings">سفارشی‌سازی نوار ابزار</string>
     <string name="back">بازگشت</string>
     <string name="background_set_success">پس‌زمینه با موفقیت تنظیم شد</string>
@@ -326,7 +322,6 @@
     <string name="author">سازنده</string>
     <string name="description">توضیحات</string>
     <string name="log_viewer_title">نمایشگر لاگ</string>
-    <string name="log_viewer_back">بازگشت</string>
     <string name="log_viewer_search">جستجو</string>
     <string name="log_viewer_clear_logs">پاک کردن لاگ‌ها</string>
     <string name="log_viewer_clear_logs_confirm">آیا مطمئنید که می‌خواهید فایل لاگ انتخاب‌شده را پاک کنید؟ این عمل قابل بازگشت نیست</string>
@@ -343,8 +338,6 @@
     <string name="log_viewer_raw_log">لاگ خام</string>
     <string name="log_viewer_search_placeholder">جستجو بر اساس UID، فرمان یا جزئیات…</string>
     <string name="log_viewer_clear_search">پاک کردن جستجو</string>
-    <string name="log_viewer_view_logs">مشاهده لاگ‌های استفاده</string>
-    <string name="log_viewer_view_logs_summary">مشاهده لاگ‌های دسترسی superuser مربوط به KernelSU</string>
     <string name="log_viewer_exclude_subtypes">حذف زیرنوع‌ها</string>
     <string name="log_viewer_exclude_current_app">برنامه فعلی</string>
     <string name="log_viewer_exclude_viewer_refresh">تازه‌سازی خودکار نمایشگر لاگ</string>
@@ -362,7 +355,6 @@
     <string name="log_viewer_all_logs_loaded">همه لاگ‌ها نمایش داده شدند</string>
     <string name="incompatible_kernel_msg">مدیر فعلی با این کرنل ناسازگار است! لطفاً کرنل را به نسخه %2$d یا بالاتر ارتقا دهید (در حال حاضر %1$d)</string>
     <string name="umount_path_manager">مدیریت مسیر umount</string>
-    <string name="umount_path_manager_summary">مسیرهای آنمانت کرنل را مدیریت کنید</string>
     <string name="umount_path_restart_notice">برای اعمال تغییرات، راه‌اندازی مجدد لازم است. سیستم پیکربندی جدید را در بوت بعدی اعمال می‌کند</string>
     <string name="add_umount_path">افزودن مسیر umount</string>
     <string name="mount_path">مسیر مانت</string>
@@ -616,7 +608,6 @@
     <string name="predictive_back_gesture">ژست بازگشت پیش‌بینانه</string>
     <string name="predictive_back_gesture_summary">هنگام بازگشت، پیش‌نمایش صفحه قبلی را همراه با ژست نشان می‌دهد. به‌طور پیش‌فرض خاموش است</string>
     <string name="feature_control">کنترل قابلیت‌ها</string>
-    <string name="feature_control_summary">مدیریت قابلیت‌های پشتیبانی‌شده توسط هسته فعلی.</string>
     <string name="kernelsu_features">قابلیت‌های KernelSU</string>
     <string name="yukisu_features">قابلیت‌های YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk فعال است. برای جلوگیری از تداخل، این ماژول غیرفعال شده است</string>

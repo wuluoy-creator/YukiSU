@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="kasumi_workspace_status">系统状态</string>
+    <string name="kasumi_workspace_mount">挂载设置</string>
+    <string name="kasumi_workspace_isolation">应用隔离</string>
+    <string name="kasumi_workspace_rules">运行时规则</string>
+    <string name="kasumi_workspace_logs">挂载与隔离日志</string>
+    <string name="kasumi_workspace_debug">挂载与隔离诊断</string>
+    <string name="kasumi_workspace_rules_cleared">已清除全部规则</string>
+    <string name="kasumi_workspace_rules_clear_failed">清除规则失败</string>
+</resources>

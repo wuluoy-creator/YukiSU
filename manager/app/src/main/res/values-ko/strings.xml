@@ -227,9 +227,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM 복구/설치</string>
-    <string name="configuration">구성</string>
-    <string name="app_settings">애플리케이션 설정</string>
-    <string name="tools">도구</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">애플리케이션을 찾을 수 없음</string>
     <string name="selinux_enabled_toast">SELinux 활성화됨</string>
@@ -241,7 +238,6 @@
     <string name="hide_bl_enabled_toast">잠금 해제 상태 숨기기가 활성화되었습니다. 적용하려면 재부팅하세요</string>
     <string name="hide_bl_disabled_toast">잠금 해제 상태 숨기기가 비활성화되었습니다</string>
     <string name="hide_bl_change_failed">잠금 해제 상태 숨기기 설정을 변경하지 못했습니다</string>
-    <string name="advanced_settings">고급 설정</string>
     <string name="appearance_settings">도구 모음 사용자 지정</string>
     <string name="back">뒤로</string>
     <string name="background_set_success">배경이 성공적으로 설정되었습니다</string>
@@ -326,7 +322,6 @@
     <string name="author">제작자</string>
     <string name="description">설명</string>
     <string name="log_viewer_title">로그 뷰어</string>
-    <string name="log_viewer_back">뒤로</string>
     <string name="log_viewer_search">검색</string>
     <string name="log_viewer_clear_logs">로그 지우기</string>
     <string name="log_viewer_clear_logs_confirm">선택한 로그 파일을 지우시겠습니까? 이 작업은 취소할 수 없습니다</string>
@@ -343,8 +338,6 @@
     <string name="log_viewer_raw_log">원시 로그</string>
     <string name="log_viewer_search_placeholder">UID, 명령 또는 세부 정보로 검색…</string>
     <string name="log_viewer_clear_search">검색 지우기</string>
-    <string name="log_viewer_view_logs">사용 로그 보기</string>
-    <string name="log_viewer_view_logs_summary">KernelSU 슈퍼유저 접근 로그 보기</string>
     <string name="log_viewer_exclude_subtypes">하위 유형 제외</string>
     <string name="log_viewer_exclude_current_app">현재 앱</string>
     <string name="log_viewer_exclude_viewer_refresh">로그 뷰어 자동 새로고침</string>
@@ -362,7 +355,6 @@
     <string name="log_viewer_all_logs_loaded">모든 로그가 표시되었습니다</string>
     <string name="incompatible_kernel_msg">현재 관리자가 이 커널과 호환되지 않습니다! 커널을 버전 %2$d 이상으로 업그레이드하세요(현재 %1$d)</string>
     <string name="umount_path_manager">Umount 경로 관리</string>
-    <string name="umount_path_manager_summary">커널 마운트 해제 경로 관리</string>
     <string name="umount_path_restart_notice">변경 사항을 적용하려면 재부팅이 필요합니다. 시스템은 다음 부팅 시 새 구성을 적용합니다</string>
     <string name="add_umount_path">Umount 경로 추가</string>
     <string name="mount_path">마운트 경로</string>
@@ -634,7 +626,6 @@
     <string name="predictive_back_gesture">예측 뒤로 가기 제스처</string>
     <string name="predictive_back_gesture_summary">뒤로 가기 제스처에 따라 이전 화면을 미리 봅니다. 기본값은 꺼짐입니다</string>
     <string name="feature_control">기능 제어</string>
-    <string name="feature_control_summary">현재 커널이 지원하는 기능을 관리합니다.</string>
     <string name="kernelsu_features">KernelSU 기능</string>
     <string name="yukisu_features">YukiSU 기능</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk가 활성화되어 충돌을 방지하기 위해 이 모듈을 비활성화했습니다</string>

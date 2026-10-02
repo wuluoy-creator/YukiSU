@@ -3,6 +3,7 @@ package com.anatdx.yukisu.ui.screen
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -13,6 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.NavigateNext
 import androidx.compose.material.icons.automirrored.filled.Undo
 import androidx.compose.material.icons.filled.*
@@ -20,56 +22,52 @@ import androidx.compose.material.icons.rounded.FolderDelete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.core.content.edit
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
 import com.maxkeppeker.sheets.core.models.base.IconSource
 import com.maxkeppeler.sheets.list.models.ListOption
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.AppProfileTemplateScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.FlashScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.FeatureControlScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.LogViewerScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.UmountManagerScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.MoreSettingsScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.KernelPolicyScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.DiagnosticsScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.anatdx.yukisu.BuildConfig
 import com.anatdx.yukisu.Natives
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.*
-import com.anatdx.yukisu.ui.theme.CardConfig
 import com.anatdx.yukisu.ui.theme.CardConfig.cardAlpha
 import com.anatdx.yukisu.ui.util.*
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import ui.screen.feature.FeatureControlState
+import ui.screen.moreSettings.MoreSettingsContent
+import ui.screen.moreSettings.PreferenceCategory
 
 /**
  * @author ShirkNeko
  * @date 2025/9/29.
  */
-private val SPACING_SMALL = 3.dp
 private val SPACING_MEDIUM = 8.dp
 private val SPACING_LARGE = 16.dp
 
@@ -80,327 +78,341 @@ enum class SettingsItemPosition(val index: Int, val count: Int) {
     Only(0, 1)
 }
 
+private enum class SettingsWorkspaceCategory(val titleRes: Int) {
+    Appearance(R.string.settings_category_appearance),
+    Display(R.string.settings_category_display),
+    App(R.string.settings_category_app),
+    Maintenance(R.string.settings_category_maintenance),
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination<RootGraph>
 @Composable
 fun SettingScreen(navigator: DestinationsNavigator) {
-    val topAppBarState = rememberTopAppBarState()
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-    val snackBarHost = rememberSnackbarController()
-    val context = LocalContext.current
-    val resources = LocalResources.current
-    val prefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
-    val isKsuManager = remember { Natives.isManager }
-    val initialSuLogEnabled = remember { Natives.isSuLogEnabled() }
-    val isSuLogEnabled = FeatureControlState.suLogEnabled ?: initialSuLogEnabled
-    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
-        FeatureControlState.refreshSuLog()
-    }
-    var selectedEngine by rememberSaveable {
-        mutableStateOf(
-            prefs.getString("webui_engine", "default") ?: "default"
-        )
-    }
-
+    var category by rememberSaveable { mutableStateOf<SettingsWorkspaceCategory?>(null) }
+    val savedState = rememberSaveableStateHolder()
+    BackHandler(enabled = category != null) { category = null }
     Scaffold(
         topBar = {
-            TopBar(scrollBehavior = scrollBehavior)
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(category?.titleRes ?: R.string.settings),
+                        style = MaterialTheme.typography.titleLarge,
+                    )
+                },
+                navigationIcon = {
+                    if (category != null) {
+                        IconButton(onClick = { category = null }) {
+                            YukiIcon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
+                        }
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                    scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                ),
+            )
         },
-        snackbarHost = { SnackbarHost(snackBarHost.hostState) },
-        contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)
-    ) { paddingValues ->
-        val aboutDialog = rememberCustomDialog {
-            AboutDialog(it)
+        contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
+    ) { padding ->
+        Box(Modifier.fillMaxSize().padding(padding).consumeWindowInsets(padding)) {
+            savedState.SaveableStateProvider(category?.name ?: "index") {
+                when (category) {
+                    SettingsWorkspaceCategory.Appearance -> MoreSettingsContent(PreferenceCategory.Appearance)
+                    SettingsWorkspaceCategory.Display -> MoreSettingsContent(PreferenceCategory.Display)
+                    SettingsWorkspaceCategory.App -> AppUpdateSettingsContent()
+                    SettingsWorkspaceCategory.Maintenance -> MaintenanceSettingsContent(navigator)
+                    null -> SettingsWorkspaceIndex(navigator) { category = it }
+                }
+            }
         }
-        val loadingDialog = rememberLoadingDialog()
+    }
+}
 
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .nestedScroll(scrollBehavior.nestedScrollConnection)
-                .verticalScroll(rememberScrollState())
-        ) {
-            val context = LocalContext.current
-            val scope = rememberCoroutineScope()
-            val exportBugreportLauncher = rememberLauncherForActivityResult(
-                ActivityResultContracts.CreateDocument("application/gzip")
-            ) { uri: Uri? ->
-                if (uri == null) return@rememberLauncherForActivityResult
+@Composable
+private fun SettingsWorkspaceIndex(
+    navigator: DestinationsNavigator,
+    onCategory: (SettingsWorkspaceCategory) -> Unit,
+) {
+    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 16.dp)) {
+        SettingsGroupCard(stringResource(R.string.settings_workspace_personalization)) {
+            SettingItem(
+                icon = Icons.Filled.Palette,
+                title = stringResource(R.string.settings_category_appearance),
+                summary = stringResource(R.string.settings_category_appearance_summary),
+                groupPosition = SettingsItemPosition.First,
+                onClick = { onCategory(SettingsWorkspaceCategory.Appearance) },
+            )
+            SettingItem(
+                icon = Icons.Filled.ViewList,
+                title = stringResource(R.string.settings_category_display),
+                summary = stringResource(R.string.settings_category_display_summary),
+                groupPosition = SettingsItemPosition.Last,
+                onClick = { onCategory(SettingsWorkspaceCategory.Display) },
+            )
+        }
+        SettingsGroupCard(stringResource(R.string.settings_workspace_system)) {
+            SettingItem(
+                icon = Icons.Filled.SystemUpdate,
+                title = stringResource(R.string.settings_category_app),
+                summary = stringResource(R.string.settings_category_app_summary),
+                groupPosition = SettingsItemPosition.First,
+                onClick = { onCategory(SettingsWorkspaceCategory.App) },
+            )
+            KsuIsValid {
+                SettingItem(
+                    icon = Icons.Filled.Security,
+                    title = stringResource(R.string.settings_category_kernel),
+                    summary = stringResource(R.string.settings_category_kernel_summary),
+                    onClick = { navigator.navigate(KernelPolicyScreenDestination) },
+                )
+            }
+            SettingItem(
+                icon = Icons.Filled.BugReport,
+                title = stringResource(R.string.settings_category_diagnostics),
+                summary = stringResource(R.string.settings_category_diagnostics_summary),
+                onClick = { navigator.navigate(DiagnosticsScreenDestination) },
+            )
+            SettingItem(
+                icon = Icons.Filled.Info,
+                title = stringResource(R.string.settings_category_maintenance),
+                summary = stringResource(R.string.settings_category_maintenance_summary),
+                groupPosition = SettingsItemPosition.Last,
+                onClick = { onCategory(SettingsWorkspaceCategory.Maintenance) },
+            )
+        }
+    }
+}
+
+/** Embedded by the authorization workspace; owns its existing policies and dialogs. */
+@Composable
+fun AuthorizationSettingsContent(navigator: DestinationsNavigator) {
+    val scope = rememberCoroutineScope()
+    val resources = LocalResources.current
+    val snackBarHost = LocalSnackbarHost.current
+    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 16.dp)) {
+        KsuIsValid {
+            SettingsGroupCard(stringResource(R.string.settings_authorization_defaults)) {
+                SettingItem(
+                    icon = Icons.Filled.Fence,
+                    title = stringResource(R.string.settings_profile_template),
+                    summary = stringResource(R.string.settings_profile_template_summary),
+                    groupPosition = SettingsItemPosition.First,
+                    onClick = { navigator.navigate(AppProfileTemplateScreenDestination) },
+                )
+                val superKeyDialog = rememberCustomDialog { dismiss ->
+                    SuperKeySettingsDialog(
+                        onDismiss = dismiss,
+                        onKeyCleared = {
+                            scope.launch {
+                                snackBarHost.showSnackbar(resources.getString(R.string.clear_super_key) + " ✓")
+                            }
+                        },
+                    )
+                }
+                SettingItem(
+                    icon = Icons.Filled.Key,
+                    title = stringResource(R.string.settings_superkey_management),
+                    summary = stringResource(R.string.settings_superkey_management_summary),
+                    onClick = { superKeyDialog.show() },
+                )
+                var umountChecked by rememberSaveable { mutableStateOf(Natives.isDefaultUmountModules()) }
+                SwitchItem(
+                    icon = Icons.Rounded.FolderDelete,
+                    title = stringResource(R.string.settings_umount_modules_default),
+                    summary = stringResource(R.string.settings_umount_modules_default_summary),
+                    checked = umountChecked,
+                    groupPosition = SettingsItemPosition.Last,
+                    onCheckedChange = {
+                        if (Natives.setDefaultUmountModules(it)) umountChecked = it
+                    },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun AppUpdateSettingsContent() {
+    val context = LocalContext.current
+    val prefs = remember { context.getSharedPreferences("settings", Context.MODE_PRIVATE) }
+    var selectedEngine by rememberSaveable { mutableStateOf(prefs.getString("webui_engine", "default") ?: "default") }
+    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 16.dp)) {
+        SettingsGroupCard(stringResource(R.string.settings_category_app)) {
+            var checkUpdate by rememberSaveable { mutableStateOf(prefs.getBoolean("check_update", true)) }
+            SwitchItem(
+                icon = Icons.Filled.Update,
+                title = stringResource(R.string.settings_check_update),
+                summary = stringResource(R.string.settings_check_update_summary),
+                checked = checkUpdate,
+                groupPosition = SettingsItemPosition.First,
+                onCheckedChange = { enabled ->
+                    prefs.edit { putBoolean("check_update", enabled) }
+                    checkUpdate = enabled
+                },
+            )
+            var checkCiUpdate by rememberSaveable { mutableStateOf(prefs.getBoolean("check_ci_update", false)) }
+            if (checkUpdate) {
+                SwitchItem(
+                    icon = Icons.Filled.DeveloperMode,
+                    title = stringResource(R.string.settings_check_ci_update),
+                    summary = stringResource(R.string.settings_check_ci_update_summary),
+                    checked = checkCiUpdate,
+                    onCheckedChange = { enabled ->
+                        prefs.edit { putBoolean("check_ci_update", enabled) }
+                        checkCiUpdate = enabled
+                    },
+                )
+            }
+            var autoUpdateKsud by rememberSaveable { mutableStateOf(prefs.getBoolean("auto_update_ksud", false)) }
+            SwitchItem(
+                icon = Icons.Filled.Sync,
+                title = stringResource(R.string.settings_auto_update_ksud),
+                summary = stringResource(R.string.settings_auto_update_ksud_summary),
+                checked = autoUpdateKsud,
+                groupPosition = SettingsItemPosition.Last,
+                onCheckedChange = { enabled ->
+                    prefs.edit { putBoolean("auto_update_ksud", enabled) }
+                    autoUpdateKsud = enabled
+                },
+            )
+        }
+        KsuIsValid {
+            SettingsGroupCard(stringResource(R.string.use_webuix)) {
+                WebUIEngineSelector(
+                    selectedEngine = selectedEngine,
+                    onEngineSelected = { engine ->
+                        selectedEngine = engine
+                        prefs.edit { putString("webui_engine", engine) }
+                    },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun MaintenanceSettingsContent(navigator: DestinationsNavigator) {
+    val loadingDialog = rememberLoadingDialog()
+    val aboutDialog = rememberCustomDialog { AboutDialog(it) }
+    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 16.dp)) {
+        KsuIsValid {
+            SettingsGroupCard(stringResource(R.string.settings_uninstall)) {
+                UninstallItem(navigator, groupPosition = SettingsItemPosition.Only) {
+                    loadingDialog.withLoading(it)
+                }
+            }
+        }
+        SettingsGroupCard(stringResource(R.string.about)) {
+            SettingItem(
+                icon = Icons.Filled.Info,
+                title = stringResource(R.string.about),
+                groupPosition = SettingsItemPosition.Only,
+                onClick = { aboutDialog.show() },
+            )
+        }
+    }
+}
+
+/** Non-scrolling report-export group for the shared diagnostics page. */
+@Composable
+fun DiagnosticExportActions() {
+    val context = LocalContext.current
+    val resources = LocalResources.current
+    val scope = rememberCoroutineScope()
+    val snackBarHost = LocalSnackbarHost.current
+    val loadingDialog = rememberLoadingDialog()
+    var showBottomsheet by remember { mutableStateOf(false) }
+    val exportBugreportLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument("application/gzip")
+    ) { uri: Uri? ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        scope.launch(start = CoroutineStart.UNDISPATCHED) {
+            val saved = loadingDialog.withLoading {
+                runCatching {
+                    withContext(NonCancellable + Dispatchers.IO) {
+                        val output = checkNotNull(
+                            context.contentResolver.openOutputStream(uri)
+                        )
+                        output.use { outputStream ->
+                            getBugreportFile(context).inputStream().use { input ->
+                                input.copyTo(outputStream)
+                            }
+                        }
+                    }
+                }.onFailure {
+                    if (it is CancellationException) throw it
+                }.isSuccess
+            }
+            val message = if (saved) R.string.log_saved else R.string.operation_failed
+            snackBarHost.showSnackbar(resources.getString(message))
+        }
+    }
+    SettingsGroupCard(stringResource(R.string.send_log)) {
+        SettingItem(
+            icon = Icons.Filled.BugReport,
+            title = stringResource(R.string.send_log),
+            groupPosition = SettingsItemPosition.Only,
+            onClick = { showBottomsheet = true },
+        )
+    }
+    if (showBottomsheet) {
+        LogBottomSheet(
+            onDismiss = { showBottomsheet = false },
+            onSaveLog = {
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH_mm")
+                val current = LocalDateTime.now().format(formatter)
+                exportBugreportLauncher.launch("YukiSU_bugreport_${current}.tar.gz")
+                showBottomsheet = false
+            },
+            onShareLog = {
                 scope.launch {
-                    val saved = loadingDialog.withLoading {
+                    val bugreport = loadingDialog.withLoading {
                         runCatching {
                             withContext(Dispatchers.IO) {
-                                val output = checkNotNull(
-                                    context.contentResolver.openOutputStream(uri)
-                                )
-                                output.use { outputStream ->
-                                    getBugreportFile(context).inputStream().use { input ->
-                                        input.copyTo(outputStream)
-                                    }
-                                }
+                                getBugreportFile(context)
                             }
                         }.onFailure {
                             if (it is CancellationException) throw it
-                        }.isSuccess
+                        }
+                    }.getOrElse {
+                        snackBarHost.showSnackbar(
+                            resources.getString(R.string.operation_failed)
+                        )
+                        return@launch
                     }
-                    val message = if (saved) R.string.log_saved else R.string.operation_failed
-                    snackBarHost.showSnackbar(resources.getString(message))
+
+                    val shared = runCatching {
+                        val uri = FileProvider.getUriForFile(
+                            context,
+                            "${BuildConfig.APPLICATION_ID}.fileprovider",
+                            bugreport
+                        )
+
+                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                            putExtra(Intent.EXTRA_STREAM, uri)
+                            setDataAndType(uri, "application/gzip")
+                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        }
+
+                        context.startActivity(
+                            Intent.createChooser(
+                                shareIntent,
+                                resources.getString(R.string.send_log)
+                            )
+                        )
+                    }.isSuccess
+                    if (shared) {
+                        showBottomsheet = false
+                    } else {
+                        snackBarHost.showSnackbar(
+                            resources.getString(R.string.operation_failed)
+                        )
+                    }
                 }
             }
-
-            KsuIsValid {
-                SettingsGroupCard(
-                    title = stringResource(R.string.configuration),
-                    content = {
-                        SettingItem(
-                            icon = Icons.Filled.Fence,
-                            title = stringResource(R.string.settings_profile_template),
-                            summary = stringResource(R.string.settings_profile_template_summary),
-                            groupPosition = SettingsItemPosition.First,
-                            onClick = {
-                                navigator.navigate(AppProfileTemplateScreenDestination)
-                            }
-                        )
-
-                        SettingItem(
-                            icon = Icons.Filled.Memory,
-                            title = stringResource(R.string.feature_control),
-                            summary = stringResource(R.string.feature_control_summary),
-                            onClick = {
-                                navigator.navigate(FeatureControlScreenDestination)
-                            }
-                        )
-
-                        val superKeyDialog = rememberCustomDialog { dismiss ->
-                            SuperKeySettingsDialog(
-                                onDismiss = dismiss,
-                                onKeyCleared = {
-                                    scope.launch {
-                                        snackBarHost.showSnackbar(
-                                            resources.getString(R.string.clear_super_key) + " ✓"
-                                        )
-                                    }
-                                }
-                            )
-                        }
-                        SettingItem(
-                            icon = Icons.Filled.Key,
-                            title = stringResource(R.string.settings_superkey_management),
-                            summary = stringResource(R.string.settings_superkey_management_summary),
-                            onClick = { superKeyDialog.show() }
-                        )
-
-                        var umountChecked by rememberSaveable { mutableStateOf(Natives.isDefaultUmountModules()) }
-                        SwitchItem(
-                            icon = Icons.Rounded.FolderDelete,
-                            title = stringResource(id = R.string.settings_umount_modules_default),
-                            groupPosition = SettingsItemPosition.Last,
-                            summary = stringResource(id = R.string.settings_umount_modules_default_summary),
-                            checked = umountChecked,
-                            onCheckedChange = {
-                                if (Natives.setDefaultUmountModules(it)) {
-                                    umountChecked = it
-                                }
-                            }
-                        )
-                    }
-                )
-            }
-
-            SettingsGroupCard(
-                title = stringResource(R.string.app_settings),
-                content = {
-                    var checkUpdate by rememberSaveable {
-                        mutableStateOf(prefs.getBoolean("check_update", true))
-                    }
-                    SwitchItem(
-                        icon = Icons.Filled.Update,
-                        title = stringResource(R.string.settings_check_update),
-                        summary = stringResource(R.string.settings_check_update_summary),
-                        checked = checkUpdate,
-                        groupPosition = SettingsItemPosition.First,
-                        onCheckedChange = { enabled ->
-                            prefs.edit { putBoolean("check_update", enabled) }
-                            checkUpdate = enabled
-                        }
-                    )
-
-                    var checkCiUpdate by rememberSaveable {
-                        mutableStateOf(prefs.getBoolean("check_ci_update", false))
-                    }
-                    if (checkUpdate) {
-                        SwitchItem(
-                            icon = Icons.Filled.DeveloperMode,
-                            title = stringResource(R.string.settings_check_ci_update),
-                            summary = stringResource(R.string.settings_check_ci_update_summary),
-                            checked = checkCiUpdate,
-                            onCheckedChange = { enabled ->
-                                prefs.edit { putBoolean("check_ci_update", enabled) }
-                                checkCiUpdate = enabled
-                            }
-                        )
-                    }
-
-                    var autoUpdateKsud by rememberSaveable {
-                        mutableStateOf(prefs.getBoolean("auto_update_ksud", false))
-                    }
-                    SwitchItem(
-                        icon = Icons.Filled.Sync,
-                        title = stringResource(R.string.settings_auto_update_ksud),
-                        summary = stringResource(R.string.settings_auto_update_ksud_summary),
-                        checked = autoUpdateKsud,
-                        onCheckedChange = { enabled ->
-                            prefs.edit { putBoolean("auto_update_ksud", enabled) }
-                            autoUpdateKsud = enabled
-                        }
-                    )
-
-                    KsuIsValid {
-                        WebUIEngineSelector(
-                            selectedEngine = selectedEngine,
-                            onEngineSelected = { engine ->
-                                selectedEngine = engine
-                                prefs.edit { putString("webui_engine", engine) }
-                            }
-                        )
-                    }
-
-                    SettingItem(
-                        icon = Icons.Filled.Settings,
-                        title = stringResource(R.string.more_settings),
-                        groupPosition = SettingsItemPosition.Last,
-                        onClick = {
-                            navigator.navigate(MoreSettingsScreenDestination)
-                        }
-                    )
-                }
-            )
-
-            SettingsGroupCard(
-                title = stringResource(R.string.tools),
-                content = {
-                    var showBottomsheet by remember { mutableStateOf(false) }
-
-                    SettingItem(
-                        icon = Icons.Filled.BugReport,
-                        title = stringResource(R.string.send_log),
-                        groupPosition = if (isKsuManager) {
-                            SettingsItemPosition.First
-                        } else {
-                            SettingsItemPosition.Only
-                        },
-                        onClick = {
-                            showBottomsheet = true
-                        }
-                    )
-
-                    KsuIsValid {
-                        if (isSuLogEnabled) {
-                            SettingItem(
-                                icon = Icons.Filled.Visibility,
-                                title = stringResource(R.string.log_viewer_view_logs),
-                                summary = stringResource(R.string.log_viewer_view_logs_summary),
-                                onClick = {
-                                    navigator.navigate(LogViewerScreenDestination)
-                                }
-                            )
-                        }
-                    }
-                    KsuIsValid {
-                        SettingItem(
-                            icon = Icons.Filled.FolderOff,
-                            title = stringResource(R.string.umount_path_manager),
-                            summary = stringResource(R.string.umount_path_manager_summary),
-                            onClick = {
-                                navigator.navigate(UmountManagerScreenDestination)
-                            }
-                        )
-                    }
-
-                    if (showBottomsheet) {
-                        LogBottomSheet(
-                            onDismiss = { showBottomsheet = false },
-                            onSaveLog = {
-                                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH_mm")
-                                val current = LocalDateTime.now().format(formatter)
-                                exportBugreportLauncher.launch("YukiSU_bugreport_${current}.tar.gz")
-                                showBottomsheet = false
-                            },
-                            onShareLog = {
-                                scope.launch {
-                                    val bugreport = loadingDialog.withLoading {
-                                        runCatching {
-                                            withContext(Dispatchers.IO) {
-                                                getBugreportFile(context)
-                                            }
-                                        }.onFailure {
-                                            if (it is CancellationException) throw it
-                                        }
-                                    }.getOrElse {
-                                        snackBarHost.showSnackbar(
-                                            resources.getString(R.string.operation_failed)
-                                        )
-                                        return@launch
-                                    }
-
-                                    val shared = runCatching {
-                                        val uri = FileProvider.getUriForFile(
-                                            context,
-                                            "${BuildConfig.APPLICATION_ID}.fileprovider",
-                                            bugreport
-                                        )
-
-                                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                                            putExtra(Intent.EXTRA_STREAM, uri)
-                                            setDataAndType(uri, "application/gzip")
-                                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                        }
-
-                                        context.startActivity(
-                                            Intent.createChooser(
-                                                shareIntent,
-                                                resources.getString(R.string.send_log)
-                                            )
-                                        )
-                                    }.isSuccess
-                                    if (shared) {
-                                        showBottomsheet = false
-                                    } else {
-                                        snackBarHost.showSnackbar(
-                                            resources.getString(R.string.operation_failed)
-                                        )
-                                    }
-                                }
-                            }
-                        )
-                    }
-                    KsuIsValid {
-                        UninstallItem(
-                            navigator = navigator,
-                            groupPosition = SettingsItemPosition.Last
-                        ) {
-                            loadingDialog.withLoading(it)
-                        }
-                    }
-                }
-            )
-
-            SettingsGroupCard(
-                title = stringResource(R.string.about),
-                content = {
-                    SettingItem(
-                        icon = Icons.Filled.Info,
-                        title = stringResource(R.string.about),
-                        groupPosition = SettingsItemPosition.Only,
-                        onClick = {
-                            aboutDialog.show()
-                        }
-                    )
-                }
-            )
-
-            Spacer(modifier = Modifier.height(SPACING_LARGE))
-        }
+        )
     }
 }
 
@@ -448,6 +460,7 @@ private fun WebUIEngineSelector(
         title = stringResource(R.string.use_webuix),
         summary = engineOptions.find { it.first == selectedEngine }?.second
             ?: stringResource(R.string.engine_auto_select),
+        groupPosition = SettingsItemPosition.Only,
         onClick = { showDialog = true }
     )
 
@@ -845,36 +858,4 @@ fun rememberUninstallDialog(onSelected: (UninstallType) -> Unit): DialogHandle {
             )
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TopBar(
-    scrollBehavior: TopAppBarScrollBehavior? = null
-) {
-    val colorScheme = MaterialTheme.colorScheme
-    val cardColor = if (CardConfig.isCustomBackgroundEnabled) {
-        colorScheme.surfaceContainerLow
-    } else {
-        colorScheme.background
-    }
-    val colors = TopAppBarDefaults.topAppBarColors(
-        containerColor = cardColor,
-        scrolledContainerColor = cardColor
-    )
-    val title: @Composable () -> Unit = {
-        Text(
-            text = stringResource(R.string.settings),
-            fontWeight = FontWeight.SemiBold
-        )
-    }
-
-    TopAppBar(
-        title = title,
-        colors = colors,
-        windowInsets = WindowInsets.safeDrawing.only(
-            WindowInsetsSides.Top + WindowInsetsSides.Horizontal
-        ),
-        scrollBehavior = scrollBehavior
-    )
 }

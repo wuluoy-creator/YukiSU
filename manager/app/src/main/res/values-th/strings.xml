@@ -229,9 +229,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">ซ่อมแซม/ติดตั้ง LKM</string>
-    <string name="configuration">กำหนดค่า</string>
-    <string name="app_settings">การตั้งค่าแอปพลิเคชัน</string>
-    <string name="tools">เครื่องมือ</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">ไม่พบแอปพลิเคชัน</string>
     <string name="selinux_enabled_toast">เปิดใช้งาน SELinux แล้ว</string>
@@ -243,7 +240,6 @@
     <string name="hide_bl_enabled_toast">เปิดใช้งานการซ่อนสถานะปลดล็อกแล้ว รีบูตเพื่อใช้งาน</string>
     <string name="hide_bl_disabled_toast">ปิดใช้งานการซ่อนสถานะปลดล็อกแล้ว</string>
     <string name="hide_bl_change_failed">เปลี่ยนการตั้งค่าการซ่อนสถานะปลดล็อกไม่สำเร็จ</string>
-    <string name="advanced_settings">การตั้งค่าขั้นสูง</string>
     <string name="appearance_settings">ปรับแต่งแถบเครื่องมือ</string>
     <string name="back">กลับ</string>
     <string name="background_set_success">ตั้งค่าพื้นหลังสำเร็จ</string>
@@ -328,7 +324,6 @@
     <string name="author">ผู้สร้าง</string>
     <string name="description">คำอธิบาย</string>
     <string name="log_viewer_title">ตัวดูบันทึก</string>
-    <string name="log_viewer_back">กลับ</string>
     <string name="log_viewer_search">ค้นหา</string>
     <string name="log_viewer_clear_logs">ล้างบันทึก</string>
     <string name="log_viewer_clear_logs_confirm">คุณแน่ใจหรือไม่ว่าต้องการล้างไฟล์บันทึกที่เลือก? การกระทำนี้ไม่สามารถยกเลิกได้</string>
@@ -345,8 +340,6 @@
     <string name="log_viewer_raw_log">บันทึกดิบ</string>
     <string name="log_viewer_search_placeholder">ค้นหาตาม UID คำสั่ง หรือรายละเอียด…</string>
     <string name="log_viewer_clear_search">ล้างการค้นหา</string>
-    <string name="log_viewer_view_logs">ดูบันทึกการใช้งาน</string>
-    <string name="log_viewer_view_logs_summary">ดูบันทึกการเข้าถึงซูเปอร์ยูเซอร์ของ KernelSU</string>
     <string name="log_viewer_exclude_subtypes">ยกเว้นประเภทย่อย</string>
     <string name="log_viewer_exclude_current_app">แอปปัจจุบัน</string>
     <string name="log_viewer_exclude_viewer_refresh">รีเฟรชตัวดูบันทึกอัตโนมัติ</string>
@@ -364,7 +357,6 @@
     <string name="log_viewer_all_logs_loaded">แสดงบันทึกทั้งหมดแล้ว</string>
     <string name="incompatible_kernel_msg">ตัวจัดการปัจจุบันไม่เข้ากันกับเคอร์เนลนี้! กรุณาอัปเกรดเคอร์เนลเป็นเวอร์ชัน %2$d หรือสูงกว่า (ปัจจุบัน %1$d)</string>
     <string name="umount_path_manager">การจัดการพาธ umount</string>
-    <string name="umount_path_manager_summary">จัดการพาธยกเลิกการเมานต์ของเคอร์เนล</string>
     <string name="umount_path_restart_notice">ต้องรีบูตเพื่อให้การเปลี่ยนแปลงมีผล ระบบจะใช้การกำหนดค่าใหม่เมื่อบูตครั้งถัดไป</string>
     <string name="add_umount_path">เพิ่มพาธ umount</string>
     <string name="mount_path">พาธการเมานต์</string>
@@ -636,7 +628,6 @@
     <string name="predictive_back_gesture">ท่าทางย้อนกลับแบบคาดการณ์</string>
     <string name="predictive_back_gesture_summary">แสดงตัวอย่างหน้าก่อนหน้าตามท่าทางย้อนกลับ ปิดไว้โดยค่าเริ่มต้น</string>
     <string name="feature_control">การควบคุมฟีเจอร์</string>
-    <string name="feature_control_summary">จัดการฟีเจอร์ที่เคอร์เนลปัจจุบันรองรับ</string>
     <string name="kernelsu_features">ฟีเจอร์ KernelSU</string>
     <string name="yukisu_features">ฟีเจอร์ YukiSU</string>
     <string name="module_disabled_by_yukizygisk">เปิดใช้ YukiZygisk แล้ว จึงปิดโมดูลนี้เพื่อป้องกันความขัดแย้ง</string>

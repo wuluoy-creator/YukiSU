@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_absolute_path">Indtast en absolut sti</string>
-    <string name="kasumi_advanced">Avanceret</string>
     <string name="kasumi_apply_failed">Den gemte konfiguration er endnu ikke anvendt på kernen</string>
     <string name="kasumi_backend_enable_desc">Tillad monteringsplanlæggeren at bruge denne backend</string>
     <string name="kasumi_check_conflicts">Kontrollér monteringskonflikter</string>
@@ -16,7 +15,6 @@
     <string name="kasumi_fs_type_ext4">EXT4-image</string>
     <string name="kasumi_fs_type_title">Lager-filsystem</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">Generelt</string>
     <string name="kasumi_global_override">Global tilsidesættelse: %1$s</string>
     <string name="kasumi_hide_aggressive">Aggressiv</string>
     <string name="kasumi_hide_normal">Normal</string>
@@ -127,10 +125,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Ikke monteret</string>
     <string name="kasumi_system_info">Systeminfo</string>
-    <string name="kasumi_tab_logs">Logge</string>
-    <string name="kasumi_tab_rules">Regler</string>
-    <string name="kasumi_tab_settings">Indstillinger</string>
-    <string name="kasumi_tab_status">Status</string>
     <string name="kasumi_tempdir">Midlertidigt monteringspunkt</string>
     <string name="kasumi_tempdir_desc">Basissti for midlertidige monteringer (lad være tom for auto)</string>
     <string name="kasumi_title">Kasumi-konfiguration</string>

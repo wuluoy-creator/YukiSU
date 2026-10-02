@@ -227,9 +227,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">Popravak/instalacija LKM</string>
-    <string name="configuration">Konfiguriraj</string>
-    <string name="app_settings">Postavke aplikacije</string>
-    <string name="tools">Alati</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Aplikacija nije pronađena</string>
     <string name="selinux_enabled_toast">SELinux omogućen</string>
@@ -241,7 +238,6 @@
     <string name="hide_bl_enabled_toast">Skrivanje stanja otključavanja omogućeno, ponovno pokrenite za primjenu</string>
     <string name="hide_bl_disabled_toast">Skrivanje stanja otključavanja onemogućeno</string>
     <string name="hide_bl_change_failed">Promjena postavke skrivanja stanja otključavanja nije uspjela</string>
-    <string name="advanced_settings">Napredne postavke</string>
     <string name="appearance_settings">Prilagodi alatnu traku</string>
     <string name="back">Natrag</string>
     <string name="background_set_success">Pozadina uspješno postavljena</string>
@@ -326,7 +322,6 @@
     <string name="author">Autor</string>
     <string name="description">Opis</string>
     <string name="log_viewer_title">Preglednik zapisnika</string>
-    <string name="log_viewer_back">Natrag</string>
     <string name="log_viewer_search">Pretraži</string>
     <string name="log_viewer_clear_logs">Očisti zapisnike</string>
     <string name="log_viewer_clear_logs_confirm">Jeste li sigurni da želite očistiti odabranu datoteku zapisnika? Ova se radnja ne može poništiti</string>
@@ -343,8 +338,6 @@
     <string name="log_viewer_raw_log">Neobrađeni zapisnik</string>
     <string name="log_viewer_search_placeholder">Pretraži prema UID-u, naredbi ili pojedinostima…</string>
     <string name="log_viewer_clear_search">Očisti pretragu</string>
-    <string name="log_viewer_view_logs">Prikaži zapisnike upotrebe</string>
-    <string name="log_viewer_view_logs_summary">Prikaži zapisnike pristupa superkorisnika KernelSU</string>
     <string name="log_viewer_exclude_subtypes">Isključi podvrste</string>
     <string name="log_viewer_exclude_current_app">Trenutna aplikacija</string>
     <string name="log_viewer_exclude_viewer_refresh">Automatsko osvježavanje preglednika zapisnika</string>
@@ -362,7 +355,6 @@
     <string name="log_viewer_all_logs_loaded">Prikazani svi zapisnici</string>
     <string name="incompatible_kernel_msg">Trenutni upravitelj nije kompatibilan s ovom jezgrom! Nadogradite jezgru na verziju %2$d ili noviju (trenutno %1$d)</string>
     <string name="umount_path_manager">Upravljanje umount putanjama</string>
-    <string name="umount_path_manager_summary">Upravljaj putanjama odmontiranja jezgre</string>
     <string name="umount_path_restart_notice">Za primjenu promjena potrebno je ponovno pokretanje. Sustav će primijeniti novu konfiguraciju pri sljedećem pokretanju</string>
     <string name="add_umount_path">Dodaj umount putanju</string>
     <string name="mount_path">Putanja montiranja</string>
@@ -616,7 +608,6 @@
     <string name="predictive_back_gesture">Prediktivna gesta za povratak</string>
     <string name="predictive_back_gesture_summary">Prikazuje prethodnu stranicu prateći gestu povratka. Zadano je isključeno</string>
     <string name="feature_control">Upravljanje funkcijama</string>
-    <string name="feature_control_summary">Upravlja funkcijama koje podržava trenutna jezgra.</string>
     <string name="kernelsu_features">KernelSU funkcije</string>
     <string name="yukisu_features">YukiSU funkcije</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk je omogućen. Ovaj modul je onemogućen radi sprječavanja sukoba</string>

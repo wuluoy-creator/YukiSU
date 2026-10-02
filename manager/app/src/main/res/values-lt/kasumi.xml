@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_absolute_path">Įveskite absoliutųjį kelią</string>
-    <string name="kasumi_advanced">Išplėstinė</string>
     <string name="kasumi_apply_failed">Išsaugota konfigūracija dar nepritaikyta branduoliui</string>
     <string name="kasumi_backend_enable_desc">Leisti prijungimo planuoklei naudoti šią posistemę</string>
     <string name="kasumi_check_conflicts">Tikrinti prijungimo konfliktus</string>
@@ -16,7 +15,6 @@
     <string name="kasumi_fs_type_ext4">EXT4 vaizdas</string>
     <string name="kasumi_fs_type_title">Saugyklos failų sistema</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">Bendra</string>
     <string name="kasumi_global_override">Visuotinis pakeitimas: %1$s</string>
     <string name="kasumi_hide_aggressive">Agresyvus</string>
     <string name="kasumi_hide_normal">Įprastas</string>
@@ -131,10 +129,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Neprijungta</string>
     <string name="kasumi_system_info">Sistemos informacija</string>
-    <string name="kasumi_tab_logs">Žurnalai</string>
-    <string name="kasumi_tab_rules">Taisyklės</string>
-    <string name="kasumi_tab_settings">Parametrai</string>
-    <string name="kasumi_tab_status">Būsena</string>
     <string name="kasumi_tempdir">Laikinasis prijungimo taškas</string>
     <string name="kasumi_tempdir_desc">Laikinųjų prijungimų pagrindinis kelias (palikite tuščią automatiniam)</string>
     <string name="kasumi_title">Kasumi konfigūracija</string>

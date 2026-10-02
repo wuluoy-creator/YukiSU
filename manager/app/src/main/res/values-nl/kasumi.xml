@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_absolute_path">Voer een absoluut pad in</string>
-    <string name="kasumi_advanced">Geavanceerd</string>
     <string name="kasumi_apply_failed">De opgeslagen configuratie is nog niet op de kernel toegepast</string>
     <string name="kasumi_backend_enable_desc">De koppelplanner toestaan deze backend te gebruiken</string>
     <string name="kasumi_check_conflicts">Koppelconflicten controleren</string>
@@ -16,7 +15,6 @@
     <string name="kasumi_fs_type_ext4">EXT4-image</string>
     <string name="kasumi_fs_type_title">Opslagbestandssysteem</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">Algemeen</string>
     <string name="kasumi_global_override">Globale overschrijving: %1$s</string>
     <string name="kasumi_hide_aggressive">Agressief</string>
     <string name="kasumi_hide_normal">Normaal</string>
@@ -127,10 +125,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Niet gekoppeld</string>
     <string name="kasumi_system_info">Systeeminformatie</string>
-    <string name="kasumi_tab_logs">Logboeken</string>
-    <string name="kasumi_tab_rules">Regels</string>
-    <string name="kasumi_tab_settings">Instellingen</string>
-    <string name="kasumi_tab_status">Status</string>
     <string name="kasumi_tempdir">Tijdelijk koppelpunt</string>
     <string name="kasumi_tempdir_desc">Basispad voor tijdelijke koppelingen (laat leeg voor automatisch)</string>
     <string name="kasumi_title">Kasumi-configuratie</string>

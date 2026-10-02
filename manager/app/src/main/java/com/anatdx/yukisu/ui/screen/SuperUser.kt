@@ -111,6 +111,15 @@ private enum class AppSwipeAction {
 @Destination<RootGraph>
 @Composable
 fun SuperUserScreen(navigator: DestinationsNavigator) {
+    AuthorizationWorkspace(navigator)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun SuperUserPage(
+    navigator: DestinationsNavigator,
+    sectionNavigation: @Composable () -> Unit = {},
+) {
     val viewModel = viewModel<SuperUserViewModel>()
     val scope = rememberCoroutineScope()
     val topAppBarState = rememberTopAppBarState()
@@ -139,10 +148,6 @@ fun SuperUserScreen(navigator: DestinationsNavigator) {
         snackBarHostState,
         viewModel
     )
-
-    LaunchedEffect(navigator) {
-        viewModel.search = ""
-    }
 
     LaunchedEffect(viewModel.selectedApps, viewModel.showBatchActions) {
         if (viewModel.showBatchActions && viewModel.selectedApps.isEmpty()) {
@@ -215,6 +220,7 @@ fun SuperUserScreen(navigator: DestinationsNavigator) {
 
     Scaffold(
         topBar = {
+            Column {
             SearchAppBar(
                 title = { TopBarTitle(viewModel.selectedCategory, appCounts) },
                 searchText = viewModel.search,
@@ -230,6 +236,8 @@ fun SuperUserScreen(navigator: DestinationsNavigator) {
                 },
                 scrollBehavior = scrollBehavior
             )
+                sectionNavigation()
+            }
         },
         snackbarHost = { SnackbarHost(snackBarHostState.hostState) },
         contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
@@ -272,7 +280,7 @@ private fun TopBarTitle(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
-            text = stringResource(R.string.superuser),
+            text = stringResource(R.string.nav_authorization),
             fontWeight = if (isExpressiveUi) FontWeight.Normal else null
         )
 

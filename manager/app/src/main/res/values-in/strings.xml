@@ -229,9 +229,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">Perbaikan/pemasangan LKM</string>
-    <string name="configuration">Konfigurasi</string>
-    <string name="app_settings">Pengaturan Aplikasi</string>
-    <string name="tools">Alat-Alat</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Aplikasi tidak ditemukan</string>
     <string name="selinux_enabled_toast">SELinux Dinyalakan</string>
@@ -243,7 +240,6 @@
     <string name="hide_bl_enabled_toast">Sembunyikan status buka kunci diaktifkan, mulai ulang untuk menerapkan</string>
     <string name="hide_bl_disabled_toast">Sembunyikan status buka kunci dinonaktifkan</string>
     <string name="hide_bl_change_failed">Gagal mengubah pengaturan sembunyikan status buka kunci</string>
-    <string name="advanced_settings">Pengaturan Lanjutan</string>
     <string name="appearance_settings">Kustomisasi toolbar</string>
     <string name="back">Kembali</string>
     <string name="background_set_success">Set latar belakang berhasil</string>
@@ -328,7 +324,6 @@
     <string name="author">Pembuat</string>
     <string name="description">Deskripsi</string>
     <string name="log_viewer_title">Penampil log</string>
-    <string name="log_viewer_back">Kembali</string>
     <string name="log_viewer_search">Cari</string>
     <string name="log_viewer_clear_logs">Bersihkan Log</string>
     <string name="log_viewer_clear_logs_confirm">Apakah Anda yakin ingin mengosongkan berkas log yang dipilih? Tindakan ini tidak dapat dibatalkan.</string>
@@ -345,8 +340,6 @@
     <string name="log_viewer_raw_log">Log mentah</string>
     <string name="log_viewer_search_placeholder">Cari menurut UID, perintah, atau detail…</string>
     <string name="log_viewer_clear_search">Hapus pencarian</string>
-    <string name="log_viewer_view_logs">Lihat log penggunaan</string>
-    <string name="log_viewer_view_logs_summary">Lihat log akses superuser KernelSU</string>
     <string name="log_viewer_exclude_subtypes">Kecualikan subjenis</string>
     <string name="log_viewer_exclude_current_app">Aplikasi saat ini</string>
     <string name="log_viewer_exclude_viewer_refresh">Penyegaran otomatis penampil log</string>
@@ -364,7 +357,6 @@
     <string name="log_viewer_all_logs_loaded">Semua log ditampilkan</string>
     <string name="incompatible_kernel_msg">Pengelola saat ini tidak kompatibel dengan kernel ini! Silakan tingkatkan kernel ke versi %2$d atau lebih tinggi (saat ini %1$d)</string>
     <string name="umount_path_manager">Pengelolaan jalur umount</string>
-    <string name="umount_path_manager_summary">Kelola jalur lepas pasang kernel</string>
     <string name="umount_path_restart_notice">Diperlukan mulai ulang agar perubahan berlaku. Sistem akan menerapkan konfigurasi baru saat boot berikutnya</string>
     <string name="add_umount_path">Tambah jalur umount</string>
     <string name="mount_path">Jalur pemasangan</string>
@@ -638,7 +630,6 @@
     <string name="predictive_back_gesture">Gestur kembali prediktif</string>
     <string name="predictive_back_gesture_summary">Pratinjau halaman sebelumnya mengikuti gestur kembali. Nonaktif secara bawaan</string>
     <string name="feature_control">Kontrol fitur</string>
-    <string name="feature_control_summary">Kelola fitur yang didukung oleh kernel saat ini.</string>
     <string name="kernelsu_features">Fitur KernelSU</string>
     <string name="yukisu_features">Fitur YukiSU</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk aktif. Modul ini dinonaktifkan untuk mencegah konflik</string>

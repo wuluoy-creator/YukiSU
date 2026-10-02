@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kasumi_advanced">উন্নত</string>
     <string name="kasumi_debug">ডিবাগ লগিং</string>
     <string name="kasumi_filter_all">সব</string>
     <string name="kasumi_fs_type_erofs">EROFS ইমেজ</string>
     <string name="kasumi_fs_type_ext4">EXT4 ইমেজ</string>
     <string name="kasumi_fs_type_title">সঞ্চয়স্থান ফাইল সিস্টেম</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">সাধারণ</string>
     <string name="kasumi_info_active_mounts">সক্রিয় মাউন্ট:</string>
     <string name="kasumi_info_kernel">কার্নেল</string>
     <string name="kasumi_info_mount_base">মাউন্ট বেস</string>
@@ -73,10 +71,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">মাউন্ট করা নেই</string>
     <string name="kasumi_system_info">সিস্টেম তথ্য</string>
-    <string name="kasumi_tab_logs">লগ</string>
-    <string name="kasumi_tab_rules">নিয়ম</string>
-    <string name="kasumi_tab_settings">সেটিংস</string>
-    <string name="kasumi_tab_status">স্থিতি</string>
     <string name="kasumi_tempdir">অস্থায়ী মাউন্ট পয়েন্ট</string>
     <string name="kasumi_tempdir_desc">অস্থায়ী মাউন্টের জন্য বেস পাথ (স্বয়ংক্রিয়র জন্য খালি রাখুন)</string>
     <string name="kasumi_title">Kasumi কনফিগারেশন</string>

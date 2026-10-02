@@ -357,13 +357,9 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM repair/installation</string>
-    <string name="configuration">Configure</string>
     <string name="feature_control" tools:ignore="MissingTranslation">Feature controls</string>
-    <string name="feature_control_summary" tools:ignore="MissingTranslation">Manage features supported by the running kernel</string>
     <string name="kernelsu_features" tools:ignore="MissingTranslation">KernelSU features</string>
     <string name="yukisu_features" tools:ignore="MissingTranslation">YukiSU features</string>
-    <string name="app_settings">Application Settings</string>
-    <string name="tools">Tools</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">Application not found</string>
     <string name="selinux_enabled_toast">SELinux Enabled</string>
@@ -375,7 +371,6 @@
     <string name="hide_bl_enabled_toast">Unlock Status Hide enabled, reboot to apply</string>
     <string name="hide_bl_disabled_toast">Unlock Status Hide disabled</string>
     <string name="hide_bl_change_failed">Failed to change Unlock Status Hide setting</string>
-    <string name="advanced_settings">Advanced Settings</string>
     <string name="appearance_settings">Customize the toolbar</string>
     <string name="back">Comeback</string>
     <string name="background_set_success">Background set successfully</string>
@@ -466,7 +461,6 @@
     <string name="author">Author</string>
     <string name="description">Description</string>
     <string name="log_viewer_title">Log Viewer</string>
-    <string name="log_viewer_back">Back</string>
     <string name="log_viewer_search">Search</string>
     <string name="log_viewer_clear_logs">Clear Logs</string>
     <string name="log_viewer_clear_logs_confirm">Are you sure you want to clear the selected log file? This action cannot be undone</string>
@@ -483,8 +477,6 @@
     <string name="log_viewer_raw_log">Raw Log</string>
     <string name="log_viewer_search_placeholder">Search by UID, command, or details…</string>
     <string name="log_viewer_clear_search">Clear search</string>
-    <string name="log_viewer_view_logs">View Usage Logs</string>
-    <string name="log_viewer_view_logs_summary">View KernelSU superuser access logs</string>
     <string name="log_viewer_exclude_subtypes">Exclude sub-types</string>
     <string name="log_viewer_exclude_current_app">Current App</string>
     <string name="log_viewer_exclude_viewer_refresh">Log Viewer Self-Refresh</string>
@@ -504,7 +496,6 @@
     The current manager is incompatible with this kernel! Please upgrade the kernel to version %2$d or higher (currently %1$d)
     </string>
     <string name="umount_path_manager">Umount Path Management</string>
-    <string name="umount_path_manager_summary">Manage kernel unmount paths</string>
     <string name="umount_path_restart_notice">A reboot is required for changes to take effect. The system will apply the new configuration on the next boot</string>
     <string name="add_umount_path">Add Umount Path</string>
     <string name="mount_path">Mount Path</string>

@@ -6,6 +6,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
@@ -21,7 +22,6 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -59,13 +59,13 @@ import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.content.edit
 import androidx.core.net.toUri
@@ -76,9 +76,9 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.ExecuteModuleActionScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.FlashScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.ModuleRepositoryScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.ExtensionRuntimeScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.ExtensionRepositoryScreenDestination
 import com.anatdx.yukisu.ui.kasumi.KasumiMountConfigDialog
-import com.anatdx.yukisu.ui.kasumi.KASUMI_MODE_COLORS
 import com.anatdx.yukisu.ui.kasumi.ConfigChoice
 import com.anatdx.yukisu.ui.kasumi.util.KasumiManager
 import kotlinx.coroutines.CancellationException
@@ -88,7 +88,8 @@ import com.anatdx.yukisu.BuildConfig
 import com.anatdx.yukisu.Natives
 import com.anatdx.yukisu.R
 import com.anatdx.yukisu.ui.component.*
-import com.anatdx.yukisu.ui.theme.getCardColors
+import com.anatdx.yukisu.ui.theme.CardConfig
+import com.anatdx.yukisu.ui.theme.UtilityPreviewTheme
 import com.anatdx.yukisu.ui.theme.getCardElevation
 import com.anatdx.yukisu.ui.theme.isExpressiveUi
 import com.anatdx.yukisu.ui.util.*
@@ -124,6 +125,16 @@ private enum class ShortcutType {
 @Destination<RootGraph>
 @Composable
 fun ModuleScreen(navigator: DestinationsNavigator) {
+    ModulePage(navigator)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun ModulePage(
+    navigator: DestinationsNavigator,
+    workspace: Boolean = false,
+    sectionNavigation: @Composable () -> Unit = {},
+) {
     val viewModel = viewModel<ModuleViewModel>()
     val context = LocalContext.current
     val resources = LocalResources.current
@@ -390,10 +401,11 @@ fun ModuleScreen(navigator: DestinationsNavigator) {
 
     Scaffold(
         topBar = {
+            Column {
             SearchAppBar(
                 title = {
                     Text(
-                        text = stringResource(R.string.module),
+                        text = stringResource(if (workspace) R.string.nav_extensions else R.string.module),
                         fontWeight = if (isExpressiveUi) FontWeight.Normal else null
                     )
                 },
@@ -402,12 +414,15 @@ fun ModuleScreen(navigator: DestinationsNavigator) {
                 onClearClick = { viewModel.search = "" },
                 dropdownContent = {
                     IconButton(
-                        onClick = { navigator.navigate(ModuleRepositoryScreenDestination) },
+                        onClick = { navigator.navigate(ExtensionRepositoryScreenDestination(initialPage = 0)) },
                     ) {
                         YukiIcon(
                             imageVector = Icons.Outlined.Inventory2,
                             contentDescription = stringResource(R.string.module_repositories),
                         )
+                    }
+                    IconButton(onClick = { navigator.navigate(ExtensionRuntimeScreenDestination()) }) {
+                        YukiIcon(Icons.Outlined.Tune, stringResource(R.string.nav_extension_runtime))
                     }
                     IconButton(
                         onClick = { showBottomSheet = true },
@@ -420,6 +435,8 @@ fun ModuleScreen(navigator: DestinationsNavigator) {
                 },
                 scrollBehavior = scrollBehavior,
             )
+                sectionNavigation()
+            }
         },
         floatingActionButton = {
             AnimatedFab(visible = !hideInstallButton && fabVisible) {
@@ -458,6 +475,8 @@ fun ModuleScreen(navigator: DestinationsNavigator) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
+                        .padding(innerPadding)
+                        .consumeWindowInsets(innerPadding)
                         .padding(24.dp),
                     contentAlignment = Alignment.Center
                 ) {
@@ -1167,7 +1186,6 @@ private fun ModuleList(
                             }
                         )
 
-                        Spacer(Modifier.height(1.dp))
                     }
                 }
             }
@@ -1216,8 +1234,12 @@ fun ModuleItem(
     val clipboardManager = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
     val hapticFeedback = LocalHapticFeedback.current
 
-    ElevatedCard(
-        colors = getCardColors(MaterialTheme.colorScheme.surface),
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = CardConfig.cardAlpha),
+            contentColor = MaterialTheme.colorScheme.onSurface,
+        ),
         elevation = getCardElevation(),
         shape = MaterialTheme.shapes.medium,
     ) {
@@ -1361,120 +1383,51 @@ fun ModuleItem(
             }
 
             if (!isHideTagRow) {
-                val isLoadedRuntimeModule = module.runtimeLoaded
-                val runtimeKind = module.runtimeKind
-                Spacer(modifier = Modifier.height(12.dp))
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(6.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    if (isLoadedRuntimeModule) {
-                        Surface(
-                            shape = RoundedCornerShape(4.dp),
-                            color = Color(0xFF2E7D32),
+                val showMountStrategy = mountInfo != null && mountConfigEnabled && !module.metamodule
+                Spacer(Modifier.height(8.dp))
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    if (module.runtimeLoaded || module.runtimeKind != null || module.metamodule || showMountStrategy) {
+                        FlowRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
-                            Text(
-                                text = stringResource(R.string.module_zygisk_loaded),
-                                style = MaterialTheme.typography.labelSmall,
-                                modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
-                                color = Color.White,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
+                            if (module.runtimeLoaded) {
+                                ModuleTag(stringResource(R.string.module_zygisk_loaded), emphasized = true)
+                            }
+                            module.runtimeKind?.let { kind ->
+                                ModuleTag(stringResource(when (kind) {
+                                    ModuleRuntimeKind.Native -> R.string.module_zn_module
+                                    ModuleRuntimeKind.Zygisk -> R.string.module_zygisk_module
+                                }))
+                            }
+                            if (module.metamodule) ModuleTag("META")
+                            if (showMountStrategy) {
+                                val strategy = if (mountInfo.mode == "none") "none" else mountInfo.strategy
+                                ModuleTag(stringResource(when (strategy) {
+                                    "kasumi" -> R.string.kasumi_mount_mode_kasumi
+                                    "overlay" -> R.string.kasumi_mount_mode_overlay
+                                    "magic" -> R.string.kasumi_strategy_magic_mount
+                                    else -> R.string.kasumi_strategy_not_mounted
+                                }))
+                            }
                         }
                     }
-                    runtimeKind?.let { kind ->
-                        Surface(
-                            shape = RoundedCornerShape(4.dp),
-                            color = MaterialTheme.colorScheme.tertiaryContainer,
-                        ) {
-                            Text(
-                                text = stringResource(
-                                    when (kind) {
-                                        ModuleRuntimeKind.Native -> R.string.module_zn_module
-                                        ModuleRuntimeKind.Zygisk -> R.string.module_zygisk_module
-                                    }
-                                ),
-                                style = MaterialTheme.typography.labelSmall,
-                                modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                        }
-                    }
-                    if (module.metamodule) {
-                        Surface(
-                            shape = RoundedCornerShape(4.dp),
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier
-                        ) {
-                            Text(
-                                text = "META",
-                                style = MaterialTheme.typography.labelSmall,
-                                modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
-                                color = MaterialTheme.colorScheme.onPrimary,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                        }
-                    }
-                    Surface(
-                        shape = RoundedCornerShape(4.dp),
-                        color = MaterialTheme.colorScheme.surfaceContainerHighest,
-                        modifier = Modifier
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
-                        Text(
-                            text = module.dirId,
-                            style = MaterialTheme.typography.labelSmall,
-                            modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
-                    Surface(
-                        shape = RoundedCornerShape(4.dp),
-                        color = MaterialTheme.colorScheme.secondaryContainer,
-                        modifier = Modifier
-                    ) {
-                        Text(
-                            text = sizeStr,
-                            style = MaterialTheme.typography.labelSmall,
-                            modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            maxLines = 1
-                        )
-                    }
-                    if (mountInfo != null && mountConfigEnabled && !module.metamodule) {
-                        val strategy = if (mountInfo.mode == "none") "none" else mountInfo.strategy
-                        val strategyLabel = stringResource(when (strategy) {
-                            "kasumi" -> R.string.kasumi_mount_mode_kasumi
-                            "overlay" -> R.string.kasumi_mount_mode_overlay
-                            "magic" -> R.string.kasumi_strategy_magic_mount
-                            else -> R.string.kasumi_strategy_not_mounted
-                        })
-                        Surface(
-                            shape = RoundedCornerShape(4.dp),
-                            color = KASUMI_MODE_COLORS[strategy] ?: MaterialTheme.colorScheme.primary,
-                        ) {
-                            Text(
-                                text = strategyLabel,
-                                style = MaterialTheme.typography.labelSmall,
-                                modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
-                                color = Color.White,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                        }
+                        Text(module.dirId, style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(sizeStr, style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
-            HorizontalDivider(thickness = Dp.Hairline)
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -1517,7 +1470,8 @@ fun ModuleItem(
                         enabled = !module.remove,
                         onClick = onAddShortcut,
                         imageVector = Icons.Outlined.AddCircle,
-                        contentDescription = stringResource(R.string.module_shortcut_add)
+                        contentDescription = stringResource(R.string.module_shortcut_add),
+                        label = stringResource(R.string.ui_module_shortcut_action),
                     )
                 }
 
@@ -1535,7 +1489,8 @@ fun ModuleItem(
                     onClick = { onUninstallClicked(module) },
                     imageVector = if (!module.remove) Icons.Outlined.Delete else Icons.Outlined.Refresh,
                     modifier = if (!module.remove) Modifier else Modifier.rotate(180f),
-                    contentDescription = stringResource(if (!module.remove) R.string.uninstall else R.string.cancel)
+                    contentDescription = stringResource(if (!module.remove) R.string.uninstall else R.string.cancel),
+                    destructive = !module.remove,
                 )
             }
         }
@@ -1543,69 +1498,100 @@ fun ModuleItem(
 }
 
 @Composable
+private fun ModuleTag(text: String, emphasized: Boolean = false) {
+    Surface(
+        shape = MaterialTheme.shapes.extraSmall,
+        color = if (emphasized) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainerHigh,
+        contentColor = if (emphasized) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+    ) {
+        Text(text, style = MaterialTheme.typography.labelMedium,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp))
+    }
+}
+
+@Composable
 private fun ModuleActionButton(
     imageVector: ImageVector,
-    contentDescription: String?,
+    contentDescription: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     prominent: Boolean = false,
-    interactionSource: MutableInteractionSource? = null
+    destructive: Boolean = false,
+    label: String = contentDescription,
 ) {
-    val icon: @Composable () -> Unit = {
+    val content: @Composable RowScope.() -> Unit = {
         YukiIcon(
             modifier = modifier.size(20.dp),
             imageVector = imageVector,
-            contentDescription = contentDescription
+            contentDescription = null,
         )
+        Spacer(Modifier.width(8.dp))
+        Text(label, modifier = Modifier.weight(1f, fill = false).clearAndSetSemantics {})
     }
+    val buttonModifier = Modifier.heightIn(min = 48.dp)
+        .semantics { this.contentDescription = contentDescription }
 
     if (prominent) {
-        FilledIconButton(
-            modifier = Modifier.size(48.dp),
+        FilledTonalButton(
+            modifier = buttonModifier,
             enabled = enabled,
             onClick = onClick,
-            interactionSource = interactionSource,
-            content = icon
+            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+            content = content,
         )
     } else {
-        IconButton(
-            modifier = Modifier.size(48.dp),
+        TextButton(
+            modifier = buttonModifier,
             enabled = enabled,
             onClick = onClick,
-            interactionSource = interactionSource,
-            content = icon
+            colors = ButtonDefaults.textButtonColors(
+                contentColor = if (destructive) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
+            ),
+            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+            content = content,
         )
     }
 }
 
-@Preview
+@Preview(name = "Module · light", widthDp = 390)
+@Preview(name = "Module · dark", widthDp = 390, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(name = "Module · large text", widthDp = 320, fontScale = 2f)
+@Preview(name = "Module · landscape", widthDp = 800)
 @Composable
 fun ModuleItemPreview() {
     val module = ModuleViewModel.ModuleInfo(
-        id = "id",
-        name = "name",
-        version = "version",
+        id = "zygisk_lsposed",
+        name = "LSPosed",
+        version = "v2.2.0 (7854)",
         versionCode = 1,
-        author = "author",
-        description = "I am a test module and i do nothing but show a very long description",
+        author = "LSPosed Developers",
+        description = "Another enhanced implementation of Xposed Framework. Supports Android 9 ~ 17. Requires Zygisk enabled.",
         enabled = true,
-        update = true,
+        update = false,
         remove = false,
         updateJson = "",
         hasWebUi = true,
         hasActionScript = true,
-        metamodule = true,
-        dirId = "dirId",
+        metamodule = false,
+        dirId = "zygisk_lsposed",
+        runtimeLoaded = true,
+        runtimeKind = ModuleRuntimeKind.Native,
         config = ModuleConfig()
     )
-    ModuleItem(
-        navigator = EmptyDestinationsNavigator,
-        module = module,
-        updateUrl = "",
-        onUninstallClicked = {},
-        onCheckChanged = { true },
-        onUpdate = {},
-        onClick = {}
-    )
+    UtilityPreviewTheme {
+        Surface(color = MaterialTheme.colorScheme.background) {
+            Column(Modifier.padding(16.dp)) {
+                ModuleItem(
+                    navigator = EmptyDestinationsNavigator,
+                    module = module,
+                    updateUrl = "",
+                    onUninstallClicked = {},
+                    onCheckChanged = { true },
+                    onUpdate = {},
+                    onClick = {},
+                )
+            }
+        }
+    }
 }

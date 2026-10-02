@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_absolute_path">Унесите апсолутну путању</string>
-    <string name="kasumi_advanced">Напредно</string>
     <string name="kasumi_apply_failed">Сачувана конфигурација још није примењена на језгро</string>
     <string name="kasumi_backend_enable_desc">Допусти планеру монтирања употребу овог позадинског система</string>
     <string name="kasumi_check_conflicts">Провери сукобе монтирања</string>
@@ -16,7 +15,6 @@
     <string name="kasumi_fs_type_ext4">ЕКСТ4 слика</string>
     <string name="kasumi_fs_type_title">Систем датотека за складиштење</string>
     <string name="kasumi_fs_type_tmpfs">Тмпфс (РАМ)</string>
-    <string name="kasumi_general">Генерал</string>
     <string name="kasumi_global_override">Глобално надјачавање: %1$s</string>
     <string name="kasumi_hide_aggressive">Агресивно</string>
     <string name="kasumi_hide_normal">Уобичајено</string>
@@ -129,10 +127,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Није монтирано</string>
     <string name="kasumi_system_info">Информације о систему</string>
-    <string name="kasumi_tab_logs">Дневници</string>
-    <string name="kasumi_tab_rules">Правила</string>
-    <string name="kasumi_tab_settings">Подешавања</string>
-    <string name="kasumi_tab_status">Статус</string>
     <string name="kasumi_tempdir">Привремена тачка постављања</string>
     <string name="kasumi_tempdir_desc">Основна путања за привремене монтаже (оставите празно за ауто)</string>
     <string name="kasumi_title">Kasumi Конфигурација</string>

@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kasumi_advanced">Advanced</string>
     <string name="kasumi_debug">Debug logging</string>
     <string name="kasumi_filter_all">Lahat</string>
     <string name="kasumi_fs_type_erofs">EROFS image</string>
     <string name="kasumi_fs_type_ext4">EXT4 image</string>
     <string name="kasumi_fs_type_title">Storage filesystem</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">Pangkalahatan</string>
     <string name="kasumi_info_active_mounts">Mga Aktibong Mount:</string>
     <string name="kasumi_info_kernel">Kernel</string>
     <string name="kasumi_info_mount_base">Mount Base</string>
@@ -73,10 +71,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Hindi naka-mount</string>
     <string name="kasumi_system_info">System Info</string>
-    <string name="kasumi_tab_logs">Mga Log</string>
-    <string name="kasumi_tab_rules">Mga Panuntunan</string>
-    <string name="kasumi_tab_settings">Mga Setting</string>
-    <string name="kasumi_tab_status">Status</string>
     <string name="kasumi_tempdir">Pansamantalang Mount Point</string>
     <string name="kasumi_tempdir_desc">Base path para sa mga pansamantalang mount (iwang blangko para sa auto)</string>
     <string name="kasumi_title">Configuration ng Kasumi</string>

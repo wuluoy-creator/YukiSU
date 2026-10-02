@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="kasumi_absolute_path">Ievadiet absolūto ceļu</string>
-    <string name="kasumi_advanced">Papildu</string>
     <string name="kasumi_apply_failed">Saglabātā konfigurācija vēl nav piemērota kodolam</string>
     <string name="kasumi_backend_enable_desc">Atļaut montēšanas plānotājam izmantot šo aizmugursistēmu</string>
     <string name="kasumi_check_conflicts">Pārbaudīt montēšanas konfliktus</string>
@@ -16,7 +15,6 @@
     <string name="kasumi_fs_type_ext4">EXT4 attēls</string>
     <string name="kasumi_fs_type_title">Krātuves failu sistēma</string>
     <string name="kasumi_fs_type_tmpfs">Tmpfs (RAM)</string>
-    <string name="kasumi_general">Vispārīgi</string>
     <string name="kasumi_global_override">Globālā pārrakstīšana: %1$s</string>
     <string name="kasumi_hide_aggressive">Agresīvs</string>
     <string name="kasumi_hide_normal">Parasts</string>
@@ -129,10 +127,6 @@
     <string name="kasumi_strategy_magic_mount">Magic Mount</string>
     <string name="kasumi_strategy_not_mounted">Nav montēts</string>
     <string name="kasumi_system_info">Sistēmas informācija</string>
-    <string name="kasumi_tab_logs">Žurnāli</string>
-    <string name="kasumi_tab_rules">Noteikumi</string>
-    <string name="kasumi_tab_settings">Iestatījumi</string>
-    <string name="kasumi_tab_status">Statuss</string>
     <string name="kasumi_tempdir">Pagaidu montēšanas punkts</string>
     <string name="kasumi_tempdir_desc">Pagaidu montējumu bāzes ceļš (atstājiet tukšu automātiskajam)</string>
     <string name="kasumi_title">Kasumi konfigurācija</string>

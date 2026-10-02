@@ -227,9 +227,6 @@
     <!-- Error Messages -->
     <!-- lkm/gki install -->
     <string name="Lkm_install_methods">LKM মেরামত/ইনস্টলেশন</string>
-    <string name="configuration">কনফিগার করুন</string>
-    <string name="app_settings">অ্যাপ্লিকেশন সেটিংস</string>
-    <string name="tools">টুল</string>
     <!--  String resources used in SuperUser -->
     <string name="no_apps_found">অ্যাপ্লিকেশন পাওয়া যায়নি</string>
     <string name="selinux_enabled_toast">SELinux সক্রিয়</string>
@@ -241,7 +238,6 @@
     <string name="hide_bl_enabled_toast">আনলক স্থিতি লুকানো সক্রিয় করা হয়েছে, প্রয়োগ করতে রিবুট করুন</string>
     <string name="hide_bl_disabled_toast">আনলক স্থিতি লুকানো নিষ্ক্রিয় করা হয়েছে</string>
     <string name="hide_bl_change_failed">আনলক স্থিতি লুকানো সেটিং পরিবর্তন করতে ব্যর্থ</string>
-    <string name="advanced_settings">উন্নত সেটিংস</string>
     <string name="appearance_settings">টুলবার কাস্টমাইজ করুন</string>
     <string name="back">ফিরে যান</string>
     <string name="background_set_success">পটভূমি সফলভাবে সেট করা হয়েছে</string>
@@ -326,7 +322,6 @@
     <string name="author">লেখক</string>
     <string name="description">বিবরণ</string>
     <string name="log_viewer_title">লগ ভিউয়ার</string>
-    <string name="log_viewer_back">ফিরে যান</string>
     <string name="log_viewer_search">অনুসন্ধান করুন</string>
     <string name="log_viewer_clear_logs">লগ সাফ করুন</string>
     <string name="log_viewer_clear_logs_confirm">আপনি কি নিশ্চিত যে আপনি নির্বাচিত লগ ফাইল সাফ করতে চান? এই ক্রিয়াটি পূর্বাবস্থায় ফেরানো যাবে না</string>
@@ -343,8 +338,6 @@
     <string name="log_viewer_raw_log">কাঁচা লগ</string>
     <string name="log_viewer_search_placeholder">UID, কমান্ড, বা বিবরণ অনুসারে অনুসন্ধান করুন…</string>
     <string name="log_viewer_clear_search">অনুসন্ধান সাফ করুন</string>
-    <string name="log_viewer_view_logs">ব্যবহারের লগ দেখুন</string>
-    <string name="log_viewer_view_logs_summary">KernelSU সুপারইউজার অ্যাক্সেস লগ দেখুন</string>
     <string name="log_viewer_exclude_subtypes">উপ-প্রকার বাদ দিন</string>
     <string name="log_viewer_exclude_current_app">বর্তমান অ্যাপ</string>
     <string name="log_viewer_exclude_viewer_refresh">লগ ভিউয়ার স্ব-রিফ্রেশ</string>
@@ -362,7 +355,6 @@
     <string name="log_viewer_all_logs_loaded">সব লগ প্রদর্শিত হয়েছে</string>
     <string name="incompatible_kernel_msg">বর্তমান ম্যানেজার এই কার্নেলের সাথে বেমানান! অনুগ্রহ করে কার্নেল সংস্করণ %2$d বা উচ্চতরে আপগ্রেড করুন (বর্তমানে %1$d)</string>
     <string name="umount_path_manager">Umount পাথ ব্যবস্থাপনা</string>
-    <string name="umount_path_manager_summary">কার্নেল আনমাউন্ট পাথ পরিচালনা করুন</string>
     <string name="umount_path_restart_notice">পরিবর্তন কার্যকর হওয়ার জন্য একটি রিবুট প্রয়োজন। সিস্টেম পরবর্তী বুটে নতুন কনফিগারেশন প্রয়োগ করবে</string>
     <string name="add_umount_path">Umount পাথ যোগ করুন</string>
     <string name="mount_path">মাউন্ট পাথ</string>
@@ -632,7 +624,6 @@
     <string name="predictive_back_gesture">পূর্বানুমানভিত্তিক ফিরে যাওয়ার অঙ্গভঙ্গি</string>
     <string name="predictive_back_gesture_summary">ফিরে যাওয়ার অঙ্গভঙ্গির সঙ্গে আগের পৃষ্ঠার পূর্বরূপ দেখান। ডিফল্টভাবে বন্ধ</string>
     <string name="feature_control">বৈশিষ্ট্য নিয়ন্ত্রণ</string>
-    <string name="feature_control_summary">বর্তমান কার্নেল সমর্থিত বৈশিষ্ট্যগুলি পরিচালনা করুন।</string>
     <string name="kernelsu_features">KernelSU-এর বৈশিষ্ট্য</string>
     <string name="yukisu_features">YukiSU-এর বৈশিষ্ট্য</string>
     <string name="module_disabled_by_yukizygisk">YukiZygisk চালু আছে। দ্বন্দ্ব এড়াতে এই মডিউল বন্ধ করা হয়েছে</string>
