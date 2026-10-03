@@ -7,6 +7,7 @@
 #include <linux/fs.h>
 #include <linux/hashtable.h>
 #include <linux/list.h>
+#include <linux/llist.h>
 #include <linux/mutex.h>
 #include <linux/path.h>
 #include <linux/rcupdate.h>
@@ -52,6 +53,7 @@ struct kasumi_entry {
 	u32 src_hash;
 	struct hlist_node node;
 	struct rcu_head rcu;
+	struct llist_node free_node;
 };
 
 struct kasumi_hide_entry {
@@ -82,6 +84,7 @@ struct kasumi_merge_entry {
 	struct dentry *target_dentry;
 	struct hlist_node node;
 	struct rcu_head rcu;
+	struct llist_node free_node;
 };
 
 struct kasumi_merge_target_node {

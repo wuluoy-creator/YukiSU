@@ -3,6 +3,7 @@
 #include "core/json.hpp"
 #include "core/log.hpp"
 #include "core/runtime.hpp"
+#include "uapi/kasumi.h"
 #include "utils.hpp"
 
 #include <fcntl.h>
@@ -173,22 +174,43 @@ std::vector<std::string> json_string_array_or_empty(const JsonValue* value) {
 }
 }  // namespace
 
-std::vector<std::string> load_user_hide_rules() {
+bool load_user_hide_rules(std::vector<std::string>& rules, std::string& error) {
+    errno = 0;
     const auto input = ksud::read_file((runtime_data_dir() / "user_hide_rules.json").string());
-    if (!input)
-        return {};
+    if (!input) {
+        if (errno == ENOENT) {
+            rules.clear();
+            return true;
+        }
+        error = "read user hide rules: " + std::string(std::strerror(errno ? errno : EIO));
+        return false;
+    }
     JsonValue root;
-    std::string error;
-    if (!parse_json(*input, root, error) || !root.is_array()) {
-        logging::write(logging::Level::Warning, "config", "invalid user hide rules: " + error);
-        return {};
+    std::string parse_error;
+    if (!parse_json(*input, root, parse_error) || !root.is_array()) {
+        error = "invalid user hide rules: " +
+                (parse_error.empty() ? std::string("expected a JSON array") : parse_error);
+        return false;
     }
-    std::vector<std::string> rules;
+    std::vector<std::string> parsed;
+    parsed.reserve(root.a.size());
     for (const auto& item : root.a) {
-        if (item.is_string() && !item.s.empty() && item.s.front() == '/' &&
-            item.s.find('\0') == std::string::npos)
-            rules.push_back(item.s);
+        if (!item.is_string() || item.s.empty() || item.s.front() != '/' ||
+            item.s.find('\0') != std::string::npos || item.s.size() >= KSM_USER_HIDE_PATH_MAX) {
+            error = "invalid user hide rule at index " + std::to_string(parsed.size());
+            return false;
+        }
+        parsed.push_back(item.s);
     }
+    rules = std::move(parsed);
+    return true;
+}
+
+std::vector<std::string> load_user_hide_rules() {
+    std::vector<std::string> rules;
+    std::string error;
+    if (!load_user_hide_rules(rules, error))
+        logging::write(logging::Level::Warning, "config", error);
     return rules;
 }
 

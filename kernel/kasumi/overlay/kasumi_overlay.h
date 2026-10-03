@@ -8,6 +8,7 @@ void kasumi_add_inject_rule(char *dir);
 int kasumi_check_merge_target(const char *target);
 int kasumi_materialize_merge(const char *src_prefix, const char *target_dir,
 			     int depth);
+bool kasumi_is_merge_context(const struct dir_context *ctx);
 void kasumi_populate_injected_list(const char *dir_path, struct dentry *parent,
 				   struct list_head *head);
 

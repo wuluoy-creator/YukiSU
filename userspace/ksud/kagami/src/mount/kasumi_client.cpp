@@ -3,11 +3,9 @@
 #include "uapi/kasumi.h"
 
 #include <algorithm>
-#include <cctype>
 #include <cerrno>
 #include <cstdint>
 #include <cstring>
-#include <fstream>
 #include <set>
 #include <sstream>
 #include <string>
@@ -43,6 +41,23 @@ bool ioctl_arg_ok(int rc, int arg_err) {
         return false;
     }
     return true;
+}
+
+std::string read_text(unsigned long cmd, std::size_t capacity) {
+    std::vector<char> buffer(capacity, '\0');
+    kasumi_syscall_list_arg arg = {};
+    arg.buf = buffer.data();
+    arg.size = buffer.size();
+    if (execute(cmd, &arg) != 0) {
+        return {};
+    }
+    // These ioctls return a byte count, excluding a terminating NUL. Do not
+    // depend on spare zero-filled bytes when a kernel fills the entire buffer.
+    if (arg.size > buffer.size()) {
+        errno = EPROTO;
+        return {};
+    }
+    return {buffer.data(), arg.size};
 }
 }  // namespace
 
@@ -91,25 +106,11 @@ bool is_available() {
 }
 
 std::string active_rules() {
-    std::vector<char> buffer(64UL * 1024, '\0');
-    kasumi_syscall_list_arg arg = {};
-    arg.buf = buffer.data();
-    arg.size = buffer.size();
-    if (execute(KSM_IOC_LIST_RULES, &arg) != 0) {
-        return "";
-    }
-    return {buffer.data()};
+    return read_text(KSM_IOC_LIST_RULES, 64UL * 1024);
 }
 
 std::string hooks() {
-    std::vector<char> buffer(8UL * 1024, '\0');
-    kasumi_syscall_list_arg arg = {};
-    arg.buf = buffer.data();
-    arg.size = buffer.size();
-    if (execute(KSM_IOC_GET_HOOKS, &arg) != 0) {
-        return "";
-    }
-    return {buffer.data()};
+    return read_text(KSM_IOC_GET_HOOKS, 8UL * 1024);
 }
 
 FeatureCapabilities feature_capabilities() {
@@ -259,23 +260,20 @@ bool retry_user_hide(const std::string& path) {
 }
 
 std::vector<std::string> active_modules_from_rules(const std::string& rules) {
+    constexpr char prefix[] = "/data/adb/modules/";
+    constexpr std::size_t prefix_size = sizeof(prefix) - 1;
     std::set<std::string> modules;
     std::istringstream lines(rules);
     std::string line;
     while (std::getline(lines, line)) {
-        const std::vector<std::string> prefixes = {
-            "/data/adb/modules/",
-        };
-        for (const auto& prefix : prefixes) {
-            std::size_t pos = line.find(prefix);
-            while (pos != std::string::npos) {
-                const std::size_t start = pos + prefix.size();
-                const std::size_t end = line.find('/', start);
-                if (end != std::string::npos && end > start) {
-                    modules.insert(line.substr(start, end - start));
-                }
-                pos = line.find(prefix, start);
+        std::size_t pos = line.find(prefix);
+        while (pos != std::string::npos) {
+            const std::size_t start = pos + prefix_size;
+            const std::size_t end = line.find('/', start);
+            if (end != std::string::npos && end > start) {
+                modules.insert(line.substr(start, end - start));
             }
+            pos = line.find(prefix, start);
         }
     }
     return {modules.begin(), modules.end()};
@@ -302,14 +300,23 @@ bool hide_overlay_xattrs(const std::string& path) {
 }
 
 bool clear_overlay_xattr_hiding() {
-    if (!(features() & KSM_FEATURE_OVERLAY_XATTR_HIDE))
+    const auto caps = feature_capabilities();
+    if (!caps.ok) {
+        errno = caps.last_errno;
+        return false;
+    }
+    if (!(caps.bitmask & KSM_FEATURE_OVERLAY_XATTR_HIDE))
         return true;
     return hide_overlay_xattrs("");
 }
 
 bool set_mount_hide(bool enable, MountHideMode mode) {
-    const int bitmask = features();
-    const bool mode_supported = (bitmask & KSM_FEATURE_MOUNT_HIDE_AGGRESSIVE) != 0;
+    const auto caps = feature_capabilities();
+    if (!caps.ok) {
+        errno = caps.last_errno;
+        return false;
+    }
+    const bool mode_supported = (caps.bitmask & KSM_FEATURE_MOUNT_HIDE_AGGRESSIVE) != 0;
 
     if (enable && mode == MountHideMode::Aggressive && !mode_supported) {
         errno = EOPNOTSUPP;
@@ -374,11 +381,19 @@ bool delete_rule(const std::string& path) {
 bool add_maps_rule(unsigned long target_ino, unsigned long target_dev, unsigned long spoofed_ino,
                    unsigned long spoofed_dev, const std::string& spoofed_path) {
     kasumi_maps_rule arg = {};
+    if (spoofed_path.find('\0') != std::string::npos) {
+        errno = EINVAL;
+        return false;
+    }
+    if (spoofed_path.size() >= sizeof(arg.spoofed_pathname)) {
+        errno = ENAMETOOLONG;
+        return false;
+    }
     arg.target_ino = target_ino;
     arg.target_dev = target_dev;
     arg.spoofed_ino = spoofed_ino;
     arg.spoofed_dev = spoofed_dev;
-    std::strncpy(arg.spoofed_pathname, spoofed_path.c_str(), KSM_MAX_LEN_PATHNAME - 1);
+    std::memcpy(arg.spoofed_pathname, spoofed_path.c_str(), spoofed_path.size() + 1);
     const int rc = execute(KSM_IOC_ADD_MAPS_RULE, &arg);
     return ioctl_arg_ok(rc, arg.err);
 }

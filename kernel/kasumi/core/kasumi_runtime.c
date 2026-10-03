@@ -29,7 +29,6 @@
 #include <linux/time.h>
 #include <linux/anon_inodes.h>
 #include <linux/fcntl.h>
-#include <linux/percpu.h>
 #include <linux/smp.h>
 #include <linux/mount.h>
 #include <linux/xattr.h>
@@ -313,9 +312,6 @@ unsigned int kasumi_vnode_live(void)
 {
 	return (unsigned int)atomic_read(&kasumi_vnode_live_count);
 }
-
-struct kasumi_percpu *kasumi_percpu_base;
-char *kasumi_iterate_buf_base;
 
 atomic_long_t kasumi_ioctl_tgid = ATOMIC_LONG_INIT(0);
 
@@ -663,15 +659,29 @@ void KASUMI_NOCFI kasumi_entry_release_source(struct kasumi_entry *entry)
 	entry->source_inode = NULL;
 }
 
-void kasumi_entry_free_rcu(struct rcu_head *head)
-{
-	struct kasumi_entry *e = container_of(head, struct kasumi_entry, rcu);
+static LLIST_HEAD(kasumi_retired_entries);
+static LLIST_HEAD(kasumi_retired_merges);
+static void kasumi_store_free_workfn(struct work_struct *work);
+static DECLARE_WORK(kasumi_store_free_work, kasumi_store_free_workfn);
 
+static void kasumi_entry_free(struct kasumi_entry *e)
+{
 	kasumi_entry_release_source(e);
 	kfree(e->src);
 	kfree(e->target);
 	kfree(e->source_canonical);
 	kfree(e);
+}
+
+void kasumi_entry_free_rcu(struct rcu_head *head)
+{
+	struct kasumi_entry *e = container_of(head, struct kasumi_entry, rcu);
+
+	/* The last path reference can evict an inode and sleep. RCU callbacks
+	 * only transfer ownership; release VFS references in process context.
+	 */
+	llist_add(&e->free_node, &kasumi_retired_entries);
+	schedule_work(&kasumi_store_free_work);
 }
 
 void kasumi_hide_entry_free_rcu(struct rcu_head *head)
@@ -700,17 +710,60 @@ void kasumi_xattr_sb_entry_free_rcu(struct rcu_head *head)
 	kasumi_overlay_xattr_retire(e);
 }
 
-void kasumi_merge_entry_free_rcu(struct rcu_head *head)
+static void kasumi_merge_entry_free(struct kasumi_merge_entry *e)
 {
-	struct kasumi_merge_entry *e =
-	    container_of(head, struct kasumi_merge_entry, rcu);
-
 	if (e->target_dentry)
 		dput(e->target_dentry);
 	kfree(e->src);
 	kfree(e->target);
 	kfree(e->resolved_src);
 	kfree(e);
+}
+
+void kasumi_merge_entry_free_rcu(struct rcu_head *head)
+{
+	struct kasumi_merge_entry *e =
+	    container_of(head, struct kasumi_merge_entry, rcu);
+
+	llist_add(&e->free_node, &kasumi_retired_merges);
+	schedule_work(&kasumi_store_free_work);
+}
+
+static void kasumi_store_free_workfn(struct work_struct *work)
+{
+	struct llist_node *head, *node, *next;
+
+	(void)work;
+	while ((head = llist_del_all(&kasumi_retired_entries)) != NULL) {
+		llist_for_each_safe(node, next, head)
+		{
+			struct kasumi_entry *e =
+			    container_of(node, struct kasumi_entry, free_node);
+
+			kasumi_entry_free(e);
+			cond_resched();
+		}
+	}
+	while ((head = llist_del_all(&kasumi_retired_merges)) != NULL) {
+		llist_for_each_safe(node, next, head)
+		{
+			struct kasumi_merge_entry *e = container_of(
+			    node, struct kasumi_merge_entry, free_node);
+
+			kasumi_merge_entry_free(e);
+			cond_resched();
+		}
+	}
+}
+
+void kasumi_store_drain(void)
+{
+	/* Callers serialize rule mutations before waiting. First complete the
+	 * RCU ownership transfer, then finish all sleepable teardown before a
+	 * control clear returns or the module lifecycle pin is released.
+	 */
+	rcu_barrier();
+	flush_work(&kasumi_store_free_work);
 }
 
 void kasumi_spoof_kstat_entry_free_rcu(struct rcu_head *head)

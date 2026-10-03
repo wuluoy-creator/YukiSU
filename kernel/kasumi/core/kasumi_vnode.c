@@ -40,6 +40,9 @@
 #define KVN_SRC_IDMAP(mnt) mnt_user_ns(mnt),
 #endif
 
+static int kasumi_vnode_src_want_write(const struct path *src);
+static void kasumi_vnode_src_drop_write(const struct path *src);
+
 static const struct inode_operations kasumi_vnode_file_iops;
 static const struct inode_operations kasumi_vnode_dir_iops;
 static const struct file_operations kasumi_vnode_file_fops;
@@ -224,6 +227,11 @@ kasumi_vnode_setattr(KVN_IDMAP_ARG struct dentry *dentry, struct iattr *attr)
 		module_put(THIS_MODULE);
 		return -ENOENT;
 	}
+	ret = kasumi_vnode_src_want_write(&info->source);
+	if (ret) {
+		module_put(THIS_MODULE);
+		return ret;
+	}
 
 	/* ATTR_FILE points at the virtual file; swap it for the opened source
 	 * file so a truncate reaches the source's fs/driver, not the vnode. */
@@ -239,8 +247,10 @@ kasumi_vnode_setattr(KVN_IDMAP_ARG struct dentry *dentry, struct iattr *attr)
 	}
 
 	inode_lock(src_inode);
-	ret = kasumi_notify_change(KVN_IDMAP_CALL src_dentry, &sattr, NULL);
+	ret = kasumi_notify_change(KVN_SRC_IDMAP(info->source.mnt) src_dentry,
+				   &sattr, NULL);
 	inode_unlock(src_inode);
+	kasumi_vnode_src_drop_write(&info->source);
 	module_put(THIS_MODULE);
 	return ret;
 }

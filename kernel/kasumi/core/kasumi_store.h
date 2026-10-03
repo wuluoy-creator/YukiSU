@@ -64,6 +64,7 @@ void kasumi_clear_inode_flags_for_path(const char *path_str, unsigned int bit);
 // Publishes a captured entry and retires the previous path owner.
 bool kasumi_store_upsert(struct kasumi_entry *entry);
 void kasumi_cleanup_locked(void);
+void kasumi_store_drain(void);
 
 int kasumi_entry_capture_source(struct kasumi_entry *entry,
 				const char *source_path);

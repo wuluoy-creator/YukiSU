@@ -267,8 +267,6 @@ kasumi_iterate_prepare_wrapper(struct file *file, struct dir_context *orig_ctx)
 	if (atomic_long_read(&kasumi_ioctl_tgid) ==
 	    (long)task_tgid_vnr(current))
 		return NULL;
-	if (kasumi_this_cpu()->in_populate_inject)
-		return NULL;
 	if (!READ_ONCE(kasumi_enabled))
 		return NULL;
 	if (atomic_long_read(&kasumi_ioctl_tgid) > 0 &&
@@ -276,7 +274,8 @@ kasumi_iterate_prepare_wrapper(struct file *file, struct dir_context *orig_ctx)
 		return NULL;
 	if (!orig_ctx || !orig_ctx->actor)
 		return NULL;
-	if (orig_ctx->actor == kasumi_filldir_filter)
+	if (orig_ctx->actor == kasumi_filldir_filter ||
+	    kasumi_is_merge_context(orig_ctx))
 		return NULL;
 	scope = kasumi_policy_current_scope();
 	if (scope == KASUMI_POLICY_SCOPE_NONE)
@@ -321,9 +320,7 @@ kasumi_iterate_prepare_wrapper(struct file *file, struct dir_context *orig_ctx)
 		 */
 		if (w->view_allowed && atomic_read(&kasumi_rule_count) > 0 &&
 		    w->dir_has_inject) {
-			char *buf =
-			    kasumi_iterate_buf_base +
-			    (smp_processor_id() * KASUMI_ITERATE_PATH_BUF);
+			char *buf = w->dir_path_buf;
 			char *dp = ERR_PTR(-ENOENT);
 
 			if (kasumi_d_absolute_path)
@@ -342,8 +339,9 @@ kasumi_iterate_prepare_wrapper(struct file *file, struct dir_context *orig_ctx)
 				size_t plen = strlen(dp);
 
 				if (plen < KASUMI_ITERATE_PATH_BUF) {
-					memcpy(w->dir_path_buf, dp, plen + 1);
+					memmove(w->dir_path_buf, dp, plen + 1);
 					w->dir_path = w->dir_path_buf;
+					dp = w->dir_path_buf;
 				}
 				h = full_name_hash(NULL, dp, strlen(dp));
 
@@ -370,12 +368,17 @@ kasumi_iterate_prepare_wrapper(struct file *file, struct dir_context *orig_ctx)
 					     strcmp(me->resolved_src, dp) ==
 						 0)) {
 						w->dir_has_inject = true;
+						/* The iterator can sleep after
+						 * RCU unlock; retain the target
+						 * across a concurrent CLEAR.
+						 */
 						if (me->target_dentry &&
 						    w->merge_target_count <
 							KASUMI_MAX_MERGE_TARGETS)
 							w->merge_target_dentries
 							    [w->merge_target_count++] =
-							    me->target_dentry;
+							    dget(
+								me->target_dentry);
 					}
 				}
 				rcu_read_unlock();
@@ -386,7 +389,7 @@ kasumi_iterate_prepare_wrapper(struct file *file, struct dir_context *orig_ctx)
 	if (!w->dir_has_hidden && !w->dir_has_inject &&
 	    (!w->spoof_allowed || !kasumi_stealth_enabled ||
 	     w->dir_path_len != 4)) {
-		kmem_cache_free(kasumi_filldir_cache, w);
+		kasumi_iterate_finish_wrapper(w);
 		return NULL;
 	}
 
@@ -395,9 +398,13 @@ kasumi_iterate_prepare_wrapper(struct file *file, struct dir_context *orig_ctx)
 
 void kasumi_iterate_finish_wrapper(struct kasumi_filldir_wrapper *wrapper)
 {
+	int i;
+
 	if (!wrapper)
 		return;
 	if (wrapper->orig_ctx)
 		wrapper->orig_ctx->pos = wrapper->wrap_ctx.pos;
+	for (i = 0; i < wrapper->merge_target_count; i++)
+		dput(wrapper->merge_target_dentries[i]);
 	kmem_cache_free(kasumi_filldir_cache, wrapper);
 }

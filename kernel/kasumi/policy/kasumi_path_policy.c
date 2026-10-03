@@ -657,6 +657,7 @@ int KASUMI_NOCFI kasumi_rule_vpath_child(const char *dir, const char *child,
 	struct kasumi_entry *entry;
 	char *full;
 	size_t dlen, clen, full_len;
+	u32 hash;
 	int kind = KASUMI_VPATH_NONE;
 	int bkt;
 
@@ -672,13 +673,15 @@ int KASUMI_NOCFI kasumi_rule_vpath_child(const char *dir, const char *child,
 	memcpy(full + dlen + 1, child, clen);
 	full[dlen + 1 + clen] = '\0';
 	full_len = dlen + 1 + clen;
+	hash = full_name_hash(NULL, full, full_len);
 
 	rcu_read_lock();
 	/* Exact rule at dir/child -> a leaf redirect. */
-	hash_for_each_rcu(kasumi_paths, bkt, entry, node)
+	hlist_for_each_entry_rcu(
+	    entry, &kasumi_paths[hash_min(hash, KASUMI_HASH_BITS)], node)
 	{
-		if (!entry->src || !entry->source_path_valid ||
-		    strcmp(entry->src, full) != 0)
+		if (entry->src_hash != hash || !entry->src ||
+		    !entry->source_path_valid || strcmp(entry->src, full) != 0)
 			continue;
 		if (entry->source_nofollow_path_valid) {
 			if (leaf_src) {

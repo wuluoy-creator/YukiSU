@@ -20,7 +20,6 @@ int vfs_path_lookup(struct dentry *dentry, struct vfsmount *mnt,
 #include <linux/limits.h>
 #include <linux/llist.h>
 #include <linux/module.h>
-#include <linux/percpu.h>
 #include <linux/rcupdate.h>
 #include <linux/seq_file.h>
 #include <linux/smp.h>
@@ -50,18 +49,6 @@ struct kasumi_hook_stats {
 
 extern struct kasumi_hook_stats kasumi_hook_stats;
 
-struct kasumi_percpu {
-	int in_populate_inject;
-};
-
-extern struct kasumi_percpu *kasumi_percpu_base;
-
-static inline struct kasumi_percpu *kasumi_this_cpu(void)
-{
-	return kasumi_percpu_base + smp_processor_id();
-}
-
-extern char *kasumi_iterate_buf_base;
 extern atomic_long_t kasumi_ioctl_tgid;
 extern struct kmem_cache *kasumi_filldir_cache;
 

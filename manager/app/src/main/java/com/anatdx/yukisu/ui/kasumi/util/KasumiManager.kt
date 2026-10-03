@@ -15,7 +15,8 @@ import org.json.JSONObject
 object KasumiManager {
     val mountModes = listOf("auto", "kasumi", "overlay", "magic", "none")
     val ruleModes = mountModes + "hide"
-    private val writes = Mutex()
+    // Keep multi-request reads from observing an in-progress Manager mutation.
+    private val operations = Mutex()
     private val changes = MutableStateFlow(0L)
     val revision = changes.asStateFlow()
 
@@ -40,6 +41,11 @@ object KasumiManager {
         val hideRules: List<String>,
         val mounts: MountState,
     )
+    data class RuleSnapshot(val system: JSONObject, val hideRules: List<String>)
+
+    private suspend fun <T> read(block: () -> T): T = withContext(Dispatchers.IO) {
+        operations.withLock { block() }
+    }
 
     private fun command(vararg args: String): String {
         val request = JSONArray(args.toList()).toString().toByteArray(Charsets.UTF_8)
@@ -96,30 +102,40 @@ object KasumiManager {
         )
     }
 
-    suspend fun getMountState(): MountState = withContext(Dispatchers.IO) {
+    suspend fun getMountState(): MountState = read {
         val config = objectResult("config", "show", "--stored")
         readMountState(config, kernelSnapshot())
     }
 
-    suspend fun snapshot(): Snapshot = withContext(Dispatchers.IO) {
+    private fun readHideRules(): List<String> {
+        val entries = arrayResult("hide", "list")
+        return (0 until entries.length()).map(entries::getString)
+    }
+
+    suspend fun ruleSnapshot(): RuleSnapshot = read {
+        RuleSnapshot(kernelSnapshot(), readHideRules())
+    }
+
+    suspend fun listHideRules(): List<String> = read { readHideRules() }
+
+    suspend fun snapshot(): Snapshot = read {
         val system = kernelSnapshot()
         val config = objectResult("config", "show", "--stored")
-        val available = system.getBoolean("kasumi_available")
         val mountState = readMountState(config, system)
         val mounts = objectResult("api", "mounts")
         mounts.keys().forEach { key -> system.put(key, mounts.get(key)) }
-        val hides = arrayResult("hide", "list")
+        val hides = readHideRules()
         Snapshot(
             system, config,
             JSONArray(system.optString("rules").lineSequence().filter(String::isNotBlank)
                 .map { JSONObject().put("args", it) }.toList()),
-            (0 until hides.length()).map(hides::getString),
+            hides,
             mountState,
         )
     }
 
     private suspend fun mutate(block: () -> Unit) = withContext(NonCancellable + Dispatchers.IO) {
-        writes.withLock {
+        operations.withLock {
             try { block() } finally { changes.value++ }
         }
     }
@@ -130,7 +146,7 @@ object KasumiManager {
 
     suspend fun saveAndApplyConfig(updates: JSONObject, applyRuntime: Boolean): ConfigSaveResult =
         withContext(NonCancellable + Dispatchers.IO) {
-            writes.withLock {
+            operations.withLock {
                 var persisted = false
                 try {
                     command("config", "merge-json", updates.toString())
@@ -164,11 +180,13 @@ object KasumiManager {
         check(meta.optString("external_mount_owner").isEmpty()) { "An external metamodule owns mounting" }
         val previous = parseModules(objectResult("module", "list", "--all"))[id]
         check(previous != null) { "Module is no longer mountable" }
-        command("module", "set-mode", id, mode)
-        previous.rules.filter { old -> rules.none { it.path == old.path } }.forEach {
+        if (mode != previous.mode) command("module", "set-mode", id, mode)
+        val paths = rules.mapTo(HashSet()) { it.path }
+        val previousRules = previous.rules.toHashSet()
+        previous.rules.filter { it.path !in paths }.forEach {
             command("module", "remove-rule", id, it.path)
         }
-        rules.filter { it !in previous.rules }.forEach {
+        rules.filter { it !in previousRules }.forEach {
             command("module", "add-rule", id, it.path, it.mode)
         }
     }

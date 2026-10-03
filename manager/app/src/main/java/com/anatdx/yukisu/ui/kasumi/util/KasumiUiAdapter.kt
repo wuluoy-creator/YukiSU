@@ -76,7 +76,7 @@ object KasumiUiAdapter {
             type == "hide" && path in userRules)
     }.toList()
 
-    private fun userRules(snapshot: KasumiManager.Snapshot): List<ActiveRule> {
+    private fun userRules(snapshot: KasumiManager.RuleSnapshot): List<ActiveRule> {
         val registered = snapshot.system.optJSONArray("user_hide") ?: return snapshot.hideRules.map {
             ActiveRule("hide", it, isUserDefined = true)
         }
@@ -92,7 +92,7 @@ object KasumiUiAdapter {
         }
     }
 
-    private fun activeRules(snapshot: KasumiManager.Snapshot): List<ActiveRule> {
+    private fun activeRules(snapshot: KasumiManager.RuleSnapshot): List<ActiveRule> {
         val legacy = rules(snapshot.system.optString("rules"), if (snapshot.system.has("user_hide")) emptySet() else snapshot.hideRules.toSet())
         return if (snapshot.system.has("user_hide")) legacy + userRules(snapshot) else legacy
     }
@@ -150,7 +150,8 @@ object KasumiUiAdapter {
                 protocol != 0 && protocol != 17, null,
                 stats?.let { MountStats(it.optInt("total_mounts"), it.optInt("overlayfs_mounts")) }, partitions,
                 sys.optString("hooks"), sys.optBoolean("enabled")),
-            storage, activeRules(snapshot), FeaturesResult(features.optInt("bitmask"), supported),
+            storage, activeRules(KasumiManager.RuleSnapshot(sys, snapshot.hideRules)),
+            FeaturesResult(features.optInt("bitmask"), supported),
         )
     }
 
@@ -188,13 +189,14 @@ object KasumiUiAdapter {
     }
 
     suspend fun getActiveRules(): List<ActiveRule> = withContext(Dispatchers.IO) {
-        val snapshot = KasumiManager.snapshot()
+        val snapshot = KasumiManager.ruleSnapshot()
         activeRules(snapshot)
     }
-    suspend fun listUserHideRules(): List<String> = KasumiManager.snapshot().hideRules
+    suspend fun listUserHideRules(): List<String> = KasumiManager.listHideRules()
     suspend fun userHideStates(): List<ActiveRule> {
-        val snapshot = KasumiManager.snapshot()
-        return userRules(snapshot).filter { it.src in snapshot.hideRules }
+        val snapshot = KasumiManager.ruleSnapshot()
+        val storedPaths = snapshot.hideRules.toHashSet()
+        return userRules(snapshot).filter { it.src in storedPaths }
     }
     suspend fun retryUserHide(path: String) = success { KasumiManager.retryUserHide(path) }
     suspend fun addUserHideRule(path: String) = success { KasumiManager.saveHide(path) }

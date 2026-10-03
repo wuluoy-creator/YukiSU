@@ -10,7 +10,6 @@
 #include <linux/namei.h>
 #include <linux/slab.h>
 #include <linux/version.h>
-#include <linux/vmalloc.h>
 
 #include "kasumi_bootstrap.h"
 #include "kasumi_config_guard.h"
@@ -133,16 +132,6 @@ static int kasumi_start_views(void)
 	hash_init(kasumi_xattr_sbs);
 	hash_init(kasumi_merge_dirs);
 
-	kasumi_percpu_base = vmalloc(nr_cpu_ids * sizeof(struct kasumi_percpu));
-	kasumi_iterate_buf_base = vmalloc(nr_cpu_ids * KASUMI_ITERATE_PATH_BUF);
-	if (!kasumi_percpu_base || !kasumi_iterate_buf_base) {
-		ret = -ENOMEM;
-		pr_err("kasumi: failed to allocate per-CPU buffers\n");
-		goto err_buffers;
-	}
-	memset(kasumi_percpu_base, 0,
-	       nr_cpu_ids * sizeof(struct kasumi_percpu));
-
 	kasumi_resolve_system_dev();
 
 	ret = kasumi_fake_mi_init();
@@ -177,12 +166,6 @@ err_fop_bridge:
 	kasumi_iop_override_exit();
 	kasumi_proc_read_hooks_exit();
 	kasumi_fake_mi_exit();
-	goto err_buffers;
-err_buffers:
-	vfree(kasumi_percpu_base);
-	vfree(kasumi_iterate_buf_base);
-	kasumi_percpu_base = NULL;
-	kasumi_iterate_buf_base = NULL;
 	if (kasumi_filldir_cache) {
 		kmem_cache_destroy(kasumi_filldir_cache);
 		kasumi_filldir_cache = NULL;
@@ -226,13 +209,9 @@ static void kasumi_stop_views(void)
 	mutex_unlock(&kasumi_config_mutex);
 
 	kasumi_vfs_view_exit();
-	rcu_barrier();
+	kasumi_store_drain();
 	if (kasumi_filldir_cache)
 		kmem_cache_destroy(kasumi_filldir_cache);
-	vfree(kasumi_percpu_base);
-	vfree(kasumi_iterate_buf_base);
-	kasumi_percpu_base = NULL;
-	kasumi_iterate_buf_base = NULL;
 	pr_info("kasumi: stopped\n");
 	if (READ_ONCE(kasumi_unload_pin_held))
 		kasumi_bootstrap_release_unload_pin();

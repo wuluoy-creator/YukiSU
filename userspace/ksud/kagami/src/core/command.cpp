@@ -177,7 +177,7 @@ std::string kernel_release() {
 }
 
 std::string format_bytes(unsigned long long bytes) {
-    const char* units[] = {"B", "K", "M", "G", "T"};
+    const char* const units[] = {"B", "K", "M", "G", "T"};
     double value = static_cast<double>(bytes);
     std::size_t unit = 0;
     while (value >= 1024.0 && unit + 1 < std::size(units)) {
@@ -1102,18 +1102,30 @@ int handle_hide(const std::vector<std::string>& args) {
         return 0;
     }
     if (sub == "list") {
-        const auto rules = load_user_hide_rules();
+        std::vector<std::string> rules;
+        std::string error;
+        if (!load_user_hide_rules(rules, error)) {
+            std::cerr << error << "\n";
+            return 1;
+        }
         print_string_array(rules);
         std::cout << "\n";
         return 0;
     }
     if (sub == "add") {
         const std::string path = arg_or_default(args, 2, "");
-        if (path.empty() || path[0] != '/') {
-            std::cerr << "hide path must be absolute\n";
+        if (path.empty() || path[0] != '/' || path.find('\0') != std::string::npos ||
+            path.size() >= KSM_USER_HIDE_PATH_MAX) {
+            std::cerr << "hide path must be absolute, NUL-free and shorter than "
+                      << KSM_USER_HIDE_PATH_MAX << " bytes\n";
             return 1;
         }
-        auto rules = load_user_hide_rules();
+        std::vector<std::string> rules;
+        std::string error;
+        if (!load_user_hide_rules(rules, error)) {
+            std::cerr << error << "\n";
+            return 1;
+        }
         if (std::find(rules.begin(), rules.end(), path) == rules.end()) {
             rules.push_back(path);
         }
@@ -1132,7 +1144,12 @@ int handle_hide(const std::vector<std::string>& args) {
     }
     if (sub == "remove") {
         const std::string path = arg_or_default(args, 2, "");
-        auto rules = load_user_hide_rules();
+        std::vector<std::string> rules;
+        std::string error;
+        if (!load_user_hide_rules(rules, error)) {
+            std::cerr << error << "\n";
+            return 1;
+        }
         rules.erase(std::remove(rules.begin(), rules.end(), path), rules.end());
         if (!save_user_hide_rules(rules)) {
             return 1;

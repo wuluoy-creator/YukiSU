@@ -411,8 +411,15 @@ std::string kernel_snapshot() {
   } else if (caps.bitmask & KSM_FEATURE_MANAGED_HIDE) {
     failure("Kasumi user hide state");
   }
-  out += ",\"hooks\":" + quote(ksm::hooks()) +
-         ",\"rules\":" + quote(ksm::active_rules()) + "}";
+  errno = 0;
+  const auto hooks = ksm::hooks();
+  if (hooks.empty() && errno)
+    failure("Kasumi hooks");
+  errno = 0;
+  const auto rules = ksm::active_rules();
+  if (rules.empty() && errno)
+    failure("Kasumi rules");
+  out += ",\"hooks\":" + quote(hooks) + ",\"rules\":" + quote(rules) + "}";
   return out;
 }
 

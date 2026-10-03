@@ -170,7 +170,7 @@ static KASUMI_NOCFI int kasumi_dispatch_cmd(unsigned int cmd, void __user *arg)
 		kasumi_fop_override_clear();
 		kasumi_sop_shadow_reap();
 		kasumi_fake_mi_invalidate_all();
-		rcu_barrier();
+		kasumi_store_drain();
 		return 0;
 	}
 

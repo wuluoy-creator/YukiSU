@@ -32,6 +32,9 @@ struct Config {
 };
 
 std::vector<std::string> load_user_hide_rules();
+// Missing files represent an empty rule set; read/parse failures leave rules
+// unchanged so synchronization cannot mistake damaged persistence for deletion.
+bool load_user_hide_rules(std::vector<std::string>& rules, std::string& error);
 bool save_user_hide_rules(const std::vector<std::string>& rules);
 std::string default_config_json();
 void prune_config_fields(json::Value& config);

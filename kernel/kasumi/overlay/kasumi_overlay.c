@@ -177,6 +177,14 @@ static KASUMI_NOCFI bool kasumi_merge_filldir(struct dir_context *ctx,
 	return true;
 }
 
+bool kasumi_is_merge_context(const struct dir_context *ctx)
+{
+	/* The actor stays attached to this iteration across sleeps and CPU
+	 * migration, unlike a per-CPU recursion marker.
+	 */
+	return ctx && ctx->actor == kasumi_merge_filldir;
+}
+
 KASUMI_NOCFI void kasumi_populate_injected_list(const char *dir_path,
 						struct dentry *parent,
 						struct list_head *head)
@@ -356,11 +364,7 @@ KASUMI_NOCFI void kasumi_populate_injected_list(const char *dir_path,
 								  ->i_sb->s_dev
 							    : 0,
 						};
-						kasumi_this_cpu()
-						    ->in_populate_inject = 1;
 						iterate_dir(f, &mctx.ctx);
-						kasumi_this_cpu()
-						    ->in_populate_inject = 0;
 						fput(f);
 					}
 					put_cred(cred);

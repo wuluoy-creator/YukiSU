@@ -304,30 +304,39 @@ bool restore_user_hide_rules(std::string& error, bool retry) {
         user_hide_restore_pending = false;
         return true;
     }
+    std::vector<std::string> paths;
+    if (!load_user_hide_rules(paths, error)) {
+        user_hide_restore_pending = true;
+        return false;
+    }
     bool managed = false;
     if (!::kagami::kasumi::managed_hide_mode(managed)) {
+        user_hide_restore_pending = true;
         error = "failed to query user hide ownership";
         return false;
     }
     if (managed) {
-        user_hide_restore_pending = false;
+        // The kernel retries binding registered definitions. Failed queries or
+        // mutations still need userspace to retry synchronizing those definitions.
+        user_hide_restore_pending = true;
         std::vector<::kagami::kasumi::UserHideRule> registered;
         if (!::kagami::kasumi::user_hide_rules(registered)) {
             error = "failed to query managed user hide rules";
             return false;
         }
-        const auto paths = load_user_hide_rules();
+        const std::set<std::string> desired_paths(paths.begin(), paths.end());
+        std::set<std::string> registered_paths;
         bool ok = true;
         for (const auto& rule : registered) {
-            if (std::find(paths.begin(), paths.end(), rule.path) == paths.end())
+            registered_paths.insert(rule.path);
+            if (desired_paths.count(rule.path) == 0)
                 ok = ::kagami::kasumi::delete_user_hide(rule.path, rule.id) && ok;
         }
         for (const auto& path : paths) {
-            const auto found = std::find_if(registered.begin(), registered.end(),
-                                            [&](const auto& rule) { return rule.path == path; });
-            if (found == registered.end())
+            if (registered_paths.insert(path).second)
                 ok = ::kagami::kasumi::upsert_user_hide(path) && ok;
         }
+        user_hide_restore_pending = !ok;
         if (!ok)
             error = "failed to synchronize managed user hide rules; module rules remain active";
         return ok;
@@ -344,9 +353,9 @@ bool restore_user_hide_rules(std::string& error, bool retry) {
             mlog("kasumi: " + error, logging::Level::Error);
         return false;
     }
-    const bool ok = fsutil::run_in_init_mount_ns([retry]() {
+    const bool ok = fsutil::run_in_init_mount_ns([retry, &paths]() {
         bool restored = true;
-        for (const auto& path : load_user_hide_rules()) {
+        for (const auto& path : paths) {
             struct stat parent = {};
             const bool parent_ready =
                 !retry || (stat(fs::path(path).parent_path().c_str(), &parent) == 0 &&

@@ -1,0 +1,42 @@
+name: Kasumi regression tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'kernel/kasumi/**'
+      - 'userspace/ksud/kagami/**'
+      - 'userspace/ksud/tests/kasumi*'
+      - 'userspace/ksud/tests/run_kasumi_host_tests.py'
+      - 'uapi/kasumi.h'
+      - 'scripts/ci/test_kasumi*'
+      - '.github/workflows/kasumi-tests.yml'
+  pull_request:
+    paths:
+      - 'kernel/kasumi/**'
+      - 'userspace/ksud/kagami/**'
+      - 'userspace/ksud/tests/kasumi*'
+      - 'userspace/ksud/tests/run_kasumi_host_tests.py'
+      - 'uapi/kasumi.h'
+      - 'scripts/ci/test_kasumi*'
+      - '.github/workflows/kasumi-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  host-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - name: Kernel ownership and VFS helpers
+        run: |
+          python3 scripts/ci/test_kasumi_core.py --cc clang
+          python3 scripts/ci/test_kasumi_vfs_helpers.py --cc clang
+      - name: Userspace ioctl client and rule restoration
+        run: python3 userspace/ksud/tests/run_kasumi_host_tests.py --cxx g++

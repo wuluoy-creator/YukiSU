@@ -153,7 +153,9 @@ static KASUMI_NOCFI ssize_t kasumi_view_listxattr(struct dentry *dentry,
 						  char *list, size_t size)
 {
 	struct kasumi_view_guard guard;
-	char *buffer;
+	char small[256];
+	char *buffer = small;
+	size_t capacity = sizeof(small);
 	size_t output;
 	ssize_t ret;
 
@@ -162,15 +164,23 @@ static KASUMI_NOCFI ssize_t kasumi_view_listxattr(struct dentry *dentry,
 		ret = kasumi_view_listxattr_orig(dentry, list, size);
 		goto out;
 	}
-	buffer = kvmalloc(XATTR_LIST_MAX, GFP_KERNEL);
-	if (!buffer) {
-		ret = -ENOMEM;
-		goto out;
+	/* Most files only carry a few short attribute names. Avoid a 64 KiB
+	 * allocation for those reads, including the size-only query. A single
+	 * full-size retry also handles a list growing between the two calls.
+	 */
+	ret = kasumi_view_listxattr_orig(dentry, buffer, capacity);
+	if (ret == -ERANGE) {
+		capacity = XATTR_LIST_MAX;
+		buffer = kvmalloc(capacity, GFP_KERNEL);
+		if (!buffer) {
+			ret = -ENOMEM;
+			goto out;
+		}
+		ret = kasumi_view_listxattr_orig(dentry, buffer, capacity);
 	}
-	ret = kasumi_view_listxattr_orig(dentry, buffer, XATTR_LIST_MAX);
 	if (ret < 0)
 		goto out_free;
-	if (ret > XATTR_LIST_MAX) {
+	if (ret > capacity) {
 		ret = -EOVERFLOW;
 		goto out_free;
 	}
@@ -187,7 +197,8 @@ static KASUMI_NOCFI ssize_t kasumi_view_listxattr(struct dentry *dentry,
 			ret = -EFAULT;
 	}
 out_free:
-	kvfree(buffer);
+	if (buffer != small)
+		kvfree(buffer);
 out:
 	kasumi_view_leave(&guard);
 	return ret;
