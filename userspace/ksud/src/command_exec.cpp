@@ -1,3 +1,4 @@
+#include "pipe.hpp"
 #include "utils.hpp"
 
 #include <fcntl.h>
@@ -14,43 +15,6 @@
 
 namespace ksud {
 namespace {
-class CapturePipe {
-public:
-    ~CapturePipe() {
-        close_end(0);
-        close_end(1);
-    }
-    CapturePipe() = default;
-    CapturePipe(const CapturePipe&) = delete;
-    CapturePipe& operator=(const CapturePipe&) = delete;
-    CapturePipe(CapturePipe&&) = delete;
-    CapturePipe& operator=(CapturePipe&&) = delete;
-    [[nodiscard]] int fd(int end) const { return fds[end]; }
-    void close_end(int end) {
-        if (fds[end] >= 0) {
-            close(fds[end]);
-            fds[end] = -1;
-        }
-    }
-    bool open_pipe() {
-        if (pipe2(fds.data(), O_CLOEXEC) != 0)
-            return false;
-        for (auto& fd : fds) {
-            if (fd >= STDERR_FILENO + 1)
-                continue;
-            const int copy = fcntl(fd, F_DUPFD_CLOEXEC, STDERR_FILENO + 1);
-            if (copy < 0)
-                return false;
-            close(fd);
-            fd = copy;
-        }
-        return true;
-    }
-
-private:
-    std::array<int, 2> fds{-1, -1};
-};
-
 [[noreturn]] void exec_failed(int fd, int error) {
     const auto* data = reinterpret_cast<const char*>(&error);
     size_t sent = 0;
@@ -108,6 +72,10 @@ ExecResult exec_command_impl(const std::vector<std::string>& args, const std::st
     if (pid == 0) {
         for (auto& pipe : pipes)
             pipe.close_end(0);
+        // A timed command can launch helpers that inherit its output pipes.
+        // Own their process group so cancellation also stops those helpers.
+        if (timeout && setpgid(0, 0) != 0)
+            exec_failed(pipes[2].fd(1), errno);
         if (dup2(pipes[0].fd(1), STDOUT_FILENO) < 0 || dup2(pipes[1].fd(1), STDERR_FILENO) < 0)
             exec_failed(pipes[2].fd(1), errno);
         pipes[0].close_end(1);
@@ -200,8 +168,10 @@ ExecResult exec_command_impl(const std::vector<std::string>& args, const std::st
     pid_t waited;
     bool terminate = timeout && result.error_number != 0;
     for (;;) {
-        if (terminate)
+        if (terminate) {
+            (void)kill(-pid, SIGKILL);
             (void)kill(pid, SIGKILL);
+        }
         waited = waitpid(pid, &status, timeout && !terminate ? WNOHANG : 0);
         if (waited < 0 && errno == EINTR)
             continue;

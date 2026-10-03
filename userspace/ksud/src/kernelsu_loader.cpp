@@ -1,5 +1,6 @@
 #include "kernelsu_loader.hpp"
 
+#include "elf_symbols.hpp"
 #include "log.hpp"
 #include "utils.hpp"
 
@@ -10,6 +11,7 @@
 
 #include <array>
 #include <cerrno>
+#include <charconv>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
@@ -28,7 +30,9 @@ public:
         if (const auto current = read_file(kPath)) {
             original_value_.assign(trim_view(*current));
         }
-        (void)write_file(kPath, "1");
+        if (!original_value_.empty()) {
+            (void)write_file(kPath, "1");
+        }
     }
 
     ~KptrGuard() {
@@ -97,52 +101,12 @@ int init_module_syscall(void* module_image, unsigned long len, const char* param
 
 template <typename Ehdr, typename Shdr, typename Sym>
 bool patch_undefined_symbols(std::vector<uint8_t>* buffer) {
-    if (buffer->size() < sizeof(Ehdr)) {
-        LOGE("loader: file too small to be an ELF");
+    auto symbols = collect_undefined_symbols<Ehdr, Shdr, Sym>(*buffer);
+    if (!symbols) {
+        LOGE("loader: invalid ELF symbol or string table");
         return false;
     }
-
-    auto* ehdr = reinterpret_cast<Ehdr*>(buffer->data());
-    if (memcmp(ehdr->e_ident, ELFMAG, SELFMAG) != 0) {
-        LOGE("loader: invalid ELF magic");
-        return false;
-    }
-
-    auto* shdr_base = reinterpret_cast<Shdr*>(buffer->data() + ehdr->e_shoff);
-    const Shdr* symtab = nullptr;
-    const Shdr* strtab = nullptr;
-
-    for (int i = 0; i < ehdr->e_shnum; ++i) {
-        auto* shdr = &shdr_base[i];
-        if (shdr->sh_type == SHT_SYMTAB) {
-            symtab = shdr;
-            strtab = &shdr_base[shdr->sh_link];
-            break;
-        }
-    }
-
-    if (symtab == nullptr || strtab == nullptr) {
-        LOGE("loader: cannot find symbol table");
-        return false;
-    }
-
-    auto* sym_base = reinterpret_cast<Sym*>(buffer->data() + symtab->sh_offset);
-    auto* str_base = reinterpret_cast<char*>(buffer->data() + strtab->sh_offset);
-    const size_t sym_count = symtab->sh_size / sizeof(Sym);
-    std::unordered_map<std::string, std::vector<Sym*>> unresolved_symbols;
-
-    for (size_t i = 1; i < sym_count; ++i) {
-        auto* sym = &sym_base[i];
-        if (sym->st_shndx != SHN_UNDEF) {
-            continue;
-        }
-
-        const char* name = &str_base[sym->st_name];
-        if (name == nullptr || *name == '\0') {
-            continue;
-        }
-        unresolved_symbols[name].push_back(sym);
-    }
+    auto& unresolved_symbols = *symbols;
 
     if (unresolved_symbols.empty()) {
         return true;
@@ -171,17 +135,12 @@ bool patch_undefined_symbols(std::vector<uint8_t>* buffer) {
             return false;
         }
 
-        // next_token yields a view into `line`, which is not NUL-terminated, so
-        // bound strtoull explicitly rather than relying on *end == '\0'.
-        std::array<char, 32> addr_buf{};
-        if (addr_str.size() >= addr_buf.size()) {
-            return true;
-        }
-        std::memcpy(addr_buf.data(), addr_str.data(), addr_str.size());
-        char* end = nullptr;
-        errno = 0;
-        uint64_t const addr = std::strtoull(addr_buf.data(), &end, 16);
-        if (end == addr_buf.data() || *end != '\0' || errno == ERANGE) {
+        // Parse the bounded view directly; hidden addresses must remain
+        // unresolved so the kernel can handle them normally.
+        uint64_t addr = 0;
+        const auto [end, error] =
+            std::from_chars(addr_str.data(), addr_str.data() + addr_str.size(), addr, 16);
+        if (error != std::errc{} || end != addr_str.data() + addr_str.size() || addr == 0) {
             return true;
         }
 
@@ -193,9 +152,12 @@ bool patch_undefined_symbols(std::vector<uint8_t>* buffer) {
             return true;
         }
 
-        for (auto* sym : it->second) {
-            sym->st_shndx = SHN_ABS;
-            sym->st_value = static_cast<decltype(sym->st_value)>(addr);
+        for (const size_t offset : it->second) {
+            Sym symbol{};
+            std::memcpy(&symbol, buffer->data() + offset, sizeof(symbol));
+            symbol.st_shndx = SHN_ABS;
+            symbol.st_value = static_cast<decltype(symbol.st_value)>(addr);
+            std::memcpy(buffer->data() + offset, &symbol, sizeof(symbol));
         }
         unresolved_symbols.erase(it);
         return true;

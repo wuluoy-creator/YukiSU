@@ -5,6 +5,7 @@
 #include "core/restorecon.hpp"
 #include "defs.hpp"
 #include "log.hpp"
+#include "pipe.hpp"
 
 #include <dirent.h>
 #include <fcntl.h>
@@ -58,10 +59,29 @@ bool copy_file_contents_impl(const char* src_path, const char* dst_path, mode_t 
     const int in_fd = open(src_path, O_RDONLY | O_CLOEXEC);
     if (in_fd < 0)
         return false;
-    const int out_flags = O_WRONLY | O_CREAT | O_CLOEXEC | (overwrite ? O_TRUNC : O_EXCL);
+    // Inspect the opened destination before truncating: source and destination
+    // can name the same inode through a symlink or hard link.
+    const int out_flags = O_WRONLY | O_CREAT | O_CLOEXEC | (overwrite ? 0 : O_EXCL);
     const int out_fd = open(dst_path, out_flags, mode);
     if (out_fd < 0) {
         close(in_fd);
+        return false;
+    }
+
+    struct stat source_status{};
+    struct stat target_status{};
+    int setup_error = 0;
+    if (fstat(in_fd, &source_status) != 0 || fstat(out_fd, &target_status) != 0)
+        setup_error = errno;
+    else if (source_status.st_dev == target_status.st_dev &&
+             source_status.st_ino == target_status.st_ino)
+        setup_error = EINVAL;
+    else if (overwrite && S_ISREG(target_status.st_mode) && ftruncate(out_fd, 0) != 0)
+        setup_error = errno;
+    if (setup_error != 0) {
+        close(out_fd);
+        close(in_fd);
+        errno = setup_error;
         return false;
     }
 
@@ -169,6 +189,10 @@ bool ensure_file_exists(const std::string& path) {
 
 bool ensure_binary(const std::string& path, const uint8_t* data, size_t size,
                    bool ignore_if_exist) {
+    if (size != 0 && data == nullptr) {
+        errno = EINVAL;
+        return false;
+    }
     if (ignore_if_exist) {
         struct stat st{};
         if (stat(path.c_str(), &st) == 0) {
@@ -189,16 +213,7 @@ bool ensure_binary(const std::string& path, const uint8_t* data, size_t size,
     unlink(path.c_str());
 
     // Write file
-    const int fd = open(path.c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0755);
-    if (fd < 0) {
-        LOGE("Failed to create %s: %s", path.c_str(), strerror(errno));
-        return false;
-    }
-
-    const ssize_t written = write(fd, data, size);
-    close(fd);
-
-    if (written != static_cast<ssize_t>(size)) {
+    if (!write_file_bytes(path, data, size, 0755)) {
         LOGE("Failed to write %s: %s", path.c_str(), strerror(errno));
         return false;  // NOLINT(readability-simplify-boolean-expr)
     }
@@ -616,7 +631,9 @@ bool write_bytes_impl(const char* path, const void* data, size_t size, int extra
         }
         if (count < 0 && errno == EINTR)
             continue;
+        const int error = count == 0 ? EIO : errno;
         close(fd);
+        errno = error;
         return false;
     }
     return close(fd) == 0;
@@ -634,7 +651,7 @@ bool write_file(const std::filesystem::path& path, const std::string& content) {
     return write_file_impl(path.c_str(), content, O_TRUNC);
 }
 
-bool write_file_atomic(const std::filesystem::path& path, const std::string& content) {
+bool write_file_atomic(const std::filesystem::path& path, const std::string& content, mode_t mode) {
     std::string temporary = path.string() + ".tmp.XXXXXX";
     const int fd = mkostemp(temporary.data(), O_CLOEXEC);
     if (fd < 0)
@@ -654,7 +671,14 @@ bool write_file_atomic(const std::filesystem::path& path, const std::string& con
         offset += static_cast<size_t>(n);
     }
     if (ok)
-        ok = fsync(fd) == 0;
+        ok = fchmod(fd, mode) == 0;
+    if (ok) {
+        int result;
+        do {
+            result = fsync(fd);
+        } while (result < 0 && errno == EINTR);
+        ok = result == 0;
+    }
     int error = errno;
     if (close(fd) != 0 && ok) {
         ok = false;
@@ -673,8 +697,10 @@ bool write_file_atomic(const std::filesystem::path& path, const std::string& con
 
 bool write_file_bytes(const std::filesystem::path& path, const uint8_t* data, size_t size,
                       mode_t mode) {
-    if (size != 0 && data == nullptr)
+    if (size != 0 && data == nullptr) {
+        errno = EINVAL;
         return false;
+    }
     return write_bytes_impl(path.c_str(), data, size, O_TRUNC, mode);
 }
 
@@ -786,10 +812,24 @@ ExecResult exec_command_magiskboot(const std::string& magiskboot_path,
 
     ExecResult result{-1, "", ""};
 
-    std::array<int, 2> stdout_pipe{};
-    std::array<int, 2> stderr_pipe{};
-    if (pipe(stdout_pipe.data()) != 0 || pipe(stderr_pipe.data()) != 0)
+    if (workdir.find('\0') != std::string::npos ||
+        std::any_of(args.begin(), args.end(),
+                    [](const std::string& arg) { return arg.find('\0') != std::string::npos; })) {
+        result.error_number = EINVAL;
         return result;
+    }
+    std::vector<char*> c_args;
+    c_args.reserve(args.size() + 1U);
+    for (auto& arg : args)
+        c_args.push_back(arg.data());
+    c_args.push_back(nullptr);
+
+    CapturePipe stdout_pipe;
+    CapturePipe stderr_pipe;
+    if (!stdout_pipe.open_pipe() || !stderr_pipe.open_pipe()) {
+        result.error_number = errno;
+        return result;
+    }
     // Drain our own stdio before forking. The child inherits a copy of these
     // buffers, and it flushes them below; anything still pending here would be
     // replayed into the pipe and read back as magiskboot output. The old execv
@@ -799,19 +839,17 @@ ExecResult exec_command_magiskboot(const std::string& magiskboot_path,
     (void)fflush(nullptr);
     const pid_t pid = fork();
     if (pid < 0) {
-        close(stdout_pipe[0]);
-        close(stdout_pipe[1]);
-        close(stderr_pipe[0]);
-        close(stderr_pipe[1]);
+        result.error_number = errno;
         return result;
     }
     if (pid == 0) {
-        close(stdout_pipe[0]);
-        close(stderr_pipe[0]);
-        dup2(stdout_pipe[1], STDOUT_FILENO);
-        dup2(stderr_pipe[1], STDERR_FILENO);
-        close(stdout_pipe[1]);
-        close(stderr_pipe[1]);
+        stdout_pipe.close_end(0);
+        stderr_pipe.close_end(0);
+        if (dup2(stdout_pipe.fd(1), STDOUT_FILENO) < 0 ||
+            dup2(stderr_pipe.fd(1), STDERR_FILENO) < 0)
+            _exit(127);
+        stdout_pipe.close_end(1);
+        stderr_pipe.close_end(1);
         if (!workdir.empty() && chdir(workdir.c_str()) != 0) {
             _exit(127);
         }
@@ -820,11 +858,6 @@ ExecResult exec_command_magiskboot(const std::string& magiskboot_path,
         // linking, relocation processing and .init_array for no benefit. The
         // fork stays, so magiskboot keeps its own cwd, its global state, and
         // containment for the std::abort() paths in boot_crypto.
-        std::vector<char*> c_args;
-        c_args.reserve(args.size() + 1U);
-        for (auto& arg : args)
-            c_args.push_back(arg.data());
-        c_args.push_back(nullptr);
         int rc = run_magiskboot_main(static_cast<int>(args.size()), c_args.data());
         // magiskboot writes its output with buffered stdio, and stdout here is a
         // pipe, so it is fully buffered. execv used to end in exit(), which
@@ -837,8 +870,8 @@ ExecResult exec_command_magiskboot(const std::string& magiskboot_path,
         }
         _exit(rc);
     }
-    close(stdout_pipe[1]);
-    close(stderr_pipe[1]);
+    stdout_pipe.close_end(1);
+    stderr_pipe.close_end(1);
     // Cap capture at 1MB per stream to prevent cache/memory explosion if magiskboot
     // enters an infinite loop writing output.
     constexpr size_t kMaxCapture = 1024ULL * 1024;
@@ -846,8 +879,9 @@ ExecResult exec_command_magiskboot(const std::string& magiskboot_path,
     // pthread create/join and a guard page + stack mapping each, for work that
     // is pure I/O waiting.
     std::array<pollfd, 2> fds{};
-    fds[0] = {stdout_pipe[0], POLLIN, 0};
-    fds[1] = {stderr_pipe[0], POLLIN, 0};
+    fds[0] = {stdout_pipe.fd(0), POLLIN, 0};
+    fds[1] = {stderr_pipe.fd(0), POLLIN, 0};
+    const std::array<CapturePipe*, 2> pipes{&stdout_pipe, &stderr_pipe};
     std::array<std::string*, 2> sinks{&result.stdout_str, &result.stderr_str};
     constexpr std::array<bool, 2> kTee{false, true};  // stderr is mirrored live
     int open_fds = 2;
@@ -856,10 +890,20 @@ ExecResult exec_command_magiskboot(const std::string& magiskboot_path,
         if (poll(fds.data(), fds.size(), -1) < 0) {
             if (errno == EINTR)
                 continue;
+            result.error_number = errno;
             break;
         }
         for (size_t i = 0; i < fds.size(); ++i) {
-            if (fds[i].fd < 0 || (fds[i].revents & (POLLIN | POLLHUP | POLLERR)) == 0)
+            if (fds[i].fd < 0)
+                continue;
+            if ((fds[i].revents & POLLNVAL) != 0) {
+                result.error_number = EBADF;
+                pipes[i]->close_end(0);
+                fds[i].fd = -1;
+                --open_fds;
+                continue;
+            }
+            if ((fds[i].revents & (POLLIN | POLLHUP | POLLERR)) == 0)
                 continue;
             const ssize_t n = read(fds[i].fd, buf.data(), buf.size());
             if (n > 0) {
@@ -875,19 +919,24 @@ ExecResult exec_command_magiskboot(const std::string& magiskboot_path,
                 continue;
             }
             if (n == 0 || (n < 0 && errno != EINTR && errno != EAGAIN)) {
-                close(fds[i].fd);
+                if (n < 0 && result.error_number == 0)
+                    result.error_number = errno;
+                pipes[i]->close_end(0);
                 fds[i].fd = -1;
                 --open_fds;
             }
         }
     }
-    for (auto& pfd : fds) {
-        if (pfd.fd >= 0)
-            close(pfd.fd);
-    }
-    int status;
-    waitpid(pid, &status, 0);
-    if (WIFEXITED(status)) {
+    stdout_pipe.close_end(0);
+    stderr_pipe.close_end(0);
+    int status = 0;
+    pid_t waited;
+    do {
+        waited = waitpid(pid, &status, 0);
+    } while (waited < 0 && errno == EINTR);
+    if (waited < 0) {
+        result.error_number = errno;
+    } else if (WIFEXITED(status)) {
         result.exit_code = WEXITSTATUS(status);
     } else if (WIFSIGNALED(status)) {
         const int sig = WTERMSIG(status);
@@ -902,6 +951,8 @@ ExecResult exec_command_magiskboot(const std::string& magiskboot_path,
         }
         result.stderr_str.push_back('\n');
     }
+    if (result.error_number != 0 && result.exit_code == 0)
+        result.exit_code = -1;
     return result;
 }
 

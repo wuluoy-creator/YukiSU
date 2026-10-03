@@ -2,6 +2,9 @@
 
 namespace ksuinit {
 
+// Absolute fallback path for handing off even if replacing /init fails.
+const char* real_init_path();
+
 /**
  * Initialize KernelSU
  *
@@ -11,7 +14,7 @@ namespace ksuinit {
  * 3. Loads the KernelSU LKM module
  * 4. Sets up the symlink for the real init
  *
- * @return true on success, false on failure
+ * @return true when /init was restored; module-load failure does not block boot
  */
 bool init();
 

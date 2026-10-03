@@ -192,8 +192,10 @@ bool for_each_file_line(const char* path, Fn&& fn) {
 std::optional<std::string> read_file(const std::string& path);
 bool read_file_bytes(const std::filesystem::path& path, std::vector<uint8_t>* data);
 bool write_file(const std::filesystem::path& path, const std::string& content);
-// Atomically replace a private state file; the parent directory must exist.
-bool write_file_atomic(const std::filesystem::path& path, const std::string& content);
+// Atomically replace a state file; the parent directory must exist. The final
+// mode is applied explicitly (independent of umask), defaulting to private 0600.
+bool write_file_atomic(const std::filesystem::path& path, const std::string& content,
+                       mode_t mode = 0600);
 bool write_file_bytes(const std::filesystem::path& path, const uint8_t* data, size_t size,
                       mode_t mode = 0644);
 bool copy_file_data(const std::filesystem::path& source, const std::filesystem::path& target,

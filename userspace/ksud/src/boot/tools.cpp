@@ -50,17 +50,34 @@ bool exec_dd(const std::string& input, const std::string& output) {
         return false;
     }
 
-    // A block-device destination is a partition: never create or truncate it.
-    // A regular-file destination is an image we do want to replace outright.
-    struct stat dst_st{};
-    const bool dst_is_block = stat(output.c_str(), &dst_st) == 0 && S_ISBLK(dst_st.st_mode);
-    int out_flags = O_WRONLY | O_CLOEXEC;
-    if (!dst_is_block) {
-        out_flags |= O_CREAT | O_TRUNC;
-    }
-    const int out_fd = open(output.c_str(), out_flags, 0600);
+    // Open without truncation so aliases (including hard links and partition
+    // symlinks) can be checked against the actual opened source first.
+    const int out_fd = open(output.c_str(), O_WRONLY | O_CREAT | O_CLOEXEC, 0600);
     if (out_fd < 0) {
         LOGE("dd: cannot open %s for writing: %s", output.c_str(), strerror(errno));
+        close(in_fd);
+        return false;
+    }
+
+    struct stat src_st{};
+    struct stat dst_st{};
+    if (fstat(in_fd, &src_st) != 0 || fstat(out_fd, &dst_st) != 0) {
+        LOGE("dd: cannot stat source or destination: %s", strerror(errno));
+        close(out_fd);
+        close(in_fd);
+        return false;
+    }
+    if ((src_st.st_dev == dst_st.st_dev && src_st.st_ino == dst_st.st_ino) ||
+        (S_ISBLK(src_st.st_mode) && S_ISBLK(dst_st.st_mode) && src_st.st_rdev == dst_st.st_rdev)) {
+        LOGE("dd: source and destination refer to the same file or device");
+        close(out_fd);
+        close(in_fd);
+        return false;
+    }
+    // Only regular images are truncated; partitions retain their capacity.
+    if (S_ISREG(dst_st.st_mode) && ftruncate(out_fd, 0) != 0) {
+        LOGE("dd: cannot truncate %s: %s", output.c_str(), strerror(errno));
+        close(out_fd);
         close(in_fd);
         return false;
     }
@@ -109,7 +126,13 @@ bool exec_dd(const std::string& input, const std::string& output) {
     }
 
     // Flush before reporting success: callers may reboot straight after this.
-    if (ok && fsync(out_fd) != 0) {
+    int sync_result = 0;
+    if (ok) {
+        do {
+            sync_result = fsync(out_fd);
+        } while (sync_result < 0 && errno == EINTR);
+    }
+    if (sync_result != 0) {
         LOGE("dd: fsync %s failed: %s", output.c_str(), strerror(errno));
         ok = false;
     }

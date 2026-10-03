@@ -3,6 +3,7 @@
 #include "../log.hpp"
 #include "../terminal.hpp"
 #include "../utils.hpp"
+#include "module_utils.hpp"
 
 #include <dirent.h>
 #include <unistd.h>
@@ -46,7 +47,16 @@ bool save_config(const std::string& path, const std::map<std::string, std::strin
         out += value;
         out += '\n';
     }
-    return write_file(path, out);
+    // Keep custom permissions on existing configs while preventing a failed
+    // write from truncating the current configuration.
+    struct stat st{};
+    mode_t mode = 0644;
+    if (stat(path.c_str(), &st) == 0) {
+        mode = st.st_mode & 07777;
+    } else if (errno != ENOENT) {
+        return false;
+    }
+    return write_file_atomic(path, out, mode);
 }
 
 }  // namespace
@@ -63,6 +73,10 @@ int module_config_handle(const std::vector<std::string>& args) {
             "KSU_MODULE is not set",
             "Run module config from a module script or set KSU_MODULE to its ID.");
     }
+    if (!validate_module_id(module_id)) {
+        return terminal::error("Invalid KSU_MODULE ID",
+                               "Use the same module ID declared in module.prop.");
+    }
 
     const std::string config_dir = get_config_dir(module_id);
 
@@ -76,14 +90,14 @@ int module_config_handle(const std::vector<std::string>& args) {
 
         // Temp config takes priority
         auto temp_config = load_config(temp_path);
-        if (temp_config.count(key)) {
-            printf("%s\n", temp_config[key].c_str());
+        if (const auto it = temp_config.find(key); it != temp_config.end()) {
+            printf("%s\n", it->second.c_str());
             return 0;
         }
 
         auto persist_config = load_config(persist_path);
-        if (persist_config.count(key)) {
-            printf("%s\n", persist_config[key].c_str());
+        if (const auto it = persist_config.find(key); it != persist_config.end()) {
+            printf("%s\n", it->second.c_str());
             return 0;
         }
 
@@ -93,6 +107,12 @@ int module_config_handle(const std::vector<std::string>& args) {
         const std::string& key = args[1];
         const std::string& value = args[2];
         const bool is_temp = args.size() > 3 && (args[3] == "-t" || args[3] == "--temp");
+
+        if (key.empty() || key.find_first_of("=\r\n") != std::string::npos ||
+            value.find_first_of("\r\n") != std::string::npos) {
+            return terminal::error("Invalid config entry",
+                                   "Use a nonempty key without '=', and single-line values.");
+        }
 
         const std::string path = is_temp ? temp_path : persist_path;
         auto config = load_config(path);
@@ -161,7 +181,7 @@ void clear_all_temp_configs() {
     while ((entry = readdir(dir)) != nullptr) {
         if (entry->d_name[0] == '.')
             continue;
-        if (entry->d_type != DT_DIR)
+        if (!is_module_directory(dir, *entry))
             continue;
 
         const std::string temp_config =

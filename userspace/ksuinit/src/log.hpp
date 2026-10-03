@@ -18,7 +18,7 @@ void log_init(const char* device);
  * @param fmt Format string
  * @param ... Format arguments
  */
-void klog(int level, const char* fmt, ...);
+void klog(int level, const char* fmt, ...) __attribute__((format(printf, 2, 3)));
 
 }  // namespace ksuinit
 

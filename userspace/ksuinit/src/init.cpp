@@ -16,14 +16,12 @@
 #include <cerrno>
 #include <cstdio>
 #include <cstring>
-#include <string>
-#include <utility>
-#include <vector>
 
 #include <fcntl.h>
 #include <sys/mount.h>
 #include <sys/stat.h>
 #include <sys/sysmacros.h>
+#include <sys/vfs.h>
 #include <unistd.h>
 
 namespace ksuinit {
@@ -35,27 +33,20 @@ namespace {
  */
 class AutoUmount {
 public:
-    AutoUmount() = default;
+    explicit AutoUmount(const char* mountpoint) : mountpoint_(mountpoint) {}
     AutoUmount(const AutoUmount&) = delete;
     AutoUmount& operator=(const AutoUmount&) = delete;
-    AutoUmount(AutoUmount&& other) noexcept : mountpoints_(std::move(other.mountpoints_)) {
-        other.mountpoints_.clear();
-    }
+    AutoUmount(AutoUmount&&) = delete;
     AutoUmount& operator=(AutoUmount&&) = delete;
 
     ~AutoUmount() {
-        // Unmount in reverse order
-        for (auto it = mountpoints_.rbegin(); it != mountpoints_.rend(); ++it) {
-            if (umount2(it->c_str(), MNT_DETACH) != 0) {
-                KLOGE("Cannot umount %s: %s", it->c_str(), strerror(errno));
-            }
+        if (mountpoint_ != nullptr && umount2(mountpoint_, MNT_DETACH) != 0) {
+            KLOGE("Cannot umount %s: %s", mountpoint_, strerror(errno));
         }
     }
 
-    void add(const std::string& mountpoint) { mountpoints_.push_back(mountpoint); }
-
 private:
-    std::vector<std::string> mountpoints_;
+    const char* mountpoint_;
 };
 
 /**
@@ -81,14 +72,13 @@ bool mount_filesystem(const char* fstype, const char* mountpoint) {
  * Prepare the temporary /proc mount used for printk configuration.
  */
 AutoUmount prepare_mount() {
-    AutoUmount auto_umount;
-
-    // Mount procfs
-    if (mount_filesystem("proc", "/proc")) {
-        auto_umount.add("/proc");
+    // Reuse an existing procfs mount without taking ownership of it.
+    constexpr decltype(statfs::f_type) proc_magic = 0x9fa0;
+    struct statfs status{};
+    if (statfs("/proc", &status) == 0 && status.f_type == proc_magic) {
+        return AutoUmount(nullptr);
     }
-
-    return auto_umount;
+    return AutoUmount(mount_filesystem("proc", "/proc") ? "/proc" : nullptr);
 }
 
 /**
@@ -100,7 +90,7 @@ void setup_kmsg() {
     // Check if /dev/kmsg exists
     if (access(device, F_OK) != 0) {
         // Try to create it
-        if (mknod("/kmsg", S_IFCHR | 0666, makedev(1, 11)) == 0) {
+        if (mknod("/kmsg", S_IFCHR | 0666, makedev(1, 11)) == 0 || errno == EEXIST) {
             device = "/kmsg";
         }
     }
@@ -118,11 +108,18 @@ void unlimit_kmsg() {
         return;
     }
     constexpr char kOn[] = "on\n";
-    (void)!write(fd, kOn, sizeof(kOn) - 1);
+    ssize_t result;
+    do {
+        result = write(fd, kOn, sizeof(kOn) - 1);
+    } while (result < 0 && errno == EINTR);
     close(fd);
 }
 
 }  // anonymous namespace
+
+const char* real_init_path() {
+    return access("/init.real", F_OK) == 0 ? "/init.real" : "/system/bin/init";
+}
 
 bool init() {
     // Setup kernel log first
@@ -130,8 +127,8 @@ bool init() {
 
     KLOGI("Hello, KernelSU!");
 
-    // Mount /proc temporarily for printk configuration.
-    // They will be auto-unmounted when this scope exits
+    // Mount /proc temporarily for printk configuration and symbol resolution.
+    // Only a mount created here is unmounted when this scope exits.
     {
         auto auto_umount = prepare_mount();
 
@@ -144,25 +141,25 @@ bool init() {
             KLOGE("Cannot load kernelsu.ko");
         }
     }
-    // /proc is unmounted here
-
-    // Remove the current /init (which is us)
-    if (unlink("/init") != 0) {
-        KLOGE("Cannot unlink /init: %s", strerror(errno));
-        return false;
-    }
+    // The temporary /proc mount is unmounted here.
 
     // Determine the real init path
-    const char* real_init = "/system/bin/init";
-    if (access("/init.real", F_OK) == 0) {
-        real_init = "init.real";
-    }
+    const char* real_init = real_init_path();
+    // Keep the original relative ramdisk link when init.real is present.
+    const char* link_target = strcmp(real_init, "/init.real") == 0 ? "init.real" : real_init;
 
     KLOGI("init is %s", real_init);
 
-    // Create symlink to real init
-    if (symlink(real_init, "/init") != 0) {
-        KLOGE("Cannot symlink %s to /init: %s", real_init, strerror(errno));
+    // Stage the replacement before atomically renaming it over /init. A failed
+    // symlink must not leave the ramdisk without an init executable.
+    constexpr const char* staged_init = "/.ksu_init_link";
+    if (symlink(link_target, staged_init) != 0) {
+        KLOGE("Cannot stage init symlink to %s: %s", link_target, strerror(errno));
+        return false;
+    }
+    if (rename(staged_init, "/init") != 0) {
+        KLOGE("Cannot replace /init: %s", strerror(errno));
+        unlink(staged_init);
         return false;
     }
 

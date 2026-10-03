@@ -6,15 +6,16 @@
 
 #include "loader.hpp"
 #include "log.hpp"
+#include "module_symbols.hpp"
 #include "vermagic.hpp"
 
 #include <algorithm>
 #include <array>
 #include <cerrno>
-#include <charconv>
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
+#include <limits>
 #include <string>
 #include <string_view>
 #include <unordered_map>
@@ -65,21 +66,6 @@ bool read_text_file(const char* path, std::string* out) {
     return ok;
 }
 
-// Pop the next whitespace-delimited token from `rest`, advancing it. Stands in
-// for `stream >> token`.
-std::string_view next_token(std::string_view* rest) {
-    constexpr std::string_view kWhitespace = " \t\r\n\f\v";
-    const size_t begin = rest->find_first_not_of(kWhitespace);
-    if (begin == std::string_view::npos) {
-        *rest = {};
-        return {};
-    }
-    const size_t end = rest->find_first_of(kWhitespace, begin);
-    const std::string_view token = rest->substr(begin, end - begin);
-    *rest = (end == std::string_view::npos) ? std::string_view{} : rest->substr(end);
-    return token;
-}
-
 bool write_text_file(const char* path, const std::string& text) {
     const int fd = open(path, O_WRONLY | O_CLOEXEC);
     if (fd < 0) {
@@ -114,8 +100,10 @@ public:
             // Keep only the first line, matching the previous std::getline.
             const size_t newline = current.find('\n');
             original_value_ = current.substr(0, newline);
+            if (!original_value_.empty() && original_value_ != "1") {
+                changed_ = write_text_file(kPath, "1");
+            }
         }
-        write_text_file(kPath, "1");
     }
 
     KptrGuard(const KptrGuard&) = delete;
@@ -124,7 +112,7 @@ public:
     KptrGuard& operator=(KptrGuard&&) = delete;
 
     ~KptrGuard() {
-        if (!original_value_.empty()) {
+        if (changed_) {
             write_text_file(kPath, original_value_);
         }
     }
@@ -132,6 +120,7 @@ public:
 private:
     static constexpr const char* kPath = "/proc/sys/kernel/kptr_restrict";
     std::string original_value_;
+    bool changed_ = false;
 };
 
 /**
@@ -239,56 +228,40 @@ private:
 /**
  * Parse /proc/kallsyms to get kernel symbol addresses
  */
-std::unordered_map<std::string, uint64_t> parse_kallsyms() {
+bool parse_kallsyms(std::unordered_map<std::string_view, uint64_t>& symbols) {
     const KptrGuard guard;
-
-    std::unordered_map<std::string, uint64_t> symbols;
 
     // /proc/kallsyms is several MB, so stream it rather than buffering it whole.
     const int fd = open("/proc/kallsyms", O_RDONLY | O_CLOEXEC);
     if (fd < 0) {
-        KLOGE("Cannot open /proc/kallsyms");
-        return symbols;
+        KLOGE("Cannot open /proc/kallsyms: %s", strerror(errno));
+        return false;
     }
 
     std::string pending;
     char buffer[65536];
-    std::string name;
     const auto handle_line = [&](std::string_view line) {
-        std::string_view rest = line;
-        const std::string_view addr_str = next_token(&rest);
-        (void)next_token(&rest);  // symbol type
-        const std::string_view sym_name = next_token(&rest);
-        if (addr_str.empty() || sym_name.empty()) {
-            return;
-        }
-
+        std::string_view name;
         uint64_t addr = 0;
-        const auto [end, error] =
-            std::from_chars(addr_str.data(), addr_str.data() + addr_str.size(), addr, 16);
-        if (error != std::errc{} || end != addr_str.data() + addr_str.size()) {
+        if (!parse_kallsyms_line(line, name, addr)) {
             return;
         }
-
-        // Strip version suffixes like "$..." or ".llvm...."
-        name.assign(sym_name);
-        auto pos = name.find('$');
-        if (pos == std::string::npos) {
-            pos = name.find(".llvm.");
+        const auto symbol = symbols.find(name);
+        if (symbol != symbols.end()) {
+            // Keep the previous last-match behavior for compiler aliases.
+            symbol->second = addr;
         }
-        if (pos != std::string::npos) {
-            name.resize(pos);
-        }
-
-        symbols[name] = addr;
     };
 
+    bool ok = true;
     for (;;) {
         const ssize_t count = read(fd, buffer, sizeof(buffer));
         if (count < 0) {
             if (errno == EINTR) {
                 continue;
             }
+            KLOGE("Cannot read /proc/kallsyms: %s", strerror(errno));
+            ok = false;
             break;
         }
         if (count == 0) {
@@ -306,12 +279,12 @@ std::unordered_map<std::string, uint64_t> parse_kallsyms() {
         }
         pending.erase(0, begin);
     }
-    if (!pending.empty()) {
+    if (ok && !pending.empty()) {
         handle_line(pending);
     }
     close(fd);
 
-    return symbols;
+    return ok;
 }
 
 /**
@@ -325,8 +298,15 @@ bool read_file(const char* path, std::vector<uint8_t>& buffer) {
     }
 
     struct stat status{};
-    if (fstat(fd, &status) != 0 || status.st_size < 0) {
+    if (fstat(fd, &status) != 0) {
         KLOGE("Cannot stat file: %s", path);
+        close(fd);
+        return false;
+    }
+    if (!S_ISREG(status.st_mode) || status.st_size < static_cast<off_t>(sizeof(Elf64_Ehdr)) ||
+        static_cast<uint64_t>(status.st_size) > buffer.max_size() ||
+        static_cast<uint64_t>(status.st_size) > std::numeric_limits<ssize_t>::max()) {
+        KLOGE("Invalid module file size or type: %s", path);
         close(fd);
         return false;
     }
@@ -373,85 +353,39 @@ bool load_module(const char* path) {
         return false;
     }
 
-    // Parse ELF header
-    if (buffer.size() < sizeof(Elf64_Ehdr)) {
-        KLOGE("File too small to be an ELF");
-        return false;
-    }
-
-    auto* ehdr = reinterpret_cast<Elf64_Ehdr*>(buffer.data());
-
-    // Verify ELF magic
-    if (memcmp(ehdr->e_ident, ELFMAG, SELFMAG) != 0) {
-        KLOGE("Invalid ELF magic");
-        return false;
-    }
-
-    // We only support 64-bit ELF
-    if (ehdr->e_ident[EI_CLASS] != ELFCLASS64) {
-        KLOGE("Only 64-bit ELF supported");
-        return false;
-    }
-
-    // Parse kallsyms
-    auto kernel_symbols = parse_kallsyms();
-    if (kernel_symbols.empty()) {
-        KLOGE("Cannot parse kallsyms");
-        return false;
-    }
-
-    // Find symbol table section
-    auto* shdr_base = reinterpret_cast<Elf64_Shdr*>(buffer.data() + ehdr->e_shoff);
-
-    Elf64_Shdr* symtab = nullptr;
-    Elf64_Shdr* strtab = nullptr;
-
-    for (int i = 0; i < ehdr->e_shnum; i++) {
-        auto* shdr = &shdr_base[i];
-        if (shdr->sh_type == SHT_SYMTAB) {
-            symtab = shdr;
-            // String table is linked in sh_link
-            strtab = &shdr_base[shdr->sh_link];
-            break;
+    // Retain only names needed by this module instead of allocating a hash
+    // table for every kernel symbol. Release the views before vermagic can
+    // resize the module image.
+    {
+        std::vector<ModuleSymbol> undefined_symbols;
+        std::string error;
+        if (!collect_undefined_symbols(buffer, undefined_symbols, error)) {
+            KLOGE("Cannot parse module symbols: %s", error.c_str());
+            return false;
         }
-    }
-
-    if (!symtab || !strtab) {
-        KLOGE("Cannot find symbol table");
-        return false;
-    }
-
-    // Get pointers to symbol and string tables
-    auto* sym_base = reinterpret_cast<Elf64_Sym*>(buffer.data() + symtab->sh_offset);
-    auto* str_base = reinterpret_cast<char*>(buffer.data() + strtab->sh_offset);
-
-    const size_t sym_count = symtab->sh_size / sizeof(Elf64_Sym);
-
-    // Resolve undefined symbols
-    for (size_t i = 1; i < sym_count; i++) {
-        auto* sym = &sym_base[i];
-
-        // Only process undefined symbols
-        if (sym->st_shndx != SHN_UNDEF) {
-            continue;
+        std::unordered_map<std::string_view, uint64_t> kernel_symbols;
+        kernel_symbols.reserve(undefined_symbols.size());
+        for (const auto& symbol : undefined_symbols) {
+            kernel_symbols.emplace(symbol.name, 0);
         }
-
-        // Get symbol name
-        const char* name = &str_base[sym->st_name];
-        if (!name || !*name) {
-            continue;
+        if (!kernel_symbols.empty() && !parse_kallsyms(kernel_symbols)) {
+            return false;
         }
-
-        // Look up in kernel symbols
-        auto it = kernel_symbols.find(name);
-        if (it == kernel_symbols.end()) {
-            KLOGW("Cannot find symbol: %s", name);
-            continue;
+        for (const auto& symbol : undefined_symbols) {
+            const auto resolved = kernel_symbols.find(symbol.name);
+            if (resolved == kernel_symbols.end() || resolved->second == 0) {
+                const int name_length = static_cast<int>(std::min(symbol.name.size(), size_t{512}));
+                // Names have a validated NUL and the format also bounds their length.
+                // NOLINTNEXTLINE(bugprone-suspicious-stringview-data-usage)
+                KLOGW("Cannot find symbol: %.*s", name_length, symbol.name.data());
+                continue;
+            }
+            Elf64_Sym entry{};
+            std::memcpy(&entry, buffer.data() + symbol.offset, sizeof(entry));
+            entry.st_shndx = SHN_ABS;
+            entry.st_value = resolved->second;
+            std::memcpy(buffer.data() + symbol.offset, &entry, sizeof(entry));
         }
-
-        // Patch the symbol
-        sym->st_shndx = SHN_ABS;
-        sym->st_value = it->second;
     }
 
     std::string param_values;

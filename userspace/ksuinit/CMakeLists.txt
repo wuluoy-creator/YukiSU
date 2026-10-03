@@ -32,6 +32,7 @@ add_executable(ksuinit
     src/init.cpp
     src/loader.cpp
     src/log.cpp
+    src/module_symbols.cpp
     src/vermagic.cpp
     ${REPO_ROOT}/userspace/common/cxx_slim.cpp
 )

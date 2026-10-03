@@ -9,6 +9,7 @@
 #include "../yukizygisk_snapshot.hpp"
 #include "../yzctl.hpp"
 #include "metamodule.hpp"
+#include "module_utils.hpp"
 
 #include <dirent.h>
 #include <fcntl.h>
@@ -283,24 +284,6 @@ std::map<std::string, std::string> parse_module_prop(const std::string& path) {
     return content ? parse_module_prop_content(*content) : std::map<std::string, std::string>{};
 }
 
-// Validate module ID like official ksud: ^[a-zA-Z][a-zA-Z0-9._-]+$
-bool validate_module_id(const std::string& id) {
-    if (id.size() < 2) {
-        return false;
-    }
-
-    const auto is_valid_char = [](const char c) {
-        const unsigned char uc = static_cast<unsigned char>(c);
-        return std::isalnum(uc) != 0 || c == '.' || c == '_' || c == '-';
-    };
-
-    if (std::isalpha(static_cast<unsigned char>(id.front())) == 0) {
-        return false;
-    }
-
-    return std::all_of(id.begin(), id.end(), is_valid_char);
-}
-
 // Check if module is metamodule
 bool is_metamodule(const std::map<std::string, std::string>& props) {
     auto it = props.find("metamodule");
@@ -343,7 +326,7 @@ std::string get_metamodule_path_impl() {
         if (entry->d_name[0] == '.') {
             continue;
         }
-        if (entry->d_type != DT_DIR) {
+        if (!is_module_directory(dir, *entry)) {
             continue;
         }
 
@@ -490,7 +473,7 @@ bool exec_install_script(const std::string& zip_path, bool installing_metamodule
     }
 
     char wrapper_path[] = "/dev/ksud_installer_XXXXXX";
-    const int wrapper_fd = mkstemp(wrapper_path);
+    const int wrapper_fd = mkostemp(wrapper_path, O_CLOEXEC);
     if (wrapper_fd < 0) {
         printf("! Failed to create installer wrapper\n");
         return false;
@@ -504,7 +487,9 @@ bool exec_install_script(const std::string& zip_path, bool installing_metamodule
         printf("! Failed to open installer wrapper\n");
         return false;
     }
-    if (fputs(wrapper_content.c_str(), wrapper_file) == EOF || fclose(wrapper_file) != 0) {
+    const bool write_ok = fputs(wrapper_content.c_str(), wrapper_file) != EOF;
+    const bool close_ok = fclose(wrapper_file) == 0;
+    if (!write_ok || !close_ok) {
         unlink(wrapper_path);
         printf("! Failed to write installer wrapper\n");
         return false;
@@ -527,9 +512,17 @@ bool exec_install_script(const std::string& zip_path, bool installing_metamodule
         _exit(127);
     }
 
-    int status;
-    waitpid(pid, &status, 0);
+    int status = 0;
+    pid_t waited;
+    do {
+        waited = waitpid(pid, &status, 0);
+    } while (waited < 0 && errno == EINTR);
+    const int wait_error = errno;
     unlink(wrapper_path);
+    if (waited < 0) {
+        LOGE("Failed to wait for module installer: %s", strerror(wait_error));
+        return false;
+    }
     return WIFEXITED(status) && WEXITSTATUS(status) == 0;
 }
 
@@ -812,7 +805,9 @@ int module_install(const std::string& zip_path) {
     return 0;
 }
 
-int module_uninstall(const std::string& id) {
+namespace {
+
+int module_uninstall_impl(const std::string& id, bool refresh_metadata) {
     if (!validate_module_id(id)) {
         printf("Invalid module ID: %s\n", id.c_str());
         return 1;
@@ -833,9 +828,17 @@ int module_uninstall(const std::string& id) {
     }
 
     printf("Module %s marked for removal\n", id.c_str());
-    warn_regenerate_preinit_rc_failed(regenerate_preinit_rc());
-    warn_refresh_yukizygisk_early_snapshot_failed();
+    if (refresh_metadata) {
+        warn_regenerate_preinit_rc_failed(regenerate_preinit_rc());
+        warn_refresh_yukizygisk_early_snapshot_failed();
+    }
     return 0;
+}
+
+}  // namespace
+
+int module_uninstall(const std::string& id) {
+    return module_uninstall_impl(id, true);
 }
 
 int module_undo_uninstall(const std::string& id) {
@@ -890,7 +893,9 @@ int module_enable(const std::string& id) {
     return 0;
 }
 
-int module_disable(const std::string& id) {
+namespace {
+
+int module_disable_impl(const std::string& id, bool refresh_metadata) {
     if (!validate_module_id(id)) {
         printf("Invalid module ID: %s\n", id.c_str());
         return 1;
@@ -910,9 +915,17 @@ int module_disable(const std::string& id) {
     }
 
     printf("Module %s disabled\n", id.c_str());
-    warn_regenerate_preinit_rc_failed(regenerate_preinit_rc());
-    warn_refresh_yukizygisk_early_snapshot_failed();
+    if (refresh_metadata) {
+        warn_regenerate_preinit_rc_failed(regenerate_preinit_rc());
+        warn_refresh_yukizygisk_early_snapshot_failed();
+    }
     return 0;
+}
+
+}  // namespace
+
+int module_disable(const std::string& id) {
+    return module_disable_impl(id, true);
 }
 
 int module_run_action(const std::string& id) {
@@ -1056,7 +1069,7 @@ void collect_module_infos(const std::string& root_dir, bool pending_update,
         if (entry->d_name[0] == '.') {
             continue;
         }
-        if (entry->d_type != DT_DIR) {
+        if (!is_module_directory(dir, *entry)) {
             continue;
         }
 
@@ -1148,17 +1161,24 @@ int uninstall_all_modules() {
     if (!dir)
         return 0;
 
+    // Rebuild shared metadata once after all flags are written. Rebuilding for
+    // each module repeatedly rescans and copies every remaining module.
+    bool changed = false;
     struct dirent* entry;
     while ((entry = readdir(dir)) != nullptr) {
         if (entry->d_name[0] == '.')
             continue;
-        if (entry->d_type != DT_DIR)
+        if (!is_module_directory(dir, *entry))
             continue;
 
-        module_uninstall(entry->d_name);
+        changed = module_uninstall_impl(entry->d_name, false) == 0 || changed;
     }
 
     closedir(dir);
+    if (changed) {
+        warn_regenerate_preinit_rc_failed(regenerate_preinit_rc());
+        warn_refresh_yukizygisk_early_snapshot_failed();
+    }
     return 0;
 }
 
@@ -1172,7 +1192,7 @@ int prune_modules() {
     while ((entry = readdir(dir)) != nullptr) {
         if (entry->d_name[0] == '.')
             continue;
-        if (entry->d_type != DT_DIR)
+        if (!is_module_directory(dir, *entry))
             continue;
 
         const std::string module_path = std::string(MODULE_DIR) + entry->d_name;
@@ -1228,17 +1248,23 @@ int disable_all_modules() {
     if (!dir)
         return 0;
 
+    // Batch the expensive init-rc and early-snapshot refreshes.
+    bool changed = false;
     struct dirent* entry;
     while ((entry = readdir(dir)) != nullptr) {
         if (entry->d_name[0] == '.')
             continue;
-        if (entry->d_type != DT_DIR)
+        if (!is_module_directory(dir, *entry))
             continue;
 
-        module_disable(entry->d_name);
+        changed = module_disable_impl(entry->d_name, false) == 0 || changed;
     }
 
     closedir(dir);
+    if (changed) {
+        warn_regenerate_preinit_rc_failed(regenerate_preinit_rc());
+        warn_refresh_yukizygisk_early_snapshot_failed();
+    }
     return 0;
 }
 
@@ -1253,7 +1279,7 @@ int handle_updated_modules() {
     while ((entry = readdir(dir)) != nullptr) {
         if (entry->d_name[0] == '.')
             continue;
-        if (entry->d_type != DT_DIR)
+        if (!is_module_directory(dir, *entry))
             continue;
 
         const std::string src = update_dir + entry->d_name;
@@ -1418,7 +1444,7 @@ int exec_stage_script(const std::string& stage, bool block) {
     while ((entry = readdir(dir)) != nullptr) {
         if (entry->d_name[0] == '.')
             continue;
-        if (entry->d_type != DT_DIR)
+        if (!is_module_directory(dir, *entry))
             continue;
 
         const std::string module_id = entry->d_name;
@@ -1479,7 +1505,7 @@ int load_sepolicy_rule() {
     while ((entry = readdir(dir)) != nullptr) {
         if (entry->d_name[0] == '.')
             continue;
-        if (entry->d_type != DT_DIR)
+        if (!is_module_directory(dir, *entry))
             continue;
 
         const std::string module_path = std::string(MODULE_DIR) + entry->d_name;
@@ -1536,7 +1562,7 @@ int load_system_prop() {
     while ((entry = readdir(dir)) != nullptr) {
         if (entry->d_name[0] == '.')
             continue;
-        if (entry->d_type != DT_DIR)
+        if (!is_module_directory(dir, *entry))
             continue;
 
         const std::string module_path = std::string(MODULE_DIR) + entry->d_name;
@@ -1585,8 +1611,15 @@ int load_system_prop() {
                 _exit(127);
             }
             if (pid > 0) {
-                int status;
-                waitpid(pid, &status, 0);
+                int status = 0;
+                pid_t waited;
+                do {
+                    waited = waitpid(pid, &status, 0);
+                } while (waited < 0 && errno == EINTR);
+                if (waited < 0 || !WIFEXITED(status) || WEXITSTATUS(status) != 0)
+                    LOGW("Failed to apply property %s", key.c_str());
+            } else {
+                LOGW("Failed to fork resetprop for %s: %s", key.c_str(), strerror(errno));
             }
 #endif  // #if defined(RESETPROP_ALONE_AVAILABLE) ...
         });
@@ -1600,7 +1633,7 @@ int load_system_prop() {
 bool parse_bool_config(const std::string& value) {
     std::string lower = value;
     for (char& c : lower)
-        c = tolower(c);
+        c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
     return lower == "true" || lower == "yes" || lower == "1" || lower == "on";
 }
 
@@ -1642,7 +1675,7 @@ std::map<std::string, std::vector<std::string>> get_managed_features() {
     while ((entry = readdir(dir)) != nullptr) {
         if (entry->d_name[0] == '.')
             continue;
-        if (entry->d_type != DT_DIR)
+        if (!is_module_directory(dir, *entry))
             continue;
 
         const std::string module_id = entry->d_name;
