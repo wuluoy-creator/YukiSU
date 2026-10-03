@@ -62,8 +62,6 @@
     <string name="dynamic_manager_set_failed">%s dinamik yönetici olarak ayarlanamadı</string>
     <string name="dynamic_manager_del_failed">%s dinamik yöneticilerden kaldırılamadı</string>
     <string name="dynamic_manager_signature_unavailable">%s için dinamik yönetici imzası çıkarılamadı</string>
-    <string name="allow_any_dynamic_manager">Herhangi bir uygulamaya dinamik yönetici olarak izin ver</string>
-    <string name="allow_any_dynamic_manager_summary">Deneysel. Yalnızca önceden tanımlı yönetici imzaları yerine her uygulama için dinamik yönetici anahtarını gösterir.</string>
     <string name="require_kernel_version">Çekirdek güncellemesi gerekli. Yüklemek için dokunun.</string>
     <string name="settings_umount_modules_default">Modülleri varsayılan olarak bağlamayı kaldır</string>
     <string name="settings_umount_modules_default_summary">App Profile\'daki \"Modüllerin bağlantısını kes\" ayarı için genel varsayılan. Etkinleştirildiğinde, profili olmayan uygulamalar için modül değişiklikleri kaldırılır. Bu ayar varsayılan olarak kapalı olduğundan yeni veya bilinmeyen uygulamalar modül değişikliklerini korur.</string>

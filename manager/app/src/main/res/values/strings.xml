@@ -73,8 +73,6 @@
     <string name="dynamic_manager_set_failed">Failed to set %s as dynamic manager</string>
     <string name="dynamic_manager_del_failed">Failed to remove %s from dynamic managers</string>
     <string name="dynamic_manager_signature_unavailable">Unable to extract dynamic manager signature for %s</string>
-    <string name="allow_any_dynamic_manager">Allow any app as dynamic manager</string>
-    <string name="allow_any_dynamic_manager_summary">Experimental. Show the dynamic manager switch for every app instead of only preset manager signatures.</string>
     <string name="require_kernel_version">Kernel update required. Tap to install.</string>
     <string name="settings_umount_modules_default">Umount modules by default</string>
     <string name="settings_umount_modules_default_summary">Umount modules for apps without their own profile. Off by default.</string>

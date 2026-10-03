@@ -62,8 +62,6 @@
     <string name="dynamic_manager_set_failed">Impossible de définir %s comme gestionnaire dynamique</string>
     <string name="dynamic_manager_del_failed">Impossible de retirer %s des gestionnaires dynamiques</string>
     <string name="dynamic_manager_signature_unavailable">Impossible d\'extraire la signature du gestionnaire dynamique pour %s</string>
-    <string name="allow_any_dynamic_manager">Autoriser toute application comme gestionnaire dynamique</string>
-    <string name="allow_any_dynamic_manager_summary">Expérimental. Afficher le commutateur de gestionnaire dynamique pour chaque application plutôt que pour les seules signatures de gestionnaires prédéfinies.</string>
     <string name="require_kernel_version">Mise à jour du noyau requise. Appuyez pour installer.</string>
     <string name="settings_umount_modules_default">Démonter les modules par défaut</string>
     <string name="settings_umount_modules_default_summary">Valeur par défaut globale pour le paramètre \"Démonter les modules\" au App Profile. Lorsqu\'elles sont activées, les modifications du module sont supprimées pour les applications sans profil. Ce paramètre est désactivé par défaut, donc les applications nouvelles ou inconnues conservent les modifications du module.</string>

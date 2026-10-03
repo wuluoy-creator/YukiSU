@@ -62,8 +62,6 @@
     <string name="dynamic_manager_set_failed">Postavljanje %s kao dinamičkog upravitelja nije uspjelo</string>
     <string name="dynamic_manager_del_failed">Uklanjanje %s iz dinamičkih upravitelja nije uspjelo</string>
     <string name="dynamic_manager_signature_unavailable">Nije moguće izvući potpis dinamičkog upravitelja za %s</string>
-    <string name="allow_any_dynamic_manager">Dopusti bilo kojoj aplikaciji da bude dinamički upravitelj</string>
-    <string name="allow_any_dynamic_manager_summary">Eksperimentalno. Prikazuje prekidač dinamičkog upravitelja za svaku aplikaciju, a ne samo za unaprijed postavljene potpise upravitelja.</string>
     <string name="require_kernel_version">Potrebno je ažurirati kernel. Dodirnite za instalaciju.</string>
     <string name="settings_umount_modules_default">Umount module po zadanom</string>
     <string name="settings_umount_modules_default_summary">Globalna zadana postavka za postavku \"Demontiraj module\" u App Profile. Kada je omogućeno, izmjene modula uklanjaju se za aplikacije bez profila. Ova je postavka isključena prema zadanim postavkama, tako da nove ili nepoznate aplikacije zadržavaju izmjene modula.</string>

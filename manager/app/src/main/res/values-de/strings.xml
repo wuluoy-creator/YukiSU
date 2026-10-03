@@ -62,8 +62,6 @@
     <string name="dynamic_manager_set_failed">%s konnte nicht als dynamischer Manager festgelegt werden</string>
     <string name="dynamic_manager_del_failed">%s konnte nicht aus den dynamischen Managern entfernt werden</string>
     <string name="dynamic_manager_signature_unavailable">Signatur des dynamischen Managers für %s konnte nicht ermittelt werden</string>
-    <string name="allow_any_dynamic_manager">Jede App als dynamischen Manager zulassen</string>
-    <string name="allow_any_dynamic_manager_summary">Experimentell. Zeigt den Schalter für den dynamischen Manager für jede App an, statt nur für voreingestellte Manager-Signaturen.</string>
     <string name="require_kernel_version">Kernel-Update erforderlich. Zum Installieren tippen.</string>
     <string name="settings_umount_modules_default">Module standardmäßig aushängen</string>
     <string name="settings_umount_modules_default_summary">Globaler Standard für die Einstellung „Module aushängen“ in App Profile. Wenn diese Option aktiviert ist, werden Moduländerungen für Apps ohne Profil entfernt. Diese Einstellung ist standardmäßig deaktiviert, sodass neue oder unbekannte Apps Moduländerungen beibehalten.</string>

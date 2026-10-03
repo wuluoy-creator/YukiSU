@@ -62,8 +62,6 @@
     <string name="dynamic_manager_set_failed">Setarea %s ca administrator dinamic a eșuat</string>
     <string name="dynamic_manager_del_failed">Eliminarea %s din administratorii dinamici a eșuat</string>
     <string name="dynamic_manager_signature_unavailable">Nu s-a putut extrage semnătura administratorului dinamic pentru %s</string>
-    <string name="allow_any_dynamic_manager">Permite oricărei aplicații să fie administrator dinamic</string>
-    <string name="allow_any_dynamic_manager_summary">Experimental. Afișează comutatorul de administrator dinamic pentru fiecare aplicație, nu doar pentru semnăturile de administrator presetate.</string>
     <string name="require_kernel_version">Este necesară actualizarea kernelului. Atingeți pentru instalare.</string>
     <string name="settings_umount_modules_default">U-montează modulele în mod implicit</string>
     <string name="settings_umount_modules_default_summary">Implicit global pentru setarea „Demontare module” din App Profile. Când este activată, modificările modulelor sunt eliminate pentru aplicațiile fără profil. Această setare este dezactivată în mod implicit, așa că aplicațiile noi sau necunoscute păstrează modificările modulelor.</string>

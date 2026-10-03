@@ -62,8 +62,6 @@
     <string name="dynamic_manager_set_failed">Falha ao definir %s como gerenciador dinâmico</string>
     <string name="dynamic_manager_del_failed">Falha ao remover %s dos gerenciadores dinâmicos</string>
     <string name="dynamic_manager_signature_unavailable">Não foi possível extrair a assinatura do gerenciador dinâmico para %s</string>
-    <string name="allow_any_dynamic_manager">Permitir qualquer aplicativo como gerenciador dinâmico</string>
-    <string name="allow_any_dynamic_manager_summary">Experimental. Mostra o botão de gerenciador dinâmico para cada aplicativo, em vez de apenas para as assinaturas de gerenciador predefinidas.</string>
     <string name="require_kernel_version">É necessário atualizar o kernel. Toque para instalar.</string>
     <string name="settings_umount_modules_default">Desmontar módulos por padrão</string>
     <string name="settings_umount_modules_default_summary">Padrão global para a configuração \"Desmontar módulos\" em App Profile. Quando ativado, as modificações do módulo são removidas para aplicativos sem perfil. Essa configuração está desativada por padrão, portanto, aplicativos novos ou desconhecidos mantêm as modificações do módulo.</string>

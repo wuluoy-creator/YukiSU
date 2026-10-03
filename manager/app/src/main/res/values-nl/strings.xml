@@ -62,8 +62,6 @@
     <string name="dynamic_manager_set_failed">Kan %s niet instellen als dynamische beheerder</string>
     <string name="dynamic_manager_del_failed">Kan %s niet uit de dynamische beheerders verwijderen</string>
     <string name="dynamic_manager_signature_unavailable">Kan de handtekening van de dynamische beheerder voor %s niet ophalen</string>
-    <string name="allow_any_dynamic_manager">Elke app als dynamische beheerder toestaan</string>
-    <string name="allow_any_dynamic_manager_summary">Experimenteel. Toon de schakelaar voor dynamische beheerder voor elke app in plaats van alleen voor vooraf ingestelde beheerderhandtekeningen.</string>
     <string name="require_kernel_version">Kernelupdate vereist. Tik om te installeren.</string>
     <string name="settings_umount_modules_default">Ontkoppel standaard de modules</string>
     <string name="settings_umount_modules_default_summary">Algemene standaard voor de instelling \"Modules ontkoppelen\" in App Profile. Indien ingeschakeld, worden modulewijzigingen verwijderd voor apps zonder profiel. Deze instelling is standaard uitgeschakeld, dus nieuwe of onbekende apps behouden modulewijzigingen.</string>

@@ -62,8 +62,6 @@
     <string name="dynamic_manager_set_failed">Не удалось назначить %s динамическим менеджером</string>
     <string name="dynamic_manager_del_failed">Не удалось удалить %s из динамических менеджеров</string>
     <string name="dynamic_manager_signature_unavailable">Не удалось извлечь подпись динамического менеджера для %s</string>
-    <string name="allow_any_dynamic_manager">Разрешить любое приложение как динамический менеджер</string>
-    <string name="allow_any_dynamic_manager_summary">Экспериментально. Показывать переключатель динамического менеджера для каждого приложения, а не только для предустановленных подписей менеджеров.</string>
     <string name="require_kernel_version">Требуется обновить ядро. Нажмите, чтобы установить.</string>
     <string name="settings_umount_modules_default">Размонтировать модули по умолчанию</string>
     <string name="settings_umount_modules_default_summary">Глобальное значение по умолчанию для настройки «Отключить модули» в App Profile. Если этот параметр включен, изменения модуля удаляются для приложений без профиля. По умолчанию этот параметр отключен, поэтому новые или неизвестные приложения сохраняют изменения модуля.</string>

@@ -62,8 +62,6 @@
     <string name="dynamic_manager_set_failed">Nastavitev %s kot dinamičnega upravitelja ni uspela</string>
     <string name="dynamic_manager_del_failed">Odstranitev %s iz dinamičnih upraviteljev ni uspela</string>
     <string name="dynamic_manager_signature_unavailable">Podpisa dinamičnega upravitelja za %s ni bilo mogoče pridobiti</string>
-    <string name="allow_any_dynamic_manager">Dovoli vsaki aplikaciji, da je dinamični upravitelj</string>
-    <string name="allow_any_dynamic_manager_summary">Eksperimentalno. Prikaže stikalo dinamičnega upravitelja za vsako aplikacijo, ne le za prednastavljene podpise upraviteljev.</string>
     <string name="require_kernel_version">Potrebna je posodobitev jedra. Tapnite za namestitev.</string>
     <string name="settings_umount_modules_default">Po privzetem izvrzi module</string>
     <string name="settings_umount_modules_default_summary">Globalna privzeta vrednost za nastavitev \"Odpni module\" v App Profile. Ko je omogočeno, so spremembe modula odstranjene za aplikacije brez profila. Ta nastavitev je privzeto izklopljena, zato nove ali neznane aplikacije ohranijo spremembe modula.</string>

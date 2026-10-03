@@ -62,8 +62,6 @@
     <string name="dynamic_manager_set_failed">%sను డైనమిక్ మేనేజర్‌గా సెట్ చేయడం విఫలమైంది</string>
     <string name="dynamic_manager_del_failed">డైనమిక్ మేనేజర్‌ల నుండి %sను తీసివేయడం విఫలమైంది</string>
     <string name="dynamic_manager_signature_unavailable">%s కోసం డైనమిక్ మేనేజర్ సంతకాన్ని సంగ్రహించలేకపోయింది</string>
-    <string name="allow_any_dynamic_manager">ఏదైనా యాప్‌ను డైనమిక్ మేనేజర్‌గా అనుమతించండి</string>
-    <string name="allow_any_dynamic_manager_summary">ప్రయోగాత్మకం. ముందే నిర్వచించిన మేనేజర్ సంతకాల కోసం మాత్రమే కాకుండా ప్రతి యాప్ కోసం డైనమిక్ మేనేజర్ స్విచ్‌ను చూపించండి.</string>
     <string name="require_kernel_version">కెర్నల్‌ను అప్‌డేట్ చేయడం అవసరం. ఇన్‌స్టాల్ చేయడానికి నొక్కండి.</string>
     <string name="settings_umount_modules_default">డిఫాల్ట్‌గా మాడ్యూల్‌లను అన్‌మౌంట్ చేయండి</string>
     <string name="settings_umount_modules_default_summary">App Profileలో \"అన్‌మౌంట్ మాడ్యూల్స్\" సెట్టింగ్ కోసం గ్లోబల్ డిఫాల్ట్. ప్రారంభించబడినప్పుడు, ప్రొఫైల్ లేని యాప్‌ల కోసం మాడ్యూల్ సవరణలు తీసివేయబడతాయి. ఈ సెట్టింగ్ డిఫాల్ట్‌గా ఆఫ్ చేయబడింది, కాబట్టి కొత్త లేదా తెలియని యాప్‌లు మాడ్యూల్ సవరణలను ఉంచుతాయి.</string>

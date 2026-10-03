@@ -132,9 +132,8 @@ fun AppProfileScreen(
         }
     }
 
-    val showDynamicManagerSwitch = remember(context, dynamicManagerFlags, dynamicManagerChecked) {
-        DynamicManagerSettings.allowAnyApp(context) ||
-            dynamicManagerChecked ||
+    val showDynamicManagerSwitch = remember(dynamicManagerFlags, dynamicManagerChecked) {
+        dynamicManagerChecked ||
             dynamicManagerFlags and Natives.DYNAMIC_MANAGER_FLAG_PRESET != 0
     }
 

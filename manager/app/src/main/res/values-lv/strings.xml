@@ -62,8 +62,6 @@
     <string name="dynamic_manager_set_failed">Neizdevās iestatīt %s kā dinamisko pārvaldnieku</string>
     <string name="dynamic_manager_del_failed">Neizdevās noņemt %s no dinamiskajiem pārvaldniekiem</string>
     <string name="dynamic_manager_signature_unavailable">Neizdevās izgūt dinamiskā pārvaldnieka parakstu priekš %s</string>
-    <string name="allow_any_dynamic_manager">Atļaut jebkuru lietotni kā dinamisko pārvaldnieku</string>
-    <string name="allow_any_dynamic_manager_summary">Eksperimentāli. Rāda dinamiskā pārvaldnieka slēdzi katrai lietotnei, nevis tikai iepriekš iestatītajiem pārvaldnieku parakstiem.</string>
     <string name="require_kernel_version">Nepieciešams kodola atjauninājums. Pieskarieties, lai instalētu.</string>
     <string name="settings_umount_modules_default">Pēc noklusējuma atvienot moduļus</string>
     <string name="settings_umount_modules_default_summary">Globālais noklusējums iestatījumam \"Atvienot moduļus\" lietotnes profilā. Ja tas ir ieslēgts, lietotnēm bez profila tiek noņemtas visas moduļu veiktās izmaiņas. Pēc noklusējuma šis iestatījums ir izslēgts, tāpēc jaunās vai nezināmās lietotnes saglabā moduļu izmaiņas.</string>

@@ -62,8 +62,6 @@
     <string name="dynamic_manager_set_failed">Nepavyko nustatyti %s kaip dinaminės tvarkyklės</string>
     <string name="dynamic_manager_del_failed">Nepavyko pašalinti %s iš dinaminių tvarkyklių</string>
     <string name="dynamic_manager_signature_unavailable">Nepavyko išgauti dinaminės tvarkyklės parašo %s</string>
-    <string name="allow_any_dynamic_manager">Leisti bet kuriai programai būti dinamine tvarkykle</string>
-    <string name="allow_any_dynamic_manager_summary">Eksperimentinė. Rodo dinaminės tvarkyklės jungiklį kiekvienai programai, o ne tik iš anksto nustatytiems tvarkyklių parašams.</string>
     <string name="require_kernel_version">Reikia atnaujinti branduolį. Palieskite, kad įdiegtumėte.</string>
     <string name="settings_umount_modules_default">Atjungti modulius pagal numatytuosius parametrus</string>
     <string name="settings_umount_modules_default_summary">Visuotinis numatytasis parametras „Atjungti modulius“ App Profile. Kai įgalinta, programų be profilio modulių pakeitimai pašalinami. Šis nustatymas išjungtas pagal numatytuosius nustatymus, todėl naujos arba nežinomos programos išsaugo modulio pakeitimus.</string>

@@ -441,16 +441,8 @@ private fun AdvancedSettings(state: MoreSettingsState, handlers: MoreSettingsHan
             title = stringResource(R.string.selinux),
             summary = if (state.selinuxEnabled) stringResource(R.string.selinux_enabled) else stringResource(R.string.selinux_disabled),
             checked = state.selinuxEnabled,
-            groupPosition = MoreSettingsItemPosition.First,
+            groupPosition = MoreSettingsItemPosition.Only,
             onChange = handlers::handleSelinuxChange,
-        )
-        SwitchSettingItem(
-            icon = Icons.Filled.AdminPanelSettings,
-            title = stringResource(R.string.allow_any_dynamic_manager),
-            summary = stringResource(R.string.allow_any_dynamic_manager_summary),
-            checked = state.allowAnyDynamicManager,
-            groupPosition = MoreSettingsItemPosition.Last,
-            onChange = handlers::handleAllowAnyDynamicManagerChange,
         )
     }
 }

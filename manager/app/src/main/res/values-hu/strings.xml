@@ -62,8 +62,6 @@
     <string name="dynamic_manager_set_failed">Nem sikerült a(z) %s beállítása dinamikus kezelőként</string>
     <string name="dynamic_manager_del_failed">Nem sikerült a(z) %s eltávolítása a dinamikus kezelők közül</string>
     <string name="dynamic_manager_signature_unavailable">Nem sikerült kinyerni a dinamikus kezelő aláírását ehhez: %s</string>
-    <string name="allow_any_dynamic_manager">Bármely alkalmazás engedélyezése dinamikus kezelőként</string>
-    <string name="allow_any_dynamic_manager_summary">Kísérleti. A dinamikus kezelő kapcsolójának megjelenítése minden alkalmazásnál, nem csak az előre beállított kezelői aláírásoknál.</string>
     <string name="require_kernel_version">A kernel frissítése szükséges. Érintse meg a telepítéshez.</string>
     <string name="settings_umount_modules_default">Modulok leválasztása alapértelmezetten</string>
     <string name="settings_umount_modules_default_summary">Globális alapértelmezés a \"Modulok leválasztása\" beállításhoz a App Profile-ban. Ha engedélyezve van, a modul módosításai törlődnek a profil nélküli alkalmazásoknál. Ez a beállítás alapértelmezés szerint ki van kapcsolva, így az új vagy ismeretlen alkalmazások megtartják a modul módosításait.</string>

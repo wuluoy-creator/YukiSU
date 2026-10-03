@@ -62,8 +62,6 @@
     <string name="dynamic_manager_set_failed">%s を動的マネージャーに設定できませんでした</string>
     <string name="dynamic_manager_del_failed">%s を動的マネージャーから削除できませんでした</string>
     <string name="dynamic_manager_signature_unavailable">%s の動的マネージャー署名を取得できませんでした</string>
-    <string name="allow_any_dynamic_manager">任意のアプリを動的マネージャーとして許可</string>
-    <string name="allow_any_dynamic_manager_summary">実験的機能。プリセットのマネージャー署名だけでなく、すべてのアプリに動的マネージャーのスイッチを表示します。</string>
     <string name="require_kernel_version">カーネルの更新が必要です。タップしてインストールします。</string>
     <string name="settings_umount_modules_default">デフォルトでモジュールのマウントを解除する</string>
     <string name="settings_umount_modules_default_summary">App Profile の「モジュールのアンマウント」設定のグローバル デフォルト。有効にすると、プロファイルのないアプリのモジュールの変更が削除されます。この設定はデフォルトではオフになっているため、新しいアプリや不明なアプリはモジュールの変更を保持します。</string>

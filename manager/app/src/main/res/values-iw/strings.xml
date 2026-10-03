@@ -62,8 +62,6 @@
     <string name="dynamic_manager_set_failed">הגדרת %s כמנהל דינמי נכשלה</string>
     <string name="dynamic_manager_del_failed">הסרת %s מהמנהלים הדינמיים נכשלה</string>
     <string name="dynamic_manager_signature_unavailable">לא ניתן לחלץ את חתימת המנהל הדינמי עבור %s</string>
-    <string name="allow_any_dynamic_manager">אפשר לכל אפליקציה לשמש כמנהל דינמי</string>
-    <string name="allow_any_dynamic_manager_summary">ניסיוני. הצג את מתג המנהל הדינמי עבור כל אפליקציה במקום רק עבור חתימות מנהל מוגדרות מראש.</string>
     <string name="require_kernel_version">יש לעדכן את הליבה. הקש כדי להתקין.</string>
     <string name="settings_umount_modules_default">טעינת מודולים כברירת מחדל</string>
     <string name="settings_umount_modules_default_summary">ברירת מחדל עולמית עבור ההגדרה \"ביטול מודולים\" ב-App Profile. כאשר מופעל, שינויים במודול יוסרו עבור אפליקציות ללא פרופיל. הגדרה זו כבויה כברירת מחדל, כך שאפליקציות חדשות או לא ידועות שומרות על שינויים במודול.</string>

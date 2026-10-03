@@ -62,8 +62,6 @@
     <string name="dynamic_manager_set_failed">فشل تعيين %s كمدير ديناميكي</string>
     <string name="dynamic_manager_del_failed">فشل إزالة %s من المدراء الديناميكيين</string>
     <string name="dynamic_manager_signature_unavailable">تعذّر استخراج توقيع المدير الديناميكي لـ %s</string>
-    <string name="allow_any_dynamic_manager">السماح لأي تطبيق كمدير ديناميكي</string>
-    <string name="allow_any_dynamic_manager_summary">تجريبي. إظهار مفتاح المدير الديناميكي لكل تطبيق بدلاً من توقيعات المدراء المحددة مسبقاً فقط.</string>
     <string name="require_kernel_version">يلزم تحديث النواة. اضغط للتثبيت.</string>
     <string name="settings_umount_modules_default">الغاء تحميل الإضافات بشكل افتراضي</string>
     <string name="settings_umount_modules_default_summary">الإعداد الافتراضي العالمي لإعداد \"إلغاء تحميل الوحدات\" في App Profile. عند التمكين، تتم إزالة تعديلات الوحدة للتطبيقات التي لا تحتوي على ملف تعريف. يتم إيقاف هذا الإعداد بشكل افتراضي، لذا تحتفظ التطبيقات الجديدة أو غير المعروفة بتعديلات الوحدة.</string>

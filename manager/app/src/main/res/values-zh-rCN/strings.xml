@@ -71,8 +71,6 @@
     <string name="dynamic_manager_set_failed">将 %s 设为动态管理器失败</string>
     <string name="dynamic_manager_del_failed">从动态管理器中移除 %s 失败</string>
     <string name="dynamic_manager_signature_unavailable">无法提取 %s 的动态管理器签名</string>
-    <string name="allow_any_dynamic_manager">允许授权任何应用为动态管理器</string>
-    <string name="allow_any_dynamic_manager_summary">实验性功能。开启后在所有应用的 App Profile 中显示动态管理器开关，而不是仅显示预置签名管理器。</string>
     <string name="require_kernel_version">需要更新内核，点击此处安装</string>
     <string name="settings_umount_modules_default">默认卸载模块</string>
     <string name="settings_umount_modules_default_summary">对没有单独 Profile 的应用默认卸载模块。默认关闭。</string>

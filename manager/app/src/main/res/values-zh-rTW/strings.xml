@@ -63,8 +63,6 @@
     <string name="dynamic_manager_set_failed">將 %s 設為動態管理器失敗</string>
     <string name="dynamic_manager_del_failed">從動態管理器中移除 %s 失敗</string>
     <string name="dynamic_manager_signature_unavailable">無法擷取 %s 的動態管理器簽章</string>
-    <string name="allow_any_dynamic_manager">允許授權任何應用程式為動態管理器</string>
-    <string name="allow_any_dynamic_manager_summary">實驗性功能。開啟後會在所有應用程式的 App Profile 中顯示動態管理器開關，而非僅顯示預設簽章管理器。</string>
     <string name="require_kernel_version">需要更新核心，點選開始安裝</string>
     <string name="settings_umount_modules_default">預設卸載模組</string>
     <string name="settings_umount_modules_default_summary">應用程式設定檔中「卸載模組」的全域預設值。啟用後，未設定個別 Profile 的應用程式會移除所有模組對系統的修改。此選項預設關閉，因此新的或未知的應用程式仍會保留模組修改。</string>

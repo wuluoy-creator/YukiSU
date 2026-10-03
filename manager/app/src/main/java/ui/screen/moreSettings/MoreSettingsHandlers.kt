@@ -31,7 +31,6 @@ import com.anatdx.yukisu.ui.component.rememberConfirmDialog
 import com.anatdx.yukisu.ui.screen.SettingItem
 import com.anatdx.yukisu.ui.screen.SwitchItem
 import com.anatdx.yukisu.ui.theme.*
-import com.anatdx.yukisu.ui.util.DynamicManagerSettings
 import com.anatdx.yukisu.ui.util.*
 import com.anatdx.yukisu.ui.util.getRootShell
 import com.anatdx.yukisu.ui.util.isSELinuxEnforcing
@@ -301,11 +300,6 @@ class MoreSettingsHandlers(
     fun handleWebUIXErudaChange(newValue: Boolean) {
         prefs.edit { putBoolean("use_webuix_eruda", newValue) }
         state.useWebUIXEruda = newValue
-    }
-
-    fun handleAllowAnyDynamicManagerChange(newValue: Boolean) {
-        DynamicManagerSettings.setAllowAnyApp(context, newValue)
-        state.allowAnyDynamicManager = newValue
     }
 
     fun handleSelinuxChange(enabled: Boolean) {
