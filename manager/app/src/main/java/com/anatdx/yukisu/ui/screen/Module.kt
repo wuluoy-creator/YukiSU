@@ -77,7 +77,7 @@ import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.ExecuteModuleActionScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.FlashScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.YukiZygiskScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.ExtensionRepositoryScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.ModuleRepositoryScreenDestination
 import com.anatdx.yukisu.ui.kasumi.KasumiMountConfigDialog
 import com.anatdx.yukisu.ui.kasumi.ConfigChoice
 import com.anatdx.yukisu.ui.kasumi.util.KasumiManager
@@ -130,11 +130,7 @@ fun ModuleScreen(navigator: DestinationsNavigator) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ModulePage(
-    navigator: DestinationsNavigator,
-    workspace: Boolean = false,
-    sectionNavigation: @Composable () -> Unit = {},
-) {
+internal fun ModulePage(navigator: DestinationsNavigator) {
     val viewModel = viewModel<ModuleViewModel>()
     val context = LocalContext.current
     val resources = LocalResources.current
@@ -399,11 +395,10 @@ internal fun ModulePage(
 
     Scaffold(
         topBar = {
-            Column {
             SearchAppBar(
                 title = {
                     YukiTopBarTitle(
-                        text = stringResource(if (workspace) R.string.nav_extensions else R.string.module),
+                        text = stringResource(R.string.module),
                     )
                 },
                 searchText = viewModel.search,
@@ -411,7 +406,7 @@ internal fun ModulePage(
                 onClearClick = { viewModel.search = "" },
                 dropdownContent = {
                     IconButton(
-                        onClick = { navigator.navigate(ExtensionRepositoryScreenDestination(initialPage = 0)) },
+                        onClick = { navigator.navigate(ModuleRepositoryScreenDestination) },
                     ) {
                         YukiIcon(
                             imageVector = Icons.Outlined.Inventory2,
@@ -432,8 +427,6 @@ internal fun ModulePage(
                 },
                 scrollBehavior = scrollBehavior,
             )
-                sectionNavigation()
-            }
         },
         floatingActionButton = {
             AnimatedFab(visibilityState = fabTransition) {

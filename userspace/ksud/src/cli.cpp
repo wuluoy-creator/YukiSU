@@ -18,7 +18,6 @@
 #include "log.hpp"
 #include "module/module.hpp"
 #include "module/module_config.hpp"
-#include "plugin/plugin.hpp"
 #include "profile/profile.hpp"
 #include "sepolicy/sepolicy.hpp"
 #include "su.hpp"
@@ -75,7 +74,7 @@ int check_input_files(const CliArguments& cli) {
                 return result;
         }
     }
-    const bool module = path == "module install" || path == "plugin install";
+    const bool module = path == "module install";
     if (module || path == "insmod" || path == "debug insmod" || path == "flash image" ||
         path == "flash ak3" || path == "flash ak3-info" || path == "sepolicy apply" ||
         path == "dynamic set-apk" || (path == "dynamic get-sign" && !cli.has("--uid"))) {
@@ -645,10 +644,6 @@ int cli_run(int argc, char** argv) {
         args.insert(args.begin() + 1, "--json");
     if (cmd == "yzctl" && cli.has("--json"))
         args.emplace_back("--json");
-    if (cli.path == "plugin daemon") {
-        args.emplace_back("--ready-fd");
-        args.push_back(cli.value("--ready-fd"));
-    }
     if (cli.path == "dynamic get-sign") {
         const std::string target = cli.has("--uid") ? cli.value("--uid") : args[1];
         args = {"get-sign"};
@@ -659,19 +654,7 @@ int cli_run(int argc, char** argv) {
     }
     if (cli.forward_options || cmd == "boot-patch-v2")
         args.insert(args.end(), cli.option_args.begin(), cli.option_args.end());
-    if (cli.path.rfind("plugin config ", 0) == 0) {
-        args.resize(args.size() - cli.option_args.size());
-        args.insert(args.begin() + 1, {"--id", cli.value("--id")});
-    }
-
-    const bool plugin_command = cmd == "plugin";
-    const bool plugin_callback_command =
-        plugin_command && !args.empty() && (args[0] == "action" || args[0] == "run");
-    if (plugin_command)
-        log_set_stderr_enabled(false);
     LOGD("command: %s", cmd.c_str());
-    if (plugin_command && !plugin_callback_command)
-        log_set_stderr_enabled(true);
 
     // Dispatch commands
     if (cmd == "version") {
@@ -689,8 +672,6 @@ int cli_run(int argc, char** argv) {
         return 0;
     } else if (cmd == "module") {
         return cmd_module(args);
-    } else if (cmd == "plugin") {
-        return plugin_handle(args);
     } else if (cmd == "install") {
         const auto magiskboot = cli.has("--magiskboot")
                                     ? std::optional<std::string>(cli.value("--magiskboot"))

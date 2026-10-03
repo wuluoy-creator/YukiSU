@@ -12,7 +12,6 @@
 #include "module/metamodule.hpp"
 #include "module/module.hpp"
 #include "module/module_config.hpp"
-#include "plugin/lua_engine.hpp"
 #include "profile/profile.hpp"
 #include "sulog.hpp"
 #include "umount.hpp"
@@ -113,9 +112,6 @@ void run_stage(const std::string& stage, bool block) {
 
     // Execute regular modules stage scripts
     exec_stage_script(stage, block);
-
-    // Execute plugin stage callbacks
-    exec_plugin_stage(stage, block);
 }
 
 int spawn_zygiskd_process(const char* path, const char* label) {
@@ -418,7 +414,6 @@ int on_post_data_fs() {
 
     metamodule_exec_stage_script("post-fs-data", true);
     exec_stage_script("post-fs-data", true);
-    exec_plugin_stage("post-fs-data", true);
     load_system_prop();
 
     // Metamodule metamount runs AFTER all post-fs-data.

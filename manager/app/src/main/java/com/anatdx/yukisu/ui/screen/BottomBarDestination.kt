@@ -18,6 +18,6 @@ enum class BottomBarDestination(
 ) {
     Home(HomeScreenDestination, R.string.home, Icons.Filled.Home, Icons.Outlined.Home, false),
     SuperUser(SuperUserScreenDestination, R.string.nav_authorization, Icons.Filled.AdminPanelSettings, Icons.Outlined.AdminPanelSettings, true),
-    Module(ExtensionsScreenDestination, R.string.nav_extensions, Icons.Filled.Extension, Icons.Outlined.Extension, true),
+    Module(ModuleScreenDestination, R.string.module, Icons.Filled.Extension, Icons.Outlined.Extension, true),
     Settings(SettingScreenDestination, R.string.settings, Icons.Filled.Settings, Icons.Outlined.Settings, false),
 }

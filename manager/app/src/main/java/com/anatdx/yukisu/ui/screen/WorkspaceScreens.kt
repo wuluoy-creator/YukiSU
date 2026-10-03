@@ -147,37 +147,6 @@ fun AuthorizationRecordsScreen(navigator: DestinationsNavigator) {
 
 @Destination<RootGraph>
 @Composable
-fun ExtensionsScreen(navigator: DestinationsNavigator) {
-    var selected by rememberSaveable { mutableIntStateOf(0) }
-    val pages = rememberSaveableStateHolder()
-    val labels = listOf(stringResource(R.string.module), stringResource(R.string.plugin))
-    BackHandler(selected != 0) { selected = 0 }
-    pages.SaveableStateProvider(selected) {
-        if (selected == 0) {
-            ModulePage(navigator, workspace = true) { WorkspaceTabs(labels, selected, { selected = it }) }
-        } else {
-            PluginPage(navigator, workspace = true) { enabled -> WorkspaceTabs(labels, selected, { selected = it }, enabled) }
-        }
-    }
-}
-
-@Destination<RootGraph>
-@Composable
-fun ExtensionRepositoryScreen(navigator: DestinationsNavigator, initialPage: Int = 0) {
-    var selected by rememberSaveable { mutableIntStateOf(initialPage.coerceIn(0, 1)) }
-    val pages = rememberSaveableStateHolder()
-    val labels = listOf(stringResource(R.string.module), stringResource(R.string.plugin))
-    pages.SaveableStateProvider(selected) {
-        if (selected == 0) {
-            ModuleRepositoryPage(navigator, workspace = true) { WorkspaceTabs(labels, selected, { selected = it }) }
-        } else {
-            PluginRepositoryPage(navigator, workspace = true) { enabled -> WorkspaceTabs(labels, selected, { selected = it }, enabled) }
-        }
-    }
-}
-
-@Destination<RootGraph>
-@Composable
 @Suppress("UNUSED_PARAMETER") // Keep the old navigation argument for restored back stacks.
 fun KernelPolicyScreen(navigator: DestinationsNavigator, initialPage: Int = 0) {
     var saving by remember { mutableStateOf(false) }
@@ -313,7 +282,7 @@ private fun rememberAuthorizationLogsEnabled(): Boolean {
     return FeatureControlState.suLogEnabled ?: nativeEnabled
 }
 
-/** Prevent navigation from disposing a plugin operation while its progress is visible. */
+/** Prevent navigation from disposing an operation while its progress is visible. */
 @Composable
 internal fun WorkspaceOperationGuard(busy: Boolean, route: String) {
     val guard = LocalNavigationLeaveGuard.current

@@ -41,7 +41,6 @@ fun BottomBar(navController: NavHostController) {
     val settings by activity.settingsStateFlow.collectAsState()
     val superuserCount by AppData.DataRefreshManager.superuserCount.collectAsState()
     val moduleCount by AppData.DataRefreshManager.moduleCount.collectAsState()
-    val pluginCount by AppData.DataRefreshManager.pluginCount.collectAsState()
     val destinations = BottomBarDestination.entries.filter { isFullFeatured || !it.rootRequired }
 
     Box(
@@ -61,7 +60,7 @@ fun BottomBar(navController: NavHostController) {
                     val selected by navController.isRouteOnBackStackAsState(destination.direction)
                     val count = when (destination) {
                         BottomBarDestination.SuperUser -> superuserCount
-                        BottomBarDestination.Module -> moduleCount + pluginCount
+                        BottomBarDestination.Module -> moduleCount
                         else -> 0
                     }
                     NavigationBarItem(

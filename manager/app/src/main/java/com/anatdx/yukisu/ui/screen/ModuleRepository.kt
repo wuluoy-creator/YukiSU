@@ -293,11 +293,7 @@ fun ModuleRepositoryScreen(navigator: DestinationsNavigator) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ModuleRepositoryPage(
-    navigator: DestinationsNavigator,
-    workspace: Boolean = false,
-    sectionNavigation: @Composable () -> Unit = {},
-) {
+internal fun ModuleRepositoryPage(navigator: DestinationsNavigator) {
     val viewModel = viewModel<ModuleRepositoryViewModel>()
     val sources by viewModel.sources.collectAsState()
     val catalog by viewModel.catalog.collectAsState()
@@ -315,11 +311,10 @@ internal fun ModuleRepositoryPage(
 
     Scaffold(
         topBar = {
-            Column {
             SearchAppBar(
                 title = {
                     YukiTopBarTitle(
-                        stringResource(if (workspace) R.string.nav_repository else R.string.module_repositories),
+                        stringResource(R.string.module_repositories),
                     )
                 },
                 searchText = viewModel.search,
@@ -336,8 +331,6 @@ internal fun ModuleRepositoryPage(
                 },
                 scrollBehavior = scrollBehavior,
             )
-                sectionNavigation()
-            }
         },
         contentWindowInsets = WindowInsets.safeDrawing.only(
             WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom

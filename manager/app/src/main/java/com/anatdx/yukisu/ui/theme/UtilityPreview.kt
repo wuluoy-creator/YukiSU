@@ -87,8 +87,6 @@ private fun WorkspaceTabsPreview() {
     UtilityPreviewTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-                WorkspaceTabs(listOf("模块", "插件"), 0, {})
-                Spacer(Modifier.height(16.dp))
                 WorkspaceTabs(listOf("挂载", "隔离设置", "生效规则"), 1, {})
                 Spacer(Modifier.height(16.dp))
                 WorkspaceTabs(listOf("内核功能", "高级安全"), 0, {})

@@ -39,7 +39,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.FlashScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.ExtensionsScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.ModuleScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import com.anatdx.yukisu.R
@@ -457,7 +457,7 @@ fun FlashScreen(navigator: DestinationsNavigator, flashIt: FlashIt) {
                 if (flashIt is FlashIt.FlashModules || flashIt is FlashIt.FlashModuleUpdate) {
                     viewModel.markNeedRefresh()
                     viewModel.fetchModuleList()
-                    navigator.navigate(ExtensionsScreenDestination)
+                    navigator.navigate(ModuleScreenDestination)
                 } else {
                     viewModel.markNeedRefresh()
                     viewModel.fetchModuleList()

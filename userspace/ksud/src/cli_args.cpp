@@ -219,38 +219,6 @@ const std::vector<Command>& commands() {
           {"--enable-adbd", "", "", ""},
           {"--signature-bypass", "", "", ""},
           {"--no-reuse", "", "", ""}}},
-        {"plugin", "Manage Lua plugins", "<COMMAND>"},
-        {"plugin install", "Install a Lua plugin archive", "<ZIP>", 1, 1},
-        {"plugin uninstall", "Uninstall a Lua plugin", "<ID>", 1, 1},
-        {"plugin enable", "Enable a Lua plugin", "<ID>", 1, 1},
-        {"plugin disable", "Disable a Lua plugin", "<ID>", 1, 1},
-        {"plugin list", "List Lua plugins", ""},
-        {"plugin run", "Run a plugin callback", "<ID> <CALLBACK>", 2, 2},
-        {"plugin action", "Run a plugin action", "<ID>", 1, 1},
-        {"plugin daemon",
-         "Run a plugin daemon callback",
-         "<ID> <CALLBACK> <INTERVAL>",
-         3,
-         3,
-         {{"--ready-fd", "", "FD", ""}}},
-        {"plugin log", "Read a plugin log", "<ID>", 1, 1},
-        {"plugin clear-log", "Clear a plugin log", "<ID>", 1, 1},
-        {"plugin config",
-         "Manage plugin configuration",
-         "<COMMAND>",
-         0,
-         0,
-         {{"--id", "", "ID", "", "Plugin ID (required for configuration commands)"}}},
-        {"plugin config get", "Read a plugin configuration value", "<KEY>", 1, 1, {}, true},
-        {"plugin config set",
-         "Write a plugin configuration value",
-         "<KEY> <VALUE>",
-         2,
-         2,
-         {},
-         true},
-        {"plugin config delete", "Delete a plugin configuration value", "<KEY>", 1, 1, {}, true},
-        {"plugin config list", "List plugin configuration as JSON", "", 0, 0, {}, true},
         {"kagami", "Manage built-in Kasumi and module mounts", "<COMMAND>"},
         {"kagami version", "Show the built-in controller version", ""},
         {"kagami config", "Manage mount configuration", "<COMMAND>"},
@@ -439,8 +407,6 @@ std::string_view option_description(const Option& option, std::string_view path)
         return "Include all partitions";
     if (option.name == "--verbose")
         return "Include diagnostic logs";
-    if (option.name == "--ready-fd")
-        return "Write daemon readiness to an inherited descriptor";
     if (option.name == "--uid")
         return "Resolve an APK from this Android UID";
     if (option.name == "-g")
@@ -455,8 +421,6 @@ std::string_view example(std::string_view path) {
         return "ksud module install /sdcard/module.zip";
     if (path == "feature" || path == "feature set" || path == "feature set-save")
         return "ksud feature get sulog\n  ksud feature set-save sulog 1";
-    if (path.substr(0, 13) == "plugin config")
-        return "ksud plugin config --id example set theme dark";
     if (path == "boot-patch")
         return "ksud boot-patch --boot /sdcard/boot.img --out /sdcard/patched";
     if (path == "boot-patch-v2")
@@ -719,23 +683,6 @@ int validate(const Command& command, const std::vector<std::string>& operands,
             !std::all_of(operands[1].begin(), operands[1].end(),
                          [](unsigned char ch) { return std::isxdigit(ch); }))
             return bad("invalid signature hash; expected exactly 64 hexadecimal digits");
-    }
-    if (path.substr(0, 14) == "plugin config ") {
-        const std::string id = parsed.value("--id");
-        if (!parsed.has("--id"))
-            return bad("--id <ID> is required");
-        if (id.size() > 64 || !identifier(id))
-            return bad("invalid plugin ID '" + id + "'");
-        if (!operands.empty() && (operands[0].size() > 64 || !identifier(operands[0])))
-            return bad("invalid configuration key '" + operands[0] + "'");
-    }
-    if (path == "plugin daemon") {
-        if (!parsed.has("--ready-fd"))
-            return bad("--ready-fd <FD> is required");
-        if (!numeric(2, INT32_MAX) || operands[2].find_first_not_of('0') == std::string::npos)
-            return bad("invalid interval; expected 1 through 2147483647");
-        if (unsigned_value(parsed.value("--ready-fd"), 2))
-            return bad("readiness descriptor must be greater than 2");
     }
     if (path.substr(0, 7) == "kagami ") {
         if (path == "kagami config merge-json") {

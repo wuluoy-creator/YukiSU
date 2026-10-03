@@ -18,7 +18,6 @@ namespace {
 constexpr size_t kLogTagSize = 32U;
 
 LogLevel g_log_level = LogLevel::INFO;
-bool g_log_stderr_enabled = true;
 bool g_log_cli_mode = false;
 bool g_log_verbose = false;
 std::array<char, kLogTagSize> g_log_tag = {"KernelSU"};
@@ -68,9 +67,6 @@ void log_write(LogLevel level, const char* fmt, va_list args) {
         (void)written;
     }
 
-    if (!g_log_stderr_enabled)
-        return;
-
     if (g_log_cli_mode && !g_log_verbose && isatty(STDERR_FILENO) == 1) {
         if (level >= LogLevel::WARN)
             terminal::message(stderr, level == LogLevel::ERROR ? "error" : "warning", msg.data());
@@ -100,10 +96,6 @@ void log_init(const char* tag) {
 
 void log_set_level(LogLevel level) {
     g_log_level = level;
-}
-
-void log_set_stderr_enabled(bool enabled) {
-    g_log_stderr_enabled = enabled;
 }
 
 void log_set_cli_mode(bool verbose) {

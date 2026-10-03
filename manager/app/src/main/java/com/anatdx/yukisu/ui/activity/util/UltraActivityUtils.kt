@@ -83,22 +83,18 @@ object AppData {
     object DataRefreshManager {
         private val _superuserCount = MutableStateFlow(0)
         private val _moduleCount = MutableStateFlow(0)
-        private val _pluginCount = MutableStateFlow(0)
         private val _isFullFeatured = MutableStateFlow(false)
 
         val superuserCount: StateFlow<Int> = _superuserCount.asStateFlow()
         val moduleCount: StateFlow<Int> = _moduleCount.asStateFlow()
-        val pluginCount: StateFlow<Int> = _pluginCount.asStateFlow()
         val isFullFeatured: StateFlow<Boolean> = _isFullFeatured.asStateFlow()
 
         fun refreshData() {
             val sc = getSuperuserCountUse()
             val mc = getModuleCountUse()
-            val pc = getPluginCountUse()
             val ff = isFullFeatured()
             if (_superuserCount.value != sc) _superuserCount.value = sc
             if (_moduleCount.value != mc) _moduleCount.value = mc
-            if (_pluginCount.value != pc) _pluginCount.value = pc
             if (_isFullFeatured.value != ff) _isFullFeatured.value = ff
         }
     }
@@ -116,15 +112,6 @@ object AppData {
         return try {
             if (!rootAvailable()) return 0
             getModuleCount()
-        } catch (_: Exception) {
-            0
-        }
-    }
-
-    fun getPluginCountUse(): Int {
-        return try {
-            if (!rootAvailable()) return 0
-            getPluginCount()
         } catch (_: Exception) {
             0
         }
