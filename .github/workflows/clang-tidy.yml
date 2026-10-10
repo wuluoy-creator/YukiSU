@@ -1,0 +1,100 @@
+name: Userspace Clang-Tidy
+
+on:
+  push:
+    branches: [ "main", "dev", "feat/*" ]
+    paths:
+      - '.clang-tidy'
+      - '.github/workflows/clang-tidy.yml'
+      - 'cmake/ClangTidy.cmake'
+      - 'userspace/ksud/CMakeLists.txt'
+      - 'userspace/ksud/sumhp/**'
+      - 'userspace/common/**'
+      - 'userspace/ksuinit/CMakeLists.txt'
+      - 'userspace/ksud/src/**/*.c'
+      - 'userspace/ksud/src/**/*.cc'
+      - 'userspace/ksud/src/**/*.cpp'
+      - 'userspace/ksud/src/**/*.cxx'
+      - 'userspace/ksud/src/**/*.h'
+      - 'userspace/ksud/src/**/*.hh'
+      - 'userspace/ksud/src/**/*.hpp'
+      - 'userspace/ksud/src/**/*.hxx'
+      - 'userspace/ksuinit/src/**/*.cpp'
+      - 'userspace/ksuinit/src/**/*.h'
+      - 'userspace/ksuinit/src/**/*.hpp'
+      - 'uapi/**/*.h'
+  pull_request:
+    branches: [ "main", "dev" ]
+    paths:
+      - '.clang-tidy'
+      - '.github/workflows/clang-tidy.yml'
+      - 'cmake/ClangTidy.cmake'
+      - 'userspace/ksud/CMakeLists.txt'
+      - 'userspace/ksud/sumhp/**'
+      - 'userspace/common/**'
+      - 'userspace/ksuinit/CMakeLists.txt'
+      - 'userspace/ksud/src/**/*.c'
+      - 'userspace/ksud/src/**/*.cc'
+      - 'userspace/ksud/src/**/*.cpp'
+      - 'userspace/ksud/src/**/*.cxx'
+      - 'userspace/ksud/src/**/*.h'
+      - 'userspace/ksud/src/**/*.hh'
+      - 'userspace/ksud/src/**/*.hpp'
+      - 'userspace/ksud/src/**/*.hxx'
+      - 'userspace/ksuinit/src/**/*.cpp'
+      - 'userspace/ksuinit/src/**/*.h'
+      - 'userspace/ksuinit/src/**/*.hpp'
+      - 'uapi/**/*.h'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  clang-tidy:
+    name: clang-tidy (${{ matrix.name }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: ksud
+            source: userspace/ksud
+            targets: ksud_our_objs ksud_sumhp_objs
+          - name: ksuinit
+            source: userspace/ksuinit
+            targets: ksuinit
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Configure Android clang-tidy check
+        shell: bash
+        run: |
+          set -euo pipefail
+          toolchain="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64"
+          "$toolchain/bin/clang-tidy" --version
+
+          cmake \
+            -S "${{ matrix.source }}" \
+            -B "build/clang-tidy/${{ matrix.name }}" \
+            -G Ninja \
+            -DCMAKE_SYSTEM_NAME=Android \
+            -DCMAKE_ANDROID_ARCH_ABI=arm64-v8a \
+            -DCMAKE_ANDROID_NDK="$ANDROID_NDK_HOME" \
+            -DCMAKE_SYSTEM_VERSION=31 \
+            -DCMAKE_C_COMPILER="$toolchain/bin/aarch64-linux-android31-clang" \
+            -DCMAKE_CXX_COMPILER="$toolchain/bin/aarch64-linux-android31-clang++" \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DZYSU_ENABLE_CLANG_TIDY=ON \
+            -DZYSU_CLANG_TIDY_PROGRAM="$toolchain/bin/clang-tidy"
+
+      - name: Run clang-tidy
+        shell: bash
+        run: |
+          read -ra targets <<< "${{ matrix.targets }}"
+          cmake --build "build/clang-tidy/${{ matrix.name }}" \
+            --target "${targets[@]}" --parallel 2

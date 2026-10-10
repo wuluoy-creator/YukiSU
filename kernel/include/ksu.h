@@ -1,0 +1,53 @@
+#ifndef __KSU_H_KSU
+#define __KSU_H_KSU
+
+#include <linux/cred.h>
+#include <linux/types.h>
+#include <linux/version.h>
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 1, 0)
+#error "ZySU requires Linux 6.1 or newer"
+#endif
+
+// Fallback KSU_VERSION if not defined by Kbuild (e.g. when building as LKM)
+#ifndef KSU_VERSION
+#define KSU_VERSION 12000
+#endif // #ifndef KSU_VERSION
+
+#define KERNEL_SU_VERSION KSU_VERSION
+#define KERNEL_SU_OPTION 0xDEADBEEF
+
+#define EVENT_POST_FS_DATA 1
+#define EVENT_BOOT_COMPLETED 2
+#define EVENT_MODULE_MOUNTED 3
+
+// ZySU kernel su version full strings
+#ifndef KSU_VERSION_FULL
+#define KSU_VERSION_FULL "v1.x-00000000@ZySU"
+#endif // #ifndef KSU_VERSION_FULL
+#define KSU_FULL_VERSION_STRING 255
+
+#if 0
+static inline int startswith(char *s, char *prefix)
+{
+    return strncmp(s, prefix, strlen(prefix));
+}
+
+static inline int endswith(const char *s, const char *t)
+{
+    size_t slen = strlen(s);
+    size_t tlen = strlen(t);
+    if (tlen > slen)
+        return 1;
+    return strcmp(s + slen - tlen, t);
+}
+#endif // #if 0
+
+extern struct cred *ksu_cred;
+extern bool ksu_late_loaded;
+extern bool ksu_imgpatch_loaded;
+extern bool ksu_no_custom_rc;
+extern bool ksu_bundled;
+extern struct selinux_policy *backup_sepolicy;
+
+#endif // #ifndef __KSU_H_KSU

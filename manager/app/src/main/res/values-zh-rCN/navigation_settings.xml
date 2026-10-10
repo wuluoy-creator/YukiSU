@@ -1,0 +1,19 @@
+<resources>
+    <string name="settings_workspace_personalization">个性化</string>
+    <string name="settings_workspace_system">系统与支持</string>
+    <string name="settings_category_appearance">外观</string>
+    <string name="settings_category_appearance_summary">主题、语言、背景与显示大小</string>
+    <string name="settings_category_display">内容与显示</string>
+    <string name="settings_category_display_summary">首页信息、模块详情与内容显隐</string>
+    <string name="settings_category_app">更新与卸载</string>
+    <string name="settings_category_app_summary">管理器更新、守护进程更新与卸载</string>
+    <string name="settings_category_kernel">其他设置</string>
+    <string name="settings_category_kernel_summary">内核功能、高级安全与 WebUI 引擎</string>
+    <string name="settings_category_mount_isolation">挂载与隔离</string>
+    <string name="settings_category_mount_isolation_summary">挂载设置、隔离策略与生效规则</string>
+    <string name="settings_category_diagnostics">诊断</string>
+    <string name="settings_category_diagnostics_summary">日志、诊断报告与调试控制</string>
+    <string name="settings_category_security">安全</string>
+    <string name="settings_category_webui">WebUI 调试</string>
+    <string name="settings_authorization_defaults">授权默认策略</string>
+</resources>

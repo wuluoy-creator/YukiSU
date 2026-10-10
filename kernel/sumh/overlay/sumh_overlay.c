@@ -1,0 +1,675 @@
+#include <linux/module.h>
+#include <linux/kernel.h>
+#include <linux/kallsyms.h>
+#include <linux/version.h>
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 6, 0) &&                           \
+    !defined(arch_ftrace_get_regs)
+#define arch_ftrace_get_regs(fregs) (NULL)
+#endif
+#include <linux/kprobes.h>
+#include <linux/errno.h>
+#include <linux/string.h>
+#include <linux/slab.h>
+#include <linux/vmalloc.h>
+#include <linux/jhash.h>
+#include <linux/file.h>
+#include <linux/fs.h>
+#include <linux/fdtable.h>
+#include <linux/namei.h>
+#include <linux/path.h>
+#include <linux/uaccess.h>
+#include <linux/cred.h>
+#include <linux/uidgid.h>
+#include <linux/sched/task.h>
+#include <linux/fs_struct.h>
+#include <linux/dirent.h>
+#include <linux/stat.h>
+#include <linux/time.h>
+#include <linux/anon_inodes.h>
+#include <linux/fcntl.h>
+#include <linux/percpu.h>
+#include <linux/smp.h>
+#include <linux/mount.h>
+#include <linux/xattr.h>
+#include <linux/seq_file.h>
+#include <uapi/linux/magic.h>
+#include <asm/unistd.h>
+#include "sumh_runtime.h"
+#include "sumh_store.h"
+#include "sumh_path_policy.h"
+#include "sumh_overlay.h"
+#include "sumh_iop_override.h"
+#include "sumh_dirhijack.h"
+#include "sumh_vnode.h"
+/* ======================================================================
+ * Part 10: Inject Rule Helper
+ * ====================================================================== */
+
+void sumh_add_inject_rule(char *dir)
+{
+	struct sumh_inject_entry *ie;
+	u32 hash;
+	bool found = false;
+
+	if (!dir)
+		return;
+
+	hash = full_name_hash(NULL, dir, strlen(dir));
+	hlist_for_each_entry(
+	    ie, &sumh_inject_dirs[hash_min(hash, SUMH_HASH_BITS)], node)
+	{
+		if (strcmp(ie->dir, dir) == 0) {
+			found = true;
+			break;
+		}
+	}
+	if (!found) {
+		ie = kmalloc(sizeof(*ie), GFP_KERNEL);
+		if (ie) {
+			ie->dir = dir;
+			hlist_add_head_rcu(
+			    &ie->node,
+			    &sumh_inject_dirs[hash_min(hash, SUMH_HASH_BITS)]);
+			atomic_inc(&sumh_rule_count);
+		} else {
+			kfree(dir);
+		}
+	} else {
+		kfree(dir);
+	}
+}
+
+/* ======================================================================
+ * Part 10b: Inject - populate list for merge/add rule dirs
+ * ====================================================================== */
+
+struct sumh_merge_ctx {
+	struct dir_context ctx;
+	struct list_head *head;
+	const char *dir_path;
+	dev_t dir_dev;
+};
+
+static const char *sumh_direct_child_name(const char *path, const char *dir,
+					  size_t dir_len)
+{
+	const char *name;
+
+	if (!path || !dir || !dir_len)
+		return NULL;
+	if (dir_len == 1 && dir[0] == '/') {
+		if (path[0] != '/' || !path[1])
+			return NULL;
+		name = path + 1;
+	} else {
+		if (strncmp(path, dir, dir_len) != 0 || path[dir_len] != '/' ||
+		    !path[dir_len + 1])
+			return NULL;
+		name = path + dir_len + 1;
+	}
+	return strchr(name, '/') ? NULL : name;
+}
+
+static SUMH_NOCFI bool sumh_merge_filldir(struct dir_context *ctx,
+					  const char *name, int namlen,
+					  loff_t offset, u64 ino,
+					  unsigned int d_type)
+{
+	struct sumh_merge_ctx *mctx =
+	    container_of(ctx, struct sumh_merge_ctx, ctx);
+	struct sumh_name_list *item;
+
+	if (namlen == 1 && name[0] == '.')
+		return true;
+	if (namlen == 2 && name[0] == '.' && name[1] == '.')
+		return true;
+	if (namlen == 8 && strncmp(name, ".replace", 8) == 0)
+		return true;
+
+	/* Skip whiteout (char dev 0:0) */
+	if (d_type == DT_CHR && mctx->dir_path) {
+		char *path = kasprintf(GFP_KERNEL, "%s/%.*s", mctx->dir_path,
+				       namlen, name);
+		if (path) {
+			struct path p;
+			if (kern_path(path, LOOKUP_FOLLOW, &p) == 0) {
+				struct kstat stat;
+				if (sumh_vfs_getattr_unprojected(
+					&p, &stat, STATX_TYPE,
+					AT_STATX_SYNC_AS_STAT) == 0 &&
+				    S_ISCHR(stat.mode) && stat.rdev == 0) {
+					path_put(&p);
+					kfree(path);
+					return true;
+				}
+				path_put(&p);
+			}
+			kfree(path);
+		}
+	}
+
+	/* Skip duplicates */
+	{
+		struct sumh_name_list *pos;
+		list_for_each_entry (pos, mctx->head, list) {
+			if ((size_t)namlen == strlen(pos->name) &&
+			    strncmp(pos->name, name, namlen) == 0)
+				return true;
+		}
+	}
+
+	item = kmalloc(sizeof(*item), GFP_KERNEL);
+	if (item) {
+		item->name = kstrndup(name, namlen, GFP_KERNEL);
+		/* Publish the same vnode identity stat() returns for this file,
+		 * so a merge-injected entry's getdents d_ino matches its later
+		 * st_ino instead of leaking the merge target's raw inode
+		 * number. */
+		item->ino = mctx->dir_dev
+				? sumh_vnode_source_ino(mctx->dir_dev, ino)
+				: ino;
+		item->type = (unsigned char)d_type;
+		if (item->name)
+			list_add(&item->list, mctx->head);
+		else
+			kfree(item);
+	}
+	return true;
+}
+
+bool sumh_is_merge_context(const struct dir_context *ctx)
+{
+	/* The actor stays attached to this iteration across sleeps and CPU
+	 * migration, unlike a per-CPU recursion marker.
+	 */
+	return ctx && ctx->actor == sumh_merge_filldir;
+}
+
+SUMH_NOCFI void sumh_populate_injected_list(const char *dir_path,
+					    struct dentry *parent,
+					    struct list_head *head)
+{
+	struct sumh_entry *entry;
+	struct sumh_inject_entry *inject_entry;
+	struct sumh_merge_entry *merge_entry;
+	struct sumh_name_list *item;
+	struct sumh_merge_target_node *target_node, *tmp_node;
+	struct list_head merge_targets;
+	u32 hash;
+	int bkt;
+	bool should_inject = false;
+	size_t dir_len;
+	/* d_path-resolved form of dir_path for matching rules stored via
+	 * d_path. iterate_dir gives us d_absolute_path output, but
+	 * ADD_RULE/ADD_MERGE_RULE store paths using d_path. These can differ
+	 * (e.g. /product/overlay vs /system/product/overlay) due to bind mounts
+	 * / symlinks. */
+	char *dpath_buf = NULL;
+	const char *dpath_dir = NULL;
+	size_t dpath_dir_len = 0;
+	u32 dpath_hash = 0;
+
+	if (unlikely(!sumh_enabled || !dir_path ||
+		     !sumh_policy_current_is_view_target()))
+		return;
+	if (atomic_read(&sumh_rule_count) == 0)
+		return;
+
+	INIT_LIST_HEAD(&merge_targets);
+	dir_len = strlen(dir_path);
+	hash = full_name_hash(NULL, dir_path, dir_len);
+
+	/* Resolve the d_path form of this directory. We're in filldir callback
+	 * (process context), so d_path is safe to call. Our d_path kretprobe
+	 * won't interfere since this directory is not a redirect target. */
+	if (parent) {
+		{
+			struct path resolved;
+			if (kern_path(dir_path, LOOKUP_FOLLOW, &resolved) ==
+			    0) {
+				dpath_buf = kmalloc(PATH_MAX, GFP_KERNEL);
+				if (dpath_buf) {
+					char *p = d_path(&resolved, dpath_buf,
+							 PATH_MAX);
+					if (!IS_ERR(p) && p[0] == '/' &&
+					    strcmp(p, dir_path) != 0) {
+						dpath_dir = p;
+						dpath_dir_len = strlen(p);
+						dpath_hash = full_name_hash(
+						    NULL, p, dpath_dir_len);
+					}
+				}
+				path_put(&resolved);
+			}
+		}
+	}
+
+	rcu_read_lock();
+
+	/* Try both d_absolute_path form and d_path form for inject_dirs */
+	hlist_for_each_entry_rcu(
+	    inject_entry, &sumh_inject_dirs[hash_min(hash, SUMH_HASH_BITS)],
+	    node)
+	{
+		if (strcmp(inject_entry->dir, dir_path) == 0) {
+			should_inject = true;
+			break;
+		}
+	}
+	if (!should_inject && dpath_dir) {
+		hlist_for_each_entry_rcu(
+		    inject_entry,
+		    &sumh_inject_dirs[hash_min(dpath_hash, SUMH_HASH_BITS)],
+		    node)
+		{
+			if (strcmp(inject_entry->dir, dpath_dir) == 0) {
+				should_inject = true;
+				break;
+			}
+		}
+	}
+
+	/* Scan all merge entries to match both src and resolved_src against
+	 * both path forms. */
+	hash_for_each_rcu(sumh_merge_dirs, bkt, merge_entry, node)
+	{
+		if (strcmp(merge_entry->src, dir_path) == 0 ||
+		    (merge_entry->resolved_src &&
+		     strcmp(merge_entry->resolved_src, dir_path) == 0) ||
+		    (dpath_dir && strcmp(merge_entry->src, dpath_dir) == 0) ||
+		    (dpath_dir && merge_entry->resolved_src &&
+		     strcmp(merge_entry->resolved_src, dpath_dir) == 0)) {
+			target_node = kmalloc(sizeof(*target_node), GFP_ATOMIC);
+			if (target_node) {
+				target_node->target =
+				    kstrdup(merge_entry->target, GFP_ATOMIC);
+				target_node->target_dentry = NULL;
+				if (target_node->target)
+					list_add_tail(&target_node->list,
+						      &merge_targets);
+				else
+					kfree(target_node);
+			}
+			should_inject = true;
+		}
+	}
+
+	if (should_inject) {
+		/* Exact rules are virtual directory entries even when the
+		 * visible pathname has no backing dentry.  Match both
+		 * absolute-path forms used by iterate_dir and rule
+		 * installation. */
+		hash_for_each_rcu(sumh_paths, bkt, entry, node)
+		{
+			const char *name;
+			struct sumh_name_list *pos;
+			bool duplicate = false;
+
+			name = sumh_direct_child_name(entry->src, dir_path,
+						      dir_len);
+			if (!name && dpath_dir)
+				name = sumh_direct_child_name(
+				    entry->src, dpath_dir, dpath_dir_len);
+			if (!name)
+				continue;
+			list_for_each_entry (pos, head, list) {
+				if (strcmp(pos->name, name) == 0) {
+					duplicate = true;
+					break;
+				}
+			}
+			if (duplicate)
+				continue;
+			item = kmalloc(sizeof(*item), GFP_ATOMIC);
+			if (!item)
+				continue;
+			item->name = kstrdup(name, GFP_ATOMIC);
+			item->ino = entry->visible_ino;
+			item->type = entry->source_stat_valid
+					 ? (unsigned char)((entry->source_mode &
+							    S_IFMT) >>
+							   12)
+					 : entry->type;
+			if (item->name)
+				list_add(&item->list, head);
+			else
+				kfree(item);
+		}
+	}
+	rcu_read_unlock();
+
+	list_for_each_entry_safe (target_node, tmp_node, &merge_targets, list) {
+		if (target_node->target) {
+			{
+				struct path path;
+				if (kern_path(target_node->target,
+					      LOOKUP_FOLLOW, &path) == 0) {
+					const struct cred *cred =
+					    get_task_cred(&init_task);
+					struct file *f = dentry_open(
+					    &path, O_RDONLY | O_DIRECTORY,
+					    cred);
+					if (!IS_ERR(f)) {
+						struct sumh_merge_ctx mctx = {
+						    .ctx.actor =
+							sumh_merge_filldir,
+						    .head = head,
+						    .dir_path =
+							target_node->target,
+						    .dir_dev =
+							file_inode(f) &&
+								file_inode(f)
+								    ->i_sb
+							    ? file_inode(f)
+								  ->i_sb->s_dev
+							    : 0,
+						};
+						iterate_dir(f, &mctx.ctx);
+						fput(f);
+					}
+					put_cred(cred);
+					path_put(&path);
+				}
+			}
+		}
+		kfree(target_node->target);
+		list_del(&target_node->list);
+		kfree(target_node);
+	}
+	kfree(dpath_buf);
+}
+
+/* Materialize merge targets into native path rules in sleepable context. */
+
+static SUMH_NOCFI int sumh_add_path_entry(const char *src, const char *tgt,
+					  unsigned char type)
+{
+	struct sumh_entry *entry;
+	struct path source;
+	unsigned long ino;
+	u8 flags = 0;
+	int ret = -ENOMEM;
+
+	entry = kzalloc(sizeof(*entry), GFP_KERNEL);
+	if (!entry)
+		return -ENOMEM;
+	entry->src = kstrdup(src, GFP_KERNEL);
+	entry->target = kstrdup(tgt, GFP_KERNEL);
+	entry->src_hash = full_name_hash(NULL, src, strlen(src));
+	entry->type = type;
+	if (!entry->src || !entry->target)
+		goto fail;
+	ret = sumh_entry_capture_source(entry, tgt);
+	if (ret)
+		goto fail;
+	if (entry->source_nofollow_path_valid) {
+		source = entry->source_nofollow_path;
+		ino = entry->nofollow_visible_ino;
+		flags = SUMH_VNODE_F_LNK;
+	} else {
+		source = entry->source_path;
+		ino = entry->visible_ino;
+		if (S_ISDIR(entry->source_mode))
+			flags = SUMH_VNODE_F_DIR;
+		else if (S_ISCHR(entry->source_mode) &&
+			 !d_inode(source.dentry)->i_rdev) {
+			ret = -EOPNOTSUPP;
+			goto fail;
+		} else if (S_ISCHR(entry->source_mode) ||
+			   S_ISBLK(entry->source_mode) ||
+			   S_ISFIFO(entry->source_mode))
+			flags = SUMH_VNODE_F_SPECIAL;
+	}
+	path_get(&source);
+	sumh_store_upsert(entry);
+	(void)sumh_iop_mark_spoof(d_inode(source.dentry));
+	ret = sumh_dirhijack_add_shadow(src, &source, ino, flags);
+	path_put(&source);
+	return ret;
+fail:
+	sumh_entry_release_source(entry);
+	kfree(entry->src);
+	kfree(entry->target);
+	kfree(entry->source_canonical);
+	kfree(entry);
+	return ret;
+}
+
+int sumh_check_merge_target(const char *target)
+{
+	struct path path;
+	char *marker;
+	int ret;
+
+	marker = kasprintf(GFP_KERNEL, "%s/.replace", target);
+	if (!marker)
+		return -ENOMEM;
+	ret = kern_path(marker, 0, &path);
+	kfree(marker);
+	if (ret == -ENOENT)
+		return 0;
+	if (ret)
+		return ret;
+	path_put(&path);
+	pr_warn("sumh: directory replacement is unsupported: %s\n", target);
+	return -EOPNOTSUPP;
+}
+
+/* Register a nested merge_entry from within materialize (process context).
+ * Mirrors the ADD_MERGE_RULE ioctl's entry construction. Returns true when
+ * a new entry was inserted. Does not take ownership of src_str/target_str.
+ *
+ * Used so that DT_DIR children discovered while materializing a parent merge
+ * become their own merge rules, instead of being registered as DT_DIR
+ * entries in sumh_paths. The latter would cause exact path redirect to
+ * wholesale-redirect any lookup of that subdir to the module's (typically
+ * incomplete) copy, destroying real subdir content. A nested merge rule, by
+ * contrast, keeps the real subdir intact and only performs iterate_dir-time
+ * injection of the module's contents on top.
+ */
+static SUMH_NOCFI bool sumh_register_nested_merge(const char *src_str,
+						  const char *target_str)
+{
+	struct sumh_merge_entry *me, *existing;
+	char *resolved_src = NULL;
+	struct dentry *tgt_dentry = NULL;
+	struct path mpath;
+	u32 hash;
+	bool created = false;
+
+	if (!src_str || !target_str)
+		return false;
+
+	if (kern_path(src_str, LOOKUP_FOLLOW, &mpath) == 0) {
+		char *rbuf = kmalloc(PATH_MAX, GFP_KERNEL);
+		if (rbuf) {
+			char *res = d_path(&mpath, rbuf, PATH_MAX);
+			if (!IS_ERR(res) && res[0] == '/' &&
+			    strcmp(res, src_str) != 0)
+				resolved_src = kstrdup(res, GFP_KERNEL);
+		}
+		kfree(rbuf);
+		path_put(&mpath);
+	}
+	if (kern_path(target_str, LOOKUP_FOLLOW, &mpath) == 0) {
+		tgt_dentry = dget(mpath.dentry);
+		path_put(&mpath);
+	}
+
+	hash = full_name_hash(NULL, src_str, strlen(src_str));
+	mutex_lock(&sumh_config_mutex);
+	hlist_for_each_entry(
+	    existing, &sumh_merge_dirs[hash_min(hash, SUMH_HASH_BITS)], node)
+	{
+		if (strcmp(existing->src, src_str) == 0 &&
+		    strcmp(existing->target, target_str) == 0) {
+			mutex_unlock(&sumh_config_mutex);
+			kfree(resolved_src);
+			if (tgt_dentry)
+				dput(tgt_dentry);
+			return false;
+		}
+	}
+	me = kmalloc(sizeof(*me), GFP_KERNEL);
+	if (me) {
+		me->src = kstrdup(src_str, GFP_KERNEL);
+		me->target = kstrdup(target_str, GFP_KERNEL);
+		me->resolved_src = resolved_src;
+		me->target_dentry = tgt_dentry;
+		if (me->src && me->target) {
+			hlist_add_head_rcu(
+			    &me->node,
+			    &sumh_merge_dirs[hash_min(hash, SUMH_HASH_BITS)]);
+			resolved_src = NULL;
+			tgt_dentry = NULL;
+			created = true;
+		} else {
+			kfree(me->src);
+			kfree(me->target);
+			kfree(me);
+		}
+	}
+	mutex_unlock(&sumh_config_mutex);
+
+	if (created) {
+		sumh_add_inject_rule(kstrdup(src_str, GFP_KERNEL));
+		if (me->resolved_src)
+			sumh_add_inject_rule(
+			    kstrdup(me->resolved_src, GFP_KERNEL));
+		sumh_mark_dir_has_inject(src_str);
+		if (me->resolved_src)
+			sumh_mark_dir_has_inject(me->resolved_src);
+	}
+
+	kfree(resolved_src);
+	if (tgt_dentry)
+		dput(tgt_dentry);
+	return created;
+}
+
+struct sumh_mat_ctx {
+	struct dir_context ctx;
+	const char *src_prefix;
+	const char *target_dir;
+	int depth;
+	int error;
+};
+
+static SUMH_NOCFI bool sumh_mat_filldir(struct dir_context *ctx,
+					const char *name, int namlen,
+					loff_t offset, u64 ino,
+					unsigned int d_type)
+{
+	struct sumh_mat_ctx *mc = container_of(ctx, struct sumh_mat_ctx, ctx);
+	char *src_path, *tgt_path, *inj_dir;
+
+	(void)offset;
+	(void)ino;
+
+	if (namlen <= 2 && name[0] == '.') {
+		if (namlen == 1 || (namlen == 2 && name[1] == '.'))
+			return true;
+	}
+	if (namlen == 8 && memcmp(name, ".replace", 8) == 0) {
+		mc->error = -EOPNOTSUPP;
+		return false;
+	}
+
+	src_path =
+	    kasprintf(GFP_KERNEL, "%s/%.*s", mc->src_prefix, namlen, name);
+	tgt_path =
+	    kasprintf(GFP_KERNEL, "%s/%.*s", mc->target_dir, namlen, name);
+	if (!src_path || !tgt_path) {
+		kfree(src_path);
+		kfree(tgt_path);
+		mc->error = -ENOMEM;
+		return false;
+	}
+
+	/* For DT_DIR: register a nested merge_entry and recurse. Do NOT add a
+	 * DT_DIR entry to sumh_paths — exact path redirect would redirect
+	 * every lookup of this subdir (e.g. an open of /product/overlay/foo
+	 * would resolve against the module's incomplete foo, hiding all real
+	 * siblings). The nested merge_entry gives this subdir its own
+	 * iterate_dir-time injection instead, so the real subdir contents stay
+	 * visible.
+	 *
+	 * For non-directory children we still register an exact redirect in
+	 * sumh_paths so open() of that file routes to the module backing.
+	 */
+	if (d_type == DT_DIR) {
+		/* Two shapes: MERGE into an existing target subdir (keep its
+		 * real siblings) vs ADD a brand-new subdir the target lacks. An
+		 * existing dir keeps the nested-merge injection; a new dir is
+		 * registered as an enterable directory-source redirect --
+		 * otherwise the parent readdir shows the name but every lookup
+		 * ENOENTs, and the system cannot scan the module's added
+		 * subtree (e.g. a priv-app / RRO in a new dir). */
+		struct path vpath;
+		bool visible_dir = false;
+
+		if (kern_path(src_path, LOOKUP_FOLLOW, &vpath) == 0) {
+			struct inode *vi = d_inode(vpath.dentry);
+
+			visible_dir = vi && S_ISDIR(vi->i_mode);
+			path_put(&vpath);
+		}
+		if (!visible_dir) {
+			mc->error =
+			    sumh_add_path_entry(src_path, tgt_path, d_type);
+		} else if (mc->depth < 8) {
+			sumh_register_nested_merge(src_path, tgt_path);
+			mc->error = sumh_materialize_merge(src_path, tgt_path,
+							   mc->depth + 1);
+		} else {
+			mc->error = -ELOOP;
+		}
+	} else {
+		mc->error = sumh_add_path_entry(src_path, tgt_path, d_type);
+	}
+
+	inj_dir = kstrdup(mc->src_prefix, GFP_KERNEL);
+	if (inj_dir)
+		sumh_add_inject_rule(inj_dir);
+	sumh_mark_dir_has_inject(mc->src_prefix);
+
+	kfree(src_path);
+	kfree(tgt_path);
+	return !mc->error;
+}
+
+SUMH_NOCFI int sumh_materialize_merge(const char *src_prefix,
+				      const char *target_dir, int depth)
+{
+	struct path path;
+	struct file *f;
+	struct sumh_mat_ctx mctx = {};
+	int ret;
+
+	if (depth > 8)
+		return -ELOOP;
+	ret = sumh_check_merge_target(target_dir);
+	if (ret)
+		return ret;
+	ret = kern_path(target_dir, LOOKUP_FOLLOW, &path);
+	if (ret)
+		return ret;
+
+	f = dentry_open(&path, O_RDONLY | O_DIRECTORY, current_cred());
+	if (IS_ERR(f)) {
+		path_put(&path);
+		return PTR_ERR(f);
+	}
+
+	mctx.ctx.actor = sumh_mat_filldir;
+	mctx.ctx.pos = 0;
+	mctx.src_prefix = src_prefix;
+	mctx.target_dir = target_dir;
+	mctx.depth = depth;
+
+	ret = iterate_dir(f, &mctx.ctx);
+
+	fput(f);
+	path_put(&path);
+	return mctx.error ? mctx.error : ret;
+}

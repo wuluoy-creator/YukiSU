@@ -1,0 +1,58 @@
+cmake_minimum_required(VERSION 3.14)
+project(ksuinit VERSION 1.0.0 LANGUAGES CXX)
+
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Android" OR
+   NOT CMAKE_ANDROID_ARCH_ABI STREQUAL "arm64-v8a")
+    message(FATAL_ERROR "ZySU userspace supports Android arm64-v8a only")
+endif()
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Use ccache if available
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+    set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PROGRAM}")
+    message(STATUS "Using ccache: ${CCACHE_PROGRAM}")
+endif()
+
+include("${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/ClangTidy.cmake")
+
+# Size optimization (Os + LTO).
+# ksuinit is injected as /init into early ramdisk, so it must be fully static.
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffunction-sections -fdata-sections -fvisibility=hidden -fvisibility-inlines-hidden -fno-rtti -fno-exceptions -fno-asynchronous-unwind-tables -fmerge-all-constants -fno-ident -fno-stack-protector -faddrsig -fno-semantic-interposition")
+set(CMAKE_CXX_FLAGS_RELEASE "-Os -DNDEBUG -flto=full")
+set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -DNDEBUG -flto=full")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static -fuse-ld=lld -flto=full -Wl,--gc-sections -Wl,--icf=all -Wl,--strip-all -Wl,--exclude-libs,ALL -Wl,-O2 -Wl,--lto-O3 -Wl,--hash-style=gnu -Wl,--build-id=none -Wl,-z,norelro")
+
+get_filename_component(REPO_ROOT "${CMAKE_SOURCE_DIR}/../.." ABSOLUTE)
+
+add_executable(ksuinit
+    src/main.cpp
+    src/init.cpp
+    src/loader.cpp
+    src/log.cpp
+    src/module_symbols.cpp
+    src/vermagic.cpp
+    ${REPO_ROOT}/userspace/common/cxx_slim.cpp
+)
+
+target_include_directories(ksuinit PRIVATE src ${REPO_ROOT})
+zysu_enable_clang_tidy(ksuinit CXX)
+
+# Optional: UPX binary compression
+option(KSUINIT_UPX "Use UPX to compress ksuinit binary" OFF)
+if(KSUINIT_UPX)
+    find_program(UPX_PROGRAM upx)
+    if(UPX_PROGRAM)
+        add_custom_command(TARGET ksuinit POST_BUILD
+            COMMAND ${UPX_PROGRAM} --best --lzma $<TARGET_FILE:ksuinit>
+            COMMENT "UPX: compressing ksuinit with LZMA (--best)..."
+        )
+        message(STATUS "UPX compression ENABLED (--best --lzma)")
+    else()
+        message(WARNING "KSUINIT_UPX=ON but upx not found in PATH; skipping UPX compression")
+    endif()
+endif()
+
+# No external dependencies - pure C++ with POSIX/Linux APIs

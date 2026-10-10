@@ -1,0 +1,181 @@
+name: Release / 发布与版本管理
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      publish_release:
+        description: '发布 GitHub Release；关闭时只编译产物'
+        type: boolean
+        default: false
+      release_tag:
+        description: 'Release 标签，如 v1.8.0；发布时必填（选中标签运行可留空）'
+        type: string
+        default: ''
+      prerelease:
+        description: '标记为预发布（正式版更新检查不提示）'
+        type: boolean
+        default: false
+      manager_version_name:
+        description: '管理器版本，如 v1.8.0；留空从标签/Git 生成'
+        type: string
+        default: ''
+      manager_version_code:
+        description: '管理器数字版本；留空自动高于已发布版本'
+        type: string
+        default: ''
+      ksud_version_name:
+        description: 'ksud 版本，如 1.8.1；留空跟随标签/Git'
+        type: string
+        default: ''
+      ksud_version_code:
+        description: 'ksud 数字版本；留空自动生成'
+        type: string
+        default: ''
+      kernel_version_name:
+        description: '内核版本，如 1.8.0；留空跟随标签/Git'
+        type: string
+        default: ''
+      kernel_version_code:
+        description: '内核数字版本；留空自动生成'
+        type: string
+        default: ''
+      kmi:
+        description: '内核版本：正式发布建议 all'
+        type: choice
+        default: all
+        options:
+          - all
+          - android14-6.1
+          - android15-6.6
+          - android16-6.12
+          - android17-6.18
+
+permissions:
+  contents: read
+
+# Serialize releases so version preflight and publishing see the same release order.
+concurrency:
+  group: zysu-release
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  preflight:
+    name: Check public release access
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify public repository access
+        if: github.event_name == 'push' || inputs.publish_release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          test "$(gh api "repos/$GH_REPO" --jq '.private')" = 'false'
+
+  build:
+    needs: preflight
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
+    with:
+      build_manager: true
+      kmi: ${{ inputs.kmi || 'all' }}
+      publish_release: ${{ github.event_name == 'push' || inputs.publish_release }}
+      prerelease: ${{ inputs.prerelease || (github.event_name == 'push' && contains(github.ref_name, '-')) }}
+      release_tag: ${{ inputs.release_tag || (github.ref_type == 'tag' && github.ref_name) || '' }}
+      manager_version_name: ${{ inputs.manager_version_name || '' }}
+      manager_version_code: ${{ inputs.manager_version_code || '' }}
+      ksud_version_name: ${{ inputs.ksud_version_name || '' }}
+      ksud_version_code: ${{ inputs.ksud_version_code || '' }}
+      kernel_version_name: ${{ inputs.kernel_version_name || '' }}
+      kernel_version_code: ${{ inputs.kernel_version_code || '' }}
+
+  release:
+    needs: build
+    if: github.event_name == 'push' || inputs.publish_release
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      RELEASE_TAG: ${{ needs.build.outputs.release_tag }}
+      COMMIT_SHA: ${{ needs.build.outputs.commit_sha }}
+      PRERELEASE: ${{ inputs.prerelease || (github.event_name == 'push' && contains(github.ref_name, '-')) }}
+      MANAGER_VERSION_NAME: ${{ needs.build.outputs.manager_version_name }}
+      MANAGER_VERSION_CODE: ${{ needs.build.outputs.manager_version_code }}
+      KSUD_VERSION_NAME: ${{ needs.build.outputs.ksud_version_name }}
+      KSUD_VERSION_CODE: ${{ needs.build.outputs.ksud_version_code }}
+      KERNEL_VERSION_NAME: ${{ needs.build.outputs.kernel_version_name }}
+      KERNEL_VERSION_CODE: ${{ needs.build.outputs.kernel_version_code }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          ref: ${{ needs.build.outputs.commit_sha }}
+
+      - name: Validate public release destination
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(gh api "repos/$GH_REPO" --jq '.private')" = 'false'
+
+      - name: Ensure the release tag points to the built commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git rev-parse --verify "refs/tags/$RELEASE_TAG^{commit}" >/dev/null 2>&1; then
+            test "$(git rev-parse "refs/tags/$RELEASE_TAG^{commit}")" = "$COMMIT_SHA"
+          else
+            git tag "$RELEASE_TAG" "$COMMIT_SHA"
+            git push origin "refs/tags/$RELEASE_TAG"
+          fi
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: artifacts
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v4
+        with:
+          packages: platform-tools
+
+      - name: Prepare release assets and update metadata
+        run: python3 scripts/ci/prepare_release.py
+
+      - name: Prepare public release notes
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+
+          lines = ["ZySU binaries and update metadata.", "", "| Component | Version | Code |", "| --- | --- | --- |"]
+          for component in ("manager", "ksud", "kernel"):
+              prefix = component.upper()
+              lines.append(f"| {component} | {os.environ[prefix + '_VERSION_NAME']} | {os.environ[prefix + '_VERSION_CODE']} |")
+          Path("release-notes.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+          PY
+
+      - name: Publish complete release
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Create a draft first: clients must never see a release with partial assets.
+          # Reuse the checked source tag so downloads and source archives match.
+          args=(--repo "$GH_REPO" --title "$RELEASE_TAG" --verify-tag --draft --notes-file release-notes.md)
+          if [ "$PRERELEASE" = 'true' ]; then
+            args+=(--prerelease)
+          fi
+          gh release create "$RELEASE_TAG" "${args[@]}" release-assets/*
+          if [ "$PRERELEASE" = 'true' ]; then
+            gh release edit "$RELEASE_TAG" --repo "$GH_REPO" --draft=false --latest=false
+          else
+            gh release edit "$RELEASE_TAG" --repo "$GH_REPO" --draft=false --latest=true
+          fi
+          gh release view "$RELEASE_TAG" --repo "$GH_REPO" --json url --jq .url >> "$GITHUB_STEP_SUMMARY"

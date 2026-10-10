@@ -1,0 +1,120 @@
+name: Build KernelSU Kernel Module
+
+on:
+  workflow_call:
+    inputs:
+      kmi:
+        description: 'KMI version'
+        required: true
+        type: string
+      ddk_release:
+        description: 'DDK release version'
+        required: false
+        default: '20260828'
+        type: string
+      manager_cert_size:
+        description: 'Manager signing certificate size in bytes'
+        type: string
+        default: ''
+      manager_cert_sha256:
+        description: 'Manager signing certificate SHA-256'
+        type: string
+        default: ''
+      kernel_version_name:
+        description: '内核版本，如 1.8.0；留空跟随标签/Git'
+        type: string
+        default: ''
+      kernel_version_code:
+        description: '内核数字版本；留空自动生成'
+        type: string
+        default: ''
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  build-kernelsu-ko:
+    name: Build kernelsu.ko for ${{ inputs.kmi }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container:
+      image: ghcr.io/ylarod/ddk-min:${{ inputs.kmi }}-${{ inputs.ddk_release }}
+      options: --privileged
+    defaults:
+      run:
+        shell: bash
+    env:
+      KMI: ${{ inputs.kmi }}
+      ZYSU_KERNEL_VERSION_NAME: ${{ inputs.kernel_version_name }}
+      ZYSU_KERNEL_VERSION_CODE: ${{ inputs.kernel_version_code }}
+      MANAGER_CERT_SIZE: ${{ inputs.manager_cert_size }}
+      MANAGER_CERT_SHA256: ${{ inputs.manager_cert_sha256 }}
+
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v7
+      with:
+        # Kbuild derives the version number from the complete commit history.
+        fetch-depth: 0
+
+    - name: Build kernelsu.ko
+      run: |
+        set -euo pipefail
+        git config --global --add safe.directory "$GITHUB_WORKSPACE"
+        cd kernel
+        test -f include/uapi/supercall.h
+
+        echo "Building kernelsu.ko for KMI: $KMI"
+        make_args=(CONFIG_KSU=m CONFIG_KSU_SUPERKEY=y CC=clang)
+        if [ -n "$MANAGER_CERT_SIZE$MANAGER_CERT_SHA256" ]; then
+          [[ "$MANAGER_CERT_SIZE" =~ ^[1-9][0-9]{0,3}$ ]]
+          (( MANAGER_CERT_SIZE <= 1024 ))
+          [[ "$MANAGER_CERT_SHA256" =~ ^[0-9a-f]{64}$ ]]
+          make_args+=("KSU_MANAGER_CERT_SIZE=$MANAGER_CERT_SIZE"
+                      "KSU_MANAGER_CERT_SHA256=$MANAGER_CERT_SHA256")
+        fi
+
+        # The checkout is clean; let recursive Kbuild share make's jobserver.
+        make -j"$(nproc)" "${make_args[@]}"
+
+        output="$GITHUB_WORKSPACE/out/${KMI}_kernelsu.ko"
+        mkdir -p "$GITHUB_WORKSPACE/out"
+        cp kernelsu.ko "$output"
+        llvm-strip -d "$output"
+        test -s "$output"
+        ls -lh "$output"
+
+    - name: Sign kernelsu.ko when a GPG key is configured
+      if: github.event_name != 'pull_request'
+      env:
+        GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+        GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+      run: |
+        set -euo pipefail
+        if [ -z "$GPG_PRIVATE_KEY" ]; then
+          echo "No GPG key configured; uploading the unsigned kernel module."
+          exit 0
+        fi
+        if ! command -v gpg >/dev/null 2>&1; then
+          apt-get update -qq
+          apt-get install -y --no-install-recommends gnupg
+        fi
+        export GNUPGHOME
+        GNUPGHOME=$(mktemp -d)
+        trap 'rm -rf "$GNUPGHOME"' EXIT
+        printf '%s\n' "$GPG_PRIVATE_KEY" | gpg --batch --yes \
+          --pinentry-mode loopback --passphrase "$GPG_PASSPHRASE" --import
+
+        output="$GITHUB_WORKSPACE/out/${KMI}_kernelsu.ko"
+        gpg --detach-sign --batch --yes --pinentry-mode loopback \
+          --passphrase "$GPG_PASSPHRASE" --output "${output}.sig" "$output"
+        test -s "${output}.sig"
+
+    - name: Upload kernelsu.ko artifact
+      uses: actions/upload-artifact@v7
+      with:
+        name: ${{ inputs.kmi }}-lkm
+        path: |
+          out/${{ inputs.kmi }}_kernelsu.ko
+          out/${{ inputs.kmi }}_kernelsu.ko.sig
+        if-no-files-found: error

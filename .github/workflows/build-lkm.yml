@@ -1,0 +1,113 @@
+name: Build LKM for KernelSU
+on:
+  workflow_call:
+    outputs:
+      manager_cert_sha256:
+        description: 'Configured Manager signing certificate SHA-256 (empty for upstream default)'
+        value: ${{ jobs.prepare.outputs.manager_cert_sha256 }}
+    inputs:
+      kmi:
+        description: 'KMI to build: all, one supported KMI, or a comma-separated list'
+        required: false
+        default: all
+        type: string
+      kernel_version_name:
+        description: '内核版本，如 1.8.0；留空跟随标签/Git'
+        type: string
+        default: ''
+      kernel_version_code:
+        description: '内核数字版本；留空自动生成'
+        type: string
+        default: ''
+  workflow_dispatch:
+    inputs:
+      kmi:
+        description: 'Kernel version / 内核版本'
+        required: false
+        default: all
+        type: choice
+        options:
+          - all
+          - android14-6.1
+          - android15-6.6
+          - android16-6.12
+          - android17-6.18
+      kernel_version_name:
+        description: '内核版本，如 1.8.0；留空跟随标签/Git'
+        type: string
+        default: ''
+      kernel_version_code:
+        description: '内核数字版本；留空自动生成'
+        type: string
+        default: ''
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  prepare:
+    name: Select kernel modules
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      MANAGER_KEYSTORE: ${{ github.event_name != 'pull_request' && secrets.KEYSTORE || '' }}
+    outputs:
+      matrix: ${{ steps.select.outputs.matrix }}
+      manager_cert_size: ${{ steps.manager-cert.outputs.size }}
+      manager_cert_sha256: ${{ steps.manager-cert.outputs.sha256 }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Java for Manager certificate
+        if: env.MANAGER_KEYSTORE != ''
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Export configured Manager certificate
+        id: manager-cert
+        if: env.MANAGER_KEYSTORE != ''
+        env:
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        run: python3 scripts/ci/manager_certificate.py
+
+      - name: Validate KMI selection
+        id: select
+        env:
+          SELECTED_KMI: ${{ inputs.kmi }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+
+          # Keep this list in sync with scripts/build.* and ksud.yml.
+          supported = [
+              "android14-6.1",
+              "android15-6.6",
+              "android16-6.12",
+              "android17-6.18",
+          ]
+          requested = os.environ["SELECTED_KMI"].strip()
+          selected = supported if requested == "all" else [item.strip() for item in requested.split(",")]
+          if not selected or any(item not in supported for item in selected):
+              raise SystemExit("::error::Invalid KMI selection. Use all or a comma-separated list of: " + ", ".join(supported))
+          selected = list(dict.fromkeys(selected))
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write("matrix=" + json.dumps({"kmi": selected}, separators=(",", ":")) + "\n")
+          print("Building kernel modules: " + ", ".join(selected))
+          PY
+
+  build-lkm:
+    needs: prepare
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    uses: ./.github/workflows/ddk-lkm.yml
+    secrets: inherit
+    with:
+      kmi: ${{ matrix.kmi }}
+      kernel_version_name: ${{ inputs.kernel_version_name }}
+      kernel_version_code: ${{ inputs.kernel_version_code }}
+      manager_cert_size: ${{ needs.prepare.outputs.manager_cert_size }}
+      manager_cert_sha256: ${{ needs.prepare.outputs.manager_cert_sha256 }}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="crop_toolbar">#FFFFFF</color>
+    <color name="crop_toolbar_widget">#000000</color>
+    <color name="crop_rotate_angle">#20242F</color>
+    <color name="crop_active_controls">#FF6300</color>
+    <color name="crop_inactive_controls">#B3BECE</color>
+    <color name="crop_default_logo">#4F212121</color>
+    <dimen name="crop_logo_size">200dp</dimen>
+    <dimen name="crop_frame_padding">16dp</dimen>
+</resources>

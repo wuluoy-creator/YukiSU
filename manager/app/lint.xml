@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lint>
+    <!-- Intentional raster launcher previews alongside the adaptive icon used on API 31+. -->
+    <issue id="IconXmlAndPng">
+        <ignore regexp=".*[\\/]mipmap-[^\\/]+[\\/]ic_launcher[.]png" />
+    </issue>
+    <!-- The pinned MMRL revision predates its upstream 16 KB linker fix. -->
+    <issue id="Aligned16KB">
+        <ignore regexp=".*libmmrl-file-manager.so.*" />
+        <ignore path="../gradle/libs.versions.toml" />
+    </issue>
+</lint>

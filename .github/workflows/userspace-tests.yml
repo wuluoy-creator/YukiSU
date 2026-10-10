@@ -1,0 +1,48 @@
+name: ksud and ksuinit regressions
+
+on:
+  push:
+    branches: [main, dev, 'feat/*']
+    paths:
+      - 'userspace/ksud/src/**'
+      - 'userspace/ksud/tests/**'
+      - 'userspace/ksud/scripts/**'
+      - 'userspace/ksuinit/**'
+      - 'userspace/common/**'
+      - '.github/workflows/userspace-tests.yml'
+  pull_request:
+    paths:
+      - 'userspace/ksud/src/**'
+      - 'userspace/ksud/tests/**'
+      - 'userspace/ksud/scripts/**'
+      - 'userspace/ksuinit/**'
+      - 'userspace/common/**'
+      - '.github/workflows/userspace-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  host-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - name: ELF, image copy and existing parsers
+        run: python3 userspace/ksud/tests/run_host_tests.py --cxx clang++ --sanitize
+      - name: Module management and configuration
+        run: python3 userspace/ksud/tests/run_module_host_tests.py --cxx clang++
+      - name: Script deadlines and signal masks
+        run: python3 userspace/ksud/tests/run_script_wait_host_tests.py --cxx clang++
+      - name: Process execution and file I/O
+        run: python3 userspace/ksud/tests/run_runtime_host_tests.py --cxx clang++
+      - name: Boot-property timing, readback and retries
+        run: python3 userspace/ksud/tests/run_hide_bootloader_host_tests.py --cxx clang++
+      - name: Init handoff, module parser and vermagic with sanitizers
+        run: python3 userspace/ksuinit/tests/run_host_tests.py --cxx clang++ --sanitize
+      - name: Embedded assets
+        run: python3 userspace/ksud/scripts/test_embed_assets.py

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Keep both tiles inside the adaptive icon's 66dp safe circle. -->
+    <group android:pivotX="54" android:pivotY="54"
+        android:scaleX="0.58" android:scaleY="0.58">
+        <path android:fillColor="#000000" android:pathData="M57.8,11 H86.6 Q95.4,11 95.4,19.8 V49.1 Q95.4,57.9 86.6,57.9 H57.8 Q49,57.9 49,49.1 V19.8 Q49,11 57.8,11 Z" />
+        <path android:fillColor="#000000" android:pathData="M21.2,50.9 H49.8 Q58.3,50.9 58.3,59.4 V88.5 Q58.3,97 49.8,97 H21.2 Q12.7,97 12.7,88.5 V59.4 Q12.7,50.9 21.2,50.9 Z" />
+    </group>
+</vector>

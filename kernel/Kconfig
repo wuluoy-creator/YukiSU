@@ -1,0 +1,79 @@
+menu "KernelSU"
+
+config KSU
+	  tristate "KernelSU function support"
+	  depends on m
+	  default m
+	  help
+		Enable kernel-level root privileges on Android System.
+		Requires Linux 6.1 or newer.
+		ZySU only supports loadable kernel module (LKM). Choose M.
+		Built-in (=y) is no longer supported.
+		The module will be called kernelsu.
+
+config KSU_DEBUG
+	  bool "KernelSU debug mode"
+	  depends on KSU
+	  default n
+	  help
+		Enable KernelSU debug mode.
+
+config KSU_DISABLE_MANAGER
+	bool "Disable KernelSU manager integration"
+	depends on KSU
+	default n
+	help
+	  Disable manager APK detection and manager-specific handling.
+	  Root will be used in place of manager-only functionality.
+
+config KSU_DISABLE_POLICY
+	bool "Disable KernelSU policy profiles"
+	depends on KSU
+	default n
+	help
+	  Disable per-app root/non-root profile customization.
+	  Escalation will always use the default full root profile, and
+	  non-root handling will follow the global umount policy only.
+
+config KSU_ALLOWLIST_WORKAROUND
+	bool "KernelSU Session Keyring Init workaround"
+	depends on KSU
+	default n
+	help
+	  Enable session keyring init workaround for problematic devices.
+	  Useful for situations where the SU allowlist is not kept after a reboot
+
+config KSU_KRETPROBES_SUCOMPAT
+	bool "Use kretprobes for getname_flags sucompat (EXPERIMENTAL)"
+	depends on KRETPROBES
+	default n
+	help
+	  Hook getname_flags() via kretprobe to implement sucompat.
+	  This is the most stealthy method and improves reliability.
+	  
+	  Advantages:
+	  - Prevents timing-based detection (newfstat vs newfstatat)
+	  - No usercopy operations, more reliable on page faults
+	  - Defeats anti-root detection techniques:
+	    * Delayed syscall detection
+	    * KSU (ND) detection
+	    * sucompat SCA (Disclosure)
+	    * Abnormal Environment (NT)
+	  
+	  WARNING: This is very experimental. Default to N.
+	  Requires CONFIG_KRETPROBES=y in kernel config.
+
+config KSU_SUPERKEY
+	bool "Enable SuperKey authentication"
+	depends on KSU
+	depends on !KSU_DISABLE_MANAGER
+	default y
+	help
+	  Enable APatch-style SuperKey authentication.
+	  This allows the manager app to authenticate using a password
+	  instead of APK signature verification.
+	  
+	  The SuperKey can be set at compile time via KSU_SUPERKEY="your_key"
+	  or patched into the LKM binary by ksud.
+
+endmenu

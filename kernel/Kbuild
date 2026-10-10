@@ -1,0 +1,247 @@
+MDIR := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+
+# Preserve raw overrides before any shell call can expand exported Make values.
+override ZYSU_KERNEL_VERSION_NAME := $(value ZYSU_KERNEL_VERSION_NAME)
+override ZYSU_KERNEL_VERSION_CODE := $(value ZYSU_KERNEL_VERSION_CODE)
+export ZYSU_KERNEL_VERSION_NAME ZYSU_KERNEL_VERSION_CODE
+
+# Reject unsupported kernels before compiling against incompatible APIs.
+ifneq ($(filter y m,$(CONFIG_KSU)),)
+ifeq ($(filter clean mrproper distclean,$(MAKECMDGOALS)),)
+ifneq ($(shell test "$(VERSION)" -gt 6 -o \( "$(VERSION)" -eq 6 -a "$(PATCHLEVEL)" -ge 1 \) && echo supported),supported)
+$(error ZySU requires Linux 6.1 or newer)
+endif
+endif
+endif
+
+kernelsu-objs := core/init.o
+kernelsu-objs += core/imgpatch_config.o
+kernelsu-objs += policy/allowlist.o
+kernelsu-objs += policy/app_profile.o
+kernelsu-objs += feature/sucompat.o
+kernelsu-objs += feature/sucompat_exec.o
+kernelsu-objs += feature/sucompat_vfs.o
+kernelsu-objs += feature/sucompat_module_guard.o
+include $(src)/sumh/Kbuild
+
+ifneq ($(CONFIG_KSU_DISABLE_MANAGER),y)
+kernelsu-objs += manager/apk_sign.o
+kernelsu-objs += manager/dynamic_manager.o
+kernelsu-objs += manager/throne_tracker.o
+kernelsu-objs += manager/pkg_observer.o
+endif
+
+# TSR (Tracepoint Syscall Redirect) hook infrastructure
+kernelsu-objs += hook/syscall_event_bridge.o
+kernelsu-objs += hook/syscall_hook_manager.o
+kernelsu-objs += hook/lsm_hook.o
+kernelsu-objs += hook/tp_marker.o
+
+ifeq ($(CONFIG_ARM64),y)
+  kernelsu-objs += hook/arm64/patch_memory.o hook/arm64/syscall_hook.o
+else ifneq ($(filter y m,$(CONFIG_KSU)),)
+ifeq ($(filter clean mrproper distclean,$(MAKECMDGOALS)),)
+  $(error ZySU supports ARM64 kernels only)
+endif
+endif
+kernelsu-objs += hook/setuid_hook.o
+kernelsu-objs += feature/kernel_umount.o
+kernelsu-objs += supercall/dispatch.o
+kernelsu-objs += supercall/perm.o
+kernelsu-objs += supercall/supercall.o
+kernelsu-objs += policy/feature.o
+kernelsu-objs += feature/adb_root.o
+kernelsu-objs += feature/selinux_hide.o
+kernelsu-objs += feature/hide_bootloader.o
+kernelsu-objs += infra/symbol_resolver.o
+kernelsu-objs += runtime/boot_event.o
+kernelsu-objs += runtime/ksud_integration.o
+kernelsu-objs += infra/seccomp_cache.o
+kernelsu-objs += infra/su_mount_ns.o
+kernelsu-objs += infra/file_wrapper.o
+kernelsu-objs += infra/mount_policy.o
+kernelsu-objs += infra/event_queue.o
+kernelsu-objs += feature/sulog.o
+kernelsu-objs += sulog/event.o
+kernelsu-objs += sulog/fd.o
+
+kernelsu-objs += selinux/selinux.o
+kernelsu-objs += selinux/sepolicy.o
+kernelsu-objs += selinux/rules.o
+
+ifdef KBUILD_EXTMOD
+ifeq ($(CONFIG_KSU_DISABLE_MANAGER),y)
+ccflags-y += -DCONFIG_KSU_DISABLE_MANAGER=1
+endif
+ifeq ($(CONFIG_KSU_DISABLE_POLICY),y)
+ccflags-y += -DCONFIG_KSU_DISABLE_POLICY=1
+endif
+ifeq ($(CONFIG_KSU_DEBUG),y)
+ccflags-y += -DCONFIG_KSU_DEBUG=1
+endif
+endif
+
+# SuperKey support is enabled by default unless explicitly disabled.
+# To disable: make ... CONFIG_KSU_SUPERKEY=n
+ifneq ($(CONFIG_KSU_DISABLE_MANAGER),y)
+ifeq ($(CONFIG_KSU_SUPERKEY),y)
+kernelsu-objs += manager/superkey.o
+ccflags-y += -DCONFIG_KSU_SUPERKEY
+ifneq ($(KSU_SUPERKEY),)
+ccflags-y += -DKSU_SUPERKEY=\"$(KSU_SUPERKEY)\"
+endif
+endif
+endif
+
+ccflags-y += -Wno-strict-prototypes -Wno-declaration-after-statement
+ccflags-y += -Wno-unused-function -Wno-unused-variable -Wno-missing-braces
+ccflags-y += -Wno-int-to-pointer-cast
+
+ccflags-y += -I$(srctree)/security/selinux -I$(srctree)/security/selinux/include
+ccflags-y += -I$(objtree)/security/selinux -include $(srctree)/include/uapi/asm-generic/errno.h
+
+ifneq ($(KBUILD_EXTMOD),)
+# 6.18 exports the external module source as srcroot when M/MO are used.
+ifneq ($(srcroot),)
+KSU_KERNEL_DIR := $(srcroot)
+endif
+endif
+ifndef KSU_KERNEL_DIR
+ifeq ($(filter /%,$(src)),)
+KSU_KERNEL_DIR := $(srctree)/$(src)
+else
+KSU_KERNEL_DIR := $(src)
+endif
+endif
+
+ccflags-y += -I$(KSU_KERNEL_DIR) -I$(KSU_KERNEL_DIR)/include
+
+obj-$(CONFIG_KSU) += kernelsu.o
+
+REPO_OWNER := wuluoy-creator
+REPO_NAME := ZySU
+REPO_FALLBACK_BRANCH := main
+
+GIT_BIN := /usr/bin/env PATH="$$PATH":/usr/bin:/usr/local/bin git
+CURL_BIN := /usr/bin/env PATH="$$PATH":/usr/bin:/usr/local/bin curl
+
+# Python reads the environment directly; unvalidated input must never be
+# substituted into a shell command or compiler flag. Sentinels retain whitespace
+# so whitespace-only overrides are rejected instead of being treated as empty.
+ifneq (x$(ZYSU_KERNEL_VERSION_NAME)$(ZYSU_KERNEL_VERSION_CODE)x,xx)
+  KSU_VERSION_OVERRIDES := $(shell python3 "$(MDIR)/tools/version_overrides.py")
+  ifneq ($(words $(KSU_VERSION_OVERRIDES)),2)
+    $(error Invalid kernel version override; Python 3 is required to validate custom versions)
+  endif
+  ifneq ($(word 1,$(KSU_VERSION_OVERRIDES)),-)
+    KSU_VERSION_NAME_OVERRIDE := $(word 1,$(KSU_VERSION_OVERRIDES))
+  endif
+  ifneq ($(word 2,$(KSU_VERSION_OVERRIDES)),-)
+    KSU_VERSION_CODE_OVERRIDE := $(word 2,$(KSU_VERSION_OVERRIDES))
+  endif
+endif
+
+ifeq ($(KSU_VERSION_NAME_OVERRIDE),)
+  KSU_GITHUB_VERSION := $(shell $(CURL_BIN) -s "https://api.github.com/repos/$(REPO_OWNER)/$(REPO_NAME)/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+endif
+
+ifeq ($(findstring $(srctree),$(src)),$(srctree))
+  KSU_SRC := $(src)
+else
+  KSU_SRC := $(srctree)/$(src)
+endif
+
+ifneq ($(shell test -e $(KSU_SRC)/../.git && echo "in-tree"),in-tree)
+  KSU_SRC := $(MDIR)
+endif
+
+# Version from git describe (latest tag), fallback when no git
+KSU_VERSION_API := $(shell cd $(KSU_SRC) 2>/dev/null && $(GIT_BIN) describe --tags --always 2>/dev/null | sed -E 's/^v?([0-9]+\.[0-9]+\.[0-9]+).*/\1/' || echo "1.4.0")
+
+LOCAL_GIT_EXISTS := $(shell test -e $(KSU_SRC)/../.git && echo 1 || echo 0)
+
+# Mark builds made from uncommitted KernelSU sources. Limit the status check to
+# the kernel module and its shared UAPI so unrelated changes elsewhere in the
+# enclosing repository do not change the LKM version string.
+ifeq ($(LOCAL_GIT_EXISTS),1)
+  KSU_GIT_DIRTY_SUFFIX := $(shell cd $(KSU_SRC) 2>/dev/null && GIT_OPTIONAL_LOCKS=0 $(GIT_BIN) -c core.autocrlf=true status --porcelain --untracked-files=normal -- . ../uapi 2>/dev/null | grep -q . && printf '%s' '-nc')
+endif
+
+define get_ksu_version_full
+v$1-$(shell cd $(KSU_SRC); $(GIT_BIN) rev-parse --short=8 HEAD)$(KSU_GIT_DIRTY_SUFFIX)@$(REPO_NAME)
+endef
+
+# Keep the numeric kernel version tied to the checked-out revision, just like the
+# manager version. Only use the remote default branch when Git metadata is absent.
+ifneq ($(KSU_VERSION_CODE_OVERRIDE),)
+  KSU_VERSION := $(KSU_VERSION_CODE_OVERRIDE)
+  $(info -- $(REPO_NAME) version (override): $(KSU_VERSION))
+else ifeq ($(LOCAL_GIT_EXISTS),1)
+  $(shell cd $(KSU_SRC) 2>/dev/null; [ -f ../.git/shallow ] && $(GIT_BIN) fetch --unshallow 2>/dev/null)
+  KSU_LOCAL_VERSION := $(shell cd $(KSU_SRC) 2>/dev/null && $(GIT_BIN) rev-list --count HEAD 2>/dev/null)
+  KSU_VERSION := $(shell expr 10000 + $(KSU_LOCAL_VERSION) - 3135 2>/dev/null || true)
+  KSU_VERSION := $(if $(KSU_VERSION),$(KSU_VERSION),12000)
+  $(info -- $(REPO_NAME) version (local HEAD): $(KSU_VERSION))
+else
+  KSU_GITHUB_VERSION_COMMIT := $(shell $(CURL_BIN) -sI "https://api.github.com/repos/$(REPO_OWNER)/$(REPO_NAME)/commits?sha=$(REPO_FALLBACK_BRANCH)&per_page=1" | grep -i "link:" | sed -n 's/.*page=\([0-9]*\)>; rel="last".*/\1/p')
+  ifeq ($(KSU_GITHUB_VERSION_COMMIT),)
+    KSU_VERSION := 12000
+    $(warning -- Could not fetch version online or via local .git! Using fallback version: $(KSU_VERSION))
+  else
+    KSU_VERSION := $(shell expr 10000 + $(KSU_GITHUB_VERSION_COMMIT) - 3135)
+    $(info -- $(REPO_NAME) version (GitHub $(REPO_FALLBACK_BRANCH)): $(KSU_VERSION))
+  endif
+endif
+
+ifneq ($(KSU_VERSION_NAME_OVERRIDE),)
+  ifeq ($(LOCAL_GIT_EXISTS),1)
+    KSU_VERSION_FULL := $(call get_ksu_version_full,$(KSU_VERSION_NAME_OVERRIDE))
+  else
+    KSU_VERSION_FULL := v$(KSU_VERSION_NAME_OVERRIDE)-unknown@$(REPO_NAME)
+  endif
+  $(info -- $(REPO_NAME) version name (override): $(KSU_VERSION_FULL))
+else ifeq ($(KSU_GITHUB_VERSION),)
+  ifeq ($(LOCAL_GIT_EXISTS),1)
+    $(shell cd $(KSU_SRC); [ -f ../.git/shallow ] && $(GIT_BIN) fetch --unshallow)
+    KSU_VERSION_FULL := $(call get_ksu_version_full,$(KSU_VERSION_API))
+    $(info -- $(REPO_NAME) version (local .git): $(KSU_VERSION_FULL))
+    $(info -- $(REPO_NAME) Formatted version (local .git): $(KSU_VERSION))
+  else
+    KSU_VERSION_FULL := v$(KSU_VERSION_API)-$(REPO_NAME)-unknown@$(REPO_NAME)
+    $(warning -- $(REPO_NAME) version: $(KSU_VERSION_FULL))
+  endif
+else
+  $(shell cd $(KSU_SRC); [ -f ../.git/shallow ] && $(GIT_BIN) fetch --unshallow)
+  KSU_VERSION_FULL := $(call get_ksu_version_full,$(KSU_GITHUB_VERSION))
+  $(info -- $(REPO_NAME) version (Github): $(KSU_VERSION_FULL))
+endif
+
+ccflags-y += -DKSU_VERSION=$(KSU_VERSION)
+ccflags-y += -DKSU_VERSION_FULL=\"$(KSU_VERSION_FULL)\"
+
+# Only public certificate metadata is passed to the kernel build.
+ifneq ($(strip $(KSU_MANAGER_CERT_SIZE)$(KSU_MANAGER_CERT_SHA256)),)
+ifeq ($(strip $(KSU_MANAGER_CERT_SIZE)),)
+$(error KSU_MANAGER_CERT_SIZE is required with KSU_MANAGER_CERT_SHA256)
+endif
+ifeq ($(strip $(KSU_MANAGER_CERT_SHA256)),)
+$(error KSU_MANAGER_CERT_SHA256 is required with KSU_MANAGER_CERT_SIZE)
+endif
+ccflags-y += -DKSU_MANAGER_CERT_SIZE=$(KSU_MANAGER_CERT_SIZE)
+ccflags-y += -DKSU_MANAGER_CERT_SHA256=\"$(KSU_MANAGER_CERT_SHA256)\"
+$(info -- ZySU: using configured Manager signing certificate)
+endif
+
+# Checks Samsung
+ifeq ($(shell grep -q "CONFIG_KDP_CRED" $(srctree)/kernel/cred.c; echo $$?),0)
+ccflags-y += -DSAMSUNG_UH_DRIVER_EXIST
+endif
+ifeq ($(shell grep -q "SEC_SELINUX_PORTING_COMMON" $(srctree)/security/selinux/avc.c; echo $$?),0)
+ccflags-y += -DSAMSUNG_SELINUX_PORTING
+endif
+ifdef KSU_MANAGER_PACKAGE
+ccflags-y += -DKSU_MANAGER_PACKAGE=\"$(KSU_MANAGER_PACKAGE)\"
+$(info -- ZySU Manager package name: $(KSU_MANAGER_PACKAGE))
+endif
+
+# Keep a new line here!! Because someone may append config

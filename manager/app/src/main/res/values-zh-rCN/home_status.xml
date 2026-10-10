@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_status_load_failed">状态加载失败</string>
+    <string name="home_status_protocol_mismatch">协议不匹配</string>
+    <string name="home_status_loading">正在加载…</string>
+    <string name="home_ksud_version">版本号：%1$s</string>
+    <string name="home_sumh_protocol">协议版本：%1$s</string>
+    <string name="home_sumh_protocol_description">SUMH 内核协议版本：%1$s</string>
+    <string name="home_sumh_views_on">视图已启用</string>
+    <string name="home_sumh_views_off">视图已关闭</string>
+    <string name="home_sumh_views_unknown">视图状态未知</string>
+    <string name="home_sumh_requires_manager">需管理器权限</string>
+    <string name="home_sumh_refresh">刷新 SUMH 状态</string>
+    <string name="home_sumh_show_error">查看原因</string>
+    <string name="home_sumh_hide_error">收起原因</string>
+    <string name="home_status_build">构建 %1$d</string>
+    <string name="home_status_build_api">构建 %1$d · UAPI %2$d</string>
+</resources>

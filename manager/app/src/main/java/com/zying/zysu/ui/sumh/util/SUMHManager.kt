@@ -1,0 +1,228 @@
+package com.zying.zysu.ui.sumh.util
+
+import com.zying.zysu.Natives
+import com.zying.zysu.ui.util.getKsud
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import org.json.JSONObject
+
+object SUMHManager {
+    val mountModes = listOf("auto", "sumh", "overlay", "magic", "none")
+    val ruleModes = mountModes + "hide"
+    // Keep multi-request reads from observing an in-progress Manager mutation.
+    private val operations = Mutex()
+    private val changes = MutableStateFlow(0L)
+    val revision = changes.asStateFlow()
+
+    data class ModuleRule(val path: String, val mode: String)
+    data class ConfigSaveResult(val persisted: Boolean, val applied: Boolean, val error: String? = null, val noChanges: Boolean = false)
+    data class MountConflict(val path: String, val modules: List<String>)
+    data class ModuleInfo(
+        val id: String, val mode: String, val rules: List<ModuleRule>,
+        val name: String = id, val strategy: String = "none",
+    )
+    data class MountState(
+        val modules: Map<String, ModuleInfo>,
+        val available: Boolean,
+        val globalMode: String,
+        val externalOwner: String,
+        val activeSUMHIds: Set<String> = emptySet(),
+    )
+    data class Snapshot(
+        val system: JSONObject,
+        val config: JSONObject,
+        val activeRules: JSONArray,
+        val hideRules: List<String>,
+        val mounts: MountState,
+    )
+    data class RuleSnapshot(val system: JSONObject, val hideRules: List<String>)
+
+    private suspend fun <T> read(block: () -> T): T = withContext(Dispatchers.IO) {
+        operations.withLock { block() }
+    }
+
+    private fun command(vararg args: String): String {
+        val request = JSONArray(args.toList()).toString().toByteArray(Charsets.UTF_8)
+        val response = JSONObject(Natives.sumhpRequest(getKsud().toByteArray(Charsets.UTF_8), request).toString(Charsets.UTF_8))
+        check(response.getBoolean("ok") && response.getInt("exit_code") == 0) {
+            response.optString("stderr").ifBlank { "SUMHP error ${response.optInt("errno")}" }.take(1500)
+        }
+        return response.getString("stdout").trim()
+    }
+
+    private fun kernelSnapshot() = JSONObject(Natives.sumhKernelSnapshot().toString(Charsets.UTF_8))
+
+    private fun objectResult(vararg args: String): JSONObject {
+        val output = command(*args)
+        val start = output.indexOf('{')
+        check(start >= 0) { "Invalid SUMHP response" }
+        return JSONObject(output.substring(start))
+    }
+
+    private fun arrayResult(vararg args: String): JSONArray {
+        val output = command(*args)
+        return JSONArray(output)
+    }
+
+    internal fun parseModules(root: JSONObject): Map<String, ModuleInfo> {
+        val modules = root.getJSONArray("modules")
+        return (0 until modules.length()).associate { i ->
+            val module = modules.getJSONObject(i)
+            val entries = module.optJSONArray("rules") ?: JSONArray()
+            val info = ModuleInfo(
+                module.getString("id"), module.getString("mode"),
+                (0 until entries.length()).map { index ->
+                    val rule = entries.getJSONObject(index)
+                    ModuleRule(rule.getString("path"), rule.getString("mode"))
+                },
+                module.optString("name", module.getString("id")), module.optString("strategy", "none"),
+            )
+            info.id to info
+        }
+    }
+
+    private fun readMountState(config: JSONObject, kernel: JSONObject): MountState {
+        val meta = objectResult("api", "meta", "--control-only")
+        check(meta.optBoolean("embedded") && meta.optBoolean("native_control")) {
+            "Update ksud and restart the SUMHP controller"
+        }
+        return MountState(
+            parseModules(objectResult("module", "list", "--all")), kernel.getBoolean("sumh_available"),
+            config.optString("mount_backend", "auto"),
+            meta.optString("external_mount_owner"),
+            if (kernel.optBoolean("enabled"))
+                Regex("/data/adb/modules/([^/\\s]+)").findAll(kernel.optString("rules")).map { it.groupValues[1] }.toSet()
+            else emptySet(),
+        )
+    }
+
+    suspend fun getMountState(): MountState = read {
+        val config = objectResult("config", "show", "--stored")
+        readMountState(config, kernelSnapshot())
+    }
+
+    private fun readHideRules(): List<String> {
+        val entries = arrayResult("hide", "list")
+        return (0 until entries.length()).map(entries::getString)
+    }
+
+    suspend fun ruleSnapshot(): RuleSnapshot = read {
+        RuleSnapshot(kernelSnapshot(), readHideRules())
+    }
+
+    suspend fun listHideRules(): List<String> = read { readHideRules() }
+
+    internal suspend fun kernelBuild(): KernelBuildState = read {
+        val result = objectResult("sumh", "kernel-build", "show")
+        KernelBuildState(
+            enabled = result.getBoolean("enabled"),
+            release = result.getString("release"),
+            version = result.getString("version"),
+            originalRelease = result.getString("original_release"),
+            originalVersion = result.getString("original_version"),
+            suggestedVersion = result.getString("suggested_version"),
+            suggestionSource = result.getString("suggestion_source"),
+        )
+    }
+
+    suspend fun snapshot(): Snapshot = read {
+        val system = kernelSnapshot()
+        val config = objectResult("config", "show", "--stored")
+        val mountState = readMountState(config, system)
+        val mounts = objectResult("api", "mounts")
+        mounts.keys().forEach { key -> system.put(key, mounts.get(key)) }
+        val hides = readHideRules()
+        Snapshot(
+            system, config,
+            JSONArray(system.optString("rules").lineSequence().filter(String::isNotBlank)
+                .map { JSONObject().put("args", it) }.toList()),
+            hides,
+            mountState,
+        )
+    }
+
+    private suspend fun mutate(block: () -> Unit) = withContext(NonCancellable + Dispatchers.IO) {
+        operations.withLock {
+            try { block() } finally { changes.value++ }
+        }
+    }
+
+    suspend fun saveConfig(updates: JSONObject) = mutate {
+        command("config", "merge-json", updates.toString())
+    }
+
+    suspend fun saveAndApplyConfig(updates: JSONObject, applyRuntime: Boolean): ConfigSaveResult =
+        withContext(NonCancellable + Dispatchers.IO) {
+            operations.withLock {
+                var persisted = false
+                try {
+                    command("config", "merge-json", updates.toString())
+                    persisted = true
+                    if (applyRuntime) command("config", "apply")
+                    ConfigSaveResult(persisted = true, applied = applyRuntime)
+                } catch (error: Exception) {
+                    ConfigSaveResult(persisted, false, error.message ?: "Configuration operation failed")
+                } finally { changes.value++ }
+            }
+        }
+
+    suspend fun checkConflicts(): List<MountConflict> = withContext(Dispatchers.IO) {
+        val entries = arrayResult("module", "check-conflicts")
+        (0 until entries.length()).map { index ->
+            val entry = entries.getJSONObject(index)
+            val modules = entry.getJSONArray("modules")
+            MountConflict(entry.getString("file"), (0 until modules.length()).map(modules::getString))
+        }
+    }
+
+    suspend fun clearLog() = mutate { Natives.sumhClearLog() }
+
+    suspend fun applyConfig() = mutate { command("config", "apply") }
+
+    suspend fun saveModule(id: String, mode: String, rules: List<ModuleRule>) = mutate {
+        require(mode in mountModes)
+        require(rules.all { it.path.startsWith('/') && it.mode in ruleModes })
+        require(rules.map { it.path }.distinct().size == rules.size)
+        val meta = objectResult("api", "meta", "--control-only")
+        check(meta.optString("external_mount_owner").isEmpty()) { "An external metamodule owns mounting" }
+        val previous = parseModules(objectResult("module", "list", "--all"))[id]
+        check(previous != null) { "Module is no longer mountable" }
+        if (mode != previous.mode) command("module", "set-mode", id, mode)
+        val paths = rules.mapTo(HashSet()) { it.path }
+        val previousRules = previous.rules.toHashSet()
+        previous.rules.filter { it.path !in paths }.forEach {
+            command("module", "remove-rule", id, it.path)
+        }
+        rules.filter { it !in previousRules }.forEach {
+            command("module", "add-rule", id, it.path, it.mode)
+        }
+    }
+
+    suspend fun saveHide(path: String, remove: Boolean = false) = mutate {
+        require(path.startsWith('/') && path != "/system/bin/su")
+        command("hide", if (remove) "remove" else "add", path)
+    }
+
+    suspend fun clearRules() = mutate { command("sumh", "clear") }
+    suspend fun retryUserHide(path: String) = mutate {
+        Natives.sumhRetryUserHide(path.toByteArray(Charsets.UTF_8))
+    }
+    suspend fun addMapsRule(numbers: List<String>, path: String) = mutate {
+        require(numbers.size == 4 && numbers.all { it.toULongOrNull() != null } && path.startsWith('/'))
+        Natives.sumhAddMapsRule(numbers.map { it.toULong().toLong() }.toLongArray(), path.toByteArray(Charsets.UTF_8))
+    }
+    suspend fun clearMapsRules() = mutate { Natives.sumhClearMapsRules() }
+    suspend fun resetRecovery() = mutate { command("recovery", "reset") }
+
+    suspend fun readLog(): String = withContext(Dispatchers.IO) {
+        Natives.sumhReadLog(false).toString(Charsets.UTF_8)
+    }
+
+    internal suspend fun syncPartitions() = mutate { command("config", "sync-partitions") }
+}

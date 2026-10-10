@@ -1,0 +1,476 @@
+name: Build ZySU / 自选编译
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_manager:
+        description: 'Manager APK（自动编译并嵌入全部必要依赖）'
+        type: boolean
+        default: true
+      build_lkm:
+        description: 'LKM 内核模块（可独立编译）'
+        type: boolean
+        default: false
+      build_ksud:
+        description: 'ksud 守护进程（自动嵌入 LKM 和 ksuinit）'
+        type: boolean
+        default: false
+      build_ksuinit:
+        description: 'ksuinit 初始进程（可独立编译）'
+        type: boolean
+        default: false
+      kmi:
+        description: '内核版本：all 通用；指定版本更快，APK/ksud 仅含该版本模块'
+        type: choice
+        default: all
+        options:
+          - all
+          - android14-6.1
+          - android15-6.6
+          - android16-6.12
+          - android17-6.18
+      manager_version_name:
+        description: '管理器版本，如 v1.8.0；留空从标签/Git 生成'
+        type: string
+        default: ''
+      manager_version_code:
+        description: '管理器数字版本；留空根据 Git 和已发布版本自动生成'
+        type: string
+        default: ''
+      ksud_version_name:
+        description: 'ksud 版本，如 1.8.1；留空跟随标签/Git'
+        type: string
+        default: ''
+      ksud_version_code:
+        description: 'ksud 数字版本；留空自动生成'
+        type: string
+        default: ''
+      kernel_version_name:
+        description: '内核版本，如 1.8.0；留空跟随标签/Git'
+        type: string
+        default: ''
+  workflow_call:
+    inputs:
+      build_manager:
+        description: 'Manager APK（自动编译并嵌入全部必要依赖）'
+        type: boolean
+        default: true
+      build_lkm:
+        description: 'LKM 内核模块（可独立编译）'
+        type: boolean
+        default: false
+      build_ksud:
+        description: 'ksud 守护进程（自动嵌入 LKM 和 ksuinit）'
+        type: boolean
+        default: false
+      build_ksuinit:
+        description: 'ksuinit 初始进程（可独立编译）'
+        type: boolean
+        default: false
+      kmi:
+        description: '内核版本：all 通用；指定版本更快，APK/ksud 仅含该版本模块'
+        type: string
+        default: all
+      manager_version_name:
+        description: '管理器版本，如 v1.8.0；留空从标签/Git 生成'
+        type: string
+        default: ''
+      manager_version_code:
+        description: '管理器数字版本；留空根据 Git 和已发布版本自动生成'
+        type: string
+        default: ''
+      ksud_version_name:
+        description: 'ksud 版本，如 1.8.1；留空跟随标签/Git'
+        type: string
+        default: ''
+      ksud_version_code:
+        description: 'ksud 数字版本；留空自动生成'
+        type: string
+        default: ''
+      kernel_version_name:
+        description: '内核版本，如 1.8.0；留空跟随标签/Git'
+        type: string
+        default: ''
+      kernel_version_code:
+        description: '内核数字版本；留空自动生成'
+        type: string
+        default: ''
+      publish_release:
+        type: boolean
+        default: false
+      prerelease:
+        type: boolean
+        default: false
+      release_tag:
+        type: string
+        default: ''
+    outputs:
+      manager_version_name:
+        value: ${{ jobs.plan.outputs.manager_version_name }}
+      manager_version_code:
+        value: ${{ jobs.plan.outputs.manager_version_code }}
+      ksud_version_name:
+        value: ${{ jobs.plan.outputs.ksud_version_name }}
+      ksud_version_code:
+        value: ${{ jobs.plan.outputs.ksud_version_code }}
+      kernel_version_name:
+        value: ${{ jobs.plan.outputs.kernel_version_name }}
+      kernel_version_code:
+        value: ${{ jobs.plan.outputs.kernel_version_code }}
+      release_tag:
+        value: ${{ jobs.plan.outputs.release_tag }}
+      commit_sha:
+        value: ${{ jobs.plan.outputs.commit_sha }}
+
+permissions:
+  contents: read
+
+# Superseded push/PR builds can be cancelled; manual and tagged builds are independent.
+concurrency:
+  group: zysu-build-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ (github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref_type == 'branch')) && 'ci' || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref_type == 'branch') }}
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  plan:
+    name: Resolve selections / 自动补齐依赖
+    runs-on: ubuntu-latest
+    outputs:
+      manager: ${{ steps.plan.outputs.manager }}
+      lkm: ${{ steps.plan.outputs.lkm }}
+      ksud: ${{ steps.plan.outputs.ksud }}
+      ksuinit: ${{ steps.plan.outputs.ksuinit }}
+      kmi: ${{ steps.plan.outputs.kmi }}
+      manager_version_name: ${{ steps.versions.outputs.manager_version_name }}
+      manager_version_code: ${{ steps.versions.outputs.manager_version_code }}
+      ksud_version_name: ${{ steps.versions.outputs.ksud_version_name }}
+      ksud_version_code: ${{ steps.versions.outputs.ksud_version_code }}
+      kernel_version_name: ${{ steps.versions.outputs.kernel_version_name }}
+      kernel_version_code: ${{ steps.versions.outputs.kernel_version_code }}
+      release_tag: ${{ steps.versions.outputs.release_tag }}
+      commit_sha: ${{ steps.versions.outputs.commit_sha }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Resolve versions and validate release
+        id: versions
+        env:
+          VERSION_INPUTS: ${{ toJSON(inputs) }}
+          GH_TOKEN: ${{ github.token }}
+          HAS_RELEASE_KEYSTORE: ${{ secrets.KEYSTORE != '' }}
+        run: python3 scripts/ci/resolve_versions.py
+      - name: Resolve build plan
+        id: plan
+        env:
+          BUILD_INPUTS: ${{ toJSON(inputs) }}
+        run: |
+          python3 -B -m unittest discover -s scripts/ci -p 'test_*.py'
+          python3 scripts/ci/plan_build.py
+
+  build-lkm:
+    needs: plan
+    if: needs.plan.outputs.lkm == 'true'
+    uses: ./.github/workflows/build-lkm.yml
+    secrets: inherit
+    with:
+      kmi: ${{ needs.plan.outputs.kmi }}
+      kernel_version_name: ${{ needs.plan.outputs.kernel_version_name }}
+      kernel_version_code: ${{ needs.plan.outputs.kernel_version_code }}
+
+  build-ksuinit:
+    needs: plan
+    if: needs.plan.outputs.ksuinit == 'true'
+    uses: ./.github/workflows/ksuinit.yml
+    secrets: inherit
+    with:
+      target: aarch64-linux-android
+
+  build-ksud:
+    needs: [plan, build-lkm, build-ksuinit]
+    if: >-
+      ${{ !cancelled() && needs.plan.outputs.ksud == 'true' &&
+          needs.build-lkm.result == 'success' && needs.build-ksuinit.result == 'success' }}
+    uses: ./.github/workflows/ksud.yml
+    secrets: inherit
+    with:
+      target: aarch64-linux-android
+      os: ubuntu-latest
+      ksud_version_name: ${{ needs.plan.outputs.ksud_version_name }}
+      ksud_version_code: ${{ needs.plan.outputs.ksud_version_code }}
+      pack_lkm: true
+      kmi: ${{ needs.plan.outputs.kmi }}
+
+  build-manager:
+    needs: plan
+    env:
+      ZYSU_MANAGER_VERSION_NAME: ${{ needs.plan.outputs.manager_version_name }}
+      ZYSU_MANAGER_VERSION_CODE: ${{ needs.plan.outputs.manager_version_code }}
+      ZYSU_KSUD_VERSION_NAME: ${{ needs.plan.outputs.ksud_version_name }}
+      ZYSU_KSUD_VERSION_CODE: ${{ needs.plan.outputs.ksud_version_code }}
+    if: needs.plan.outputs.manager == 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./manager
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Determine manager variant for telegram bot
+        id: determine
+        run: |
+          echo "title=Manager" >> "$GITHUB_OUTPUT"
+          echo "topicid=${{ vars.MESSAGE_THREAD_ID }}" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Java
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Prepare APK signing key
+        uses: ./.github/actions/setup-manager-signing
+        with:
+          keystore: ${{ github.event_name != 'pull_request' && secrets.KEYSTORE || '' }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          store-password: ${{ secrets.KEYSTORE_PASSWORD }}
+          key-password: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-read-only: ${{ github.event_name == 'pull_request' }}
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v4
+        with:
+          packages: platform-tools
+
+      - name: Build with Gradle
+        run: ./gradlew :app:testDebugUnitTest --tests 'com.zying.zysu.update.*' lintDebug lintRelease assembleRelease --build-cache --parallel --no-daemon -PABI=arm64-v8a
+
+      - name: Upload lint reports on failure
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: Manager-lint-reports-arm64-v8a
+          path: |
+            manager/app/build/reports/lint-results-*
+            manager/app/build/intermediates/lint_intermediate_text_report/**/lint-results-*.txt
+          if-no-files-found: ignore
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: Manager-gradle-arm64-v8a
+          path: manager/app/build/outputs/renamed_apk/release/
+          if-no-files-found: error
+          compression-level: 0
+
+      - name: Upload mappings
+        uses: actions/upload-artifact@v7
+        with:
+          name: "${{ steps.determine.outputs.title }}-mappings-arm64-v8a"
+          path: "manager/app/build/outputs/mapping/release/"
+
+  repack-manager:
+    needs: [build-manager, build-ksud, build-lkm]
+    if: ${{ !cancelled() && needs.build-manager.result == 'success' && needs.build-ksud.result == 'success' }}
+    runs-on: ubuntu-latest
+    outputs:
+      artifact_url: ${{ steps.manager-artifact.outputs.artifact-url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Setup need_upload
+        id: need_upload
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CAN_UPLOAD: ${{ github.event_name == 'push' && (github.ref_name == 'main' || startsWith(github.ref_name, 'feat/')) }}
+        run: |
+          if [ "$CAN_UPLOAD" = "true" ] && [ -n "$BOT_TOKEN" ]; then
+            echo "UPLOAD=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "UPLOAD=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Determine manager variant for telegram bot
+        id: determine
+        run: |
+          echo "title=Manager" >> "$GITHUB_OUTPUT"
+          echo "topicid=${{ vars.MESSAGE_THREAD_ID }}" >> "$GITHUB_OUTPUT"
+
+      - name: Check APK GPG signing available
+        id: gpg_check
+        env:
+          GPG_PRIVATE_KEY: ${{ github.event_name != 'pull_request' && secrets.GPG_PRIVATE_KEY || '' }}
+          PROD_KEYSTORE: ${{ github.event_name != 'pull_request' && secrets.KEYSTORE || '' }}
+        run: |
+          if [ -n "$GPG_PRIVATE_KEY" ] && [ -n "$PROD_KEYSTORE" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v4
+        with:
+          packages: platform-tools
+
+      - name: Download manager APK
+        uses: actions/download-artifact@v8
+        with:
+          name: Manager-gradle-arm64-v8a
+          path: artifacts/manager-gradle
+
+      - name: Download ksud
+        uses: actions/download-artifact@v8
+        with:
+          name: ksud-aarch64-linux-android
+          path: artifacts/ksud-aarch64-linux-android
+
+      - name: Place manager APK and ksud
+        run: |
+          set -euo pipefail
+          mkdir -p manager/app/build/outputs/apk/release
+          APK=$(find artifacts/manager-gradle -type f -name "*.apk" | head -n 1)
+          test -n "$APK"
+          cp -f "$APK" manager/app/build/outputs/apk/release/
+
+          mkdir -p target/aarch64-linux-android/release
+          KSUD=$(find artifacts/ksud-aarch64-linux-android -type f -name "ksud" | head -n 1)
+          test -n "$KSUD"
+          cp -f "$KSUD" target/aarch64-linux-android/release/ksud
+
+      - name: Prepare APK signing key
+        uses: ./.github/actions/setup-manager-signing
+        with:
+          keystore: ${{ github.event_name != 'pull_request' && secrets.KEYSTORE || '' }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          store-password: ${{ secrets.KEYSTORE_PASSWORD }}
+          key-password: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Repack and resign
+        env:
+          MANAGER_CERT_SHA256: ${{ needs.build-lkm.outputs.manager_cert_sha256 }}
+        run: |
+          python3 repack_apk.py repack \
+            -b release \
+            -t release \
+            -a arm64-v8a \
+            -K "$SIGN_KEYSTORE_FILE" \
+            -A "$SIGN_KEY_ALIAS" \
+            -P "$SIGN_KEYSTORE_PASSWORD" \
+            -S "$SIGN_KEY_PASSWORD" \
+            --expected-cert-sha256 "$MANAGER_CERT_SHA256" \
+            --strip
+
+      - name: Import GPG key
+        if: steps.gpg_check.outputs.available == 'true'
+        env:
+          GPG_PRIVATE_KEY: ${{ github.event_name != 'pull_request' && secrets.GPG_PRIVATE_KEY || '' }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          export GNUPGHOME
+          GNUPGHOME=$(mktemp -d "$RUNNER_TEMP/manager-gpg.XXXXXX")
+          echo "GNUPGHOME=$GNUPGHOME" >> "$GITHUB_ENV"
+          printf '%s' "$GPG_PRIVATE_KEY" | gpg --batch --yes --pinentry-mode loopback \
+            --passphrase "$GPG_PASSPHRASE" --import
+
+      - name: Sign APK with GPG
+        if: steps.gpg_check.outputs.available == 'true'
+        env:
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          cd dist
+          mapfile -t APKS < <(find . -maxdepth 1 -type f -name '*.apk')
+          test "${#APKS[@]}" -eq 1
+          TG_APK_NAME=$(basename -- "${APKS[0]}")
+          echo "TG_APK_NAME=$TG_APK_NAME" >> "$GITHUB_ENV"
+          if [[ "${APKS[0]}" != './app-release.apk' ]]; then
+            mv -- "${APKS[0]}" app-release.apk
+          fi
+          gpg --detach-sign \
+            --digest-algo SHA512 \
+            --batch --yes --pinentry-mode loopback \
+            --passphrase "$GPG_PASSPHRASE" \
+            --output app-release.sig app-release.apk
+          test -s app-release.apk
+          test -s app-release.sig
+
+      - name: Upload final Manager APK
+        id: manager-artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: Manager-arm64-v8a
+          path: dist/
+          if-no-files-found: error
+          compression-level: 0
+
+      - name: Restore APK filename for Telegram
+        if: steps.gpg_check.outputs.available == 'true'
+        run: |
+          test -n "$TG_APK_NAME"
+          if [[ "$TG_APK_NAME" != 'app-release.apk' ]]; then
+            mv -- dist/app-release.apk "dist/$TG_APK_NAME"
+          fi
+
+      - name: Upload to telegram
+        if: github.event_name == 'push' && (github.ref_name == 'main' || startsWith(github.ref_name, 'feat/')) && steps.need_upload.outputs.UPLOAD == 'true'
+        env:
+          CHAT_ID: ${{ vars.CHAT_ID }}
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          MESSAGE_THREAD_ID: ${{ steps.determine.outputs.topicid }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          COMMIT_URL: ${{ github.event.head_commit.url }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          TITLE: ${{ steps.determine.outputs.title }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          if [ -n "$BOT_TOKEN" ]; then
+            export VERSION
+            VERSION=$(git rev-list --count HEAD)
+            mapfile -t APKS < <(find ./dist -name "*.apk")
+            pip3 install telethon
+            python3 "$GITHUB_WORKSPACE/scripts/ksubot.py" "${APKS[@]}"
+          fi
+
+  summary:
+    name: Build results / 下载说明
+    needs: [plan, build-lkm, build-ksuinit, build-ksud, build-manager, repack-manager]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Summarize results
+        env:
+          BUILD_RESULTS: ${{ toJSON(needs) }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          MANAGER_ARTIFACT_URL: ${{ needs.repack-manager.outputs.artifact_url }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          results = json.loads(os.environ['BUILD_RESULTS'])
+          with Path(os.environ['GITHUB_STEP_SUMMARY']).open('a', encoding='utf-8') as summary:
+              summary.write('## 编译结果 / Build results\n\n| Job | Result |\n| --- | --- |\n')
+              for job, result in results.items():
+                  summary.write(f"| {job} | {result['result']} |\n")
+              summary.write(f"\n[下载产物 / Artifacts]({os.environ['RUN_URL']}#artifacts)\n")
+              if results['repack-manager']['result'] == 'success':
+                  summary.write(f"\n[下载完整 Manager APK]({os.environ['MANAGER_ARTIFACT_URL']})。请勿安装 Manager-gradle 中间产物。\n")
+                  summary.write('\n配置 KEYSTORE 后，内核会信任同一份 Manager 证书。未配置时 APK 使用临时签名，需在修补时设置 SuperKey 才能认证管理器；跨运行更新需保持签名一致。\n')
+          PY

@@ -1,0 +1,17 @@
+# Imported from SUMH e648702b42d6068206a5cbc2fffae25d71dc067b.
+kernelsu-objs += $(addprefix sumh/, \
+ core/sumh_bootstrap.o core/sumh_config_guard.o \
+ core/sumh_runtime.o core/sumh_fop_bridge.o \
+ core/sumh_vnode.o core/sumh_dirhijack.o core/sumh_sop_shadow.o \
+ core/sumh_hide_events.o core/sumh_hide_rules.o \
+ control/sumh_ioctl.o \
+ policy/sumh_path_policy.o overlay/sumh_overlay.o \
+ hooks/sumh_proc_read_hooks.o \
+ hooks/sumh_vfs_hooks.o \
+ features/sumh_iop_override.o \
+ features/sumh_fop_override.o features/sumh_fake_mountinfo.o \
+ features/sumh_kernel_build.o \
+ features/sumh_vfs_view.o)
+ccflags-y += -DSUMH_EMBEDDED
+ccflags-y += -I$(srctree)
+ccflags-y += $(addprefix -I$(MDIR)/sumh/,include internal core control policy overlay hooks features)

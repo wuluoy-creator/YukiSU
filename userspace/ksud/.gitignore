@@ -1,0 +1,28 @@
+# Build output
+build/
+build-*/
+cmake-build-*/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Compiled objects
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+
+# Executables
+ksud
+
+# Auto-generated source files
+src/defs.cpp
+
+assets/*
+!assets/installer.sh
+!assets/shellrc.sh

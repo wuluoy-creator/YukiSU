@@ -1,0 +1,34 @@
+name: Manager discovery regressions
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'kernel/manager/**'
+      - 'kernel/include/util.h'
+      - 'scripts/ci/test_manager_scan.py'
+      - 'scripts/ci/test_sumh_vfs_helpers.py'
+      - '.github/workflows/manager-tests.yml'
+  pull_request:
+    paths:
+      - 'kernel/manager/**'
+      - 'kernel/include/util.h'
+      - 'scripts/ci/test_manager_scan.py'
+      - 'scripts/ci/test_sumh_vfs_helpers.py'
+      - '.github/workflows/manager-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  host-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - name: Manager scan cache and rescan behavior
+        run: python3 scripts/ci/test_manager_scan.py --cc clang

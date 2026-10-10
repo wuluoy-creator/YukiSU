@@ -1,0 +1,116 @@
+[versions]
+accompanist-drawablepainter = "0.37.3"
+agp = "9.4.1"
+gson = "2.14.0"
+kotlin = "2.4.20"
+ksp = "2.3.12"
+compose-bom = "2026.09.00"
+lifecycle = "2.11.0"
+navigation = "2.10.2"
+activity-compose = "1.13.0"
+kotlinx-coroutines = "1.11.0"
+coil-compose = "2.7.0"
+compose-destination = "2.3.0"
+sheets-compose-dialogs = "1.3.0"
+markdown = "4.6.2"
+webkit = "1.17.1"
+appiconloader-coil = "1.5.0"
+parcelablelist = "2.0.1"
+libsu = "6.0.0"
+cmaker = "1.5"
+compose-material3 = "1.5.0-alpha29"
+compose-ui = "1.12.1"
+documentfile = "1.1.0"
+mmrl = "v34242"
+# JitPack publishes v438 (1cd1e76d9438) under the version without the v prefix.
+webuix = "438"
+swiperefreshlayout = "1.2.0"
+ndk = "30.0.16248370"
+foundation = "1.12.1"
+ucrop = "2.2.11"
+yukifb = "0.1.1"
+appcompat = "1.8.0"
+exifinterface = "1.4.2"
+transition = "1.7.2"
+okhttp = "5.5.0"
+commons-compress = "1.28.0"
+xz = "1.12"
+robolectric = "4.17"
+
+[plugins]
+agp-app = { id = "com.android.application", version.ref = "agp" }
+agp-lib = { id = "com.android.library", version.ref = "agp" }
+
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+lsplugin-cmaker = { id = "org.lsposed.lsplugin.cmaker", version.ref = "cmaker" }
+
+[libraries]
+accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version.ref = "accompanist-drawablepainter" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "compose-material3" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose-ui" }
+androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "compose-ui" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "compose-ui" }
+
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+
+androidx-webkit = { module = "androidx.webkit:webkit", version.ref = "webkit" }
+
+com-github-topjohnwu-libsu-core = { group = "com.github.topjohnwu.libsu", name = "core", version.ref = "libsu" }
+com-github-topjohnwu-libsu-service = { group = "com.github.topjohnwu.libsu", name = "service", version.ref = "libsu" }
+com-github-topjohnwu-libsu-io = { group = "com.github.topjohnwu.libsu", name = "io", version.ref = "libsu" }
+
+dev-rikka-rikkax-parcelablelist = { module = "dev.rikka.rikkax.parcelablelist:parcelablelist", version.ref = "parcelablelist" }
+
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+io-coil-kt-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil-compose" }
+
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+
+me-zhanghai-android-appiconloader-coil = { group = "me.zhanghai.android.appiconloader", name = "appiconloader-coil", version.ref = "appiconloader-coil" }
+
+compose-destinations-core = { group = "io.github.raamcosta.compose-destinations", name = "core", version.ref = "compose-destination" }
+compose-destinations-ksp = { group = "io.github.raamcosta.compose-destinations", name = "ksp", version.ref = "compose-destination" }
+
+sheet-compose-dialogs-core = { group = "com.maxkeppeler.sheets-compose-dialogs", name = "core", version.ref = "sheets-compose-dialogs" }
+sheet-compose-dialogs-list = { group = "com.maxkeppeler.sheets-compose-dialogs", name = "list", version.ref = "sheets-compose-dialogs" }
+sheet-compose-dialogs-input = { group = "com.maxkeppeler.sheets-compose-dialogs", name = "input", version.ref = "sheets-compose-dialogs" }
+
+markdown = { group = "io.noties.markwon", name = "core", version.ref = "markdown" }
+
+lsposed-cxx = { module = "org.lsposed.libcxx:libcxx", version.ref = "ndk" }
+androidx-documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "documentfile" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifinterface" }
+androidx-transition = { group = "androidx.transition", name = "transition", version.ref = "transition" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+commons-compress = { module = "org.apache.commons:commons-compress", version.ref = "commons-compress" }
+xz = { module = "org.tukaani:xz", version.ref = "xz" }
+
+
+mmrl-webui = { group = "com.github.MMRLApp.WebUI-X-Portable", name = "webui", version.ref = "webuix" }
+mmrl-hwui = { group = "com.github.MMRLApp.WebUI-X-Portable", name = "hwui", version.ref = "webuix" }
+androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
+mmrl-ext = { group = "com.github.MMRLApp.MMRL", name = "ext", version.ref = "mmrl" }
+mmrl-compat = { group = "com.github.MMRLApp.MMRL", name = "compat", version.ref = "mmrl" }
+mmrl-platform = { group = "com.github.MMRLApp.MMRL", name = "platform", version.ref = "mmrl" }
+mmrl-ui = { group = "com.github.MMRLApp.MMRL", name = "ui", version.ref = "mmrl" }
+mmrl-hidden-api = { group = "com.github.MMRLApp.MMRL", name = "hidden-api", version.ref = "mmrl" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
+ucrop = { module = "com.github.yalantis:ucrop", version.ref = "ucrop" }
+yukifb = { module = "com.anatdx:yukifb", version.ref = "yukifb" }

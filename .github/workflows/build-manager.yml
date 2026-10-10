@@ -1,0 +1,53 @@
+# Only complete builds may run here; manual component builds live in build.yml.
+name: Build Manager
+
+on:
+  push:
+    branches: [ "main", "dev", "feat/*" ]
+    paths:
+      - '.github/workflows/build-manager.yml'
+      - '.github/workflows/build.yml'
+      - '.github/actions/**'
+      - 'scripts/ci/**'
+      - '.gitmodules'
+      - '.github/workflows/build-lkm.yml'
+      - '.github/workflows/ddk-lkm.yml'
+      - '.github/workflows/ksud.yml'
+      - '.github/workflows/ksuinit.yml'
+      - 'repack_apk.py'
+      - '.clang-tidy'
+      - 'cmake/**'
+      - 'scripts/ddk.mk'
+      - 'manager/**'
+      - 'kernel/**'
+      - 'uapi/**'
+      - 'userspace/**'
+  pull_request:
+    branches: [ "main", "dev" ]
+    paths:
+      - '.github/workflows/build-manager.yml'
+      - '.github/workflows/build.yml'
+      - '.github/actions/**'
+      - 'scripts/ci/**'
+      - '.gitmodules'
+      - '.github/workflows/build-lkm.yml'
+      - '.github/workflows/ddk-lkm.yml'
+      - '.github/workflows/ksud.yml'
+      - '.github/workflows/ksuinit.yml'
+      - 'repack_apk.py'
+      - '.clang-tidy'
+      - 'cmake/**'
+      - 'scripts/ddk.mk'
+      - 'manager/**'
+      - 'kernel/**'
+      - 'uapi/**'
+      - 'userspace/**'
+  workflow_call: {}
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    secrets: inherit

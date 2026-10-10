@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- uCrop inflates these app overrides through its own resource IDs. -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@layout/ucrop_activity_photobox,@layout/ucrop_view,@drawable/ucrop_ic_angle,@drawable/ucrop_ic_reset,@drawable/ucrop_ic_rotate,@drawable/ucrop_ic_rotate_unselected,@drawable/ucrop_ic_scale,@drawable/ucrop_ic_scale_unselected" />

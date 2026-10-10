@@ -1,0 +1,197 @@
+#include "module_config.hpp"
+#include "../defs.hpp"
+#include "../log.hpp"
+#include "../terminal.hpp"
+#include "../utils.hpp"
+#include "module_utils.hpp"
+
+#include <dirent.h>
+#include <unistd.h>
+#include <cstdlib>
+#include <map>
+
+namespace ksud {
+
+namespace {
+
+std::string get_module_id() {
+    const char* id = getenv("KSU_MODULE");
+    return id ? std::string(id) : "";
+}
+
+std::string get_config_dir(const std::string& module_id) {
+    return std::string(MODULE_CONFIG_DIR) + module_id + "/";
+}
+
+std::map<std::string, std::string> load_config(const std::string& path) {
+    std::map<std::string, std::string> config;
+    auto content = read_file(path);
+    if (!content)
+        return config;
+
+    for_each_line(*content, [&config](std::string_view line) {
+        const size_t eq = line.find('=');
+        if (eq != std::string_view::npos) {
+            config[std::string(line.substr(0, eq))] = std::string(line.substr(eq + 1));
+        }
+    });
+
+    return config;
+}
+
+bool save_config(const std::string& path, const std::map<std::string, std::string>& config) {
+    std::string out;
+    for (const auto& [key, value] : config) {
+        out += key;
+        out += '=';
+        out += value;
+        out += '\n';
+    }
+    // Keep custom permissions on existing configs while preventing a failed
+    // write from truncating the current configuration.
+    struct stat st{};
+    mode_t mode = 0644;
+    if (stat(path.c_str(), &st) == 0) {
+        mode = st.st_mode & 07777;
+    } else if (errno != ENOENT) {
+        return false;
+    }
+    return write_file_atomic(path, out, mode);
+}
+
+}  // namespace
+
+int module_config_handle(const std::vector<std::string>& args) {
+    if (args.empty()) {
+        printf("USAGE: ksud module config <get|set|list|delete|clear> ...\n");
+        return 1;
+    }
+
+    const std::string module_id = get_module_id();
+    if (module_id.empty()) {
+        return terminal::error(
+            "KSU_MODULE is not set",
+            "Run module config from a module script or set KSU_MODULE to its ID.");
+    }
+    if (!validate_module_id(module_id)) {
+        return terminal::error("Invalid KSU_MODULE ID",
+                               "Use the same module ID declared in module.prop.");
+    }
+
+    const std::string config_dir = get_config_dir(module_id);
+
+    const std::string persist_path = config_dir + PERSIST_CONFIG_NAME;
+    const std::string temp_path = config_dir + TEMP_CONFIG_NAME;
+
+    const std::string& cmd = args[0];
+
+    if (cmd == "get" && args.size() > 1) {
+        const std::string& key = args[1];
+
+        // Temp config takes priority
+        auto temp_config = load_config(temp_path);
+        if (const auto it = temp_config.find(key); it != temp_config.end()) {
+            printf("%s\n", it->second.c_str());
+            return 0;
+        }
+
+        auto persist_config = load_config(persist_path);
+        if (const auto it = persist_config.find(key); it != persist_config.end()) {
+            printf("%s\n", it->second.c_str());
+            return 0;
+        }
+
+        terminal::errorf("Key '%s' not found\n", key.c_str());
+        return 1;
+    } else if (cmd == "set" && args.size() > 2) {
+        const std::string& key = args[1];
+        const std::string& value = args[2];
+        const bool is_temp = args.size() > 3 && (args[3] == "-t" || args[3] == "--temp");
+
+        if (key.empty() || key.find_first_of("=\r\n") != std::string::npos ||
+            value.find_first_of("\r\n") != std::string::npos) {
+            return terminal::error("Invalid config entry",
+                                   "Use a nonempty key without '=', and single-line values.");
+        }
+
+        const std::string path = is_temp ? temp_path : persist_path;
+        auto config = load_config(path);
+        config[key] = value;
+
+        if (!ensure_dir_exists(config_dir) || !save_config(path, config)) {
+            terminal::errorf("Failed to save config\n");
+            return 1;
+        }
+
+        return 0;
+    } else if (cmd == "list") {
+        auto persist_config = load_config(persist_path);
+        auto temp_config = load_config(temp_path);
+
+        // Merge configs (temp overrides persist)
+        for (const auto& [key, value] : temp_config) {
+            persist_config[key] = value;
+        }
+
+        if (persist_config.empty()) {
+            printf("No config entries found\n");
+        } else {
+            for (const auto& [key, value] : persist_config) {
+                printf("%s=%s\n", key.c_str(), value.c_str());
+            }
+        }
+
+        return 0;
+    } else if (cmd == "delete" && args.size() > 1) {
+        const std::string& key = args[1];
+        const bool is_temp = args.size() > 2 && (args[2] == "-t" || args[2] == "--temp");
+
+        const std::string path = is_temp ? temp_path : persist_path;
+        auto config = load_config(path);
+        config.erase(key);
+
+        if (!ensure_dir_exists(config_dir) || !save_config(path, config)) {
+            terminal::errorf("Failed to save config\n");
+            return 1;
+        }
+
+        return 0;
+    } else if (cmd == "clear") {
+        const bool is_temp = args.size() > 1 && (args[1] == "-t" || args[1] == "--temp");
+
+        const std::string path = is_temp ? temp_path : persist_path;
+        if (unlink(path.c_str()) != 0 && errno != ENOENT)
+            return terminal::file_error("cannot clear configuration", path, errno);
+        return 0;
+    }
+
+    terminal::errorf("Unknown config command: %s\n", cmd.c_str());
+    return 1;
+}
+
+void clear_all_temp_configs() {
+    // Clear all temporary module configs
+    // This is called during post-fs-data to clean up temp configs from previous boot
+    DIR* dir = opendir(MODULE_CONFIG_DIR);
+    if (!dir) {
+        return;
+    }
+
+    struct dirent* entry;
+    while ((entry = readdir(dir)) != nullptr) {
+        if (entry->d_name[0] == '.')
+            continue;
+        if (!is_module_directory(dir, *entry))
+            continue;
+
+        const std::string temp_config =
+            std::string(MODULE_CONFIG_DIR) + entry->d_name + "/" + TEMP_CONFIG_NAME;
+        if (access(temp_config.c_str(), F_OK) == 0) {
+            unlink(temp_config.c_str());
+        }
+    }
+
+    closedir(dir);
+}
+
+}  // namespace ksud

@@ -1,0 +1,112 @@
+name: Build ksuinit
+on:
+  workflow_call:
+    inputs:
+      target:
+        required: true
+        type: string
+        description: "Target architecture: aarch64 only"
+      os:
+        required: false
+        type: string
+        default: ubuntu-latest
+    secrets:
+      GPG_PRIVATE_KEY:
+        required: false
+      GPG_PASSPHRASE:
+        required: false
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  build:
+    runs-on: ${{ inputs.os }}
+    defaults:
+      run:
+        shell: bash
+    env:
+      BUILD_TARGET: ${{ inputs.target }}
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Set up native build cache
+      uses: ./.github/actions/setup-native-build
+      with:
+        component: ksuinit-${{ inputs.target }}
+
+    - name: Determine target settings
+      id: target
+      run: |
+        case "$BUILD_TARGET" in
+          aarch64-linux-android|aarch64)
+            echo "abi=arm64-v8a" >> "$GITHUB_OUTPUT"
+            echo "android_target=aarch64-linux-android31" >> "$GITHUB_OUTPUT"
+            ;;
+          *)
+            echo "ZySU supports aarch64 only, got: $BUILD_TARGET"
+            exit 1
+            ;;
+        esac
+
+    - name: Build ksuinit
+      run: |
+        cd userspace/ksuinit
+        mkdir -p build && cd build
+        
+        TOOLCHAIN="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64"
+        export CC="$TOOLCHAIN/bin/${{ steps.target.outputs.android_target }}-clang"
+        export CXX="$TOOLCHAIN/bin/${{ steps.target.outputs.android_target }}-clang++"
+        export AR="$TOOLCHAIN/bin/llvm-ar"
+        export RANLIB="$TOOLCHAIN/bin/llvm-ranlib"
+
+        cmake .. \
+          -G Ninja \
+          -DCMAKE_SYSTEM_NAME=Android \
+          -DCMAKE_ANDROID_ARCH_ABI=${{ steps.target.outputs.abi }} \
+          -DCMAKE_ANDROID_NDK="$ANDROID_NDK_HOME" \
+          -DCMAKE_SYSTEM_VERSION=31 \
+          -DCMAKE_C_COMPILER="$CC" \
+          -DCMAKE_CXX_COMPILER="$CXX" \
+          -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+          -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DZYSU_ENABLE_CLANG_TIDY=OFF
+        
+        cmake --build . --target ksuinit --parallel "$(nproc)"
+        
+        # Show binary info
+        ls -lh ksuinit
+        file ksuinit
+
+    - name: Sign ksuinit when a GPG key is configured
+      if: ${{ github.event_name != 'pull_request' }}
+      env:
+        GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+        GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+      run: |
+        set -euo pipefail
+        if [ -z "$GPG_PRIVATE_KEY" ]; then
+          echo "No GPG key configured; uploading the unsigned ksuinit binary."
+          exit 0
+        fi
+        export GNUPGHOME
+        GNUPGHOME=$(mktemp -d "$RUNNER_TEMP/ksuinit-gpg.XXXXXX")
+        trap 'gpgconf --kill gpg-agent; rm -rf "$GNUPGHOME"' EXIT
+        printf '%s' "$GPG_PRIVATE_KEY" | gpg --batch --yes --pinentry-mode loopback \
+          --passphrase "$GPG_PASSPHRASE" --import
+        gpg --detach-sign --batch --yes --pinentry-mode loopback \
+          --passphrase "$GPG_PASSPHRASE" \
+          --output userspace/ksuinit/build/ksuinit.sig userspace/ksuinit/build/ksuinit
+        gpg --verify userspace/ksuinit/build/ksuinit.sig userspace/ksuinit/build/ksuinit
+
+    - name: Show compiler cache statistics
+      run: ccache --show-stats
+
+    - name: Upload ksuinit artifact
+      uses: actions/upload-artifact@v7
+      with:
+        name: ksuinit-${{ inputs.target }}
+        path: |
+          userspace/ksuinit/build/ksuinit
+          userspace/ksuinit/build/ksuinit.sig
+        if-no-files-found: error
